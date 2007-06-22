@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+# This file from
+# http://nucleus.cshl.org/agsa/presentations.html
+# Downloaded 02/22/2007
+
+use strict;
+
+my %exon_type = ('Sngl', 'Single Exon',
+		 'Init', 'Initial Exon',
+		 'Intr', 'Internal Exon',
+		 'Term', 'Terminal Exon');
+
+
+while (<>) {
+    
+    # Last line before predictions contains nothing but spaces and dashes
+    if (/^\s*-[-\s]+$/)  {
+	while (<>)  {
+	    my %feature; 
+	    if (/init|term|sngl|intr/i) {
+		
+		my @f  = split;
+		
+		my ($gene, $exon) = split (/\./, $f[0]); 
+		
+		$feature {name} = $gene + ($exon/1000); #name must be a number
+		#arrange numbers so that start is always < end
+		if ($f[2] eq '+') {
+		    $feature {'start'}  = $f[3];
+		    $feature {'end'}    = $f[4];
+		    $feature {'strand'} = "+";
+		} elsif ($f[2] eq '-') {
+		    $feature {'start'}  = $f[4];
+		    $feature {'end'}    = $f[3];
+		    $feature {'strand'} = "-";
+		}
+		
+		$feature {'score'}   = $f[12];
+		$feature {'p'}       = $f[11];
+		$feature {'type'}    = $exon_type{$f[1]};
+		$feature {'program'} = 'Genscan';
+		$feature {'program_version'} = '1.0';
+		$feature {'primary'} = 'prediction';
+		$feature {'source'}  = 'genscan';
+		
+		print "$gene.$exon\tgenscan\texon\t" . $feature{start} . "\t" . $feature{end} . "\t" . 
+		    $feature{p} . "\t" . $feature{strand} . "\t.\t" . $gene . "\n";
+	    } elsif (/predicted peptide/i) {
+		last;   
+	    }
+	}
+    }
+}
