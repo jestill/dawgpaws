@@ -25,30 +25,64 @@
 # [ ] Grep the GFF directory to load the array of GFF files
 #     into the Files2Convert array
 
+=head1 NAME
+
+ApConvert.lp - Convert TriAnnot gff files to Apollo format
+
+=head1 SYNOPSIS
+
+  Usage: ApConvert.pl -i InFastaFile -g GffDir -o OutputDir.
+         Dir string should include / at the end
+         ApConvert.pl -h to print full help statement.
+
+=head1 DESCRIPTION
+
+Converts gff data tracks from gff format to the game
+xml format for use in the Apollo Genome Annotation
+Curation program. This is for use with output from the
+TriAnnot pipeline.
+
+=head1 ARGUMENTS
+
+=over
+
+=item -i
+
+input file path
+
+=item -g
+
+gff data directory
+
+=back
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
+=cut
+
+
 package DAWGPAWS;
 
-=head1 INCLUDES
-=cut
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use Getopt::Std; 
 
-=head1 VARIABLES
-=cut
 #-----------------------------+
 # SET VARIABLE SCOPE          |
 #-----------------------------+
 my $InFastaFile;               # FASTA fiel that GFF files will be mapped onto
 my $InputRoot;                 # Base directory that contains all the GFF files
 my $OutputRoot;                # Output directory
-my $CatOut;                    # Concatenated output of all gff files, not required
+my $CatOut;                    # Concatenated output of all gff files,
+                               #  not required
 my %Options;                   # Options hash to hold command line options
 my $ShowHelp;                  # Boolean to print full help statement
-my $Valid = '0';               # Boolean [0,1] : A valid gff file was found for conversion
+my $Valid = '0';               # Boolean [0,1] : A valid gff file was 
+                               # found for conversion
 
-=head1 COMMAND LINE
-=cut
 #-----------------------------+
 # GET OPTIONS FROM THE        |
 # COMMAND LINE                |
@@ -79,8 +113,6 @@ $CatOut = $Options{O};
 
 print "The ApConvert pogram has started.\n";
 
-=head1 FILE CHECK
-=cut
 #-----------------------------+ 
 # CHECK FOR EXISTENCE OF      |
 # INPUT FILES AND OUTPUT DIR  |
@@ -105,9 +137,6 @@ unless (-e $OutputRoot)
 {
     mkdir $OutputRoot, 0777;
 }
-
-=head1 MAIN PROGRAM BODY
-=cut
 
 #-----------------------------+
 # LOAD GFF FILE LIST TO ARRAY |
@@ -276,7 +305,8 @@ foreach my $FileRoot (@Files2Convert)
 	} # End of if Valid is true
 
     } else {
-	print "\a\aERROR: The input Gff file does not exist at:\n$TriGffPath\n";
+	print "\a\aERROR: The input Gff file does not exist at:".
+	    "\n$TriGffPath\n";
     } # End of if input file exists
 
 } # End of for each file in Files2Convert
@@ -302,8 +332,6 @@ if ($CatOut)
 
 exit;
 
-=head1 SUBFUNCTIONS
-=cut
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
@@ -711,6 +739,11 @@ sub PrintHelp
 }
 
 =head1 HISTORY
+
+STARTED: 02/09/2007
+
+UPDATED: 06/22/2007
+
 =cut
 
 #-----------------------------------------------------------+
@@ -750,3 +783,6 @@ sub PrintHelp
 # - Added Eugene format conversion
 # - Added option for concatenated GFF output as $CatOut
 # - Added option to convert concate GFF to GAME xml
+#
+# 06/22/2007
+# - Adding POD documentation and cleaning up code
