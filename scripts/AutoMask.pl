@@ -1,35 +1,167 @@
 #!/usr/bin/perl -w
-#-------------------------------------------------------+
-#                                                       |
-# REPEAT MASK PARSER PIPELINE                           |
-#                                                       |
-#-------------------------------------------------------+
-#  AUTHOR: James C. Estill                              |
-# CONTACT: jestill_at_sourceforge.net                   |
-# STARTED: 4/10/2006                                    |
-# UPDATED: 09/28/2006                                   |
-#                                                       |
-# DESCRIPTION:                                          |
-#  Runs the RepeatMasker program for a set of input     |
-#  FASTA files against a set of repeat library files &  |
-#  then converts the repeat masker *.out file into the  |
-#  GFF format and then to the game XML format for       |
-#  visualization by the Apollo genome anotation program.|
-#                                                       |
-# USAGE:                                                |
-#  RepMaskParse.pl                                      |
-#                                                       |
-# REQUIRED SOFTWARE:                                    |
-#  -Apollo (Genome Annotation Curation Tool)            |
-#   http://www.fruitfly.org/annot/apollo/               |
-#  -grep                                                |
-#  -awk                                                 | 
-#                                                       |
-# NOTE:                                                 |
-#  The sequence name used in the FASTA file header must |
-#  be short enough to make it through to the            | 
-#  RepeatMasker *.out file.                             |
-#-------------------------------------------------------+
+#-----------------------------------------------------------+
+#                                                           |
+# automask.pl - REPEAT MASK PARSER PIPELINE                 |
+#                                                           |
+#-----------------------------------------------------------+
+#                                                           |
+#  AUTHOR: James C. Estill                                  |
+# CONTACT: jestill_at_sourceforge.net                       |
+# STARTED: 04/10/2006                                       |
+# UPDATED: 07/13/2007                                       |
+#                                                           |
+# DESCRIPTION:                                              |
+#  Runs the RepeatMasker program for a set of input         |
+#  FASTA files against a set of repeat library files &      |
+#  then converts the repeat masker *.out file into the      |
+#  GFF format and then to the game XML format for           |
+#  visualization by the Apollo genome anotation program.    |
+#                                                           |
+# USAGE:                                                    |
+#  RepMaskParse.pl                                          |
+#                                                           |
+#-----------------------------------------------------------+
+
+=head1 NAME
+
+auto_mask.pl - Short program description. 
+
+=head1 VERSION
+
+This documentation refers to program version 0.1
+
+=head1 SYNOPSIS
+
+ Usage:
+  Name.pl -i InFile -o OutFile
+
+=head1 DESCRIPTION
+
+Runs the RepeatMasker program for a set of input
+FASTA files against a set of repeat library files &
+then converts the repeat masker *.out file into the
+GFF format and then to the game XML format for
+visualization by the Apollo genome anotation program.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--infile
+
+Path of the input file.
+
+=item -o,--outfile
+
+Path of the output file.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The list of error messages that can be generated,
+explanation of the problem
+one or more causes
+suggested remedies
+list exit status associated with each error
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Names and locations of config files
+environmental variables
+or properties that can be set.
+
+=head1 DEPENDENCIES
+
+The program requires the following software.
+
+=over
+
+=item *
+
+Apollo (Genome Annotation Curation Tool)
+http://www.fruitfly.org/annot/apollo/
+
+=item *
+
+grep
+
+=item *
+
+awk
+
+=back
+
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 TO DO
+
+=over 2
+
+=item *
+
+Make the results compatable for an upload to a chado
+database.
+
+=item *
+
+This currently requires that the fasta header be the
+exact same name as the, this should be fixed such
+that the program can juse read the name. There also
+appears to be a name trimming problem with the contigs.
+
+=item *
+
+The sequence name used in the FASTA file header must |
+be short enough to make it through to the            | 
+RepeatMasker *.out file.    
+
+=back
+
+=head2 Limitations
+
+Currently must use short names in the FASTA file.
+
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+http://www.gnu.org/licenses/lgpl.html
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
+=cut
 
 
 print "The RepeatMask Parser program has started\n";
@@ -559,7 +691,11 @@ sub ApolloConvert
 }
 
 =head1 HISTORY
-The program history
+
+STARTED: 04/10/2006
+
+UPDATED: 07/13/2007
+
 =cut
 
 #-------------------------------------------------------+
@@ -626,18 +762,6 @@ The program history
 # - Changes make to get this to work on the altix
 # - Changed the format of the repeat databases list
 #   This is currently a two-d array
+#07/13/2007
+# - Added POD documentation.
 
-=head1 To DO
-The to do list
-=cut
-#-----------------------------------------------------------+
-# TO DO
-#-----------------------------------------------------------+
-#
-# - Make the results compatable for an upload to a chado
-#   database.
-# - This currently requires that the fasta header be the
-#   exact same name as the, this should be fixed such
-#   that the program can juse read the name. There also
-#   appears to be a name trimming problen with the contigs.
-# - MUST USE SHORT NAMES
