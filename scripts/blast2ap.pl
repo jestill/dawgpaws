@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 06/26/2007                                       |
-# UPDATED: 06/27/2007                                       |
+# UPDATED: 07/02/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              | 
 #  Import full BLAST output information into an existing    |
@@ -90,6 +90,7 @@ use X11::GUITest qw/
     WaitWindowViewable
     SendKeys
     GetInputFocus
+    SetInputFocus
     GetWindowName
     WaitWindowClose
     FindWindowLike
@@ -126,6 +127,7 @@ my $blast_file_count = 0;      # Counter for blast files
 
 # Apollo window ids
 my $win_focus_id;              # The id number of the window that has focus
+my $win_focus_prev;            # Previous window id
 my @winid_load_data;           # window ids of the load data window
 my @winid_main;                # window ids of the main Apollo window
                                # This is the window that shows alignment
@@ -243,7 +245,6 @@ if (WaitWindowViewable('Apollo: load data', undef, 10)) {
     else {
 	die "I expected Apollo: load data to be in focus for\n$infile_path";
     } 
-    
 }
 
 
@@ -308,9 +309,38 @@ foreach my $ind_blast_file (@blast_files) {
 	#
 	$win_focus_id = GetInputFocus();
 	my $win_focus = GetWindowName($win_focus_id);
+	print "\n\nFOCUS ID:\t$win_focus_id\n";
+	print "FOCUS NAME:\t$win_focus\n";
 
+
+	#-----------------------------+
+	# CHECK FOCUS ID              |
+	#-----------------------------+
+	# WOrkign change is here
+	# IF THE WINDOW FOCUS ID HAS NOT CHANGED
+	if ($win_focus_prev == $win_focus_id) {
+	    print "The window id did not change.\n";
+	    print "PREV:\t$win_focus_prev\n";
+	    print "NOW:\t$win_focus_id\n";
+
+	    # ALT F4 Will close the current window in apollo
+	    # If the window currently in focus is the main widow
+	    # this will also be closed.
+	    #SendKeys('%(F4)');
+	    
+	    exit;
+	} 
+	else {
+	    print "The focus id has changed.\n";
+	    print "PREV:\t$win_focus_prev\n";
+	    print "NOW:\t$win_focus_id\n";
+	}	
+#	exit;
+	
+	
 	if ($win_focus =~ 'Apollo: adding data') {
 	    # Reset window to one of the d options
+	    
 	    SendKeys('d') ||
 		die "ERROR: Problem with SendKeys d\n";
 	    sleep 1;
@@ -352,13 +382,20 @@ foreach my $ind_blast_file (@blast_files) {
 	    
 	    # Spacebar to select OK
 	    SendKeys('{SPA}') ||
-		die "ERROR: Problem with SendKeys SPACE";     
+		die "ERROR: Problem with SendKeys SPACE";    
+
+	  
+ 
 	} # End of if adding data dialog has focus
+
 	
     } else {
 	die "Could not open Apollo: add dialog.\n";
     }
     
+    # Reset focus ID
+    $win_focus_prev = $win_focus_id; 
+
 #    exit;
     
 #    # If the import data window is open, wait for it to close
@@ -449,3 +486,5 @@ Updated: 06/26/2007
 # 06/29/2007
 # - Continuing to add error checks to make this run smoothly
 #
+# 07/02/2007
+# - Working to make this die on errors
