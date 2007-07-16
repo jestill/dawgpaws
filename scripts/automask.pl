@@ -24,16 +24,16 @@
 
 =head1 NAME
 
-auto_mask.pl - Short program description. 
+automask.pl - Run RepeatMasker and parse results to a gff format file. 
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to automask version 1.0
 
 =head1 SYNOPSIS
 
  Usage:
-  Name.pl -i InFile -o OutFile
+ automask.pl -i DirToProcess -o OutDir
 
 =head1 DESCRIPTION
 
@@ -47,19 +47,39 @@ visualization by the Apollo genome anotation program.
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path of the directory containing the sequences to process.
 
-=item -o,--outfile
+=item -o,--outdir
 
-Path of the output file.
+Path of the directory to place the program output.
 
 =back
 
 =head1 OPTIONS
 
 =over 2
+
+=item -p,--num-proc
+
+The number of processors to use for RepeatMasker. Default is one.
+
+=item --engine
+
+The repeatmasker engine to use: [crossmatch|wublast|decypher].
+The default is to use crossmatch.
+
+=item --apollo
+
+Use the apollo program to convert the file from gff to game xml.
+The default is not to use apollo.
+
+=item --logfile
+
+Path to a file that will be used to log program status.
+If the file already exists, additional information will be concatenated
+to the existing file.
 
 =item --usage
 
@@ -82,15 +102,15 @@ POD documentation for the program.
 
 Run the program with minimal output.
 
+=item --test
+
+Run the program without doing the system commands.
+
 =back
 
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+The error messages that can be generated will be listed here.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -100,9 +120,14 @@ or properties that can be set.
 
 =head1 DEPENDENCIES
 
-The program requires the following software.
+=head2 Required Software
 
 =over
+
+=item *
+
+RepeatMasker
+(http://www.repeatmasker.org/)
 
 =item *
 
@@ -119,12 +144,29 @@ awk
 
 =back
 
+=head2 Required Perl Modules
+
+=over
+
+=item *
+
+File::Copy
+
+=item *
+
+Getopt::Long
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
 =head2 TO DO
 
 =over 2
+
+=item *
+
+Load the RepLibs array from a config file.
 
 =item *
 
@@ -140,16 +182,25 @@ appears to be a name trimming problem with the contigs.
 
 =item *
 
-The sequence name used in the FASTA file header must |
-be short enough to make it through to the            | 
-RepeatMasker *.out file.    
+The sequence name used in the FASTA file header must
+be short enough to make it through to the
+RepeatMasker *.out file.
 
 =back
 
 =head2 Limitations
 
+=over
+
+=item *
+
 Currently must use short names in the FASTA file.
 
+=item *
+
+This program has been tested with RepeatMasker v  2006Jan20
+
+=back
 
 =head1 LICENSE
 
@@ -164,15 +215,60 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 =cut
 
 
-print "The RepeatMask Parser program has started\n";
+#print "The RepeatMask Parser program has started\n";
 
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use File::Copy;
+use Getopt::Long;
 
 #-----------------------------+
-# LOCAL VARIABLES             |
+# PROGRAM VARIABLES           |
+#-----------------------------+
+my $ver = "1.0";
+
+#-----------------------------+
+# VARIABLE SCOPE              |
+#-----------------------------+
+my $logfile;                   # Path to a logfile to log error info
+my $indir;                     # Directory containing the seq files to process
+my $outdir;                    # Directory to hold the output
+my $msg;                       # Message printed to the log file
+
+# BOOLEANS
+my $show_help = 0;             # Show program help
+my $show_version = 0;          # Show program version
+my $show_man = 0;              # Show program manual page using peldoc
+my $show_usage = 0;            # Show program usage command             
+my $quiet = 0;                 # Boolean for reduced output to STOUT
+my $apollo = 0;                # Path to apollo and apollo variables
+my $test = 0;
+
+# COUNTERS
+my $num_proc = 1;              # Number of processors to use
+
+#-----------------------------+
+# COMMAND LINE OPTIONS        |
+#-----------------------------+
+my $ok = GetOptions(
+		    # Required
+		    "i|indir=s"    => \$indir,
+                    "o|outdir=s"   => \$outdir,
+		    # Optional strings
+		    "logfile=s"    => \$logfile,
+		    "p|num-proc=s" => \$num_proc,
+		    "apollo=s"     => \$apollo,
+		    # Booleans
+		    "test"         => \$test,
+		    "usage"        => \$show_usage,
+		    "version"      => \$show_version,
+		    "man"          => \$show_man,
+		    "h|help"       => \$show_help,
+		    "q|quiet"      => \$quiet,);
+
+#-----------------------------+
+# HARD CODE VARIABLES         |
 #-----------------------------+
 # TempWorkDir - A directory to temporarily store the data that will later
 #               be transfered to a more appropriate long term storage
@@ -195,42 +291,60 @@ use File::Copy;
 #                type of element that was identified.
 
 
-# OLD VARIABLES
-#my $bac_data_dir = "/home/jestill/hmpr_msll/bacs/zm_testbacs/";
-#my $bac_parent_dir = "/home/jestill/hmpr_msll/bacs/";
-#my $local_cp_dir = "/home/jestill/hmpr_msll/bacs/zm_testbacs/";  
-#my $LogFile = "/home/jestill/projects/wheat_annotation/RepMaskLog.txt";
+my $bac_data_dir = $indir;
 
-
-# FROM USE ON THE CLUSTER
-#my $LogFile = "/scratch/jestill/wheat/RepMaskLog.txt";
-#my $bac_data_dir = "/scratch/jestill/wheat/bac2proc/";
 #my $bac_parent_dir = "/scratch/jestill/wheat/";  
-#my $TmpDir = "/scratch/jestill/wheat/temp/";
-#my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
-#my $LocalCpDir = $local_cp_dir;
+my $bac_parent_dir = $outdir;  
 
-# FROM THE LOCAL
-my $LogFile = "/scratch/jestill/wheat/RepMaskLog.txt";
-my $bac_data_dir = "/scratch/jestill/wheat/bac2proc/";
-my $bac_parent_dir = "/scratch/jestill/wheat/";  
-my $TmpDir = "/scratch/jestill/wheat/temp/";
 my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
 my $LocalCpDir = $local_cp_dir;
 
-my ( $LibData , $RepMaskCmd, $MakeGffDbCmd, $MakeGffElCmd );
-my ( @RepLibs, @FastaFiles );
-my $ProcNum = 1;
+my ( $ind_lib , $RepMaskCmd, $MakeGffDbCmd, $MakeGffElCmd );
+my ( @RepLibs );
+my $ProcNum = 0;
 
+
+#-----------------------------+
+# SHOW REQUESTED HELP         |
+#-----------------------------+
+if ($show_usage) {
+    print_help("");
+}
+
+# Show full help when required options
+# are not present
+if ( (!$indir) || (!$outdir) ) {
+    print_help("full");
+}
+
+if ($show_help || (!$ok) ) {
+    print_help("full");
+}
+
+if ($show_version) {
+    print "\nautomask.pl:\n".
+	"Version: $ver\n\n";
+    exit;
+}
+
+if ($show_man) {
+    # User perldoc to generate the man documentation.
+    system\("perldoc $0");
+    exit($ok ? 0 : 2);
+}
 
 #-----------------------------+
 # OPEN THE LOG FILE           |
 #-----------------------------+
-open ( LOG, ">>$LogFile" );    # Open file for appending
-$TheTime = time;
-print LOG "==================================\n";
-print LOG "  JOB: $TheTime\n";
-print LOG "==================================\n";
+if ($logfile) {
+    # Open file for appending
+    open ( LOG, ">>$logfile" );
+    my $time_now = time;
+    print LOG "==================================\n";
+    print LOG "  automask.pl\n";
+    print LOG "  JOB: $time_now\n";
+    print LOG "==================================\n";
+}
 
 #-----------------------------+
 # Get the FASTA files from the|
@@ -238,9 +352,8 @@ print LOG "==================================\n";
 # var $bac_data_dir           |
 #-----------------------------+
 opendir( DIR, $bac_data_dir ) || 
-    die "Can't open $bac_data_dir"; 
-# Read the dir ignoring . and ..
-my @FastaFiles = grep !/^\.\.?$/, readdir DIR ;
+    die "Can't open directory:\n$bac_data_dir"; 
+my @fasta_files = grep /\.fasta$|\.fa/, readdir DIR ;
 closedir( DIR );
 
 #-----------------------------+
@@ -254,228 +367,58 @@ closedir( DIR );
 # [1] - Path of the repeat library
 # The number of records in the fasta file shown in brackets
 # afte the description of the db
-@RepLibs = (
-
+@mask_libs = (
 	    #-----------------------------+
-	    # SANMIGUEL REPEAT DATABASE   |
-	    # 493                         |
+	    # TREP v 9                    |
 	    #-----------------------------+
-	    ["SanMiguel",     
-	     "/scratch/jestill/repmask/Philipretros.fasta"],
-	    
-	    #-----------------------------+
-	    # WESSLER REPEAT LIBRARY FROM |
-	    # MAGI WEBSITE                |
-	    # 571                         |
-	    #-----------------------------+
-#	    ["WesRep",     
-#	     "/scratch/jestill/repmask/magi_Wes_Rep_db.fasta"],
-
-	    #-----------------------------+
-	    # MAGI NONREDUNDANT           |
-	    # STATISTICALY DEFINED REPEATS|
-	    # 13,564                     |
-	    #-----------------------------+
-#	    ["MAGI_NR",    
-#	     "/scratch/jestill/repmask/magi_zmSDRv3_1.fasta"],
-
-	    #-----------------------------+
-	    # MAIZE TIGR 4 UNCHARACTERIZED| 
-	    # REPEATS                     |
-	    # 21,133                      |
-	    #-----------------------------+
-#	    ["TIGRUnchar", 
-#	     "/scratch/jestill/repmask/tigr_uncharacterized_02202004.fasta"],
-
-	    #-----------------------------+
-	    # MAIZE TIGR 4 CHARACTERIZED  |
-	    # REPEATS                     |
-	    # 623                         |
-	    #-----------------------------+
-#	    ["TIGRChar",   
-#	     "/scratch/jestill/repmask/tigr_characterized_02202004.fasta"],
-
-	    #-----------------------------+
-	    # MAIZE TIGR 4 RECON PREDICTED|
-	    # 5,035                       |
-	    #-----------------------------+
-#	    ["TIGRRECON",  
-#	     "/scratch/jestill/repmask/tigr_RECON_prediction_02202004.fasta"],
-
-	    #-----------------------------+
-	    # TIGR Brassicaceae           |
-	    # 775                         |
-	    #-----------------------------+
-	    ["TIGRBras_2",  
-	     "/scratch/jestill/repmask/TIGR_Brassicaceae_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR Fabaceae               |
-	    # 308                         |
-	    #-----------------------------+
-	    ["TIGRFab_2",  
-	     "/scratch/jestill/repmask/TIGR_Fabaceae_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR Gramineae              |
-	    # 4,475                       |
-	    #-----------------------------+
-	    ["TIGRGram_2",  
-	     "/scratch/jestill/repmask/TIGR_Gramineae_Repeats.v3.1.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR Solanaceae             |
-	    # 252                         |
-	    #-----------------------------+
-	    ["TIGRSol_2",  
-	     "/scratch/jestill/repmask/TIGR_Solanaceae_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR ARABIDOPSIS GSS REPEATS|
-	    # 8,018                       |
-	    #-----------------------------+
-	    ["TIGR_Arab_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Arabidopsis_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR BRASSICA GSS REPEATS   |
-	    # 34,314                      |
-	    #-----------------------------+
-	    ["TIGR_Bras_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Brassicaceae_GSS_Repeats.v2.rm.fasta"],
-	    
-	    #-----------------------------+
-	    # TIGR GLYCINE GSS REPEATS    |
-	    # 149                         |
-	    #-----------------------------+
-	    ["TIGR_Gly_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Glycine_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR LOTUS GSS REPEATS      |
-	    # 479                         |
-	    #-----------------------------+
-	    ["TIGR_Gly_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Lotus_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR LYCOPERSICON GSS REPEAT|
-	    # 343                         |
-	    #-----------------------------+
-	    ["TIGR_Lyc_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Lycopersicon_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR MEDICAGO GSS REPEATS   |
-	    # 15                          |
-	    #-----------------------------+
-	    ["TIGR_Med_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Medicago_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR ORYZA GSS REPEATS      |
-	    # 4,627                       |
-	    #-----------------------------+
-	    ["TIGR_Ory_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Oryza_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR SORGHUM GSS REPEATS    |
-	    # 1,755                       |
-	    #-----------------------------+
-	    ["TIGR_Sor_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Sorghum_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR TRITICUM GSS REPEATS   |
-	    # 17                          |
-	    #-----------------------------+
-	    ["TIGR_Trit_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Triticum_GSS_Repeats.v2.rm.fasta"],
-
-	    #-----------------------------+
-	    # TIGR ZEA GSS REPEATS        |
-	    # 124,724                     |
-	    #-----------------------------+
-	    ["TIGR_Zea_GSS_2",  
-	     "/scratch/jestill/repmask/TIGR_Zea_GSS_Repeats.v2.rm.fasta"],
-
-	    # This should remain at the bottom since we should
-	    # always run the TREP database with the rice annotation.
-	    #-----------------------------+
-	    # TREP v 8                    |
-	    # 350                         |
-	    #-----------------------------+
-	    ["TREP8",  
-	     "/scratch/jestill/repmask/TREP_8_20050802.nr.fasta"]
-
+	    ["TREP9",  
+	     "/db/jlblab/repeats/TREP9.nr.fasta"],
 	    );
 
-
-my $NumLibs = @RepLibs;
-my $NumFiles = @FastaFiles;
-my $NumProcTotal = $NumLibs * $NumFiles;
+my $num_libs = @mask_libs;
+my $num_files = @fasta_files;
+my $num_proc_total = $num_libs * $num_files;
 
 #-----------------------------+
 # RUN REPEAT MAKSER AND PARSE |
 # RESULTS FOR EACH SEQ IN THE |
-# FastaFiles ARRAY FOR EACH   |
+# fasta_files ARRAY FOR EACH   |
 # REPEAT LIBRARY IN THE       |
 # RepLibs ARRAY               |
 #-----------------------------+
 
-for $SeqName (@FastaFiles)
+for my $ind_file (@fasta_files)
 {
 
-    $FileToMask = $bac_data_dir.$SeqName;
+    $FileToMask = $bac_data_dir.$ind_file;
     $RepMaskOutfile = $FileToMask.".out";
     $RepMaskCatFile = $FileToMask.".cat";
     $RepMaskTblFile = $FileToMask.".tbl";
     $RepMaskMaskedFile = $FileToMask.".masked";
 
-    print LOG "Process $ProcNum of $NumProcTotal.\n";
     $ProcNum++;
-    print "Process $ProcNum of $NumProcTotal.\n";
+    print LOG "\n\nProcess $ProcNum of $num_proc_total.\n" if $logfile;
+    print "\n\nProcess $ProcNum of $num_proc_total.\n" unless $quiet;
 
-
-    my $bac_out_dir = $bac_parent_dir.$SeqName;
+    my $bac_out_dir = $bac_parent_dir.$ind_file;
     # make the bac output dir if it does not exist    
     mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
     
-    for $LibData (@RepLibs)
+    for $ind_lib (@mask_libs)
     {
 	
-	$RepDbName = @$LibData[0];
-	$RepDbPath = @$LibData[1];
+	$RepDbName = @$ind_lib[0];
+	$RepDbPath = @$ind_lib[1];
 	
-	#-----------------------------+
-	# REMOVE ZM PREFIX FROM NAME  |
-	#-----------------------------+
-	# This search name will still work with
-	# names that do not have unique information
-	# in the first three characters
-	# 11/21/2006 - TO make this work for the wheat assembled
-	# BACS I will just use $SearhcName = $SeqName and see
-	# how well this works
-	#$SearchName = substr ($SeqName, 3);
-	$SearchName = $SeqName; 
+	$SearchName = $ind_file; 
 	
-	$GffElOut = $bac_data_dir.$RepDbName."_".$SeqName."_EL.gff";
-	$XmlElOut = $bac_data_dir.$RepDbName."_".$SeqName."_EL.game.xml"; 
- 	$GffAllDbOut = $bac_data_dir."ALLDB_".$SeqName.".gff";
-	$XmlAllDbOut = $bac_data_dir."ALLDB_".$SeqName."game.xml";
+	$GffElOut = $bac_data_dir.$RepDbName."_".$ind_file."_EL.gff";
+	$XmlElOut = $bac_data_dir.$RepDbName."_".$ind_file."_EL.game.xml"; 
+ 	$GffAllDbOut = $bac_data_dir."ALLDB_".$ind_file.".gff";
+	$XmlAllDbOut = $bac_data_dir."ALLDB_".$ind_file."game.xml";
 
-	#$RepMaskCmd = "RepeatMasker -fixed -lib ".$RepDbPath.
-	#    " -xsmall $FileToMask";
-	# USE THE FOLLOWING TO RUN ON TWO PROCESSORS
 	$RepMaskCmd = "RepeatMasker -lib ".$RepDbPath.
-	    " -xsmall -pa 3 $FileToMask";
-
-# THE FOLLOWING DOES NOT APPEAR TO WORK ON ALTIX -- 09/28/2006
-# USING THE -w flag will force this to use wublast
-#	$RepMaskCmd = "RepeatMasker -lib ".$RepDbPath.
-#	    " -xsmall -pa 4 -w $FileToMask";
-
+	    " -xsmall -pa ".$num_proc." $FileToMask";
 
 
 	#-----------------------------+
@@ -497,12 +440,11 @@ for $SeqName (@FastaFiles)
 	# A SINGLE FILE FOR ALL REPEAT|
 	# LIBRARIES                   |
 	#-----------------------------+
-	print "SEARCH: ".$SearchName."\n";
-	print "OUTFILE: ".$RepMaskOutfile."\n";
-	print "DB-NAME: ".$RepDbName."\n";
-	print "GFF: ".$GffAllDbOut."\n";
-	#exit;
-
+	print "\n";
+	print "\tSEARCH:   ".$SearchName."\n";
+	print "\tOUTFILE:  ".$RepMaskOutfile."\n";
+	print "\tDB-NAME:  ".$RepDbName."\n";
+	print "\tGFF-FILE: ".$GffAllDbOut."\n";
 
 	$MakeGffAllDbCmd = "grep ".$SearchName." ".$RepMaskOutfile.
 	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
@@ -513,28 +455,31 @@ for $SeqName (@FastaFiles)
 	# SHOW THE USER THE COMMANDS  | 
 	# THAT WILL BE USED           |
 	#-----------------------------+
-	print "Lib Name: ".$RepDbName."\n";
-	print "Lib Path: ".$RepDbPath."\n";
-	print "EL Out:   ".$GffElOut."\n";
-	print "RepCmd:   ".$RepMaskCmd."\n";
+	print "\n";
+	print "\tLIB-NAME: ".$RepDbName."\n";
+	print "\tLIB-PATH: ".$RepDbPath."\n";
+	print "\tEL-OUT:   ".$GffElOut."\n";
+	print "\tREPCMD:   ".$RepMaskCmd."\n";
 	#print "GffDbCmd:\n\t".$MakeGffDbCmd."\n";
-	print "GffElCmd:\n\t".$MakeGffElCmd."\n";
+	print "\tGFFELCMD:\n\t".$MakeGffElCmd."\n";
 	print "\n\n";
 
 	#-----------------------------+
 	# PRINT INFO TO LOG FILE      | 
 	#-----------------------------+
-	print LOG "\tLib Name: ".$RepDbName."\n";
-	print LOG "\tLib Path: ".$RepDbPath."\n";
-	print LOG "\tEL Out:   ".$GffElOut."\n";
-	print LOG "\tRepCmd:   ".$RepMaskCmd."\n";
-	#print LOG "\tGffDbCmd:\n\t".$MakeGffDbCmd."\n";
-	print LOG "\tGffElCmd:\n\t".$MakeGffElCmd."\n";
-	print LOG "\n\n";
+	if ($logfile) {
+	    print LOG "\tLib Name: ".$RepDbName."\n";
+	    print LOG "\tLib Path: ".$RepDbPath."\n";
+	    print LOG "\tEL Out:   ".$GffElOut."\n";
+	    print LOG "\tRepCmd:   ".$RepMaskCmd."\n";
+	    print LOG "\tGffElCmd:\n\t".$MakeGffElCmd."\n";
+	    print LOG "\n\n";
+	}
 
-	system ( $RepMaskCmd );
-	system ( $MakeGffElCmd );
-	system ( $MakeGffAllDbCmd );
+	# Turned off while working 07/13/2007
+	system ( $RepMaskCmd ) unless $test;
+	system ( $MakeGffElCmd ) unless $test;
+	system ( $MakeGffAllDbCmd ) unless $test;
 	
 	#-----------------------------+
 	# CONVERT THE FILES FROM GFF  | 
@@ -545,60 +490,76 @@ for $SeqName (@FastaFiles)
 	# APOLLO FUNCTION WILL NOT WORK ON ALTIX
 	# SO THIS HAS BEEN COMMENTED OUT
 	#print "\n\n\n\nCONVERTING\n\n\n";
-#	&ApolloConvert ( $GffElOut, "gff", $XmlElOut, "game", 
-#			 $FileToMask, "none" );  
-	
+	if ($apollo) {
+	    &apollo_convert ( $GffElOut, "gff", $XmlElOut, "game", 
+			      $FileToMask, "none" );  
+	}
+
 	#-----------------------------+
 	# COPY THE RM OUTPUT FILES TO | 
 	# THE RM (REPEATMASK) FOLDER  |
 	# MAKE THE DIR IF NEEDED      |
 	#-----------------------------+
-	$bac_out_dir = $bac_parent_dir.$SeqName."/";
+	$bac_out_dir = $bac_parent_dir.$ind_file."/";
 	$bac_rep_out_dir = "$bac_out_dir"."rm/";
 	mkdir $bac_rep_out_dir, 0777 unless (-e $bac_rep_out_dir); 
 
-	$RepMaskOutCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.".out";
-	$RepMaskCatCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.".cat";
-	$RepMaskTblCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.".tbl";
-	$RepMaskMaskedCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.".masked";
-	$RepMaskLocalCp = $LocalCpDir.$RepDbName."_".$SeqName.".masked";
-	$RepMaskElCp = $bac_rep_out_dir.$RepDbName."_".$SeqName."_EL.gff";
-	$RepMaskXmlElCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.
+	$RepMaskOutCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".out";
+	$RepMaskCatCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".cat";
+	$RepMaskTblCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".tbl";
+	$RepMaskMaskedCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".masked";
+	$RepMaskLocalCp = $LocalCpDir.$RepDbName."_".$ind_file.".masked";
+	$RepMaskElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file."_EL.gff";
+	$RepMaskXmlElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.
 	    "_EL.game.xml"; 
 
 	
 	# THE FOLLOWING ADDED 09/28/2006
-	$RepMaskLog = $bac_data_dir.$RepDbName."_".$SeqName.".log";
-	$RepMaskLogCp = $bac_rep_out_dir.$RepDbName."_".$SeqName.".log";
+	$RepMaskLog = $bac_data_dir.$RepDbName."_".$ind_file.".log";
+	$RepMaskLogCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".log";
 	move ( $RepMaskLog, $RepMaskLogCp);
 
 	#-----------------------------+
 	# MAKE A COPY OF THE MASKED   |
 	# FASTA FILE TO A SINGLE DIR  |
 	#-----------------------------+
+	$msg = "Can not copy ".$RepMaskMaskedFile." to\n".
+	    $RepMaskLocalCp."\n";
 	copy ( $RepMaskMaskedFile, $RepMaskLocalCp  ) ||
-	    die "Can not copy ".$RepMaskMaskedFile." to\n".$RepMaskLocalCp;
+	    print LOG $msg if $logfile;
 
 	#-----------------------------+
 	# MOVE THE RM OUTPUT FILES TO |
 	# THE TARGET DIR	      |
 	#-----------------------------+
+	$msg = "Can not move ".$RepMaskOutfile." to\n ".$RepMaskOutCp."\n";
 	move ( $RepMaskOutfile, $RepMaskOutCp) ||
-	    die "Can not move ".$RepMaskOutfile." to\n ".$RepMaskOutCp."\n";
-	move ( $RepMaskCatFile, $RepMaskCatCp ) ||
-	    die "Can not move ".$RepMaskCatFile."\n";
-# THE TABLE FILE DID NOT GET MADE ON THE ATLITX MACHINE
-#	move ( $RepMaskTblFile, $RepMaskTblCp ) ||
-#	    die "Can not move ".$RepMaskTblFile."\n";
-	move ( $RepMaskMaskedFile, $RepMaskMaskedCp ) ||
-	    die "Can not move ".$RepMaskMaskedFile."\n";
-	move ( $GffElOut , $RepMaskElCp ) ||
-	    die "Can not move ".$GffElOut."\n";
-# THE GAME XML FILE NOT MADE ON ALTIX
-#	move ( $XmlElOut, $RepMaskXmlElCp ) ||
-#	    die "Can not move ".$XmlElOut."\n";
+	    print LOG $msg if $logfile;
 
-    }
+	$msg = "Can not move ".$RepMaskCatFile."\n";
+	move ( $RepMaskCatFile, $RepMaskCatCp ) ||
+	    print LOG $msg if $logfile;
+	
+	$msg = "The table file could not be moved from".
+	    "$RepMaskTblFile to $RepMaskTblCp";
+	move ( $RepMaskTblFile, $RepMaskTblCp ) ||
+	    print LOG $msg if $logfile;    
+	
+	$msg = "Can not move ".$RepMaskMaskedFile."\n";
+	move ( $RepMaskMaskedFile, $RepMaskMaskedCp ) ||
+	    print LOG $msg if $logfile;
+
+	$msg = "Can not move ".$GffElOut."\n";
+	move ( $GffElOut , $RepMaskElCp ) ||
+	    print LOG $msg if $logfile;
+	
+	if ($apollo) {
+	    $msg = "Can not move ".$XmlElOut."\n";
+	    move ( $XmlElOut, $RepMaskXmlElCp ) ||
+		print LOG $msg if $logfile;
+	}
+
+    } # End of for LibData
     
     #-----------------------------+ 
     # THE APOLLO CONVERT FOR THE  |
@@ -606,27 +567,39 @@ for $SeqName (@FastaFiles)
     # FOR A GIVEN SEQUENCE FILE   |
     # THAT IS BEING MASKED.       |
     #-----------------------------+
-#    &ApolloConvert ( $GffAllDbOut, "gff", $XmlAllDbOut , "game", 
-#    		     $FileToMask, "none" );  
+    if ($apollo) {
+	apollo_convert ( $GffAllDbOut, "gff", $XmlAllDbOut , "game", 
+			  $FileToMask, "none" );  
+    }
     
-    $RepMaskALL_GFFCp = $bac_rep_out_dir."ALLDB_".$SeqName.".gff";
-    $RepMaskAll_XMLCp = $bac_rep_out_dir."ALLDB_".$SeqName."game.xml";
-    move ( $GffAllDbOut, $RepMaskALL_GFFCp ) ||
-	die "Can not move ".$GffAllDbOut."\n";
-#    move ( $XmlAllDbOut, $RepMaskAll_XMLCp ) ||
-#	die "Can not move ".$XmlAllDbOut."\n";
-    
-    #exit; # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
+    $RepMaskALL_GFFCp = $bac_rep_out_dir."ALLDB_".$ind_file.".gff";
+    $RepMaskAll_XMLCp = $bac_rep_out_dir."ALLDB_".$ind_file."game.xml";
 
+    $msg = "Can not move ".$GffAllDbOut."\n";
+    move ( $GffAllDbOut, $RepMaskALL_GFFCp ) ||
+	print LOG $msg if $logfile;
+    
+    if ($apollo) {
+	$msg = "Can not move ".$XmlAllDbOut."\n";
+	move ( $XmlAllDbOut, $RepMaskAll_XMLCp ) ||
+	    print LOG $msg if $logfile;
+    }
+
+
+    # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
+    #exit;
 
 } # End of for each file in the input folder
 
-close LOG;
+close LOG if $logfile;
+
 exit;
 
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub apollo_convert {
 
 #-----------------------------+
 # CONVERT AMONG FILE FORMATS  |
@@ -640,8 +613,7 @@ exit;
 #    coordinate system.
 #  - GFF files will require a sequence file
 #  - ChadoDB format will require a db password
-sub ApolloConvert
-{
+
     # ApPath - the path of dir with the Apollo binary
     #          Specifying the path will allow for cases
     #          where the program is not in the PATHS
@@ -675,19 +647,58 @@ sub ApolloConvert
     
     # Determine the proper command to use based on the input format
     # since GFF file also require a sequence file
-    if ($InForm =~ "gff" )
-    {
+    if ($InForm =~ "gff" ) {
 	$ApCmd = $ApCmd." -s ".$SeqFile;
     }
     
-    if ($InForm =~ "chadodb")
-    {
+    if ($InForm =~ "chadodb") {
 	$ApCmd = $ApCmd." -D ".$DbPass;
     }
-
+    
     # Do the apollo command
     system ( $ApCmd );
 
+}
+
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+    
+    my $usage = "USAGE:\n".
+	"  automask.pl -i DirToProcess -o OutDir";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --indir        # Path to the directory containing the sequences\n".
+	"                 # to process. The files must have one of the\n".
+	"                 # following file extensions:\n".
+	"                 # [fasta|fa]\n".
+	"  --outdir       # Path to the output directory\n".
+	"\n".
+	"OPTIONS:\n".
+	"  --engine       # The repeatmasker engine to use:\n".
+	"                 # [crossmatch|wublast|decypher]\n".
+	"                 # default is to use crossmatch\n".
+	"  --num-proc     # Number of processors to use for RepeatMasker\n".
+	"                 # default is one.\n".
+	"  --apollo       # Convert output to game.xml using apollo\n".
+	"                 # default is not to use apollo\n".
+	"  --logfile      # Path to file to use for logfile\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
 }
 
 =head1 HISTORY
@@ -711,6 +722,7 @@ UPDATED: 07/13/2007
 #   grouped toether.
 # - Two dimensional array containing the repeat library
 #   database informaiton.
+#
 # 4/11/2006
 # - Additional code comments and reformat
 # - Code to cycle through a set of FASTA files and store
@@ -722,6 +734,7 @@ UPDATED: 07/13/2007
 #   added later, I added code to create a GFF file that has
 #   the outcome for all of the RepeatMask runs in one 
 #   database.
+#
 # 4/12/2006
 # - Added the AllRepeats to the dataset to make sure that 
 #   that the repeat characterization is cumulative
@@ -729,6 +742,7 @@ UPDATED: 07/13/2007
 # - Adding Smith Waterman score from RepeatMasker to the
 #   GFF output file. This should be the first column in the 
 #   *.out file and the 6th column in the GFF file.
+#
 # 4/16/2005
 # - Added array for list of fasta files to process and testing
 #   with small set of sequences.
@@ -737,31 +751,62 @@ UPDATED: 07/13/2007
 #   the seq object PERL module from bioperl.
 # - The fasta files should be read from an input directory
 #   and then the output should be copied to an output dir.
+#
 # 4/17/2006
 # - Working out variables names
+#
 # 4/25/2006
 # - Adding ability to get the input set of FASTA files
 #   from a directory 
+#
 # 4/26/2006
 # - Working out the copy of the relevant output files to
 #   a central directory for the FASTA file (ie. all 
 #   programatic output from the FASTA file goes to 
 #   a dir named for the file.) 
 # - Added use of File::Copy module for cp commands
+#
 # 5/24/2006
 # - Added process log to the program. This will allow
 #   me to launch the program at the lab and then
 #   monitor the process at home.
+#
 # 5/31/2006
 # - Made local copy dir a variable that can be set at the top
+#
 # 09/26/2006
 # - A few changes made to the base code to make this
 #   work on the altix. Using databases at
 #   /scratch/jestill/repmask/
+#
 # 09/28/2006
 # - Changes make to get this to work on the altix
 # - Changed the format of the repeat databases list
 #   This is currently a two-d array
-#07/13/2007
+#
+#-----------------------------+
+# 07/13/2007 - VERSION 1.0    |
+#-----------------------------+
 # - Added POD documentation.
-
+# - Renamed to automask.pl
+# - Made this the official 1.0 release
+# - Adding command line variables
+# - Added print_help subfunction
+# - Modified ApolloConvert subfunction to 
+#   apollo_convert
+# - Getting rid of the die commands and replacing
+#   them with the write to logfile commands. This
+#   should prvent the program from dying when
+#   working on really large batch files.
+# - Added cmd line options for:
+#   - Number of processors
+#   - Engine to use in repeatmasker
+#   - apollo variable at cmd line
+#     initially will be used as boolean but can be
+#     used to pass apollo version, path and
+#     desired output (ie. chado, game.xml etc)
+#
+# 07/15/2007
+# - Added the ability to show help when the
+#   required options $indir and $outdir are not
+#   present.
