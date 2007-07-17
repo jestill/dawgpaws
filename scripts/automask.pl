@@ -250,7 +250,7 @@ my $show_usage = 0;            # Show program usage command
 my $quiet = 0;                 # Boolean for reduced output to STOUT
 my $apollo = 0;                # Path to apollo and apollo variables
 my $test = 0;
-
+my $verbose = 0;
 # COUNTERS
 my $num_proc = 1;              # Number of processors to use
 
@@ -267,6 +267,7 @@ my $ok = GetOptions(
 		    "apollo=s"     => \$apollo,
 		    "engine=s"     => \$engine,
 		    # Booleans
+		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
 		    "version"      => \$show_version,
@@ -458,6 +459,9 @@ unless (-e $outdir) {
 
 for my $ind_file (@fasta_files)
 {
+    
+    # Reset search name to null
+    $search_name = "";
 
     $FileToMask = $indir.$ind_file;
     $RepMaskOutfile = $FileToMask.".out";
@@ -496,20 +500,31 @@ for my $ind_file (@fasta_files)
 	$RepDbPath = @$ind_lib[1];
 
 
-	#/////////////////////////////////////////////////////////////
-	# The name used by Repeat Masker is taken from the FASTA
-	# HEADER
-	# I will there fore need to do this for the fasta file headers
-	# The out file in RepeatMasker only shows the first twenty
-	# character of the source sequence.
-	if ( length($ind_file) > 20 ) {
-	    $search_name = substr ( $ind_file, 0, 20);
-	} 
-	else {
-	    $search_name = $ind_file;
-	}	
-	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	#-----------------------------+
+	# GET THE STRING TO SEARCH    |
+	# FOR IN THE RM OUTPUT        |
+	#-----------------------------+
+	# The name used by Repeat Masker is taken from the FASTA header
+	# Only the first twenty characters of the FASTA header are used
+	open (IN, $FileToMask);
 
+	while (<IN>) {
+	    chomp;
+
+	    if (/^\>(.*)/) {
+		print "\tFASTA HEADER:\n\t$_\n" if  $verbose;
+		print "\tINSIDE:\n\t$1\n" if $verbose;
+		
+		$search_name = $1;
+		
+		my $test_len = 20;
+		my $cur_len = length ($search_name);
+		if ( $cur_len > $test_len ) {
+		    $search_name = substr ($_, 0, 20);
+		} 
+	    } # End of in fasta header file
+	}
+	close IN;
 
 	$GffElOut = $indir.$RepDbName."_".$ind_file."_EL.gff";
 	$XmlElOut = $indir.$RepDbName."_".$ind_file."_EL.game.xml"; 
@@ -965,3 +980,7 @@ UPDATED: 07/13/2007
 # - Added the ability to append a slash to the end
 #   of the $indir and $outdir variables if they
 #   are not already present
+#
+# 07/17/2007
+# - Added the ability to get the search_name directly
+#   from the fasta file header_
