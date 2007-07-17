@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 07/13/2007                                       |
+# UPDATED: 07/16/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -198,7 +198,7 @@ Currently must use short names in the FASTA file.
 
 =item *
 
-This program has been tested with RepeatMasker v  2006Jan20
+This program has been tested with RepeatMasker v  3.1.6
 
 =back
 
@@ -215,7 +215,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 =cut
 
 
-#print "The RepeatMask Parser program has started\n";
+print "\n";
 
 #-----------------------------+
 # INCLUDES                    |
@@ -235,6 +235,12 @@ my $logfile;                   # Path to a logfile to log error info
 my $indir;                     # Directory containing the seq files to process
 my $outdir;                    # Directory to hold the output
 my $msg;                       # Message printed to the log file
+
+my $search_name;                # Name searched for in grep command
+my $bac_out_dir;               # Dir for each sequnce being masked
+
+# Vars with default values
+my $engine = "crossmatch";
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -259,6 +265,7 @@ my $ok = GetOptions(
 		    "logfile=s"    => \$logfile,
 		    "p|num-proc=s" => \$num_proc,
 		    "apollo=s"     => \$apollo,
+		    "engine=s"     => \$engine,
 		    # Booleans
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -291,13 +298,14 @@ my $ok = GetOptions(
 #                type of element that was identified.
 
 
-my $bac_data_dir = $indir;
+#my $indir = $indir;
 
 #my $bac_parent_dir = "/scratch/jestill/wheat/";  
-my $bac_parent_dir = $outdir;  
 
-my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
-my $LocalCpDir = $local_cp_dir;
+#my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
+#my $LocalCpDir = $local_cp_dir;
+
+my $bac_parent_dir = $outdir;  
 
 my ( $ind_lib , $RepMaskCmd, $MakeGffDbCmd, $MakeGffElCmd );
 my ( @RepLibs );
@@ -311,10 +319,11 @@ if ($show_usage) {
     print_help("");
 }
 
-# Show full help when required options
-# are not present
-if ( (!$indir) || (!$outdir) ) {
-    print_help("full");
+
+if ($show_man) {
+    # User perldoc to generate the man documentation.
+    system ("perldoc $0");
+    exit($ok ? 0 : 2);
 }
 
 if ($show_help || (!$ok) ) {
@@ -327,18 +336,20 @@ if ($show_version) {
     exit;
 }
 
-if ($show_man) {
-    # User perldoc to generate the man documentation.
-    system\("perldoc $0");
-    exit($ok ? 0 : 2);
+# Show full help when required options
+# are not present
+if ( (!$indir) || (!$outdir) ) {
+    print_help("full");
 }
+
 
 #-----------------------------+
 # OPEN THE LOG FILE           |
 #-----------------------------+
 if ($logfile) {
     # Open file for appending
-    open ( LOG, ">>$logfile" );
+    open ( LOG, ">>$logfile" ) ||
+	die "Can not open logfile:\n$logfile\n";
     my $time_now = time;
     print LOG "==================================\n";
     print LOG "  automask.pl\n";
@@ -346,14 +357,31 @@ if ($logfile) {
     print LOG "==================================\n";
 }
 
+
+#-----------------------------+
+# CHECK FOR SLASH IN DIR      |
+# VARIABLES                   |
+#-----------------------------+
+# If the indir does not end in a slash then append one
+# TO DO: Allow for backslash
+unless ($indir =~ /\/$/ ) {
+    $indir = $indir."/";
+}
+
+unless ($outdir =~ /\/$/ ) {
+    $outdir = $outdir."/";
+}
+
+
+
 #-----------------------------+
 # Get the FASTA files from the|
 # directory provided by the   |
-# var $bac_data_dir           |
+# var $indir                  |
 #-----------------------------+
-opendir( DIR, $bac_data_dir ) || 
-    die "Can't open directory:\n$bac_data_dir"; 
-my @fasta_files = grep /\.fasta$|\.fa/, readdir DIR ;
+opendir( DIR, $indir ) || 
+    die "Can't open directory:\n$indir"; 
+my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 
 #-----------------------------+
@@ -368,21 +396,62 @@ closedir( DIR );
 # The number of records in the fasta file shown in brackets
 # afte the description of the db
 @mask_libs = (
-	    #-----------------------------+
-	    # TREP v 9                    |
-	    #-----------------------------+
-	    ["TREP9",  
-	     "/db/jlblab/repeats/TREP9.nr.fasta"],
-	    );
+    #-----------------------------+
+    # TREP v 9                    |
+    #-----------------------------+
+    ["TREP9",  
+     "/db/jlblab/repeats/TREP9.nr.fasta"]
+    );
 
 my $num_libs = @mask_libs;
 my $num_files = @fasta_files;
 my $num_proc_total = $num_libs * $num_files;
 
 #-----------------------------+
+# SHOW ERROR IF NO FILES      |
+# WERE FOUND IN THE INPUT DIR |
+#-----------------------------+
+if ($num_files == 0) {
+    print "\a";
+    print "\nERROR: No fasta files were found in the input directory\n".
+	"$indir\n".
+	"Fasta files must have the fasta or fa extension.\n\n";
+    exit;
+}
+
+#-----------------------------+
+# SHOW ERROR IF ONE OF THE    |
+# MASK LIBS DOES NOT EXIST    |
+#-----------------------------+
+print "Checking mask libs ...\n" unless $quiet;
+for $ind_lib (@mask_libs) {
+
+    $RepDbName = @$ind_lib[0];
+    $RepDbPath = @$ind_lib[1];
+
+    unless (-e $RepDbPath) {
+	print "\a";
+	print "\nERROR: The following masking library could not be found:\n".
+	    $RepDbPath."\n";
+	exit;
+    }
+}
+
+#-----------------------------+
+# CREATE THE OUT DIR          |
+# IF IT DOES NOT EXIST        |
+#-----------------------------+
+
+print "Creating output dir ...\n" unless $quiet;
+unless (-e $outdir) {
+    mkdir $outdir ||
+	die "Could not create the output directory:\n$outdir";
+}
+
+#-----------------------------+
 # RUN REPEAT MAKSER AND PARSE |
 # RESULTS FOR EACH SEQ IN THE |
-# fasta_files ARRAY FOR EACH   |
+# fasta_files ARRAY FOR EACH  |
 # REPEAT LIBRARY IN THE       |
 # RepLibs ARRAY               |
 #-----------------------------+
@@ -390,7 +459,7 @@ my $num_proc_total = $num_libs * $num_files;
 for my $ind_file (@fasta_files)
 {
 
-    $FileToMask = $bac_data_dir.$ind_file;
+    $FileToMask = $indir.$ind_file;
     $RepMaskOutfile = $FileToMask.".out";
     $RepMaskCatFile = $FileToMask.".cat";
     $RepMaskTblFile = $FileToMask.".tbl";
@@ -398,27 +467,73 @@ for my $ind_file (@fasta_files)
 
     $ProcNum++;
     print LOG "\n\nProcess $ProcNum of $num_proc_total.\n" if $logfile;
-    print "\n\nProcess $ProcNum of $num_proc_total.\n" unless $quiet;
+    print "\n\n+-----------------------------------------------------------+\n"
+	unless $quiet;
+    print "| Process $ProcNum of $num_proc_total.\n" unless $quiet;
+    print "+-----------------------------------------------------------+\n"
+	unless $quiet;
 
-    my $bac_out_dir = $bac_parent_dir.$ind_file;
+    #-----------------------------+
+    # SHOW BASIC RUN INFO
+    #-----------------------------+
+    print "\n";
+    print "\tINFILE: $ind_file\n";
+
+    #-----------------------------+
+    # MAKE OUTPUT DIR             |
+    #-----------------------------+
+    #////////////////////////////////////////////////////
+    $bac_out_dir = $outdir.$ind_file."/";
     # make the bac output dir if it does not exist    
     mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
+    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     
+
     for $ind_lib (@mask_libs)
     {
 	
 	$RepDbName = @$ind_lib[0];
 	$RepDbPath = @$ind_lib[1];
-	
-	$SearchName = $ind_file; 
-	
-	$GffElOut = $bac_data_dir.$RepDbName."_".$ind_file."_EL.gff";
-	$XmlElOut = $bac_data_dir.$RepDbName."_".$ind_file."_EL.game.xml"; 
- 	$GffAllDbOut = $bac_data_dir."ALLDB_".$ind_file.".gff";
-	$XmlAllDbOut = $bac_data_dir."ALLDB_".$ind_file."game.xml";
 
-	$RepMaskCmd = "RepeatMasker -lib ".$RepDbPath.
-	    " -xsmall -pa ".$num_proc." $FileToMask";
+
+	#/////////////////////////////////////////////////////////////
+	# The name used by Repeat Masker is taken from the FASTA
+	# HEADER
+	# I will there fore need to do this for the fasta file headers
+	# The out file in RepeatMasker only shows the first twenty
+	# character of the source sequence.
+	if ( length($ind_file) > 20 ) {
+	    $search_name = substr ( $ind_file, 0, 20);
+	} 
+	else {
+	    $search_name = $ind_file;
+	}	
+	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+	$GffElOut = $indir.$RepDbName."_".$ind_file."_EL.gff";
+	$XmlElOut = $indir.$RepDbName."_".$ind_file."_EL.game.xml"; 
+ 	$GffAllDbOut = $indir."ALLDB_".$ind_file.".gff";
+	$XmlAllDbOut = $indir."ALLDB_".$ind_file."game.xml";
+	
+	$RepMaskCmd = "RepeatMasker".
+	    " -lib ".$RepDbPath.
+	    " -pa ".$num_proc.
+	    " -engine ".$engine.
+	    " -xsmall".
+	    " $FileToMask";
+	
+	#-----------------------------+
+	# COMMAND TO CONVERT OUTPUT TO|
+	# GFF FORMAT AND APPEND TO    |
+	# A SINGLE FILE FOR ALL REPEAT|
+	# LIBRARIES                   |
+	#-----------------------------+
+
+	$MakeGffAllDbCmd = "grep ".$search_name." ".$RepMaskOutfile.
+	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
+	    $RepDbName."\", \$11, ".
+	    "\$6,\$7,\$1, \".\", \".\"}' >> ".$GffAllDbOut;
 
 
 	#-----------------------------+
@@ -429,33 +544,31 @@ for my $ind_file (@fasta_files)
 	#-----------------------------+
 	# I did not use gff out from repeatmasker because it
 	# did not appear to work properly with Apollo
-	$MakeGffElCmd = "grep ".$SearchName." ".$RepMaskOutfile.
+	$MakeGffElCmd = "grep ".$search_name." ".$RepMaskOutfile.
 	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
 	    $RepDbName."\", \$11, ".
 	    "\$6,\$7,\$1, \".\", \".\"}' > ".$GffElOut;
-	
-	#-----------------------------+
-	# COMMAND TO CONVERT OUTPUT TO|
-	# GFF FORMAT AND APPEND TO    |
-	# A SINGLE FILE FOR ALL REPEAT|
-	# LIBRARIES                   |
-	#-----------------------------+
-	print "\n";
-	print "\tSEARCH:   ".$SearchName."\n";
-	print "\tOUTFILE:  ".$RepMaskOutfile."\n";
-	print "\tDB-NAME:  ".$RepDbName."\n";
-	print "\tGFF-FILE: ".$GffAllDbOut."\n";
 
-	$MakeGffAllDbCmd = "grep ".$SearchName." ".$RepMaskOutfile.
-	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
-	    $RepDbName."\", \$11, ".
-	    "\$6,\$7,\$1, \".\", \".\"}' >> ".$GffAllDbOut;
 	
 	#-----------------------------+
 	# SHOW THE USER THE COMMANDS  | 
 	# THAT WILL BE USED           |
 	#-----------------------------+
+
 	print "\n";
+	print "+-----------------------------+\n";
+	print "| CONVERT COMMANDS            |\n";
+	print "+-----------------------------+\n";
+	print "\tSEARCH:   ".$search_name."\n";
+	print "\tOUTFILE:  ".$RepMaskOutfile."\n";
+	print "\tDB-NAME:  ".$RepDbName."\n";
+	print "\tGFF-FILE: ".$GffAllDbOut."\n";
+
+
+	print "\n";
+	print "+-----------------------------+\n";
+	print "| REPEATMASKER COMMANDS       |\n";
+	print "+-----------------------------+\n";
 	print "\tLIB-NAME: ".$RepDbName."\n";
 	print "\tLIB-PATH: ".$RepDbPath."\n";
 	print "\tEL-OUT:   ".$GffElOut."\n";
@@ -477,9 +590,31 @@ for my $ind_file (@fasta_files)
 	}
 
 	# Turned off while working 07/13/2007
-	system ( $RepMaskCmd ) unless $test;
-	system ( $MakeGffElCmd ) unless $test;
-	system ( $MakeGffAllDbCmd ) unless $test;
+	unless ( $test ) {
+	    $msg = "\nERROR:\n".
+		"Could not complete system cmd\n$RepMaskCmd\n";
+	    system ( $RepMaskCmd );
+#           It seems like RepeatMasker does not return "true"
+#	    system ( $RepMaskCmd ) ||
+#		die "$msg\n" ; 
+	}
+
+	unless ( $test ) {
+	    $msg = "\nERROR:\n".
+		"Could not complete system cmd\n$MakeGffElCmd\n";
+#	    system ( $MakeGffElCmd ) ||
+#		die "$msg\n";
+	    system ( $MakeGffElCmd );
+#		die "$msg\n";
+	}
+
+	unless ( $test ) {
+	    $msg = "\nERROR:\n".
+		"Could not complete system cmd\n$MakeGffAllDbCmd\n";
+	    system ( $MakeGffAllDbCmd );
+#	    system ( $MakeGffAllDbCmd ) ||
+#		die "$msg\n";
+	}
 	
 	#-----------------------------+
 	# CONVERT THE FILES FROM GFF  | 
@@ -500,24 +635,35 @@ for my $ind_file (@fasta_files)
 	# THE RM (REPEATMASK) FOLDER  |
 	# MAKE THE DIR IF NEEDED      |
 	#-----------------------------+
-	$bac_out_dir = $bac_parent_dir.$ind_file."/";
+	# dir for the repeat maske output
 	$bac_rep_out_dir = "$bac_out_dir"."rm/";
 	mkdir $bac_rep_out_dir, 0777 unless (-e $bac_rep_out_dir); 
 
+	#-----------------------------+
+	# FILES MOVED TO HERE         |
+	#-----------------------------+
 	$RepMaskOutCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".out";
 	$RepMaskCatCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".cat";
 	$RepMaskTblCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".tbl";
 	$RepMaskMaskedCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".masked";
-	$RepMaskLocalCp = $LocalCpDir.$RepDbName."_".$ind_file.".masked";
+
+
+	#///////////////////////////////////////
+	$RepMaskLocalCp = $outdir.$RepDbName."_".$ind_file.".masked";
+	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	$RepMaskElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file."_EL.gff";
 	$RepMaskXmlElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.
 	    "_EL.game.xml"; 
 
 	
 	# THE FOLLOWING ADDED 09/28/2006
-	$RepMaskLog = $bac_data_dir.$RepDbName."_".$ind_file.".log";
+	$RepMaskLog = $indir.$RepDbName."_".$ind_file.".log";
 	$RepMaskLogCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".log";
-	move ( $RepMaskLog, $RepMaskLogCp);
+	$msg = " Can not move\n\t".$RepMaskLog."\n\t".
+	    $RepMaskLogCp."\n";
+	move ( $RepMaskLog, $RepMaskLogCp) ||
+	    print LOG $msg if $logfile;
 
 	#-----------------------------+
 	# MAKE A COPY OF THE MASKED   |
@@ -533,7 +679,7 @@ for my $ind_file (@fasta_files)
 	# THE TARGET DIR	      |
 	#-----------------------------+
 	$msg = "Can not move ".$RepMaskOutfile." to\n ".$RepMaskOutCp."\n";
-	move ( $RepMaskOutfile, $RepMaskOutCp) ||
+	move ( $RepMaskOutfile, $RepMaskOutCp ) ||
 	    print LOG $msg if $logfile;
 
 	$msg = "Can not move ".$RepMaskCatFile."\n";
@@ -587,7 +733,8 @@ for my $ind_file (@fasta_files)
 
 
     # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
-    #exit;
+    print "Debug run finished\n\n";
+    exit;
 
 } # End of for each file in the input folder
 
@@ -688,6 +835,7 @@ sub print_help {
 	"  --usage        # Show program usage\n".
 	"  --help         # Show this help message\n".
 	"  --man          # Open full program manual\n".
+	"  --test         # Run the program in test mode\n".
 	"  --quiet        # Run program with minimal output\n";
 	
     if ($opt =~ "full") {
@@ -810,3 +958,10 @@ UPDATED: 07/13/2007
 # - Added the ability to show help when the
 #   required options $indir and $outdir are not
 #   present.
+#
+# 07/16/2007
+# - Added error message when no fasta files were
+#   found in the input directory.
+# - Added the ability to append a slash to the end
+#   of the $indir and $outdir variables if they
+#   are not already present

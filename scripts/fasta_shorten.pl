@@ -302,7 +302,6 @@ for my $ind_file (@fasta_files) {
 		print OUT "$_\n";
 	    }
 	}
-	
 
 
     } # End of while IN
