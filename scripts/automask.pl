@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 07/16/2007                                       |
+# UPDATED: 07/18/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -134,14 +134,6 @@ RepeatMasker
 Apollo (Genome Annotation Curation Tool)
 http://www.fruitfly.org/annot/apollo/
 
-=item *
-
-grep
-
-=item *
-
-awk
-
 =back
 
 =head2 Required Perl Modules
@@ -214,7 +206,6 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =cut
 
-
 print "\n";
 
 #-----------------------------+
@@ -238,6 +229,7 @@ my $msg;                       # Message printed to the log file
 
 my $search_name;                # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
+my $name_root;                 # Root name to be used for output etc
 
 # Vars with default values
 my $engine = "crossmatch";
@@ -299,7 +291,6 @@ my $ok = GetOptions(
 #                type of element that was identified.
 
 
-#my $indir = $indir;
 
 #my $bac_parent_dir = "/scratch/jestill/wheat/";  
 
@@ -312,6 +303,10 @@ my ( $ind_lib , $RepMaskCmd, $MakeGffDbCmd, $MakeGffElCmd );
 my ( @RepLibs );
 my $ProcNum = 0;
 
+#//////////////////////
+my $file_num_max = 5;
+my $file_num = 0;
+#\\\\\\\\\\\\\\\\\\\\\\
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -372,8 +367,6 @@ unless ($indir =~ /\/$/ ) {
 unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
-
-
 
 #-----------------------------+
 # Get the FASTA files from the|
@@ -460,15 +453,27 @@ unless (-e $outdir) {
 for my $ind_file (@fasta_files)
 {
     
+    $file_num++;
+
     # Reset search name to null
     $search_name = "";
-
-    $FileToMask = $indir.$ind_file;
-    $RepMaskOutfile = $FileToMask.".out";
-    $RepMaskCatFile = $FileToMask.".cat";
-    $RepMaskTblFile = $FileToMask.".tbl";
-    $RepMaskMaskedFile = $FileToMask.".masked";
-
+    
+    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+	$name_root = "$1";
+    }  
+    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+	$name_root = "$1";
+    } 
+    else {
+	$name_root = "UNDEFINED";
+    }
+	
+    $file_to_mask = $indir.$ind_file;
+    $RepMaskOutfile = $file_to_mask.".out";
+    $RepMaskCatFile = $file_to_mask.".cat";
+    $RepMaskTblFile = $file_to_mask.".tbl";
+    $RepMaskMaskedFile = $file_to_mask.".masked";
+    
     $ProcNum++;
     print LOG "\n\nProcess $ProcNum of $num_proc_total.\n" if $logfile;
     print "\n\n+-----------------------------------------------------------+\n"
@@ -482,16 +487,13 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     print "\n";
     print "\tINFILE: $ind_file\n";
+    print "\t  ROOT: $name_root\n";
 
     #-----------------------------+
     # MAKE OUTPUT DIR             |
     #-----------------------------+
-    #////////////////////////////////////////////////////
-    $bac_out_dir = $outdir.$ind_file."/";
-    # make the bac output dir if it does not exist    
+    $bac_out_dir = $outdir.$name_root."/";
     mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
-    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    
 
     for $ind_lib (@mask_libs)
     {
@@ -499,14 +501,13 @@ for my $ind_file (@fasta_files)
 	$RepDbName = @$ind_lib[0];
 	$RepDbPath = @$ind_lib[1];
 
-
 	#-----------------------------+
 	# GET THE STRING TO SEARCH    |
 	# FOR IN THE RM OUTPUT        |
 	#-----------------------------+
 	# The name used by Repeat Masker is taken from the FASTA header
 	# Only the first twenty characters of the FASTA header are used
-	open (IN, $FileToMask);
+	open (IN, $file_to_mask);
 
 	while (<IN>) {
 	    chomp;
@@ -536,34 +537,7 @@ for my $ind_file (@fasta_files)
 	    " -pa ".$num_proc.
 	    " -engine ".$engine.
 	    " -xsmall".
-	    " $FileToMask";
-	
-	#-----------------------------+
-	# COMMAND TO CONVERT OUTPUT TO|
-	# GFF FORMAT AND APPEND TO    |
-	# A SINGLE FILE FOR ALL REPEAT|
-	# LIBRARIES                   |
-	#-----------------------------+
-
-	$MakeGffAllDbCmd = "grep ".$search_name." ".$RepMaskOutfile.
-	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
-	    $RepDbName."\", \$11, ".
-	    "\$6,\$7,\$1, \".\", \".\"}' >> ".$GffAllDbOut;
-
-
-	#-----------------------------+
-	# COMMAND TO CONVERT OUTPUT TO|
-	# GFF FORMAT AND APPEND TO    |
-	# A SINGLE FILE FOR THE REPEAT|
-	# LIBRARY                     |
-	#-----------------------------+
-	# I did not use gff out from repeatmasker because it
-	# did not appear to work properly with Apollo
-	$MakeGffElCmd = "grep ".$search_name." ".$RepMaskOutfile.
-	    " | awk 'BEGIN{OFS=\"\\t\"}{print \$11,  \"RepeatMasker: ".
-	    $RepDbName."\", \$11, ".
-	    "\$6,\$7,\$1, \".\", \".\"}' > ".$GffElOut;
-
+	    " $file_to_mask";
 	
 	#-----------------------------+
 	# SHOW THE USER THE COMMANDS  | 
@@ -588,8 +562,6 @@ for my $ind_file (@fasta_files)
 	print "\tLIB-PATH: ".$RepDbPath."\n";
 	print "\tEL-OUT:   ".$GffElOut."\n";
 	print "\tREPCMD:   ".$RepMaskCmd."\n";
-	#print "GffDbCmd:\n\t".$MakeGffDbCmd."\n";
-	print "\tGFFELCMD:\n\t".$MakeGffElCmd."\n";
 	print "\n\n";
 
 	#-----------------------------+
@@ -600,7 +572,6 @@ for my $ind_file (@fasta_files)
 	    print LOG "\tLib Path: ".$RepDbPath."\n";
 	    print LOG "\tEL Out:   ".$GffElOut."\n";
 	    print LOG "\tRepCmd:   ".$RepMaskCmd."\n";
-	    print LOG "\tGffElCmd:\n\t".$MakeGffElCmd."\n";
 	    print LOG "\n\n";
 	}
 
@@ -609,28 +580,19 @@ for my $ind_file (@fasta_files)
 	    $msg = "\nERROR:\n".
 		"Could not complete system cmd\n$RepMaskCmd\n";
 	    system ( $RepMaskCmd );
-#           It seems like RepeatMasker does not return "true"
-#	    system ( $RepMaskCmd ) ||
-#		die "$msg\n" ; 
 	}
 
-	unless ( $test ) {
-	    $msg = "\nERROR:\n".
-		"Could not complete system cmd\n$MakeGffElCmd\n";
-#	    system ( $MakeGffElCmd ) ||
-#		die "$msg\n";
-	    system ( $MakeGffElCmd );
-#		die "$msg\n";
-	}
 
 	unless ( $test ) {
-	    $msg = "\nERROR:\n".
-		"Could not complete system cmd\n$MakeGffAllDbCmd\n";
-	    system ( $MakeGffAllDbCmd );
-#	    system ( $MakeGffAllDbCmd ) ||
-#		die "$msg\n";
+	    rmout_to_gff($RepMaskOutfile, $GffElOut, ">");
 	}
-	
+
+
+	unless ( $test ) {
+	    rmout_to_gff( $RepMaskOutfile, $GffAllDbOut, ">>");
+	}
+
+
 	#-----------------------------+
 	# CONVERT THE FILES FROM GFF  | 
 	# FORMAT TO A MORE USABLE     |
@@ -642,7 +604,7 @@ for my $ind_file (@fasta_files)
 	#print "\n\n\n\nCONVERTING\n\n\n";
 	if ($apollo) {
 	    &apollo_convert ( $GffElOut, "gff", $XmlElOut, "game", 
-			      $FileToMask, "none" );  
+			      $file_to_mask, "none" );  
 	}
 
 	#-----------------------------+
@@ -657,21 +619,27 @@ for my $ind_file (@fasta_files)
 	#-----------------------------+
 	# FILES MOVED TO HERE         |
 	#-----------------------------+
-	$RepMaskOutCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".out";
-	$RepMaskCatCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".cat";
-	$RepMaskTblCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".tbl";
-	$RepMaskMaskedCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".masked";
-
-
-	#///////////////////////////////////////
-	$RepMaskLocalCp = $outdir.$RepDbName."_".$ind_file.".masked";
-	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	$RepMaskElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file."_EL.gff";
-	$RepMaskXmlElCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.
+	$RepMaskOutCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
+	    ".rm.out";
+	$RepMaskCatCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
+	    ".rm.cat";
+	$RepMaskTblCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
+	    ".rm.tbl";
+	$RepMaskMaskedCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
+	    ".masked.fasta";
+	$RepMaskElCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
+	    "_EL.gff";
+	$RepMaskXmlElCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
 	    "_EL.game.xml"; 
 
-	
+	#///////////////////////////////////////
+	# This is another copy of the masked file
+	# this will allow me to put all of the masked files in 
+	# a single location and have a shorter name
+	# These will all be placed in the $outdir
+	$RepMaskLocalCp = $outdir.$name_root.".masked.fasta";
+	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	# THE FOLLOWING ADDED 09/28/2006
 	$RepMaskLog = $indir.$RepDbName."_".$ind_file.".log";
 	$RepMaskLogCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".log";
@@ -730,11 +698,11 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     if ($apollo) {
 	apollo_convert ( $GffAllDbOut, "gff", $XmlAllDbOut , "game", 
-			  $FileToMask, "none" );  
+			  $file_to_mask, "none" );  
     }
     
-    $RepMaskALL_GFFCp = $bac_rep_out_dir."ALLDB_".$ind_file.".gff";
-    $RepMaskAll_XMLCp = $bac_rep_out_dir."ALLDB_".$ind_file."game.xml";
+    $RepMaskALL_GFFCp = $bac_rep_out_dir.$name_root."_ALLDB.rm.gff";
+    $RepMaskAll_XMLCp = $bac_rep_out_dir.$name_root."_ALLDB.rm.game.xml";
 
     $msg = "Can not move ".$GffAllDbOut."\n";
     move ( $GffAllDbOut, $RepMaskALL_GFFCp ) ||
@@ -748,8 +716,11 @@ for my $ind_file (@fasta_files)
 
 
     # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
-    print "Debug run finished\n\n";
-    exit;
+    if ($file_num > $file_num_max ) {
+	print "\nDebug run finished\n\n";
+	exit;
+    }
+
 
 } # End of for each file in the input folder
 
@@ -864,11 +835,97 @@ sub print_help {
     exit;
 }
 
+sub rmout_to_gff {
+
+# Subfunction to convert repeatmasker out file
+# to gff format for apollo
+    
+    # $rm_file = path to the repeat masker file
+    # $gff_file = path to the gff output file
+    # $pre is the way that the output file will
+    # be made, it should be either > or >>
+    # > for overwrite
+    # >> for concatenate
+    # the default will be to concatenate when the prefix
+    # variable can not be undertood
+    my ( $rm_file, $gff_file, $pre ) = @_;
+    my $IN;
+    my $OUT;
+    my $strand;
+
+    #-----------------------------------------------------------+
+    # REPEATMASKER OUT FILE CONTAINS
+    #-----------------------------------------------------------+
+    # 0 Smith-Waterman score of the match
+    # 1 % substitutions in matching region compared to the consensus
+    # 2 % of bases opposite a gap in the query sequence (deleted bp)
+    # 3 % of bases opposite a gap in the repeat consensus (inserted bp)
+    # 4 name of query sequence
+    # 5 starting position of match in query sequence
+    # 6 ending position of match in query sequence
+    # 7 no. of bases in query sequence past the ending position of match
+    #   in parenthesis
+    # 8 match is with the Complement of the consensus sequence in the database
+    #   C
+    # 9 name of the matching interspersed repeat
+    #10 class of the repeat, in this case a DNA transposon 
+    #11 no. of bases in (complement of) the repeat consensus sequence 
+    #   in parenthesis
+    #12 starting position of match in database sequence 
+    #   (using top-strand numbering)
+    #13 ending position of match in database sequence
+
+    open ( RM_IN, $rm_file ) ||
+	die "Could not open the RM infile\n";
+
+#    open ( RM_OUT, ">".$gff_file) ||
+    open ( RM_OUT, $pre.$gff_file) ||
+	die "Could not open the GFF outfile\n";
+    
+    while (<RM_IN>) {
+	chomp;
+	my @rmout = split;
+
+	my $line_len = @rmout;
+
+	my $cur_strand = $rmout[8];
+
+	if ($cur_strand =~ "C" ) {
+	    $strand = "-";
+	}
+	else {
+	    $strand = "+";
+	}
+
+	#-----------------------------+
+	# The following uses the 
+	# TREP hits as names this 
+	# is done by calling the 
+	# attributes exons..strange
+	#-----------------------------+
+	print RM_OUT "$rmout[4]\t";      # qry sequence name
+	print RM_OUT "repeatmasker:trep9\t";   # software used
+	print RM_OUT "exon\t";  # attribute name
+	print RM_OUT "$rmout[5]\t";      # start
+	print RM_OUT "$rmout[6]\t";      # stop
+	print RM_OUT "$rmout[0]\t";      # smith waterman score"
+	print RM_OUT "$strand\t";              # strand
+	print RM_OUT ".\t";              # frame
+	print RM_OUT "$rmout[9]";        # attribute
+	print RM_OUT "\n";
+
+    }
+
+    return;
+    
+}
+
+
 =head1 HISTORY
 
 STARTED: 04/10/2006
 
-UPDATED: 07/13/2007
+UPDATED: 07/18/2007
 
 =cut
 
@@ -983,4 +1040,17 @@ UPDATED: 07/13/2007
 #
 # 07/17/2007
 # - Added the ability to get the search_name directly
-#   from the fasta file header_
+#   from the fasta file header
+# - Getting root name for the output files and folders
+#   by stripping off the fasta extension with regexp
+# - Changed output dir to just the root name
+# - Adding rmout_to_gff subfunction to convert the repeat
+#   masker output to gff format. This will get rid
+#   of any dependence on grep and awk and will provide
+#   a more stable program
+# 
+# 07/18/2007
+# - rmout_to_gff working now ... strangely had to make
+#   the type exon to draw properly in apollo
+# - Got rid of previous code that used grep and awk
+#   to do this  conversion
