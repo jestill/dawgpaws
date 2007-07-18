@@ -171,16 +171,10 @@ database.
 
 =item *
 
-This currently requires that the fasta header be the
-exact same name as the, this should be fixed such
-that the program can juse read the name. There also
-appears to be a name trimming problem with the contigs.
-
-=item *
-
-The sequence name used in the FASTA file header must
-be short enough to make it through to the
-RepeatMasker *.out file.
+Make it a variable to possible to put the gff output (1) all in positive 
+strand, (2) all in negative strand, (3) alignment to positive or
+negative strand, (4) cumulative in both positive and negative strand.
+Current behavior will be to do number 4 above.
 
 =back
 
@@ -235,6 +229,7 @@ my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
 my $rm_path;                   # Full path to the repeatmasker binary
+my $ap_path;                   # Full path to the apollo program
 
 # Vars with default values
 my $engine = "crossmatch";
@@ -260,11 +255,12 @@ my $ok = GetOptions(
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
 		    "rm-path=s"    => \$rm_path,
+		    "ap-path=s",   => \$ap_path,
 		    "logfile=s"    => \$logfile,
 		    "p|num-proc=s" => \$num_proc,
-		    "apollo=s"     => \$apollo,
 		    "engine=s"     => \$engine,
 		    # Booleans
+		    "apollo"       => \$apollo,
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -771,6 +767,9 @@ sub apollo_convert {
     #          where the program is not in the PATHS
     # ApCmd  - the apollo commands to run
 
+    print "Converting output to Apollo game.xml format\n"
+	unless $quiet;
+
     my $InFile = $_[0];        # Input file path
     my $InForm = $_[1];        # Output file format:
                                # game|gff|gb|chadoxml|backup
@@ -784,12 +783,17 @@ sub apollo_convert {
                                # chado database for reading or writing.
     my ( $ApPath, $ApCmd );
 
-    $ApPath = "/home/jestill/Apps/Apollo/";
+    #$ApPath = "/home/jestill/Apps/Apollo/";
+    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
 
     # Set the base command line. More may need to be added for different
     # formats. For example, GFF in requires a sequence file and the CHADO
     # format will require a database password.
-    $ApCmd = $ApPath."Apollo -i ".$InForm." -f ".$InFile.
+#    $ApPath = "/home/jestill/Apps/Apollo/";
+#    $ApCmd = $ApPath."Apollo -i ".$InForm." -f ".$InFile.
+#	" -o ".$OutForm." -w ".$OutFile;
+
+    $ApCmd = $ApPath." -i ".$InForm." -f ".$InFile.
 	" -o ".$OutForm." -w ".$OutFile;
 
     # Make sure that that input output formats are in lowercase
@@ -918,10 +922,28 @@ sub rmout_to_gff {
 	}
 
 	#-----------------------------+
-	# The following uses the 
-	# TREP hits as names this 
-	# is done by calling the 
-	# attributes exons..strange
+	# The following uses the TREP |   
+	# hits as names this is done  |
+	# by calling the attributes   |
+	# exons..a strange kluge      |
+	#-----------------------------+
+	# This places the RepMask output in the same frame as 
+	# the hit was found in the database. 
+	#print RM_OUT "$rmout[4]\t";      # qry sequence name
+	#print RM_OUT "repeatmasker:trep9\t";   # software used
+	#print RM_OUT "exon\t";  # attribute name
+	#print RM_OUT "$rmout[5]\t";      # start
+	#print RM_OUT "$rmout[6]\t";      # stop
+	#print RM_OUT "$rmout[0]\t";      # smith waterman score"
+	#print RM_OUT "$strand\t";              # strand
+	#print RM_OUT ".\t";              # frame
+	#print RM_OUT "$rmout[9]";        # attribute
+	#print RM_OUT "\n";
+
+	#-----------------------------+
+	# THE FOLLOWING MAKES THE HITS|
+	# CUMULATIVE IN BOTH STRANDS  |
+	# OR JUST THE POSITVE STRAND  |
 	#-----------------------------+
 	print RM_OUT "$rmout[4]\t";      # qry sequence name
 	print RM_OUT "repeatmasker:trep9\t";   # software used
@@ -929,10 +951,21 @@ sub rmout_to_gff {
 	print RM_OUT "$rmout[5]\t";      # start
 	print RM_OUT "$rmout[6]\t";      # stop
 	print RM_OUT "$rmout[0]\t";      # smith waterman score"
-	print RM_OUT "$strand\t";              # strand
+	print RM_OUT "+\t";              # Postive strand
 	print RM_OUT ".\t";              # frame
 	print RM_OUT "$rmout[9]";        # attribute
 	print RM_OUT "\n";
+
+	#print RM_OUT "$rmout[4]\t";      # qry sequence name
+	#print RM_OUT "repeatmasker:trep9\t";   # software used
+	#print RM_OUT "exon\t";  # attribute name
+	#print RM_OUT "$rmout[5]\t";      # start
+	#print RM_OUT "$rmout[6]\t";      # stop
+	#print RM_OUT "$rmout[0]\t";      # smith waterman score"
+	#print RM_OUT "-\t";                # Negative strand
+	#print RM_OUT ".\t";              # frame
+	#print RM_OUT "$rmout[9]";        # attribute
+	#print RM_OUT "\n";
 
     }
 
