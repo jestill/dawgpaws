@@ -730,11 +730,11 @@ for my $ind_file (@fasta_files)
     }
 
 
-    # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
-    if ($file_num > $file_num_max ) {
-	print "\nDebug run finished\n\n";
-	exit;
-    }
+#    # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
+#    if ($file_num > $file_num_max ) {
+#	print "\nDebug run finished\n\n";
+#	exit;
+#    }
 
 
 } # End of for each file in the input folder
