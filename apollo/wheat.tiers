@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR : JAMES C. ESTILL                                  |
 # STARTED: 02/08/2007                                       |
-# UPDATED: 04/24/2007                                       |
+# UPDATED: 07/18/2007                                       |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -836,31 +836,48 @@ sortbycolumn : GENOMIC_RANGE
 # BAC/Genome.
 # 
 #
+
 #-----------------------------------------------------------+
-# TRF - Tandem Repeat Finder                                |
+# RepeatMasker                                              |
 #-----------------------------------------------------------+
-// Currently not parasing the name from the GFF files from
-// the TriAnnot web site as I would like
+# 07/18/2007
+# - Modified to be the same as ensj.tiers to try to
+#   get the RepeatMasker files to parse correctly
+
 
 [Tier]
 tiername : RepeatMasker
-expanded : false
+#expanded : false
+expanded : true
 
 [Type]
 typename : RepeatMasker
-tiername : TRF
+tiername : RepeatMasker
 datatype : RepeatMasker
-glyph : DoubleHeadedArrow
+datatype : repeatmasker
+datatype : repeatmasker:trep9
+//glyph : DoubleHeadedArrow
+glyph : DrawableResultFeatureSet
 color : 124,124,124
+usescore : true
 annot_type : transposable_element
 //Leaving Name out to see
 // if this helps the parse of the
 // name as given in the GFF file
-//column : NAME
+column : NAME
 column : SCORE
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
+reversesort : false
+//overlap_method : SimpleOverlap
+//overlap_method : ORF_Overlap
+//groupby : HOMOLOGY
+groupby : SINGLE
+
+#-----------------------------------------------------------+
+# TRF - Tandem Repeat Finder                                |
+#-----------------------------------------------------------+
 
 [Tier]
 tiername : TRF
