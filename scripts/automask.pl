@@ -75,6 +75,10 @@ The default is to use crossmatch.
 Use the apollo program to convert the file from gff to game xml.
 The default is not to use apollo.
 
+=item --rm-path
+
+The full path to the RepeatMasker binary.
+
 =item --logfile
 
 Path to a file that will be used to log program status.
@@ -227,9 +231,10 @@ my $indir;                     # Directory containing the seq files to process
 my $outdir;                    # Directory to hold the output
 my $msg;                       # Message printed to the log file
 
-my $search_name;                # Name searched for in grep command
+my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
+my $rm_path;                   # Full path to the repeatmasker binary
 
 # Vars with default values
 my $engine = "crossmatch";
@@ -254,6 +259,7 @@ my $ok = GetOptions(
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
+		    "rm-path=s"
 		    "logfile=s"    => \$logfile,
 		    "p|num-proc=s" => \$num_proc,
 		    "apollo=s"     => \$apollo,
@@ -532,13 +538,26 @@ for my $ind_file (@fasta_files)
  	$GffAllDbOut = $indir."ALLDB_".$ind_file.".gff";
 	$XmlAllDbOut = $indir."ALLDB_".$ind_file."game.xml";
 	
-	$RepMaskCmd = "RepeatMasker".
-	    " -lib ".$RepDbPath.
-	    " -pa ".$num_proc.
-	    " -engine ".$engine.
-	    " -xsmall".
-	    " $file_to_mask";
-	
+
+	if ($rm_path) {
+	    $RepMaskCmd = $rm_path.
+		" -lib ".$RepDbPath.
+		" -pa ".$num_proc.
+		" -engine ".$engine.
+		" -xsmall".
+		" $file_to_mask";
+	}
+	else {
+	    $RepMaskCmd = "RepeatMasker".
+		" -lib ".$RepDbPath.
+		" -pa ".$num_proc.
+		" -engine ".$engine.
+		" -xsmall".
+		" $file_to_mask";
+	}
+       
+
+
 	#-----------------------------+
 	# SHOW THE USER THE COMMANDS  | 
 	# THAT WILL BE USED           |
@@ -809,6 +828,7 @@ sub print_help {
 	"  --outdir       # Path to the output directory\n".
 	"\n".
 	"OPTIONS:\n".
+	"  --rm-path      # Full path to repeatmasker binary".
 	"  --engine       # The repeatmasker engine to use:\n".
 	"                 # [crossmatch|wublast|decypher]\n".
 	"                 # default is to use crossmatch\n".
@@ -1054,3 +1074,8 @@ UPDATED: 07/18/2007
 #   the type exon to draw properly in apollo
 # - Got rid of previous code that used grep and awk
 #   to do this  conversion
+# - Added command line variable to specify the full
+#   path of the RepeatMasker program. This should
+#   help this to run machines without having to 
+#   make any changes to the user's environment.
+#   (ie. don't have to add RepeatMaker to user's path)
