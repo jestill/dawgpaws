@@ -259,7 +259,7 @@ my $ok = GetOptions(
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
-		    "rm-path=s"
+		    "rm-path=s"    => \$rm_path,
 		    "logfile=s"    => \$logfile,
 		    "p|num-proc=s" => \$num_proc,
 		    "apollo=s"     => \$apollo,
