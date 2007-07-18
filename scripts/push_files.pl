@@ -65,6 +65,7 @@ utf8::encode ($UserPassword);
 #-----------------------------+
 # The list of target IP addresses for pushing
 # files to.
+# This should be changed to an external text file.
 my @Targets = ( 
 		"128.192.158.11",
 		"128.192.158.12",
