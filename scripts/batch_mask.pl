@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# automask.pl - REPEAT MASK PARSER PIPELINE                 |
+# batch_mask.pl - REPEAT MASK PARSER PIPELINE                 |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
