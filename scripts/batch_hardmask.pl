@@ -1,39 +1,41 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_mask.pl - REPEAT MASK PARSER PIPELINE                 |
+# batch_hardmask.pl - Hardmask a batch of softmasked files  |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
-# CONTACT: jestill_at_sourceforge.net                       |
-# STARTED: 04/10/2006                                       |
-# UPDATED: 07/18/2007                                       |
+# CONTACT: JamesEstill_at_gmail.com                         |
+# STARTED: 07/19/2007                                       |
+# UPDATED: 07/19/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Runs the RepeatMasker program for a set of input         |
-#  FASTA files against a set of repeat library files &      |
-#  then converts the repeat masker *.out file into the      |
-#  GFF format and then to the game XML format for           |
-#  visualization by the Apollo genome anotation program.    |
+#  Given a directory of softmasked fasta files, this will   |
+#  hardmask the files by replacing the lowecase letters     |
+#  with an uppercase letter set by the user.                |
 #                                                           |
 # USAGE:                                                    |
-#  RepMaskParse.pl                                          |
+#  batch_hardmask.pl -i InDir -o OutDir -m X                |
+#                                                           |
+# LICENSE                                                   |
+#  GNU LESSER GENERAL PUBLIC LICENSE                        |
+#  http://www.gnu.org/licenses/lgpl.html                    |
 #                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME
 
-batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_hardmask.pl - Hardmask a batch of softmasked fasta files. 
 
 =head1 VERSION
 
-This documentation refers to batch_mask version 1.0
+This documentation refers to batch_hardmask version 1.0
 
 =head1 SYNOPSIS
 
  Usage:
- batch_mask.pl -i DirToProcess -o OutDir
+ batch_hardmask.pl -i DirToProcess -o OutDir
 
 =head1 DESCRIPTION
 
@@ -61,23 +63,13 @@ Path of the directory to place the program output.
 
 =over 2
 
-=item -p,--num-proc
+=item --m,mask
 
-The number of processors to use for RepeatMasker. Default is one.
+Single letter to mask with. Valid options are: [ N | n | X | x ]
 
-=item --engine
+=item --ext
 
-The repeatmasker engine to use: [crossmatch|wublast|decypher].
-The default is to use crossmatch.
-
-=item --apollo
-
-Use the apollo program to convert the file from gff to game xml.
-The default is not to use apollo.
-
-=item --rm-path
-
-The full path to the RepeatMasker binary.
+The new outfile extension to use. Default value is .hard.fasta
 
 =item --logfile
 
@@ -146,10 +138,6 @@ http://www.fruitfly.org/annot/apollo/
 
 =item *
 
-File::Copy
-
-=item *
-
 Getopt::Long
 
 =back
@@ -160,21 +148,10 @@ Getopt::Long
 
 =over 2
 
-=item *
-
-Load the RepLibs array from a config file.
 
 =item *
 
-Make the results compatable for an upload to a chado
-database.
-
-=item *
-
-Make it a variable to possible to put the gff output (1) all in positive 
-strand, (2) all in negative strand, (3) alignment to positive or
-negative strand, (4) cumulative in both positive and negative strand.
-Current behavior will be to do number 4 above.
+No current items on the to do list.
 
 =back
 
@@ -184,11 +161,7 @@ Current behavior will be to do number 4 above.
 
 =item *
 
-Currently must use short names in the FASTA file.
-
-=item *
-
-This program has been tested with RepeatMasker v  3.1.6
+No known majors limitations at this time.
 
 =back
 
@@ -220,19 +193,10 @@ my $ver = "1.0";
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
-my $logfile;                   # Path to a logfile to log error info
-my $indir;                     # Directory containing the seq files to process
-my $outdir;                    # Directory to hold the output
-my $msg;                       # Message printed to the log file
 
-my $search_name;               # Name searched for in grep command
-my $bac_out_dir;               # Dir for each sequnce being masked
-my $name_root;                 # Root name to be used for output etc
-my $rm_path;                   # Full path to the repeatmasker binary
-my $ap_path;                   # Full path to the apollo program
-
-# Vars with default values
-my $engine = "crossmatch";
+# VARS WITH DEFAULT VALUES
+my $out_ext = ".hard.fasta";  # Outfile extension
+my $mask_char = "N";          # Character to mask with
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -240,11 +204,20 @@ my $show_version = 0;          # Show program version
 my $show_man = 0;              # Show program manual page using peldoc
 my $show_usage = 0;            # Show program usage command             
 my $quiet = 0;                 # Boolean for reduced output to STOUT
-my $apollo = 0;                # Path to apollo and apollo variables
-my $test = 0;
-my $verbose = 0;
-# COUNTERS
-my $num_proc = 1;              # Number of processors to use
+my $test = 0;                  # Run the program in test mode
+my $verbose = 0;               # Run the program in verbose mode
+
+# PACKAGE LEVEL SCOPE
+my $file_to_mask;              # Path to the file to mask
+my $hard_mask_out;             # Path to the hardmasked file output
+my $logfile;                   # Path to a logfile to log error info
+my $indir;                     # Directory containing the seq files to process
+my $outdir;                    # Directory to hold the output
+my $msg;                       # Message printed to the log file
+my $search_name;               # Name searched for in grep command
+my $bac_out_dir;               # Dir for each sequnce being masked
+my $name_root;                 # Root name to be used for output etc
+
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -254,13 +227,10 @@ my $ok = GetOptions(
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
-		    "rm-path=s"    => \$rm_path,
-		    "ap-path=s",   => \$ap_path,
+		    "m|mask"       => \$mask_char,
+		    "ext"          => \$out_ext,
 		    "logfile=s"    => \$logfile,
-		    "p|num-proc=s" => \$num_proc,
-		    "engine=s"     => \$engine,
 		    # Booleans
-		    "apollo"       => \$apollo,
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -269,35 +239,6 @@ my $ok = GetOptions(
 		    "h|help"       => \$show_help,
 		    "q|quiet"      => \$quiet,);
 
-#-----------------------------+
-# HARD CODE VARIABLES         |
-#-----------------------------+
-# TempWorkDir - A directory to temporarily store the data that will later
-#               be transfered to a more appropriate long term storage
-#               location. This could be a place to put the original fasta file
-#               and associated intermediate output.
-# FileToMask - The fasta file that will be masked using RepeatMasker
-# GFFOutfile - The path to write the gff outfile
-# RepMaskOutfile - The path of the *.out file produced by RepeatMasker
-# SeqName - The name of the sequence file in the original [name].fasta
-#           file that was used as input into RepeatMasker
-# RepDb - The short name of the repeat mask DB that was used
-
-# Many of the following variables will need to be changed to set to 
-# array elements, but these are hard coded for now to allow for testing and
-# getting the program up and running.
-
-# MakeGffDBCmd - Command to make a GFF file with the data grouped by the 
-#                the repeat database that was used for assignment.
-# MakeGffElCmd - Command to make a GFF file with the data grouped by the
-#                type of element that was identified.
-
-
-
-#my $bac_parent_dir = "/scratch/jestill/wheat/";  
-
-#my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
-#my $LocalCpDir = $local_cp_dir;
 
 my $bac_parent_dir = $outdir;  
 
@@ -350,7 +291,7 @@ if ($logfile) {
 	die "Can not open logfile:\n$logfile\n";
     my $time_now = time;
     print LOG "==================================\n";
-    print LOG "  batch_mask.pl\n";
+    print LOG "  batch_hardmask.pl\n";
     print LOG "  JOB: $time_now\n";
     print LOG "==================================\n";
 }
@@ -380,28 +321,7 @@ opendir( DIR, $indir ) ||
 my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 
-#-----------------------------+
-# REPEAT LIBRARY INFORMATION  |
-#-----------------------------+
-# This is an array of arrays:
-# The nested array should contain the following info:
-# [0] - Name of the repeat library
-#       This will be used to name the output files from the analysis
-#       and to name the data tracks that will be used by Apollo.
-# [1] - Path of the repeat library
-# The number of records in the fasta file shown in brackets
-# afte the description of the db
-@mask_libs = (
-    #-----------------------------+
-    # TREP v 9                    |
-    #-----------------------------+
-    ["TREP9",  
-     "/db/jlblab/repeats/TREP9.nr.fasta"]
-    );
-
-my $num_libs = @mask_libs;
 my $num_files = @fasta_files;
-my $num_proc_total = $num_libs * $num_files;
 
 #-----------------------------+
 # SHOW ERROR IF NO FILES      |
@@ -413,24 +333,6 @@ if ($num_files == 0) {
 	"$indir\n".
 	"Fasta files must have the fasta or fa extension.\n\n";
     exit;
-}
-
-#-----------------------------+
-# SHOW ERROR IF ONE OF THE    |
-# MASK LIBS DOES NOT EXIST    |
-#-----------------------------+
-print "Checking mask libs ...\n" unless $quiet;
-for $ind_lib (@mask_libs) {
-
-    $RepDbName = @$ind_lib[0];
-    $RepDbPath = @$ind_lib[1];
-
-    unless (-e $RepDbPath) {
-	print "\a";
-	print "\nERROR: The following masking library could not be found:\n".
-	    $RepDbPath."\n";
-	exit;
-    }
 }
 
 #-----------------------------+
@@ -457,277 +359,95 @@ for my $ind_file (@fasta_files)
     
     $file_num++;
 
-    # Reset search name to null
-    $search_name = "";
-    
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+
+    #-----------------------------+
+    # Get the root name of the    |
+    # file to mask                |
+    #-----------------------------+
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/) {
+	# file ends in .masked.fasta
+	$name_root = "$1";
+    }
+    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+	# file ends in .fasta
 	$name_root = "$1";
     }  
-    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    elsif ($ind_file =~ m/(.*)\.fa$/ ) {	    
+	# file ends in .fa
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	$name_root = $ind_file;
     }
-	
+
     $file_to_mask = $indir.$ind_file;
-    $RepMaskOutfile = $file_to_mask.".out";
-    $RepMaskCatFile = $file_to_mask.".cat";
-    $RepMaskTblFile = $file_to_mask.".tbl";
-    $RepMaskMaskedFile = $file_to_mask.".masked";
+    $hard_mask_out = $outdir.$name_root.$out_ext;
     
-    $ProcNum++;
-    print LOG "\n\nProcess $ProcNum of $num_proc_total.\n" if $logfile;
-    print "\n\n+-----------------------------------------------------------+\n"
-	unless $quiet;
-    print "| Process $ProcNum of $num_proc_total.\n" unless $quiet;
-    print "+-----------------------------------------------------------+\n"
-	unless $quiet;
+    print "Converting:\n".
+	"\t$file_to_mask TO\n".
+	"\t$hard_mask_out\n" unless $quiet;
+
 
     #-----------------------------+
-    # SHOW BASIC RUN INFO
+    # OPEN FILES                  |
     #-----------------------------+
-    print "\n";
-    print "\tINFILE: $ind_file\n";
-    print "\t  ROOT: $name_root\n";
-
+    open (IN, "<".$file_to_mask) ||
+	die "Can not open input file:\n$file_to_mask\n";
+    
+    open (OUT, ">".$hard_mask_out) ||
+	die "Can not open output file:\n$hard_mask_out\n";
+    
     #-----------------------------+
-    # MAKE OUTPUT DIR             |
+    # HARD MASK FILE              |
     #-----------------------------+
-    $bac_out_dir = $outdir.$name_root."/";
-    mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
-
-    for $ind_lib (@mask_libs)
+    # The tr regexp does not appear to accept variables
+    # therefore I have to write this a bit convoluted with
+    # if then statements for acceptable MaskCharacters
+    while (<IN>)
     {
-	
-	$RepDbName = @$ind_lib[0];
-	$RepDbPath = @$ind_lib[1];
-
-	#-----------------------------+
-	# GET THE STRING TO SEARCH    |
-	# FOR IN THE RM OUTPUT        |
-	#-----------------------------+
-	# The name used by Repeat Masker is taken from the FASTA header
-	# Only the first twenty characters of the FASTA header are used
-	open (IN, $file_to_mask);
-
-	while (<IN>) {
-	    chomp;
-
-	    if (/^\>(.*)/) {
-		print "\tFASTA HEADER:\n\t$_\n" if  $verbose;
-		print "\tINSIDE:\n\t$1\n" if $verbose;
+	unless (m/^>/)        # Do not mask header lines 
+	{
+	    # Mask with the selected character
+	    if ($mask_char =~ "N"){
+		tr/[a-z]/N/;
+	    } elsif ($mask_char =~ "X"){
+		tr/[a-z]/X/;
+	    } elsif ($mask_char =~ "x"){
+		tr/[a-z]/x/;
+	    } elsif ($mask_char =~ "n"){
+		tr/[a-z]/n/;
+	    } else {
+		$msg = "\aERROR: A valid mask character was not selected\n";
+	    }# End of select mask character
 		
-		$search_name = $1;
-		
-		my $test_len = 20;
-		my $cur_len = length ($search_name);
-		if ( $cur_len > $test_len ) {
-		    $search_name = substr ($_, 0, 20);
-		} 
-	    } # End of in fasta header file
+		# Print masked string to the outfile
+		print OUT $_;
+	    
+	} else {
+	    print OUT $_;
+	    $NumRecs++;       # For headers increment NumRecs
 	}
-	close IN;
-
-	$GffElOut = $indir.$RepDbName."_".$ind_file."_EL.gff";
-	$XmlElOut = $indir.$RepDbName."_".$ind_file."_EL.game.xml"; 
- 	$GffAllDbOut = $indir."ALLDB_".$ind_file.".gff";
-	$XmlAllDbOut = $indir."ALLDB_".$ind_file."game.xml";
-	
-
-	if ($rm_path) {
-	    $RepMaskCmd = $rm_path.
-		" -lib ".$RepDbPath.
-		" -pa ".$num_proc.
-		" -engine ".$engine.
-		" -xsmall".
-		" $file_to_mask";
-	}
-	else {
-	    $RepMaskCmd = "RepeatMasker".
-		" -lib ".$RepDbPath.
-		" -pa ".$num_proc.
-		" -engine ".$engine.
-		" -xsmall".
-		" $file_to_mask";
-	}
-       
-
-
-	#-----------------------------+
-	# SHOW THE USER THE COMMANDS  | 
-	# THAT WILL BE USED           |
-	#-----------------------------+
-
-	print "\n";
-	print "+-----------------------------+\n";
-	print "| CONVERT COMMANDS            |\n";
-	print "+-----------------------------+\n";
-	print "\tSEARCH:   ".$search_name."\n";
-	print "\tOUTFILE:  ".$RepMaskOutfile."\n";
-	print "\tDB-NAME:  ".$RepDbName."\n";
-	print "\tGFF-FILE: ".$GffAllDbOut."\n";
-
-
-	print "\n";
-	print "+-----------------------------+\n";
-	print "| REPEATMASKER COMMANDS       |\n";
-	print "+-----------------------------+\n";
-	print "\tLIB-NAME: ".$RepDbName."\n";
-	print "\tLIB-PATH: ".$RepDbPath."\n";
-	print "\tEL-OUT:   ".$GffElOut."\n";
-	print "\tREPCMD:   ".$RepMaskCmd."\n";
-	print "\n\n";
-
-	#-----------------------------+
-	# PRINT INFO TO LOG FILE      | 
-	#-----------------------------+
-	if ($logfile) {
-	    print LOG "\tLib Name: ".$RepDbName."\n";
-	    print LOG "\tLib Path: ".$RepDbPath."\n";
-	    print LOG "\tEL Out:   ".$GffElOut."\n";
-	    print LOG "\tRepCmd:   ".$RepMaskCmd."\n";
-	    print LOG "\n\n";
-	}
-
-	# Turned off while working 07/13/2007
-	unless ( $test ) {
-	    $msg = "\nERROR:\n".
-		"Could not complete system cmd\n$RepMaskCmd\n";
-	    system ( $RepMaskCmd );
-	}
-
-
-	unless ( $test ) {
-	    rmout_to_gff($RepMaskOutfile, $GffElOut, ">");
-	}
-
-
-	unless ( $test ) {
-	    rmout_to_gff( $RepMaskOutfile, $GffAllDbOut, ">>");
-	}
-
-
-	#-----------------------------+
-	# CONVERT THE FILES FROM GFF  | 
-	# FORMAT TO A MORE USABLE     |
-	# FORMAT FOR APOLLO           |
-	#-----------------------------+
-
-	# APOLLO FUNCTION WILL NOT WORK ON ALTIX
-	# SO THIS HAS BEEN COMMENTED OUT
-	#print "\n\n\n\nCONVERTING\n\n\n";
-	if ($apollo) {
-	    &apollo_convert ( $GffElOut, "gff", $XmlElOut, "game", 
-			      $file_to_mask, "none" );  
-	}
-
-	#-----------------------------+
-	# COPY THE RM OUTPUT FILES TO | 
-	# THE RM (REPEATMASK) FOLDER  |
-	# MAKE THE DIR IF NEEDED      |
-	#-----------------------------+
-	# dir for the repeat maske output
-	$bac_rep_out_dir = "$bac_out_dir"."rm/";
-	mkdir $bac_rep_out_dir, 0777 unless (-e $bac_rep_out_dir); 
-
-	#-----------------------------+
-	# FILES MOVED TO HERE         |
-	#-----------------------------+
-	$RepMaskOutCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    ".rm.out";
-	$RepMaskCatCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    ".rm.cat";
-	$RepMaskTblCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    ".rm.tbl";
-	$RepMaskMaskedCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    ".masked.fasta";
-	$RepMaskElCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    "_EL.gff";
-	$RepMaskXmlElCp = $bac_rep_out_dir.$name_root."_".$RepDbName.
-	    "_EL.game.xml"; 
-
-	#///////////////////////////////////////
-	# This is another copy of the masked file
-	# this will allow me to put all of the masked files in 
-	# a single location and have a shorter name
-	# These will all be placed in the $outdir
-	$RepMaskLocalCp = $outdir.$name_root.".masked.fasta";
-	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	# THE FOLLOWING ADDED 09/28/2006
-	$RepMaskLog = $indir.$RepDbName."_".$ind_file.".log";
-	$RepMaskLogCp = $bac_rep_out_dir.$RepDbName."_".$ind_file.".log";
-	$msg = " Can not move\n\t".$RepMaskLog."\n\t".
-	    $RepMaskLogCp."\n";
-	move ( $RepMaskLog, $RepMaskLogCp) ||
-	    print LOG $msg if $logfile;
-
-	#-----------------------------+
-	# MAKE A COPY OF THE MASKED   |
-	# FASTA FILE TO A SINGLE DIR  |
-	#-----------------------------+
-	$msg = "Can not copy ".$RepMaskMaskedFile." to\n".
-	    $RepMaskLocalCp."\n";
-	copy ( $RepMaskMaskedFile, $RepMaskLocalCp  ) ||
-	    print LOG $msg if $logfile;
-
-	#-----------------------------+
-	# MOVE THE RM OUTPUT FILES TO |
-	# THE TARGET DIR	      |
-	#-----------------------------+
-	$msg = "Can not move ".$RepMaskOutfile." to\n ".$RepMaskOutCp."\n";
-	move ( $RepMaskOutfile, $RepMaskOutCp ) ||
-	    print LOG $msg if $logfile;
-
-	$msg = "Can not move ".$RepMaskCatFile."\n";
-	move ( $RepMaskCatFile, $RepMaskCatCp ) ||
-	    print LOG $msg if $logfile;
-	
-	$msg = "The table file could not be moved from".
-	    "$RepMaskTblFile to $RepMaskTblCp";
-	move ( $RepMaskTblFile, $RepMaskTblCp ) ||
-	    print LOG $msg if $logfile;    
-	
-	$msg = "Can not move ".$RepMaskMaskedFile."\n";
-	move ( $RepMaskMaskedFile, $RepMaskMaskedCp ) ||
-	    print LOG $msg if $logfile;
-
-	$msg = "Can not move ".$GffElOut."\n";
-	move ( $GffElOut , $RepMaskElCp ) ||
-	    print LOG $msg if $logfile;
-	
-	if ($apollo) {
-	    $msg = "Can not move ".$XmlElOut."\n";
-	    move ( $XmlElOut, $RepMaskXmlElCp ) ||
-		print LOG $msg if $logfile;
-	}
-
-    } # End of for LibData
+    } # End of while IN
     
-    #-----------------------------+ 
-    # THE APOLLO CONVERT FOR THE  |
-    # ENTIRE SET OF REPEAT LIBS   |
-    # FOR A GIVEN SEQUENCE FILE   |
-    # THAT IS BEING MASKED.       |
     #-----------------------------+
-    if ($apollo) {
-	apollo_convert ( $GffAllDbOut, "gff", $XmlAllDbOut , "game", 
-			  $file_to_mask, "none" );  
-    }
+    # CLOSE FILES                 |
+    #-----------------------------+
+    close IN;
+    close OUT;
     
-    $RepMaskALL_GFFCp = $bac_rep_out_dir.$name_root."_ALLDB.rm.gff";
-    $RepMaskAll_XMLCp = $bac_rep_out_dir.$name_root."_ALLDB.rm.game.xml";
-
-    $msg = "Can not move ".$GffAllDbOut."\n";
-    move ( $GffAllDbOut, $RepMaskALL_GFFCp ) ||
-	print LOG $msg if $logfile;
-    
-    if ($apollo) {
-	$msg = "Can not move ".$XmlAllDbOut."\n";
-	move ( $XmlAllDbOut, $RepMaskAll_XMLCp ) ||
-	    print LOG $msg if $logfile;
-    }
+#//////////////////////////////////
+# MAY WANT TO LEAVE THE FOLLOWING
+# TO MAKE A COPY IN THE GENERAL
+# BAC DIRECTORY
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+#
+##    #-----------------------------+
+#    # MAKE OUTPUT DIR             |
+##    #-----------------------------+
+#    # the $bac_out_dir is the summary directory that
+#    # contains all of the data related to a seq
+#    $bac_out_dir = $outdir.$name_root."/";
+#    mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
 
 
 #    # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
@@ -821,9 +541,11 @@ sub print_help {
     # Print requested help or exit.
     # Options are to just print the full 
     my ($opt) = @_;
+
     
     my $usage = "USAGE:\n".
-	"  batch_mask.pl -i DirToProcess -o OutDir";
+	"  batch_hardmask.pl -i DirToProcess -o OutDir";
+
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --indir        # Path to the directory containing the sequences\n".
 	"                 # to process. The files must have one of the\n".
@@ -832,14 +554,10 @@ sub print_help {
 	"  --outdir       # Path to the output directory\n".
 	"\n".
 	"OPTIONS:\n".
-	"  --rm-path      # Full path to repeatmasker binary".
-	"  --engine       # The repeatmasker engine to use:\n".
-	"                 # [crossmatch|wublast|decypher]\n".
-	"                 # default is to use crossmatch\n".
-	"  --num-proc     # Number of processors to use for RepeatMasker\n".
-	"                 # default is one.\n".
-	"  --apollo       # Convert output to game.xml using apollo\n".
-	"                 # default is not to use apollo\n".
+	"  --mask         # Character to mask with [N|n|X|x]\n".
+	"                 # default is N\n".
+	"  --ext          # Extension to add to new files.\n".
+	"                 # default is .hard.fasta.\n".
 	"  --logfile      # Path to file to use for logfile\n".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
