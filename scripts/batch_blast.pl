@@ -8,15 +8,12 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/23/2007                                       |
-# UPDATED: 07/23/2007                                       |
+# UPDATED: 07/24/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of softmasked fasta files, this will   |
 #  BLAST the files against a standard set of BLAST          | 
 #  databases used for wheat genome annotation.              |
-#                                                           |
-# USAGE:                                                    |
-#  batch_hardmask.pl -i InDir -o OutDir                     |
 #                                                           |
 # LICENSE                                                   |
 #  GNU LESSER GENERAL PUBLIC LICENSE                        |
@@ -35,7 +32,7 @@ This documentation refers to batch_blast version 1.0
 =head1 SYNOPSIS
 
  Usage:
- batch_blast.pl -i DirToProcess -o OutDir
+ batch_blast.pl -i DirToProcess -o OutDir -d DbDir -c ConfigFile
 
 =head1 DESCRIPTION
 
@@ -59,19 +56,53 @@ Path of the directory containing the sequences to process.
 
 Path of the directory to place the program output.
 
+=item -d,--db-dir
+
+Path of the directory containing the blast formatted databases.
+
 =item -c, --config
 
-Path to the batch_blast config file
+Path to the batch_blast config file. This is a tab delimited text file
+indicating required information for each of the databases to blast
+against. Lines beginning with # are ignored, and data are in six 
+columns as shown below:
+
+=over 2
+
+=item Col 1. Blast program to use [ tblastx | blastn | blastx ]
+
+=item Col 2. Extension to use in blast output file. (ie. bln )
+
+=item Col 3. Alignment output options (-m options from blast)
+
+=item Col 4. Evalue threshold
+
+=item Col 5. Database name
+
+=item Col 6. Additional blast command switches
+
+=back
+
+An example config file would be:
+
+ #-----------------------------+
+ # BLASTN: TIGR GIs            |
+ #-----------------------------+
+ blastn	bln	8	1e-5	TaGI_10	-a 2 -U
+ blastn	bln	8	1e-5	AtGI_13	-a 2 -U
+ blastn	bln	8	1e-5	ZmGI_17	-a 2 -U
+ #-----------------------------+
+ # TBLASTX: TIGR GIs           |
+ #-----------------------------+
+ tblastx	blx	8	1e-5	TaGI_10	-a 2 -U
+ tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
+ tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
 
 =back
 
 =head1 OPTIONS
 
 =over 2
-
-=item --dbdir
-
-Directory containing the BLAST databases.
 
 =item --blast-path
 
@@ -199,10 +230,6 @@ my $ver = "1.0";
 # VARIABLE SCOPE              |
 #-----------------------------+
 
-# VARS WITH DEFAULT VALUES
-my $out_ext = ".hard.fasta";  # Outfile extension
-my $mask_char = "N";          # Character to mask with
-
 # BOOLEANS
 my $show_help = 0;             # Show program help
 my $show_version = 0;          # Show program version
@@ -220,6 +247,7 @@ my $count_db;                  # Number of databases to process
 my $count_files;               # Number of files to process
 my $count_proc;                # Number of processes
 my $proc_num;                  # Number of the current process
+my $file_num = 0;              # Number of the current file
 
 # Files
 my $file_config;               # Path to the Batch blast config file
@@ -383,10 +411,20 @@ while (<CONFIG>) {
 	chomp;
 	my @tmpary = split (/\t/);
 	my $count_tmp = @tmpary;
-	print "COUNT: $count_tmp\n";
+	#print "COUNT: $count_tmp\n";
 	#print "$_\n";
 	#print "\t".$tmpary[0]."\n";
 	if ($count_tmp == 6) {
+
+	    #-----------------------------+
+	    # TEST THE ENTRY              |
+	    #-----------------------------+
+	    #test_blast_db  ($prog, $db, $line, $dbdir)
+	    test_blast_db( $tmpary[0], 
+			   $tmpary[4], 
+			   $line_num, 
+			   $dir_blast_db );
+
 	    $dbs[$i][0] = $tmpary[0];  # Blast Prog
 	    $dbs[$i][1] = $tmpary[1];  # Outfile extension
 	    $dbs[$i][2] = $tmpary[2];  # Alignment output
@@ -394,6 +432,9 @@ while (<CONFIG>) {
 	    $dbs[$i][4] = $tmpary[4];  # DBNAME
 	    $dbs[$i][5] = $tmpary[5];  # CMD SUFFIX
 	    $i++;
+
+
+
 	} # End of if count_tmp = 6
 	else {
 	    print "ERROR: Config file line number $lin_num\n";
@@ -429,8 +470,8 @@ print "NUMBER OF PROCESSES: $count_proc\n";
 # CREATE THE OUT DIR          |
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
-print "Creating output dir ...\n" unless $quiet;
 unless (-e $outdir) {
+    print "Creating output dir ...\n" unless $quiet;
     mkdir $outdir ||
 	die "Could not create the output directory:\n$outdir";
 }
@@ -469,8 +510,8 @@ for my $ind_file (@fasta_files)
     # BLAST output                |
     #-----------------------------+
     $dir_blast_out = $outdir.$name_root."/blast/";
-    print "Making: $dir_blast_out\n";
-    unless (-e $dir_blast_out) {
+    unless (-e $dir_blast_out ) {
+	print "Creating output dir\n: $dir_blast_out\n" if $verbose;
 	mkdir $dir_blast_out ||
 	    die "Could not create the output directory:\n$dir_blast_out";
     }
@@ -539,6 +580,53 @@ exit;
 sub test_blast_db {
 # Check for the existence of a BLAST database
 
+    # prog ----- blast program to use
+    # $db ------ blast database name
+    # $line ---- line number from the config file
+    # $dbdir --- path to the blast database directory
+    # $db_path - path to the expected blast database
+
+    my ($prog, $db, $line, $dbdir) = @_;
+    my $db_path;
+   
+    #-----------------------------+
+    # Nucleotide BLAST            |
+    #-----------------------------+
+    if ( ($prog =~ "blastn") || ($prog =~ "megblast") ||
+	 ($prog =~ "tblastx") || ($prog =~ "tblastn")  ) {
+	$db_path = $dbdir.$db.".nin";
+    }
+    #-----------------------------+
+    # Protein BLAST               |
+    #-----------------------------+
+    elsif ( ($prog =~ "blastx") || ($prog =~ "blastp") ||
+	    ($prog =~ "psi-blast") || ($prog =~ "phi-blast") ) {
+	# Protein BLAST
+	$db_path = $dbdir.$db.".pin";
+	
+    }
+    #-----------------------------+
+    # Unrecognized BLAST          |
+    #-----------------------------+
+    else {
+	print "\a";
+	print "ERROR: Config file line $line\n";
+	print "The blast program $prog is not recognized by batch_blast.pl\n";
+	exit;
+    }
+
+    #-----------------------------+
+    # CHECK FOR DB FILE EXISTNECE |
+    #-----------------------------+
+    unless (-e $db_path) {
+	print "\a";
+	print "ERROR: Config file line $line\n";
+	print "The database file for $db could not be found at:\n".
+	    "$db_path\n";
+    } else {
+	print "The db file is okay at: $db_path\n" if $verbose;
+    }
+
 }
 
 sub print_help {
@@ -587,7 +675,7 @@ sub print_help {
 
 STARTED: 07/23/2007
 
-UPDATED: 07/23/2007
+UPDATED: 07/24/2007
 
 =cut
 
