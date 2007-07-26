@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/23/2007                                       |
-# UPDATED: 07/24/2007                                       |
+# UPDATED: 07/26/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of softmasked fasta files, this will   |
@@ -528,7 +528,7 @@ for my $ind_file (@fasta_files)
 	$proc_num++;
 
 	# Temp exit for debug
-	if ($proc_num > $proc_num_max) { exit; }
+	#if ($proc_num > $proc_num_max) { exit; }
 
 	print "\n" unless $quiet;
 	print "+-----------------------------------------------------------+\n"
