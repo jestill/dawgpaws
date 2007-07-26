@@ -506,6 +506,18 @@ for my $ind_file (@fasta_files)
     }
     
     #-----------------------------+
+    # Create parent dir if it     |
+    # does not already exist      |
+    #-----------------------------+
+    my $dir_parent = $outdir.$name_root."/";
+    unless (-e $dir_parent) {
+	print "creating dir: $dir_parent\n";
+	mkdir $dir_parent ||
+	    die "Could not creat the output dir:\n$dir_parent\n";
+    }
+
+
+    #-----------------------------+
     # Create the dir to hold the  |
     # BLAST output                |
     #-----------------------------+
