@@ -311,12 +311,12 @@ for (my $i=1; $i<$max_num; $i++) {
     #open ()
     if ($prog_name =~ "batch_blast") {
 	open (SHOUT, ">".$shell_path);
-	
-	print SHOUT "/home/jlblab/jestill/dawg-paws/scripts/batch_blast.pl".
+
+	print SHOUT "/home/jlblab/jestill/scripts/dawg-paws/batch_blast.pl".
 	    " -i /scratch/jestill/wheat_in/$base_name$i/".
 	    " -o /scratch/jestill/wheat_out/".
 	    " -c /home/jlblab/jestill/scripts/dawg-paws/batch_blast_full.jcfg".
-	    " -d /db/jlblab/".
+	    " -d /db/jlblab/paws/".
 	    " --logfile /home/jlblab/jestill/$base_name$i.log";
     } 
     else {
