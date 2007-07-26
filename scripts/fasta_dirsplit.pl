@@ -227,7 +227,6 @@ my $ok = GetOptions(
 		    # Optional strings
 		    "logfile=s"    => \$logfile,
 		    # Booleans
-		    "write-shell"  => \$write_shell,
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -358,6 +357,7 @@ for (my $i=1; $i<$max_num; $i++) {
     }
     
 }
+
 
 # Temp exit
 #exit;
