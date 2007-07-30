@@ -27,11 +27,11 @@
 
 =head1 NAME
 
-blast2ap.pl - Add BLAST alignments to a game.xml file.
+ap_blastin.pl - Add BLAST alignments to a game.xml file.
 
 =head1 SYNOPSIS
 
-  Usage: blast2ap.pl -i Infile.game.xml -b BlastDir -o Outfile.game.xml
+  Usage: ap_blastin.pl -i Infile.game.xml -b BlastDir -o Outfile.game.xml
 
 =head1 DESCRIPTION
 
@@ -100,7 +100,8 @@ use X11::GUITest qw/
 #-----------------------------+
 # HARD CODED VARIABLES        |
 #-----------------------------+
-# Full path
+# Full path 
+my $ver = "1.0";               # Program version
 my $ap_path = '/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo';
 my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
 my $err_log_path = '/home/jestill/projects/wheat_annotation/error.txt';
@@ -118,14 +119,18 @@ my $outfile;                   # Full path to game.xml that you would
                                # exists, it will be overwritten.
 my $bac_name;                  # Name of the BAC, this will be the
                                # expected name of the Apollo window
-my $help = 0;                  # Boolean: Print the help message using 
-                               # perldoc to extract the POD.
+
+# BOOLEANS
+my $show_help = 0;
+my $show_usage = 0;
+my $show_man = 0;
+my $show_version = 0;
 my $quiet = 0;                 # Boolean: Run the program in quiet mode
 
-# Counters and indices
+# COUNTERS AND INDICES
 my $blast_file_count = 0;      # Counter for blast files 
 
-# Apollo window ids
+# APOLLO WINDOW IDS
 my $win_focus_id;              # The id number of the window that has focus
 my $win_focus_prev;            # Previous window id
 my @winid_load_data;           # window ids of the load data window
@@ -145,18 +150,43 @@ my $ok = GetOptions("b|blastdir=s" => \$blastdir,
                     "i|infile=s"   => \$infile,
 		    "o|outfile=s"  => \$outfile,
 		    "n|name=s"     => \$bac_name,
+		    "usage"        => \$show_usage,
+		    "version"      => \$show_version,
+		    "man"          => \$show_man,
 		    "q|quiet"      => \$quiet,
-		    "h|help"       => \$help
+		    "h|help"       => \$show_help
 		    );
 
 
 #-----------------------------+
-# SHOW HELP IF REQUESTED      |
+# SHOW REQUESTED HELP         |
 #-----------------------------+
-if( $help ) {
+if ($show_usage) {
+    print_help("");
+}
+
+if ($show_help || (!$ok) ) {
+    print_help("full");
+}
+
+if ($show_version) {
+    print "\n$0:\nVersion: $ver\n\n";
+    exit;
+}
+
+if ($show_man) {
+    # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
 }
+
+#-----------------------------+
+# SHOW HELP IF REQUESTED      |
+#-----------------------------+
+#3if( $show_help ) {
+#    system("perldoc $0");
+#    exit($ok ? 0 : 2);
+#}
 
 #-----------------------------+
 # PRINT USAGE WHEN CMD LINE   |
@@ -168,7 +198,7 @@ if ( (!$infile) || (!$blastdir) || (!$outfile) || (!$bac_name)) {
     print "No infile path provided\n" if !$infile;
     print "No blast directory provided\n" if !$blastdir;
     print "No outfile path provided" if !$outfile;
-    print "No BAC name provided" if (!$bac_name);
+    print "No BAC name provided" if !$bac_name;
     print "$usage\n\n";
     exit;
 }
@@ -302,7 +332,7 @@ foreach my $ind_blast_file (@blast_files) {
     # IMPORT THE BLAST REPORT     |
     #-----------------------------+
     # Change the following to something more straightforward
-    if (WaitWindowViewable( 'Apollo: adding data' ,undef, 5)) {
+    if (WaitWindowViewable( 'Apollo: adding data' ,undef, 20)) {
 	
 
 	#my $win_focus = GetWindowName(GetInputFocus());
@@ -326,7 +356,7 @@ foreach my $ind_blast_file (@blast_files) {
 	    # ALT F4 Will close the current window in apollo
 	    # If the window currently in focus is the main widow
 	    # this will also be closed.
-	    #SendKeys('%(F4)');
+	    SendKeys('%(F4)');
 	    
 	    exit;
 	} 
@@ -443,11 +473,44 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"ap_blastin.pl -i Infile.game.xml -b BlastDir -o Outfile.game.xml";
+	#"ap_blastin.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input game.xml file\n".
+	"  --outfile      # Path to the output game.xml file\n".
+	"  --blastdir     # Directory containing BLAST files to import\n".
+	"\n".
+	"ADDITIONAL OPTIONS:\n".
+	"".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
 =head1 HISTORY
 
 Started: 06/26/2007
 
-Updated: 06/26/2007
+Updated: 07/27/2007
 
 =cut
 

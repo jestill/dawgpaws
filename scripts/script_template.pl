@@ -190,7 +190,7 @@ sub print_help {
     # Options are to just print the full 
     my ($opt) = @_;
 
-    my $usage = "USAGE:\n" 
+    my $usage = "USAGE:\n". 
 	"MyProg.pl -i InFile -o OutFile";
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --infile       # Path to the input file\n".
