@@ -13,16 +13,12 @@
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 INCLDUES
-=cut
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use strict;                   # Keeps thing running clean
 use Getopt::Std;              # Get options from command line
 
-=head1 VARIABLES
-=cut
 #-----------------------------+
 # VARIABLES                   |
 #-----------------------------+
@@ -39,8 +35,6 @@ my $Lib = "/usr/local/genome/lib/genscan/Maize.smat";
 # The $0 is the name of the program
 my $Usage = "$0 -i InFile.fasta -o Outfile.genscan -g Outfile.gff\n";
 
-=head1 COMMAND LINE OPTOINS
-=cut
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -61,8 +55,6 @@ $OutGen = $Options{o} ||
 $OutGff = $Options{g} ||
     $OutGen.".gff";
 
-=head1 MAIN BODY
-=cut
 #-----------------------------+
 # CHECK EXISTENCE OF INFILE   |
 #-----------------------------+
@@ -80,12 +72,10 @@ $cmd = "genscan $Lib $InFile -v > $OutGen";
 system ($cmd);
 
 print "CONVERTING GENSCAN TO GFF\n";
-&Genscan2Gff ($OutGen, $OutGff);
+Genscan2Gff ($OutGen, $OutGff);
 
 exit;
 
-=head1 SUBFUNCTIONS
-=cut
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
@@ -119,7 +109,8 @@ sub Genscan2Gff
 		    
 		    my ($gene, $exon) = split (/\./, $f[0]); 
 		    
-		    $feature {name} = $gene + ($exon/1000); #name must be a number
+                    #name must be a number
+		    $feature {name} = $gene + ($exon/1000); 
 		    #arrange numbers so that start is always < end
 		    if ($f[2] eq '+') {
 			$feature {'start'}  = $f[3];
@@ -157,6 +148,11 @@ sub Genscan2Gff
 } #End of Genscan2Gff subfunction
 
 =head1 HISTORY
+
+STARTED: 04/17/2007
+
+UPDATED: 07/31/2007
+
 =cut
 #-----------------------------------------------------------+
 # HISTORY                                                   |
