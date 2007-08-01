@@ -226,7 +226,7 @@ my $ok = GetOptions(
 		    "h|help"       => \$show_help,
 		    "q|quiet"      => \$quiet,);
 
-my $ProcNum = 0;
+my $proc_num = 0;
 
 #//////////////////////
 my $file_num_max = 2;
@@ -336,9 +336,10 @@ unless (-e $outdir) {
 
 for my $ind_file (@fasta_files)
 {
-
+    
+    $proc_num++;
     $file_num++;
-    if ($file_num == $file_num_max){exit;}
+    #if ($file_num == $file_num_max){exit;}
 
     #-----------------------------+
     # GET THE ROOT NAME OF THE    |
@@ -392,7 +393,10 @@ for my $ind_file (@fasta_files)
 
     my $genscan_cmd = "$genscan_path $lib_path $infile_path -v > $out_path";
 
+    print "=======================================\n" if $verbose;
     print "Running Genscan for $name_root\n" if $verbose;
+    print " File $file_num of $num_files\n" if $verbose;
+    print "=======================================\n" if $verbose;
     print "$genscan_cmd\n" if $verbose;
     system($genscan_cmd) unless $test;
 
@@ -469,13 +473,15 @@ sub genscan_2_gff
 		    
 		    # Pring GFF format output
 		    print OUT 
-			#"$gene.$exon\tgenscan\texon\t" .
-			"$name_root\t" .
-			$feature{start} . "\t" . 
-			$feature{end} . "\t" . 
-			$feature{p} . "\t" . 
-			$feature{strand} . "\t.\t" . 
-			$gene . "\n";
+			"$name_root\t" .            # SeqName
+			"Genscan:maize\t".          # Source
+			"exon\t".                     # Feature
+			$feature{start}."\t" .      # Start
+			$feature{end}."\t" .        # End
+			$feature{p}."\t" .          # Score
+			$feature{strand} . "\t".    # Strand
+			".\t" .                     # Frame
+			"gene_".$gene."\n";               # Attribute
 		} elsif (/predicted peptide/i) {
 		    last;   
 		}
@@ -493,7 +499,7 @@ sub print_help {
     my ($opt) = @_;
     
     my $usage = "USAGE:\n".
-	"  batch_mask.pl -i DirToProcess -o OutDir";
+	"  batch_genscan.pl -i DirToProcess -o OutDir";
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --indir        # Path to the directory containing the sequences\n".
 	"                 # to process. The files must have one of the\n".
@@ -502,14 +508,8 @@ sub print_help {
 	"  --outdir       # Path to the output directory\n".
 	"\n".
 	"OPTIONS:\n".
-	"  --rm-path      # Full path to repeatmasker binary".
-	"  --engine       # The repeatmasker engine to use:\n".
-	"                 # [crossmatch|wublast|decypher]\n".
-	"                 # default is to use crossmatch\n".
-	"  --num-proc     # Number of processors to use for RepeatMasker\n".
-	"                 # default is one.\n".
-	"  --apollo       # Convert output to game.xml using apollo\n".
-	"                 # default is not to use apollo\n".
+	"  --gencan-path  # Full path to the genscan binary\n".
+	"  --lib-path     # Full path to the prediction library:\n".
 	"  --logfile      # Path to file to use for logfile\n".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
