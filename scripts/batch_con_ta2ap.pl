@@ -517,25 +517,14 @@ sub audit_ta {
     my $ta_dir = $outdir.$name_root."/ta/";
 
     # Expected ta files
-    my @ta_files = (# Original output from TriAnnotation
-		    "1trf.gff",
+    my @ta_files = ("1trf.gff",
 		    "2eugOs.gff",
 		    "2fGh.gff",
 		    "2gID.gff",
 		    "2gmHv.gff",
 		    "2gmOs.gff",
 		    "2gmTa.gff",
-		    "2gmZm.gff",
-		    # Apollo formatted output
-		    "1trf.gff",
-		    "2eugOs.gff",
-		    "2fGh.gff",
-		    "2gID.gff",
-		    "2gmHv.gff",
-		    "2gmOs.gff",
-		    "2gmTa.gff",
-		    "2gmZm.gff",
-		    );
+		    "2gmZm.gff",);
     
     if (-e $ta_dir) {
 	for my $ind_ta_file (@ta_files) {

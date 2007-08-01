@@ -103,7 +103,10 @@ use X11::GUITest qw/
 # Full path 
 my $ver = "1.0";               # Program version
 my $ap_path = '/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo';
-my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
+#my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
+#my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
+my $work_dir = '/home/jestill/projects/wheat_annotation/'.
+    'wheat_analysis/AnnotationReady/HEX2358G08/';
 my $err_log_path = '/home/jestill/projects/wheat_annotation/error.txt';
 
 #-----------------------------+
