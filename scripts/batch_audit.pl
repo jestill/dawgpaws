@@ -215,6 +215,9 @@ my $outdir;                    # Directory to hold the output
 my $msg;                       # Message printed to the log file
 my $name_root;                 # Root name to be used for output etc
 
+# ARRAYS
+my @pass_files;              # Array to hold the list of passed seqs
+
 # BOOLEANS
 my $show_help = 0;             # Show program help
 my $show_version = 0;          # Show program version
@@ -232,8 +235,10 @@ my $blast_ok = 0;              # Blast output is okay
 my $ta_ok = 0;                 # TriAnnotation output is okay
 my $rm_ok = 0;                 # RepeatMask outoupt is okay
 my $print_color = 0;
+my $pass_audit = 1;            # Does the Seq pass the audit
 
 # COUNTERS
+my $num_pass = 0;              # Number of seqs that pass the audit
 my $num_proc = 1;              # Number of processors to use
 
 #-----------------------------+
@@ -400,23 +405,22 @@ for my $ind_file (@fasta_files)
 
     # Print header to logfile
     if ($logfile) {
-	print LOG "\n\n=========================================\n";
+	print LOG "=========================================\n";
 	print LOG " $name_root\n";
-	print LOG "=========================================\n\n";
+	print LOG "=========================================\n";
     }
 
 
-    print "\n\n=========================================\n";
+    print "=========================================\n";
     print "Processing $name_root\n";
     print "=========================================\n\n";
-
 
 
     #-----------------------------+
     # AUDIT REPEAT MASKER OUTPUT  |
     #-----------------------------+
     if ($do_audit_rm) {
-	print "Auditing the repeatmasker output\n" if $verbose;
+	#print "Auditing the repeatmasker output\n" if $verbose;
 	$rm_ok = audit_rm($outdir, $name_root);
 	
 	if ($rm_ok) {
@@ -426,6 +430,7 @@ for my $ind_file (@fasta_files)
 	    print color 'reset' if $print_color;
 	} 
 	else {
+	    $pass_audit = 0;
 	    print LOG "$name_root RepeatMasker incomplete\n" if $logfile;
 	    print color 'red' if $print_color;
 	    print "$name_root RepeatMasker incomplete\n";
@@ -455,6 +460,7 @@ for my $ind_file (@fasta_files)
 	    print color 'reset' if $print_color;
 	} 
 	else {
+	    $pass_audit = 0;
 	    print color 'red' if $print_color;
 	    print "$name_root TriAnnotation incomplete\n";
 	    print color 'reset' if $print_color;
@@ -466,7 +472,29 @@ for my $ind_file (@fasta_files)
     print LOG "\n" if $logfile;
     print "\n";
 
+
+    # Reset the pass_audit
+    if ($pass_audit) {
+	push @pass_files, $name_root;
+	$num_pass++;
+    }
+    $pass_audit = 1;
+
 } # End of for each file in the input folder
+
+
+#-----------------------------+
+# PRINT SUMMARY OF AUDIT      |
+#-----------------------------+
+print "=========================================\n";
+print "  SUMMARY\n";
+print "=========================================\n\n";
+
+print "Total seqs: $num_files\n";
+print "Passed audit: $num_pass\n";
+for my $ind_pass_file (@pass_files) {
+    print "\t$ind_pass_file\n";
+}
 
 close LOG if $logfile;
 
@@ -749,3 +777,7 @@ UPDATED: 07/31/2007
 # - added audit_ta subfunction
 # - added booleans to keep track of pass/fail of 
 #   individual audit jobs
+#
+# 08/02/2007
+# - Added ability to print output in color
+# - Added counter for seqs that pass the audit
