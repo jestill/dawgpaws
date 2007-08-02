@@ -1,22 +1,19 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_hardmask.pl - Hardmask a batch of softmasked files  |
+# batch_findgaps.pl - Hardmask a batch of softmasked files  |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
-# STARTED: 07/19/2007                                       |
-# UPDATED: 07/19/2007                                       |
+# STARTED: 08/01/2007                                       |
+# UPDATED: 08/01/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Given a directory of softmasked fasta files, this will   |
-#  hardmask the files by replacing the lowecase letters     |
-#  with an uppercase letter set by the user.                |
-#                                                           |
-# USAGE:                                                    |
-#  batch_hardmask.pl -i InDir -o OutDir -m X                |
+#  Given a directory of fasta files, this will find gaps    |
+#  in the fasta file and report these as gaps in a gff file |
+#  as well as produce a game.xml file for apollo.           |
 #                                                           |
 # LICENSE                                                   |
 #  GNU LESSER GENERAL PUBLIC LICENSE                        |
@@ -26,7 +23,7 @@
 
 =head1 NAME
 
-batch_hardmask.pl - Hardmask a batch of softmasked fasta files. 
+batch_findgaps.pl - Hardmask a batch of softmasked fasta files. 
 
 =head1 VERSION
 
@@ -35,7 +32,7 @@ This documentation refers to batch_hardmask version 1.0
 =head1 SYNOPSIS
 
  Usage:
- batch_hardmask.pl -i DirToProcess -o OutDir
+ batch_findgaps.pl -i DirToProcess -o OutDir
 
 =head1 DESCRIPTION
 
@@ -183,7 +180,8 @@ print "\n";
 # INCLUDES                    |
 #-----------------------------+
 use File::Copy;
-use Getopt::Long;
+use Getopt::Long;              # Get options from the command line
+use Bio::SeqIO;                # Allows for treatment of seqs as objects
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -206,6 +204,8 @@ my $show_usage = 0;            # Show program usage command
 my $quiet = 0;                 # Boolean for reduced output to STOUT
 my $test = 0;                  # Run the program in test mode
 my $verbose = 0;               # Run the program in verbose mode
+my $is_gap = 0;                # Current character matche the gap char
+my $prev_gap = 0;              # Previous character matches the gap char
 
 # PACKAGE LEVEL SCOPE
 my $file_to_mask;              # Path to the file to mask
@@ -217,7 +217,10 @@ my $msg;                       # Message printed to the log file
 my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
-
+my $min_gap_len = "100";       # Minimum length to be considered a gap
+my $gap_char = "n";            # Character indicating a gap
+my $dir_game_out;              # Dir to hold the game xml output
+my $dir_gff_out;               # Dir to hold the gff output
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -227,8 +230,8 @@ my $ok = GetOptions(
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
-		    "m|mask"       => \$mask_char,
-		    "ext"          => \$out_ext,
+		    "len"          => \$min_gap_len,
+		    "gapchar"      => \$gap_char,
 		    "logfile=s"    => \$logfile,
 		    # Booleans
 		    "verbose"      => \$verbose,
@@ -247,7 +250,7 @@ my ( @RepLibs );
 my $ProcNum = 0;
 
 #//////////////////////
-my $file_num_max = 5;
+my $file_num_max = 2;
 my $file_num = 0;
 #\\\\\\\\\\\\\\\\\\\\\\
 
@@ -291,7 +294,7 @@ if ($logfile) {
 	die "Can not open logfile:\n$logfile\n";
     my $time_now = time;
     print LOG "==================================\n";
-    print LOG "  batch_hardmask.pl\n";
+    print LOG "  batch_findgaps.pl\n";
     print LOG "  JOB: $time_now\n";
     print LOG "==================================\n";
 }
@@ -339,30 +342,32 @@ if ($num_files == 0) {
 # CREATE THE OUT DIR          |
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
-
-print "Creating output dir ...\n" unless $quiet;
 unless (-e $outdir) {
+    print "Creating output dir ...\n" unless $quiet;
     mkdir $outdir ||
 	die "Could not create the output directory:\n$outdir";
 }
 
 #-----------------------------+
-# RUN REPEAT MAKSER AND PARSE |
-# RESULTS FOR EACH SEQ IN THE |
-# fasta_files ARRAY FOR EACH  |
-# REPEAT LIBRARY IN THE       |
-# RepLibs ARRAY               |
+# CHECK FOR GAPS FOR EACH     |
+# SEQUENCE                    |
 #-----------------------------+
-
 for my $ind_file (@fasta_files)
 {
     
     $file_num++;
+    
+    # Temp exit for debug
+    #if ($file_num == $file_num_max) {exit;}
 
+
+    print "==============================\n" if $verbose;
+    print "  $file_num of $num_files\n" if $verbose;
+    print "==============================\n" if $verbose;
 
     #-----------------------------+
-    # Get the root name of the    |
-    # file to mask                |
+    # GET THE ROOT NAME OF THE    |
+    # FILE TO MASK                |
     #-----------------------------+
     if ($ind_file =~ m/(.*)\.masked\.fasta$/) {
 	# file ends in .masked.fasta
@@ -380,82 +385,142 @@ for my $ind_file (@fasta_files)
 	$name_root = $ind_file;
     }
 
-    $file_to_mask = $indir.$ind_file;
-    $hard_mask_out = $outdir.$name_root.$out_ext;
+    #-----------------------------+
+    # CREATE PARENT DIR IF IT     |
+    # DOES NOT ALREADY EXIST      |
+    #-----------------------------+
+    my $dir_parent = $outdir.$name_root."/";
+    unless (-e $dir_parent) {
+	print "creating dir: $dir_parent\n";
+	mkdir $dir_parent ||
+	    die "Could not creat the output dir:\n$dir_parent\n";
+    }
+
+    #-----------------------------+
+    # MAKE SURE THE GFF AND GAME  |
+    # DIRS ARE PRESENT            |
+    #-----------------------------+
+    $dir_game_out = $outdir.$name_root."/game/";
+    unless (-e $dir_game_out) {
+	print "Creating dir:\n$dir_game_out\n" if $verbose;
+	mkdir $dir_game_out ||
+	    die "Could not create dir:\n$dir_game_out\n";
+    }
     
-    print "Converting:\n".
-	"\t$file_to_mask TO\n".
-	"\t$hard_mask_out\n" unless $quiet;
+    $dir_gff_out = $outdir.$name_root."/gff/";
+    unless (-e $dir_gff_out) {
+	print "Creating dir:\n$dir_gff_out\n" if $verbose;
+	mkdir $dir_gff_out ||
+	    die "Could not create dir:\n$dir_gff_out\n";
+    }
 
 
     #-----------------------------+
-    # OPEN FILES                  |
+    # INPUT AND OUTPUT FILE PATHS |
     #-----------------------------+
-    open (IN, "<".$file_to_mask) ||
-	die "Can not open input file:\n$file_to_mask\n";
-    
-    open (OUT, ">".$hard_mask_out) ||
-	die "Can not open output file:\n$hard_mask_out\n";
+    my $fasta_file = $indir.$ind_file;
+    my $gff_out = $dir_gff_out.$name_root."_gaps.gff";
+    my $game_out = $dir_game_out.$name_root."_gaps.game.xml";
     
     #-----------------------------+
-    # HARD MASK FILE              |
+    # LOAD FASTA FILE TO SEQ OBJ  |
     #-----------------------------+
-    # The tr regexp does not appear to accept variables
-    # therefore I have to write this a bit convoluted with
-    # if then statements for acceptable MaskCharacters
-    while (<IN>)
-    {
-	unless (m/^>/)        # Do not mask header lines 
-	{
-	    # Mask with the selected character
-	    if ($mask_char =~ "N"){
-		tr/[a-z]/N/;
-	    } elsif ($mask_char =~ "X"){
-		tr/[a-z]/X/;
-	    } elsif ($mask_char =~ "x"){
-		tr/[a-z]/x/;
-	    } elsif ($mask_char =~ "n"){
-		tr/[a-z]/n/;
-	    } else {
-		$msg = "\aERROR: A valid mask character was not selected\n";
-	    }# End of select mask character
-		
-		# Print masked string to the outfile
-		print OUT $_;
+    my $inseq = Bio::SeqIO->new(-file   => "<$fasta_file",
+				-format => 'fasta' ) 
+	|| die "ERROR Can not open infile:\n $fasta_file\n";
+ 
+    #-----------------------------+
+    # OPEN GFF OUTPUT FILE        |
+    #-----------------------------+
+    open (GFFOUT, ">$gff_out") ||
+	die "Can out open output file:\n$gff_out\n";
+
+    #-----------------------------+
+    # CHECK FOR GAPS IN THE OBJ   |
+    #-----------------------------+
+    while (my $seq = $inseq->next_seq()) {
+	print "yup\n";
+	#my $seq_string = $seq->seq();
+	my $seq_len = $seq->length();
+	#print "$seq_string\n";
+	print "FULL SEQ LEN:\t$seq_len\n\n";
+
+	# Increment across the seq string and see if this is 
+	# the gap 
+	for (my $i = 1; $i<$seq_len; $i++) {
+	    my $seq_char = $seq->subseq($i,$i);
 	    
-	} else {
-	    print OUT $_;
-	    $NumRecs++;       # For headers increment NumRecs
-	}
-    } # End of while IN
+	    #-----------------------------+
+	    # DETERMINE IF THIS IS AS GAP |
+	    # CHARACTER                   |
+	    #-----------------------------+
+	    if ( ($seq_char =~ $gap_char) || ($seq_char =~ "N") ) {
+		#print "$i: $seq_char\n";
+		$is_gap = 1;
+	    }
+	    else {
+		$is_gap = 0;
+	    }
+
+	    #-----------------------------+
+	    # DETERMINE START AND END OF  |
+	    # GAPS                        |
+	    #-----------------------------+
+	    if ( ($is_gap) & (!$prev_gap) ) {
+		# START OF A GAP
+		$gap_start = $i;
+	    } 
+	    elsif ( (!$is_gap) & ($prev_gap) ) {
+		# End of a gap
+		$gap_end = $i;
+		$gap_len = $gap_end - $gap_start;
+		print "START:\t$gap_start\t";
+		print "END:\t$gap_end\n";
+		print "\tLEN: $gap_len\n";
+		# If gap length is equal to or more then minimum 
+		# write to gff file
+		# This is labeled as gap
+		if ($gap_len >= $min_gap_len) {
+		    print "\tBig Enough\n";
+		    
+		    print GFFOUT 
+			"$name_root\t".  # SeqName
+			"gap\t".         # Source
+			"gap\t".         # Feature (May need to make exon)
+			"$gap_start\t".  # Start
+			"$gap_end\t".    # End
+			".\t".           # Score
+			"+\t".           # Strand
+			".\t".           # Frame
+			"gap\n";         # Attribute
+
+		}
+
+	    } else {
+		# Continuation of gap
+	    }
+	    
+
+	    # Set the prev_gap for next round
+	    if ($is_gap) {
+		$prev_gap = 1;
+	    }
+	    else {
+		$prev_gap = 0;
+	    }
+	    
+
+	} # End of for $i
+	
+    } # End of while next_seq
     
-    #-----------------------------+
-    # CLOSE FILES                 |
-    #-----------------------------+
-    close IN;
-    close OUT;
-    
-#//////////////////////////////////
-# MAY WANT TO LEAVE THE FOLLOWING
-# TO MAKE A COPY IN THE GENERAL
-# BAC DIRECTORY
-#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-#
-##    #-----------------------------+
-#    # MAKE OUTPUT DIR             |
-##    #-----------------------------+
-#    # the $bac_out_dir is the summary directory that
-#    # contains all of the data related to a seq
-#    $bac_out_dir = $outdir.$name_root."/";
-#    mkdir $bac_out_dir, 0777 unless (-e $bac_out_dir); 
+    close GFFOUT;
 
-
-#    # TEMP EXIT FOR DEBUG, WIll JUST RUN FIRST FILE TO BE MASKED
-#    if ($file_num > $file_num_max ) {
-#	print "\nDebug run finished\n\n";
-#	exit;
-#    }
-
+    # TO DO: Convert the GFF output to Apollo game xml
+    if (-e $gff_out) {
+	apollo_convert($gff_out, "gff", $game_out, "game", 
+		       $fasta_file, "NULL");
+    }
 
 } # End of for each file in the input folder
 
@@ -475,7 +540,7 @@ sub print_help {
 
     
     my $usage = "USAGE:\n".
-	"  batch_hardmask.pl -i DirToProcess -o OutDir";
+	"  batch_findgaps.pl -i DirToProcess -o OutDir";
 
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --indir        # Path to the directory containing the sequences\n".
@@ -485,10 +550,8 @@ sub print_help {
 	"  --outdir       # Path to the output directory\n".
 	"\n".
 	"OPTIONS:\n".
-	"  --mask         # Character to mask with [N|n|X|x]\n".
-	"                 # default is N\n".
-	"  --ext          # Extension to add to new files.\n".
-	"                 # default is .hard.fasta.\n".
+	"  --len          # Min length to be considered gap\n".
+	"  --gapchar      # Character indicating a gap\n".
 	"  --logfile      # Path to file to use for logfile\n".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
@@ -496,7 +559,7 @@ sub print_help {
 	"  --man          # Open full program manual\n".
 	"  --test         # Run the program in test mode\n".
 	"  --quiet        # Run program with minimal output\n";
-	
+
     if ($opt =~ "full") {
 	print "\n$usage\n\n";
 	print "$args\n\n";
@@ -508,11 +571,82 @@ sub print_help {
     exit;
 }
 
+
+sub apollo_convert {
+#-----------------------------+
+# CONVERT AMONG FILE FORMATS  |
+# USING THE APOLLO PROGRAM    |
+#-----------------------------+
+# Converts among the various data formats that can be used 
+# from the command line in tbe Apollo program. For example
+# can convert GFF format files into the game XML format.
+# NOTES:
+#  - Currently assumes that the input file is in the correct
+#    coordinate system.
+#  - GFF files will require a sequence file
+#  - ChadoDB format will require a db password
+
+
+    # ApPath - the path of dir with the Apollo binary
+    #          Specifying the path will allow for cases
+    #          where the program is not in the PATHS
+    # ApCmd  - the apollo commands to run
+
+    my $InFile = $_[0];        # Input file path
+    my $InForm = $_[1];        # Output file format:
+                               # game|gff|gb|chadoxml|backup
+    my $OutFile = $_[2];       # Output file path
+    my $OutForm = $_[3];       # Ouput file foramt
+                               # chadoDB|game|chadoxml|genbank|gff|backup
+    my $SeqFile = $_[4];       # The path of the sequence file
+                               # This is only required for GFF foramt files
+                               # When not required this can be passed as na
+    my $DbPass = $_[5];        # Database password for logging on to the 
+                               # chado database for reading or writing.
+    my ( $ApPath, $ApCmd );
+
+
+# The following path is for the jlb10 machine
+#    $ApPath = "/home/jestill/Apps/Apollo/Apollo";
+    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
+
+#    $ApPath = "/Applications/Apollo/bin/apollo";
+
+    # Set the base command line. More may need to be added for different
+    # formats. For example, GFF in requires a sequence file and the CHADO
+    # format will require a database password.
+    $ApCmd = $ApPath." -i ".$InForm." -f ".$InFile.
+	" -o ".$OutForm." -w ".$OutFile;
+
+    # Make sure that that input output formats are in lowercase
+    # may need to add something here to avoid converting chadoDB
+    $InForm = lc($InForm);
+    $OutForm = lc($OutForm);
+    
+    # Determine the proper command to use based on the input format
+    # since GFF file also require a sequence file
+    if ($InForm =~ "gff" )
+    {
+	$ApCmd = $ApCmd." -s ".$SeqFile;
+    }
+    
+    if ($InForm =~ "chadodb")
+    {
+	$ApCmd = $ApCmd." -D ".$DbPass;
+    }
+
+    # Do the apollo command
+    system ( $ApCmd );
+
+}
+
+
+
 =head1 HISTORY
 
-STARTED: 07/19/2007
+STARTED: 08/01/2007
 
-UPDATED: 07/19/2007
+UPDATED: 08/01/2007
 
 =cut
 
@@ -520,7 +654,5 @@ UPDATED: 07/19/2007
 # HISTORY                                               |
 #-------------------------------------------------------+
 #
-# 07/19/2007
+# 08/01/2007
 # - Program started
-# - Imported functions from batch_mask.pl as well as
-#   HardMask.pl
