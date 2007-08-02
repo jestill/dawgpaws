@@ -196,6 +196,10 @@ print "\n";
 use File::Copy;                # Used to move files
 use Getopt::Long;              # Get cmd line options
 use Bio::SearchIO;             # Parse BLAST output
+#use Term::ANSIColor;           # Allows for pretty print of ANSI output
+#use Something:not:here ||
+
+
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -227,6 +231,7 @@ my $do_full_audit = 0;         # Audit everything
 my $blast_ok = 0;              # Blast output is okay
 my $ta_ok = 0;                 # TriAnnotation output is okay
 my $rm_ok = 0;                 # RepeatMask outoupt is okay
+my $print_color = 0;
 
 # COUNTERS
 my $num_proc = 1;              # Number of processors to use
@@ -241,6 +246,7 @@ my $ok = GetOptions(
 		    # Optional strings
 		    "logfile=s"    => \$logfile,
 		    # Booleans
+		    "color"        => \$print_color,
 		    "copy-gff"     => \$copy_gff,
 		    "blast"        => \$do_audit_blast,
 		    "rm"           => \$do_audit_rm,
@@ -290,6 +296,10 @@ if ($show_version) {
 # are not present
 if ( (!$indir) || (!$outdir) ) {
     print_help("full");
+}
+
+if ($print_color) {
+    use Term::ANSIColor;    
 }
 
 #-----------------------------+
@@ -396,6 +406,12 @@ for my $ind_file (@fasta_files)
     }
 
 
+    print "\n\n=========================================\n";
+    print "Processing $name_root\n";
+    print "=========================================\n\n";
+
+
+
     #-----------------------------+
     # AUDIT REPEAT MASKER OUTPUT  |
     #-----------------------------+
@@ -405,11 +421,15 @@ for my $ind_file (@fasta_files)
 	
 	if ($rm_ok) {
 	    print LOG "$name_root RepeatMasker complete\n" if $logfile;
+	    print color 'green' if $print_color;
 	    print "$name_root RepeatMasker complete\n";
+	    print color 'reset' if $print_color;
 	} 
 	else {
-	    print LOG "$name_root RepeatMasker incomplete" if $logfile;
-	    print "$name_root RepeatMasker incomplete";
+	    print LOG "$name_root RepeatMasker incomplete\n" if $logfile;
+	    print color 'red' if $print_color;
+	    print "$name_root RepeatMasker incomplete\n";
+	    print color 'reset' if $print_color;
 	}
     }
 
@@ -430,10 +450,14 @@ for my $ind_file (@fasta_files)
 	$ta_ok = audit_ta($outdir, $name_root);
 
 	if ($ta_ok) {
+	    print color 'green' if $print_color;
 	    print "$name_root TriAnnotation complete\n";
+	    print color 'reset' if $print_color;
 	} 
 	else {
+	    print color 'red' if $print_color;
 	    print "$name_root TriAnnotation incomplete\n";
+	    print color 'reset' if $print_color;
 	}
 
     }
@@ -527,14 +551,14 @@ sub audit_ta {
 		    "2gmTa.gff",
 		    "2gmZm.gff",
 		    # Apollo formatted output
-		    "1trf.gff",
-		    "2eugOs.gff",
-		    "2fGh.gff",
-		    "2gID.gff",
-		    "2gmHv.gff",
-		    "2gmOs.gff",
-		    "2gmTa.gff",
-		    "2gmZm.gff",
+		    "1trf.ap.gff",
+		    "2eugOs.ap.gff",
+		    "2fGh.ap.gff",
+		    "2gID.ap.gff",
+		    "2gmHv.ap.gff",
+		    "2gmOs.ap.gff",
+		    "2gmTa.ap.gff",
+		    "2gmZm.ap.gff",
 		    );
     
     if (-e $ta_dir) {
