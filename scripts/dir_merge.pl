@@ -135,6 +135,7 @@ my @indirs;                    # List of directories
 my $num_indirs;                # Total number of indirs
 
 # Booleans
+my $do_overwrite = 0;          # Overwrite existing files
 my $help = 0;
 my $quiet = 0;
 my $show_help = 0;
@@ -149,6 +150,8 @@ my $verbose = 0;
 #-----------------------------+
 my $ok = GetOptions("i|indir=s"   => \$indir_list,
                     "o|outdir=s"  => \$outdir,
+		    # Booleans
+		    "overwrite"   => \$do_overwrite,
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
@@ -199,12 +202,13 @@ if ( (!$indir_list) || (!$outdir) ) {
 # List dirs to split
 $num_indirs = @indirs;
 
+# Got rid of this
 # Throw error if multiple dirs not indicated
-if ($num_indirs < 2) {
-    print "\a";
-    print "ERROR: Multiple dirs shold be indicated by --indir\n";
-    print ""; 
-}
+#if ($num_indirs < 2) {
+#    print "\a";
+#    print "ERROR: Multiple dirs shold be indicated by --indir\n";
+#    print ""; 
+#}
 
 print "\nDirs to merge ($num_indirs):\n";
 for (my $i=0; $i < $num_indirs; $i++) {
@@ -303,14 +307,23 @@ sub merge {
     #    else    err      err   err   err     err
     print "merge: merging $a and $b\n";
     if (not -e $a) {
+	#-----------------------------+
+	# $a DOES NOT EXIST           |
+	#-----------------------------+
         print STDERR "merge:$a: doesn't exist\n";
 
-    } elsif (not (-f $a or -d $a)) {
+    } 
+    elsif (not (-f $a or -d $a)) {
+	#-----------------------------+
+	# $a IS NOT A FILE OR DIR     |
+	#-----------------------------+
         print STDERR "merge:$a: not a normal file\n";
 
-    } elsif (not -e $b) {
-	
-	# JCE CHANGES THE FOLLOWINF TO COPY
+    } 
+    elsif (not -e $b) {
+	#-----------------------------+
+	# $b DOES NOT EXIST           |
+	#-----------------------------+
         print "merge: moving $a to $b\n" if $verbose;
         rename($a, $b) || 
 	    print STDERR "merge:$a: could not rename to $b, $!\n";;
@@ -318,8 +331,11 @@ sub merge {
         #print "dir_merge: moving $a to $b\n" if $verbose;
 	#copy ($a, $b) ||
 	#    print STDERR "merge:$a: could not rename to $b, $!\n";
-    } elsif (-d $b) {
-	# $b is a directory
+    } 
+    elsif (-d $b) {
+	#-----------------------------+
+	# $b IS A DIRECTORY           |
+	#-----------------------------+
         if (-d $a) {
             my @entries = getdir($a);
             if (@entries) {
@@ -340,15 +356,37 @@ sub merge {
                 print "merge: deleting empty directory $a\n" if $verbose;
                 rmdir($a) or print STDERR "merge:$a: could not delete ".
 		    "directory, $!\n";
-            } else {
+            } 
+	    else {
                 print STDERR "merge:$a: could not delete directory,".
 		    " directory is not empty\n";
             }
-        } else {
+        } 
+	else {
             print STDERR "merge:$a: conflicts with directory $b\n";
         }
-    } else {
-        print STDERR "merge:$a: conflicts with non-directory $b\n";
+    } 
+    else {
+	#-----------------------------+
+	# THE FILE ALREADY EXIST WITH |
+	# A FILE IN B                 |
+	#-----------------------------+
+	print  "merge:$a: conflicts with non-directory $b\n";
+	
+	if ($do_overwrite) {
+	    # DELETE EXISTING FILE AND REPLACE WITH NEW FILE
+	    #print STDERR "File $b exists and will be overwritten\n";
+	    #my $rmcmd = "rm $b";
+	    #system ($rmcmd);
+	    #rename($a, $b) || 
+	    #	print STDERR "merge:$a: could not rename to $b, $!\n";
+	    move($a, $b) || 
+		print STDERR "\n\nmerge:$a: could not rename to $b, $!\n";
+	}
+	else {
+	    print STDERR "merge:$a: conflicts with non-directory $b\n";
+	}
+	
     }
 }
 
