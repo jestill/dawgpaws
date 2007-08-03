@@ -8,10 +8,10 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 07/30/2007                                       |
-# UPDATED: 07/31/2007                                       |
+# UPDATED: 08/02/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Audit the dawg paws analysis output 
+#  Audit the dawg paws analysis output.                     |
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -49,6 +49,23 @@ Path of the directory to place the program output.
 =head1 OPTIONS
 
 =over 2
+
+=item --color
+
+Print the terminal output in fancy ANSI color.
+
+=item --deep
+
+Do a deep audit. 
+This process is slower and includes the following additional steps: 
+
+=over 2
+
+=item *
+
+BLAST output files that are empty are moved to a subdir
+
+=back
 
 =item --blast
 
@@ -196,10 +213,6 @@ print "\n";
 use File::Copy;                # Used to move files
 use Getopt::Long;              # Get cmd line options
 use Bio::SearchIO;             # Parse BLAST output
-#use Term::ANSIColor;           # Allows for pretty print of ANSI output
-#use Something:not:here ||
-
-
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -234,8 +247,9 @@ my $do_full_audit = 0;         # Audit everything
 my $blast_ok = 0;              # Blast output is okay
 my $ta_ok = 0;                 # TriAnnotation output is okay
 my $rm_ok = 0;                 # RepeatMask outoupt is okay
-my $print_color = 0;
-my $pass_audit = 1;            # Does the Seq pass the audit
+my $print_color = 0;           # Print output in fancy ANSI color
+my $pass_audit = 1;            # Does the Seq pass the audit 
+my $do_deep_audit = 0;         # Do a deep audit, move empty BLAST etc
 
 # COUNTERS
 my $num_pass = 0;              # Number of seqs that pass the audit
@@ -251,6 +265,7 @@ my $ok = GetOptions(
 		    # Optional strings
 		    "logfile=s"    => \$logfile,
 		    # Booleans
+		    "deep"         => \$do_deep_audit,
 		    "color"        => \$print_color,
 		    "copy-gff"     => \$copy_gff,
 		    "blast"        => \$do_audit_blast,
@@ -357,6 +372,7 @@ my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 
 my $num_files = @fasta_files;
+@fasta_files = sort(@fasta_files);
 
 #-----------------------------+
 # SHOW ERROR IF NO FILES      |
@@ -444,7 +460,20 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     if ($do_audit_blast) {
 	#print "Auditing BLAST for $name_root\n" if $verbose;
-	audit_blast($outdir, $name_root);
+	$blast_ok = audit_blast($outdir, $name_root, $do_deep_audit);
+
+	if ($blast_ok) {
+	    print color 'green' if $print_color;
+	    print "$name_root BLAST complete\n";
+	    print color 'reset' if $print_color;
+	}
+	else {
+	    $pass_audit = 0;
+	    print color 'red' if $print_color;
+	    print "$name_root BLAST incomplete\n";
+	    print color 'reset' if $print_color;
+	}
+
     }
 
     #-----------------------------+
@@ -486,6 +515,9 @@ for my $ind_file (@fasta_files)
 #-----------------------------+
 # PRINT SUMMARY OF AUDIT      |
 #-----------------------------+
+# Try to sort the output array
+#sort {$b cmp $a}(@pass_files);
+
 print "=========================================\n";
 print "  SUMMARY\n";
 print "=========================================\n\n";
@@ -575,7 +607,7 @@ sub audit_ta {
 		    "2fGh.gff",
 		    "2gID.gff",
 		    "2gmHv.gff",
-		    "2gmOs.gff",
+		    #"2gmOs.gff",
 		    "2gmTa.gff",
 		    "2gmZm.gff",
 		    # Apollo formatted output
@@ -584,7 +616,7 @@ sub audit_ta {
 		    "2fGh.ap.gff",
 		    "2gID.ap.gff",
 		    "2gmHv.ap.gff",
-		    "2gmOs.ap.gff",
+		    #"2gmOs.ap.gff",
 		    "2gmTa.ap.gff",
 		    "2gmZm.ap.gff",
 		    );
@@ -630,7 +662,7 @@ sub audit_blast {
     # AUDIT BLAST OUTPUT          |
     #-----------------------------+
     
-    my ($outdir, $name_root) = @_;
+    my ($outdir, $name_root, $do_deep_audit) = @_;
     my $msg;
     my $blast_fail = 0;
 
@@ -638,8 +670,9 @@ sub audit_blast {
     my $blast_dir = $outdir.$name_root."/blast/";
     my $no_hit_dir = $blast_dir."/no_hits/";
     
-    if (-e $blast_dir) {
-	
+    if ( (-e $blast_dir) & ($do_deep_audit) ) {
+	# If the output directory exists and this is a deep 
+	# audit request
 	#////////////////////////////
 	# BEGIN CHECK EACH FILE
 	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -702,6 +735,11 @@ sub audit_blast {
 	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     } 
+    elsif (-e $blast_dir) {
+	# The output dir exists but this is not a deep audit
+	# Maybe just count the number of blast output files and 
+	# pass fail depending on number of files or file list
+    }	
     else {
 	$blast_fail = 1;
 	print "The Blast output dir does not exist at:\n" if $verbose;
@@ -737,6 +775,9 @@ sub print_help {
 	"  --outdir       # Path to the output directory\n".
 	"\n".
 	"OPTIONS:\n".
+	"  --color        # Print output in fancy ANSI color\n".
+	"  --deep         # Does a deep audit\n".
+	"                 #   -Moves empty BLAST output to subdir\n".
 	"  --logfile      # Path to file to use for logfile\n".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
@@ -760,7 +801,7 @@ sub print_help {
 
 STARTED: 07/30/2007
 
-UPDATED: 07/31/2007
+UPDATED: 08/02/2007
 
 =cut
 
@@ -781,3 +822,6 @@ UPDATED: 07/31/2007
 # 08/02/2007
 # - Added ability to print output in color
 # - Added counter for seqs that pass the audit
+# - Added array to hold the list of passed seqs
+#   and these get printed at the end
+# - Added sort of the fasta_files array
