@@ -24,7 +24,7 @@
 
 =head1 NAME
 
-batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_cnv_ta2ap.pl - Run RepeatMasker and parse results to a gff format file. 
 
 =head1 VERSION
 

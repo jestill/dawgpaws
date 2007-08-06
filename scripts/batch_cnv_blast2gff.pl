@@ -18,7 +18,7 @@
 
 =head1 NAME
 
-Name.pl - Short program description. 
+batch_cnv_blast2gff.pl - Short program description. 
 
 =head1 VERSION
 
@@ -27,7 +27,7 @@ This documentation refers to program version 0.1
 =head1 SYNOPSIS
 
  Usage:
-  Name.pl -i InFile -o OutFile
+  Name.pl -i InDir -o OutDir
 
 =head1 DESCRIPTION
 
@@ -111,9 +111,10 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use strict;
-use Getopt::Long;
+use strict;                    # Follow the rules
+use Getopt::Long;              # Get options from the command line
 use Bio::SearchIO;             # Parse BLAST output
+use File::Copy;                # Copy the gff output to the gff dir
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -121,19 +122,20 @@ use Bio::SearchIO;             # Parse BLAST output
 my $VERSION = "0.1";
 
 #-----------------------------+
-# LOCAL VARIABLES             |
+# VARIABLE SCOPE              |
 #-----------------------------+
-my $BlastFile = "/home/jestill/projects/asgr/Asgr_c_Net_BigCat/CPAN001/".
-    "contig02/contig02_CPAN001.blo";
-my $GFFOut = "/home/jestill/projects/asgr/Asgr_c_Net_BigCat/CPAN001/".
-    "contig02/contig02_CPAN001.gff";
-my $max_e = 0.00001;
-my $min_len = 100;
 
 # Set variable scope
-my $seqname;
-my $infile;
-my $outfile;
+my $indir;
+my $outdir;
+my $logfile;
+my $name_root;
+my $out_gff_path;
+my $out_gff_dir;
+my $out_gff_copy;
+my $msg;
+my $ind_blast_dir;
+my $blast_file_num;
 
 # Booleans
 my $verbose = 0;
@@ -145,18 +147,30 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_append = 0;
 
+# Arrays
+my @blast_files;
+
+
+#//////////////////////
+# file_num_max is the number of seqs to process in test run
+my $file_num_max = 1;
+my $file_num = 0;
+#\\\\\\\\\\\\\\\\\\\\\\
+
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED
-		    "i|infile=s"  => \$infile,
-                    "o|outfile=s" => \$outfile,
-		    "n|name=s"    => \$seqname,
+		    "i|indir=s"   => \$indir,
+                    "o|outdir=s"   => \$outdir,
 		    # OPTIONS
+		    "logfile=s"   => \$logfile,
+		    # BOOLEANS
 		    "verbose"     => \$verbose,
 		    "append"      => \$do_append,
-		    "maxe"        => \$max_e,
-		    "minlen"      => \$min_len,
+		    #"maxe"        => \$max_e,
+		    #"minlen"      => \$min_len,
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
@@ -188,14 +202,184 @@ if ($show_man) {
 #-----------------------------+
 # CHECK REQUIRED OPTIONS      |
 #-----------------------------+
-if ( (!$infile) || (!$outfile) || (!$seqname) ) {
+if ( (!$indir) || (!$outdir) ) {
     print_help("full");
 }
 
-#-----------------------------------------------------------+
-# MAIN PROGRAM BODY                                         |
-#-----------------------------------------------------------+
-blast2gff ($infile, $outfile, $do_append, $seqname);
+#-----------------------------+
+# OPEN THE LOG FILE           |
+#-----------------------------+
+if ($logfile) {
+    # Open file for appending
+    open ( LOG, ">>$logfile" ) ||
+	die "Can not open logfile:\n$logfile\n";
+    my $time_now = time;
+    print LOG "==================================\n";
+    print LOG "  batch_mask.pl\n";
+    print LOG "  JOB: $time_now\n";
+    print LOG "==================================\n";
+}
+
+#-----------------------------+
+# CHECK FOR SLASH IN DIR      |
+# VARIABLES                   |
+#-----------------------------+
+# If the indir does not end in a slash then append one
+# TO DO: Allow for backslash
+unless ($indir =~ /\/$/ ) {
+    $indir = $indir."/";
+}
+
+unless ($outdir =~ /\/$/ ) {
+    $outdir = $outdir."/";
+}
+
+#-----------------------------+
+# Get the FASTA files from the|
+# directory provided by the   |
+# var $indir                  |
+#-----------------------------+
+opendir( DIR, $indir ) || 
+    die "Can't open directory:\n$indir"; 
+my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+closedir( DIR );
+
+my $num_files = @fasta_files;
+
+#-----------------------------+
+# SHOW ERROR IF NO FILES      |
+# WERE FOUND IN THE INPUT DIR |
+#-----------------------------+
+if ($num_files == 0) {
+    print "\a";
+    print "\nERROR: No fasta files were found in the input directory\n".
+	"$indir\n".
+	"Fasta files must have the fasta or fa extension.\n\n";
+    exit;
+}
+
+#-----------------------------+
+# CREATE THE OUT DIR          |
+# IF IT DOES NOT EXIST        |
+#-----------------------------+
+unless (-e $outdir) {
+    print "Creating output dir ...\n" unless $quiet;
+    mkdir $outdir
+	|| die "Could not create the output directory:\n$outdir";
+}
+
+
+#-----------------------------+
+# CONVERT BLAST TO GFF FOR    |
+# EACH FILE IN THE DIR        |
+#-----------------------------+
+for my $ind_file (@fasta_files)
+{
+
+    $file_num++;
+    $blast_file_num = 0;
+
+    #-----------------------------+
+    # GET BASE FILE NAME          |
+    #-----------------------------+
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
+	$name_root = "$1";
+    }  
+    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+	$name_root = "$1";
+    } 
+    else {
+	$name_root = "UNDEFINED";
+    }
+
+    # PRINT PROCESS STATUS TO LOG
+    print LOG "\n\nProcessing File $file_num of $num_files.\n" if $logfile;
+
+    # PRINT PROCESS STATUS TO TERMINAL
+    print "\n\n+-----------------------------------------------------------+\n"
+	unless $quiet;
+    print "| Processing File $file_num of $num_files.\n" unless $quiet;
+    print "+-----------------------------------------------------------+\n"
+	unless $quiet;
+    
+    #-----------------------------+
+    # LOAD LIST OF BLAST FILES    |
+    # TO PROCESS                  |
+    #-----------------------------+ 
+    $ind_blast_dir = $outdir.$name_root."/blast/";
+    if (-e $ind_blast_dir) {
+	opendir( BLASTDIR, $ind_blast_dir ) || 
+	    die "Can't open directory:\n$ind_blast_dir"; 
+	my @blast_files = grep /\.blo$|\.bln$|\.blx$/, readdir BLASTDIR ;
+	closedir( BLASTDIR );
+
+
+	#-----------------------------+
+	# SET PATH TO OUTPUT GFF FILES|
+	#-----------------------------+
+	$out_gff_path = $ind_blast_dir.$name_root."_all_blast.gff";
+	
+	$out_gff_dir = $outdir.$name_root."/gff/";
+	unless (-e $out_gff_dir) {
+	    print "Creating output dir ...\n$out_gff_dir" if $verbose;
+	    mkdir $out_gff_dir
+		|| die "Could not create the output directory:\n$out_gff_dir";
+	}
+	
+	$out_gff_copy = $out_gff_dir.$name_root."_all_blast.gff";
+
+	
+	print "IN:\t$ind_blast_dir\n";
+	print "OUT:\t$out_gff_path\n";
+	print "COPY:\t$out_gff_copy\n\n";
+
+	#-----------------------------+
+	# CONVERT EACH BLAST OUTFILE  |
+	# TO GFF                      |
+	#-----------------------------+
+	$blast_file_num = 0;
+
+	for my $ind_blast_file (@blast_files) {
+	    $blast_file_num++; 
+
+	    # For first blast output file overwrite any existing data
+	    # This is done by setting the do_append boolean to 0
+	    if ($blast_file_num == 1) {
+		$do_append = 0;
+	    }
+	    else {
+		$do_append = 1;
+	    }
+	    
+	    my $blast_file_path = $ind_blast_dir.$ind_blast_file;
+	    print "Converting: $ind_blast_file\n";
+
+	    blast2gff ( $blast_file_path, $out_gff_path, $do_append, $name_root);
+	}
+
+	
+	#-----------------------------+
+	# MAKE COPY OF GFF FILE IN    |
+	# GFF DIR                     |
+	#-----------------------------+
+	$msg = "ERROR: Could not copy file from:\n".
+	    "\t$out_gff_path\n".
+	    "\t$out_gff_copy\n";
+	copy ($out_gff_path, $out_gff_copy)
+	    || print LOG "msg";
+
+    }
+    else {
+	print LOG "ERROR: Could not find BLAST dir:\n$ind_blast_dir\n";
+    }
+
+    # If max file number then exit
+    # This is for debug tests
+    #if ($file_num = $file_num_max) {exit;}
+
+}
+
+close LOG if $logfile;
 
 exit;
 
@@ -222,19 +406,17 @@ sub blast2gff {
 
     # Open the BLAST report object
     my $blast_report = new Bio::SearchIO ( '-format' => 'blast',
-					   '-file'   => $blastin,
-					   '-signif' => $max_e,
-					   '-min_query_len' => $min_len) 
+					   '-file'   => $blastin) 
 	|| die "Could not open BLAST input file:\n$blastin.\n";
     
     # Open file handle to the gff outfile    
     if ($append) {
 	open (GFFOUT, ">>$gffout") 
-	    || die "Can not open file:\n $GFFOut\n";
+	    || die "Can not open file:\n $gffout\n";
     }
     else {
 	open (GFFOUT, ">$gffout") 
-	    || die "Can not open file:\n $GFFOut\n";
+	    || die "Can not open file:\n $gffout\n";
     }
     
     while (my $blast_result = $blast_report->next_result())
@@ -278,22 +460,6 @@ sub blast2gff {
 		}
 
 
-		#-----------------------------+
-		# PRINT OUTPUT TO TERMINAL    |
-		#-----------------------------+
-		if ($verbose) {
-		    print
-			"$seqname\t".                            # Seqname
-			"$blastprog:$dbname\t".                  # Source
-			"exon\t".                                # Feature type name
-			"$start\t".                              # Start
-			"$end\t".                                # End
-			$blast_hsp->score()."\t".                # Score
-			"$strand\t".
-			".\t".                                   
-			"$hitname\n";                            # Feature name
-		}		
-		
 		#-----------------------------+
 		# PRINT OUTPUT TO GFF FILE    |
 		# WITH BAC DATA               |
