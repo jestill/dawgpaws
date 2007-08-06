@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR : JAMES C. ESTILL                                  |
 # STARTED: 02/08/2007                                       |
-# UPDATED: 07/18/2007                                       |
+# UPDATED: 08/01/2007                                       |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -149,12 +149,11 @@ number_of_levels : 3
 #-----------------------------+
 # ADDED BY JAMIE 02/20/2007
 # This will be used to show gaps in the 
+# assembled BAC
 [Type]
-label : gap
+label : gap	
 tiername : Annotation
-datatype : gene
-datatype : transcript
-datatype : exon
+datatype : gap	
 glyph : Zigzag
 color : 255,0,0
 //utr_color : 176,224,230
@@ -587,6 +586,7 @@ labeled : true
 typename : E. coli BLASTN
 tiername : Contamination
 datatype : blastn:contam_Ecoli
+datatype : BLASTN:contam_Ecoli
 glyph : ThinRectangle
 //glyph : DrawableResultFeatureSet
 color : 255,0,0
@@ -609,6 +609,7 @@ sortbycolumn : GENOMIC_RANGE
 typename : UniVec BLASTN
 tiername : Contamination
 datatype : blastn:contam_UniVec
+datatype : BLASTN:contam_UniVec
 glyph : ThinRectangle
 //glyph : DrawableResultFeatureSet
 color : 255,0,0
@@ -665,6 +666,7 @@ expanded : true
 label : GENSCAN
 tiername : GENSCAN
 resulttype : GENSCAN
+resulttype : Genscan:maize
 glyph : DrawableResultFeatureSet
 color : 0,255,0
 //usescore : true
@@ -917,6 +919,7 @@ typename : TREP_prot
 tiername : TREP prot
 resulttype : BLASTX_TREP_prot
 resulttype : blastx:PTREP_9
+resulttype : BLASTX:PTREP_9
 //glyph : DoubleHeadedArrow
 glyph : ThinRectangle
 color : 124,124,124
@@ -949,6 +952,7 @@ label : TREP_total
 tiername : TREP total 
 datatype : BLASTN_TREP_total
 datatype : blastn:TREP9_total
+datatype : BLASTN:TREP9_total
 glyph : DoubleHeadedArrow
 color : 84,84,84
 annot_type : transposable_element
@@ -977,6 +981,7 @@ datatype : BLASTN_TREP_nr
 # The following is for local TREP_9
 # manually imported into Apollo
 datatype : blastn:TREP9_nr
+datatype : BLASTN:TREP9_nr
 glyph : DoubleHeadedArrow
 color : 104,104,104
 annot_type : transposable_element
@@ -1009,7 +1014,8 @@ label : RepBase
 tiername : RepBase
 datatype : BLASTN_ALL_Repbase
 // The following for manual import of BLAST results
-datatype : blastn:RB_pln
+datatype : blastn:RB_pl
+datatype : BLASTN:RB_pln
 glyph : DoubleHeadedArrow
 color : 144,144,144
 annot_type : transposable_element
@@ -1049,6 +1055,7 @@ tiername : SanMiguel
 datatype : BLASTN_SanMiguel
 // The following added for manual import of local BLAST
 datatype : blastn:SanMiguel_200610
+datatype : BLASTN:SanMiguel_200610
 glyph : DoubleHeadedArrow
 color : 184,184,184
 annot_type : transposable_element
@@ -1077,6 +1084,7 @@ tiername : MIPS_REdat
 //datatype : BLASTN_
 // The following added for manual import of local BLAST
 datatype : blastn:mips_REdat_4_3
+datatype : BLASTN:mips_REdat_4_3
 glyph : DoubleHeadedArrow
 color : 164,164,164
 annot_type : transposable_element
@@ -1110,6 +1118,7 @@ tiername : Wessler
 //datatype : BLASTN_SanMiguel
 // The following added for manual import of local BLAST
 datatype : blastn:Wessler
+datatype : BLASTN:Wessler
 glyph : DoubleHeadedArrow
 //color : 144,144,144
 color : 174,174,174
@@ -1137,6 +1146,7 @@ label : TriAnnot_Transposon_BLASTN
 tiername : Transposon
 datatype : BLASTN_CF_TRANSPOSON
 datatype : blastn:TATrans_200702
+datatype : BLASTN:TATrans_200702
 glyph : DoubleHeadedArrow
 //color : 124,124,124
 color : 184,184,184
@@ -1163,6 +1173,7 @@ expanded : false
 label : TIGR Gramineae Repeats
 tiername : TIGR_Gram_Repeats
 datatype : blastn:TIGR_Gram_3_3
+datatype : BLASTN:TIGR_Gram_3_3
 glyph : DoubleHeadedArrow
 //color : 104,104,104
 color : 194,194,194
@@ -1257,6 +1268,7 @@ typename : Arabidopsis thaliana UniGene BLASTN
 tiername : UniGenes BLASTN
 resulttype : BLASTN_AT_unigene
 resulttype : blastn:AtUniGene_56
+resulttype : BLASTN:AtUniGene_56
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1277,6 +1289,7 @@ typename : Hordeum vulgare UniGene BLASTN
 tiername : UniGenes BLASTN
 resulttype : BLASTN_HV_unigene
 resulttype : blastn:HvUniGene_47
+resulttype : BLASTN:HvUniGene_47
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1297,6 +1310,7 @@ typename : Oryza sativa Unigene BLASTN
 tiername : UniGenes BLASTN
 resulttype : BLASTN_OS_unigene
 resulttype : blastn:OsUniGene_65
+resulttype : BLASTN:OsUniGene_65
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1316,6 +1330,7 @@ weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 typename : Sorghum bicolor UniGene BLASTN
 tiername : UniGenes BLASTN
 resulttype : blastn:SbUniGene_21
+resulttype : BLASTN:SbUniGene_21
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1334,7 +1349,7 @@ weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 [Type]
 typename : Saccharum officinarum UniGene BLASTN
 tiername : UniGenes BLASTN
-resulttype : blastn:SoUniGene_8
+resulttype : BLASTN:SoUniGene_8
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1377,6 +1392,7 @@ typename : Zea mays UniGene BLASTN
 tiername : UniGenes BLASTN
 resulttype : BLASTN_ZM_unigene 
 resulttype : blastn:ZmUniGene_61
+resulttype : BLASTN:ZmUniGene_61
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1531,6 +1547,7 @@ tiername : UniGenes TBLASTX
 resulttype : BLASTN_ZM_unigene 
 resulttype : blastx:ZmUniGene_61
 resulttype : tblastx:ZmUniGene_61
+resulttype : TBLAST:ZmUniGene_61
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1573,6 +1590,7 @@ expanded : false
 typename : Arabidopsis thaliana GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:AtGI_13
+resulttype : BLASTN:AtGI_13
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1591,6 +1609,7 @@ reversesort : false
 typename : Hordeum vulgare GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:HvGI_9
+resulttype : BLASTN:HvGI_9
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1608,6 +1627,7 @@ reversesort : false
 typename : Oryza sativa GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:OsGI_17
+resulttype : BLASTN:OsGI_17
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1626,6 +1646,8 @@ typename : Sorghum bicolor GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:SbGI_9
 resulttype : blastn:SbGI_8
+resulttype : BLASTN:SbGI_9
+resulttype : BLASTN:SbGI_8
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1643,6 +1665,7 @@ reversesort : false
 typename : Triticum aestivum GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:TaGI_10
+resulttype : BLASTN:TaGI_10
 //resulttype : TBLASTX_TA_tigrta
 glyph : DrawableResultFeatureSet
 //color : 255,255,0
@@ -1664,6 +1687,7 @@ reversesort : false
 typename : Zea mays GI BLASTN
 tiername : TIGR GIs BLASTN
 resulttype : blastn:ZmGI_17
+resulttype : BLASTN:ZmGI_17
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1696,6 +1720,8 @@ typename : Arabidopsis thaliana GI TBLASTX
 tiername : TIGR GIs TBLASTX
 resulttype : blastx:AtGI_13
 resulttype : tblastx:AtGI_13
+resulttype : BLASTX:AtGI_13
+resulttype : TBLASTX:AtGI_13
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1712,6 +1738,8 @@ reversesort : false
 [Type]
 typename : Hordeum vulgare GI TBLASTX
 tiername : TIGR GIs TBLASTX
+resulttype : BLASTX:HvGI_9
+resulttype : TBLASTX:HvGI_9
 resulttype : blastx:HvGI_9
 resulttype : tblastx:HvGI_9
 glyph : DrawableResultFeatureSet
@@ -1732,6 +1760,8 @@ typename : Oryza sativa GI TBLASTX
 tiername : TIGR GIs TBLASTX
 resulttype : blastx:OsGI_17
 resulttype : tblastx:OsGI_17
+resulttype : BLASTX:OsGI_17
+resulttype : TBLASTX:OsGI_17
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1752,6 +1782,10 @@ resulttype : blastx:SbGI_9
 resulttype : tblastx:SbGI_9
 resulttype : blastx:SbGI_8
 resulttype : tblastx:SbGI_8
+resulttype : BLASTX:SbGI_9
+resulttype : TBLASTX:SbGI_9
+resulttype : BLASTX:SbGI_8
+resulttype : TBLASTX:SbGI_8
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1770,6 +1804,8 @@ typename : Triticum aestivum GI TBLASTX
 tiername : TIGR GIs TBLASTX
 resulttype : blastx:TaGI_10
 resulttype : tblastx:TaGI_10
+resulttype : BLASTX:TaGI_10
+resulttype : TBLASTX:TaGI_10
 resulttype : TBLASTX_TA_tigrta
 glyph : DrawableResultFeatureSet
 //color : 255,255,0
@@ -1790,6 +1826,8 @@ typename : Zea mays GI TBLASTX
 tiername : TIGR GIs TBLASTX
 resulttype : blastx:ZmGI_17
 resulttype : tblastx:ZmGI_17
+resulttype : BLASTX:ZmGI_17
+resulttype : TBLASTX:ZmGI_17
 glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
@@ -1823,6 +1861,7 @@ expanded : false
 typename : Agrostis capillaris TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:AcTA_1
+resulttype : BLASTN:AcTA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1842,6 +1881,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Agrostis stolonifera TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:AsTA_1
+resulttype : BLASTN:AsTA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1859,6 +1899,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Arabidopsis thaliana TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:AtTA_2
+resulttype : BLASTN:AtTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1878,6 +1919,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Avena sativa TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:AvenSatTA_2
+resulttype : BLASTN:AvenSatTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1897,6 +1939,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Cynodon dactylon TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:CdTA_2
+resulttype : BLASTN:CdTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1916,6 +1959,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Festuca arundinaceae TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:FaTA_2
+resulttype : BLASTN:FaTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1935,6 +1979,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Hordeum vulgare TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:HvTA_2
+resulttype : BLASTN:HvTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1955,6 +2000,8 @@ typename : Oryza sativa TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:OsTA_2
 resulttype : blastn:OsTA2
+resulttype : BLASTN:OsTA_2
+resulttype : BLASTN:OsTA2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1974,6 +2021,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Pennistum glaucum TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:PgTA_2
+resulttype : BLASTN:PgTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -1991,8 +2039,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Saccharum officinarum TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:SoTA_2
+resulttype : BLASTN:SoTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2010,8 +2059,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Sorghum bicolor TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:SbTA_2
+resulttype : BLASTN:SbTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2029,8 +2079,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Sorghum halepense TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:ShTA_2
+resulttype : BLASTN:ShTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2048,8 +2099,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Sorghum propinquum TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:SpTA_2
+resulttype : BLASTN:SpTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2069,6 +2121,7 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 typename : Triticum aestivum TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:TaTA_2
+resulttype : BLASTN:TaTA_2
 glyph : DrawableResultFeatureSet
 color : 212,76,99
 usescore : true
@@ -2086,8 +2139,8 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 [Type]
 typename : Triticum monococcum Tas
 tiername : TIGR TAs BLASTN
-resulttype : TBLASTX_TM_tigrta
 resulttype : blastn:TmTA_2
+resulttype : BLASTN:TmTA_2
 glyph : DrawableResultFeatureSet
 color : 230,180,96
 usescore : true
@@ -2105,8 +2158,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 [Type]
 typename : Triticum turgidum Tas
 tiername : TIGR TAs BLASTN
-resulttype : TBLASTX_TT_tigrta
+//resulttype : TBLASTX_TT_tigrta
 resulttype : blastn:TtTa_1
+resulttype : BLASTN:TtTa_1
 glyph : DrawableResultFeatureSet
 color : 163,100,38
 usescore : true
@@ -2123,8 +2177,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Zea mays B73 TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:ZmB73TA_1
+resulttype : BLASTN:ZmB73TA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2142,8 +2197,9 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Zea mays TAs BLASTN	
-tiername : TIGR TAs BLASTN	
+tiername : TIGR TAs BLASTN
 resulttype : blastn:ZmTA_3
+resulttype : BLASTN:ZmTA_3
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2197,6 +2253,8 @@ typename : Agrostis capillaris TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:AcTA_1
 resulttype : tblastx:AcTA_1
+resulttype : BLASTX:AcTA_1
+resulttype : TBLASTX:AcTA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2215,8 +2273,8 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 [Type]
 typename : Agrostis stolonifera TAs TBLASTX
 tiername : TIGR TAs TBLASTX
-resulttype : blastx:AsTA_1
-resulttype : tblastx:AsTA_1
+resulttype : BLASTX:AsTA_1
+resulttype : TBLASTX:AsTA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2237,6 +2295,8 @@ typename : Arabidopsis thaliana TAs TBLASTNX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:AtTA_2
 resulttype : tblastx:AtTA_2
+resulttype : BLASTX:AtTA_2
+resulttype : TBLASTX:AtTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2255,8 +2315,8 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 [Type]
 typename : Avena sativa TAs TBLASTX
 tiername : TIGR TAs TBLASTX
-resulttype : blastx:AvenSatTA_2
-resulttype : tblastx:AvenSatTA_2
+resulttype : BLASTX:AvenSatTA_2
+resulttype : TBLASTX:AvenSatTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2277,6 +2337,8 @@ typename : Cynodon dactylon TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:CdTA_2
 resulttype : tblastx:CdTA_2
+resulttype : BLASTX:CdTA_2
+resulttype : TBLASTX:CdTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2297,6 +2359,8 @@ typename : Festuca arundinaceae TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:FaTA_2
 resulttype : tblastx:FaTA_2
+resulttype : BLASTX:FaTA_2
+resulttype : TBLASTX:FaTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2317,6 +2381,8 @@ typename : Hordeum vulgare TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:HvTA_2
 resulttype : tblastx:HvTA_2
+resulttype : BLASTX:HvTA_2
+resulttype : TBLASTX:HvTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2339,6 +2405,10 @@ resulttype : blastx:OsTA_2
 resulttype : blastx:OsTA2
 resulttype : tblastx:OsTA_2
 resulttype : tblastx:OsTA2
+resulttype : BLASTX:OsTA_2
+resulttype : BLASTX:OsTA2
+resulttype : TBLASTX:OsTA_2
+resulttype : TBLASTX:OsTA2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2359,6 +2429,8 @@ typename : Pennistum glaucum TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:PgTA_2
 resulttype : tblastx:PgTA_2
+resulttype : BLASTX:PgTA_2
+resulttype : TBLASTX:PgTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2379,6 +2451,8 @@ typename : Saccharum officinarum TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:SoTA_2
 resulttype : tblastx:SoTA_2
+resulttype : BLASTX:SoTA_2
+resulttype : TBLASTX:SoTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2399,6 +2473,8 @@ typename : Sorghum bicolor TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:SbTA_2
 resulttype : tblastx:SbTA_2
+resulttype : BLASTX:SbTA_2
+resulttype : TBLASTX:SbTA2_
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2419,6 +2495,8 @@ typename : Sorghum halepense TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:ShTA_2
 resulttype : tblastx:ShTA_2
+resulttype : BLASTX:ShTA_2
+resulttype : TBLASTX:ShTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2439,6 +2517,8 @@ typename : Sorghum propinquum TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:SpTA_2
 resulttype : tblastx:SpTA_2
+resulttype : BLASTX:SpTA_2
+resulttype : TBLASTX:SpTA_2
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2460,6 +2540,8 @@ tiername : TIGR TAs TBLASTX
 resulttype : TBLASTX_TA_tigrta
 resulttype : blastx:TaTA_2
 resulttype : tblastx:TaTA_2
+resulttype : BLASTX:TaTA_2
+resulttype : TBLASTX:TaTA_2
 glyph : DrawableResultFeatureSet
 color : 212,76,99
 usescore : true
@@ -2479,6 +2561,8 @@ tiername : TIGR TAs TBLASTX
 resulttype : TBLASTX_TM_tigrta
 resulttype : blastx:TmTA_2
 resulttype : tblastx:TmTA_2
+resulttype : BLASTX:TmTA_2
+resulttype : TBLASTX:TmTA_2
 glyph : DrawableResultFeatureSet
 color : 230,180,96
 usescore : true
@@ -2499,6 +2583,8 @@ tiername : TIGR TAs TBLASTX
 resulttype : TBLASTX_TT_tigrta
 resulttype : blastx:TtTa_1
 resulttype : tblastx:TtTa_1
+resulttype : BLASTX:TtTa_1
+resulttype : TBLASTX:TtTa_1
 glyph : DrawableResultFeatureSet
 color : 163,100,38
 usescore : true
@@ -2518,6 +2604,8 @@ typename : Zea mays B73 TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:ZmB73TA_1
 resulttype : tblastx:ZmB73TA_1
+resulttype : BLASTX:ZmB73TA_1
+resulttype : TBLASTX:ZmB73TA_1
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2538,6 +2626,8 @@ typename : Zea mays TAs TBLASTX
 tiername : TIGR TAs TBLASTX
 resulttype : blastx:ZmTA_3
 resulttype : tblastx:ZmTA_3
+resulttype : BLASTX:ZmTA_3
+resulttype : TBLASTX:ZmTA_3
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : yellow
@@ -2566,6 +2656,7 @@ expanded : false
 typename : Hordeum vulgare PUTs BLAST
 tiername : PlantGDB PUTs BLASTN
 resulttype : blastn:HvPUT_157
+resulttype : BLASTN:HvPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 0,255,0
@@ -2589,6 +2680,7 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 typename : Triticum aestivum PUTs BLASTN
 tiername : PlantGDB PUTs BLASTN
 resulttype : blastn:TaPUT_157
+resulttype : BLASTN:TaPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 0,255,0
@@ -2614,6 +2706,11 @@ resulttype : blastn:OsJapPUT_157
 resulttype : blastn:OsPUT_157
 resulttype : blastn:TmPUT_157
 resulttype : blastn:SbPUT_157
+resulttype : BLASTN:OsIndPUT_157
+resulttype : BLASTN:OsJapPUT_157
+resulttype : BLASTN:OsPUT_157
+resulttype : BLASTN:TmPUT_157
+resulttype : BLASTN:SbPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 0,255,0
@@ -2661,6 +2758,22 @@ resulttype : tblastx:OsIndPUT_157
 resulttype : tblastx:AtPUT_157
 resulttype : tblastx:AsPUT_157
 resulttype : tblastx:ZmPUT_157
+resulttype : BLASTX:OsIndPUT_157
+resulttype : BLASTX:SpPut_157
+resulttype : BLASTX:OsJapPUT_157
+resulttype : BLASTX:OsZmPUT_157
+resulttype : BLASTX:OsIndPUT_157
+resulttype : BLASTX:AtPUT_157
+resulttype : BLASTX:AsPUT_157
+resulttype : BLASTX:ZmPUT_157
+resulttype : TBLASTX:OsIndPUT_157
+resulttype : TBLASTX:SpPut_157
+resulttype : TBLASTX:OsJapPUT_157
+resulttype : TBLASTX:OsZmPUT_157
+resulttype : TBLASTX:OsIndPUT_157
+resulttype : TBLASTX:AtPUT_157
+resulttype : TBLASTX:AsPUT_157
+resulttype : TBLASTX:ZmPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2682,6 +2795,8 @@ typename : Hordeum vulgare PUTs TBLASTX
 tiername : PlantGDB PUTs TBLASTX
 resulttype : blastx:HvPUT_157
 resulttype : tblastx:HvPUT_157
+resulttype : BLASTX:HvPUT_157
+resulttype : TBLASTX:HvPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2702,6 +2817,8 @@ typename : Triticum aestivum PUTs TBLASTX
 tiername : PlantGDB PUTs TBLASTX
 resulttype : blastx:TaPUT_157
 resulttype : tblastx:TaPUT_157
+resulttype : BLASTX:TaPUT_157
+resulttype : TBLASTX:TaPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2720,8 +2837,8 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 [Type]
 typename : Triticum monococcum PUTs TBLASTX
 tiername : PlantGDB PUTs TBLASTX
-resulttype : blastx:TmPUT_157
-resulttype : tblastx:TmPUT_157
+resulttype : BLASTX:TmPUT_157
+resulttype : TBLASTX:TmPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2742,6 +2859,8 @@ typename : Oryza sativa PUTs TBLASTX
 tiername : PlantGDB PUTs TBLASTX
 resulttype : blastx:OsPUT_157
 resulttype : tblastx:OsPUT_157
+resulttype : BLASTX:OsPUT_157
+resulttype : TBLASTX:OsPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2762,6 +2881,8 @@ typename : Sorghum bicolor PUTs TBLASTX
 tiername : PlantGDB PUTs TBLASTX
 resulttype : blastx:SbPUT_157
 resulttype : tblastx:SbPUT_157
+resulttype : BLASTX:SbPUT_157
+resulttype : TBLASTX:SbPUT_157
 glyph : DrawableResultFeatureSet
 //color : 212,76,99
 color : 102,255,102
@@ -2841,6 +2962,7 @@ expanded : false
 label : UniProt Swiss-Prot (BLASTX)
 tiername : EMBL UniProt (BLASTX)
 datatype : blastx:UniProt_SProt_34_7
+datatype : BLASTX:UniProt_SProt_34_7
 glyph : DrawableResultFeatureSet
 color : 255,20,0
 usescore : true
@@ -2860,6 +2982,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 label : UniProt TrEMBL (BLASTX)
 tiername : EMBL UniProt (BLASTX)
 datatype : blastx:UniProt_TrEMBL_34_7
+datatype : BLASTX:UniProt_TrEMBL_34_7
 glyph : DrawableResultFeatureSet
 color : 200,20,0
 usescore : true
@@ -3012,6 +3135,7 @@ expanded : false
 typename : Arabidopsis CDS BLASTX
 tiername : CDS Arabidopsis
 datatype : blastx:TAIR6
+datatype : BLASTX:TAIR6
 glyph : DrawableResultFeatureSet
 color : 255,0,0
 usescore : true
@@ -3032,6 +3156,7 @@ groupby : HOMOLOGY
 typename : Arabidopsis CDS TBLASTX (TIGR)
 tiername : CDS Arabidopsis
 datatype : blastx:ATH1_cds
+datatype : BLASTX:ATH1_cds
 glyph : DrawableResultFeatureSet
 color : 255,0,0
 usescore : true
@@ -3059,6 +3184,7 @@ expanded : false
 typename : Rice CDS BLASTX
 tiername : CDS Rice TIGR
 datatype : blastx:Os_5_cds_pep
+datatype : BLASTX:Os_5_cds_pep
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3080,6 +3206,8 @@ typename : Rice CDS TBLASTX
 tiername : CDS Rice TIGR
 datatype : blastx:Os_5_cds
 datatype : tblastx:Os_5_cds
+datatype : BLASTX:Os_5_cds
+datatype : TBLASTX:Os_5_cds
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3104,6 +3232,7 @@ expanded : false
 typename : Rice CDS BLASTN
 tiername : CDS BLASTN Rice TIGR 
 datatype : blastn:Os_5_cds
+datatype : BLASTN:Os_5_cds
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3135,6 +3264,8 @@ tiername : CDS Rice RAP1
 // of the DAWG-PAWS pipeline
 datatype : blastx:Os_Rap1_pep
 datatype : blastx:Os_Rap1_pe    
+datatype : BLASTX:Os_Rap1_pep
+datatype : BLASTX:Os_Rap1_pe    
 glyph : DrawableResultFeatureSet
 color : 255,255,255
 usescore : true
