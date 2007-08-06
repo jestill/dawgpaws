@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# BLAST TO GFF FILE
+# cnv_blast2gff.pl Convert BLAST output to gff 
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 07/06/2006                                       |
+# UPDATED: 08/06/2007                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 # Parse blast from single large contig against a blast db   |
@@ -114,26 +114,6 @@ while ($BlastResult = $BlastReport->next_result())
 
 		#-----------------------------+
 		# PRINT OUTPUT TO GFF FILE    |
-		#-----------------------------+
-		#print GFFOUT $BlastHit->name()."\t"."BLASTN\tBLASTNHIT\t".
-		#    $BlastHSP->start('query')."\t".
-		#    $BlastHSP->end('query')."\t".
-		#    $BlastHSP->evalue()."\t".
-		#    ".\t.\n";
-
-		#-----------------------------+
-		# PRINT OUTPUT TO GFF FILE    |
-		# WITH BAC DATA               |
-		#-----------------------------+
-		#print GFFOUT $BlastHit->name()."\t"."BLASTN\tBLASTNHIT\t".
-		#    $BlastHSP->start('query')."\t".
-		#    $BlastHSP->end('query')."\t".
-		#    $BlastHSP->evalue()."\t".
-		#    ".\t.\t".
-		#    "$Bac\n";
-
-		#-----------------------------+
-		# PRINT OUTPUT TO GFF FILE    |
 		# WITH BAC DATA               |
 		#-----------------------------+
 		# Changing BLASTN to the Bac Name appears to allow 
@@ -207,6 +187,8 @@ sub GetBacName
 # - Added GetBacName subfunction
 # - Changed score used to the BIT Score. This works better
 #   with apollo
-
+#
+# 08/06/2007
+# - Modifying for high throughput conversion
 
 
