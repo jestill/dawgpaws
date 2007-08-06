@@ -124,7 +124,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "0.1";
+my $VERSION = "0.1";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -164,7 +164,7 @@ if ($show_help || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $ver\n\n";
+    print "\n$0:\nVersion: $VERSION\n\n";
     exit;
 }
 
