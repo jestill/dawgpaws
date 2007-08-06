@@ -431,6 +431,23 @@ for my $ind_file (@fasta_files)
     print "Processing $name_root\n";
     print "=========================================\n\n";
 
+    #-----------------------------+
+    # MAKE SURE THE GFF AND GAME  |
+    # DIRS ARE PRESENT            |
+    #-----------------------------+
+    $dir_game_out = $outdir.$name_root."/game/";
+    unless (-e $dir_game_out) {
+	print "Creating dir:\n$dir_game_out\n" if $verbose;
+	mkdir $dir_game_out ||
+	    die "Could not create dir:\n$dir_game_out\n";
+    }
+    
+    $dir_gff_out = $outdir.$name_root."/gff/";
+    unless (-e $dir_gff_out) {
+	print "Creating dir:\n$dir_gff_out\n" if $verbose;
+	mkdir $dir_gff_out ||
+	    die "Could not create dir:\n$dir_gff_out\n";
+    }
 
     #-----------------------------+
     # AUDIT REPEAT MASKER OUTPUT  |
@@ -536,6 +553,11 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+sub audit_gene {
+# Audit locally produced gene annotation results
+
+}
+
 sub audit_rm {
 
     #-----------------------------+
@@ -599,6 +621,8 @@ sub audit_ta {
     my $ta_fail = 0;
     
     my $ta_dir = $outdir.$name_root."/ta/";
+    my $gff_dir = $outdir.$name_root."/gff/";
+    my $game_dir = $outdir.$name_root."/game/";
 
     # Expected ta files
     my @ta_files = (# Original output from TriAnnotation
@@ -607,7 +631,7 @@ sub audit_ta {
 		    "2fGh.gff",
 		    "2gID.gff",
 		    "2gmHv.gff",
-		    #"2gmOs.gff",
+		    "2gmOs.gff",
 		    "2gmTa.gff",
 		    "2gmZm.gff",
 		    # Apollo formatted output
@@ -616,15 +640,22 @@ sub audit_ta {
 		    "2fGh.ap.gff",
 		    "2gID.ap.gff",
 		    "2gmHv.ap.gff",
-		    #"2gmOs.ap.gff",
+		    "2gmOs.ap.gff",
 		    "2gmTa.ap.gff",
 		    "2gmZm.ap.gff",
 		    );
     
     if (-e $ta_dir) {
+	# Check that expected files are present
 	for my $ind_ta_file (@ta_files) {
 	    my $ta_file_path = $ta_dir.$ind_ta_file;
 	    if (-e $ta_file_path) {
+		# If this is a ap.gff file then copy to the gff dir
+		if ($ind_ta_file =~ m/.*\.ap\.gff$/ ) {
+		    print "\tMaking copy of $ind_ta_file\n" if $verbose;
+		    my $gff_file_path = $gff_dir.$ind_ta_file;
+		    copy ($ta_file_path, $gff_file_path)
+		}
 		print LOG "";
 	    }
 	    else {
@@ -633,6 +664,9 @@ sub audit_ta {
 		print "$name_root: MISSING $ind_ta_file\n" if $verbose;
 	    }
 	}
+
+
+
     }
     else {
 	$ta_fail = 1;

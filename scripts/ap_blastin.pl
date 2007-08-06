@@ -74,13 +74,12 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 package DAWGPAWS;
 
-print "$0 Starting...\n";
-
 my $time_start = time;
 
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
+use Cwd;                       # Get the current working directory
 use Getopt::Long;
 use Carp;                      # Access to the croak function
 use strict;
@@ -100,19 +99,16 @@ use X11::GUITest qw/
 #-----------------------------+
 # HARD CODED VARIABLES        |
 #-----------------------------+
-# Full path 
 my $ver = "1.0";               # Program version
-my $ap_path = '/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo';
-#my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
-#my $work_dir = '/home/jestill/projects/wheat_annotation/sandbox/';
-my $work_dir = '/home/jestill/projects/wheat_annotation/'.
-    'wheat_analysis/AnnotationReady/HEX2358G08/';
-my $err_log_path = '/home/jestill/projects/wheat_annotation/error.txt';
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
+# Deafult values
+my $ap_path = '/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo';
+
 # Command line variables
+my $logfile;
 my $add_dialog_open;           # boolean, is the add_dialog_open
 my $blastdir;                  # Directory containing the blast output files
 my $infile;                    # Full path to the input file 
@@ -124,6 +120,7 @@ my $bac_name;                  # Name of the BAC, this will be the
                                # expected name of the Apollo window
 
 # BOOLEANS
+my $verbose = 0;
 my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
@@ -149,10 +146,16 @@ my $usage = "blast2ap.pl -i infile -b blastdir -o outfile -n bac_name\n".
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions("b|blastdir=s" => \$blastdir,
+my $ok = GetOptions(# Required options
+		    "b|blastdir=s" => \$blastdir,
                     "i|infile=s"   => \$infile,
 		    "o|outfile=s"  => \$outfile,
 		    "n|name=s"     => \$bac_name,
+		    # Additional options
+		    "ap-path=s"    => \$ap_path,
+		    "logfile=s"    => \$logfile,
+		    # Booleans
+		    "verbose"      => \$verbose,
 		    "usage"        => \$show_usage,
 		    "version"      => \$show_version,
 		    "man"          => \$show_man,
@@ -183,17 +186,11 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-#-----------------------------+
-# SHOW HELP IF REQUESTED      |
-#-----------------------------+
-#3if( $show_help ) {
-#    system("perldoc $0");
-#    exit($ok ? 0 : 2);
-#}
+print "$0 Starting...\n" if $verbose;
 
 #-----------------------------+
-# PRINT USAGE WHEN CMD LINE   |
-# VARAIBLES MISSING           |
+# PRINT USAGE WHEN REQUIRED   |
+# CMD LIEN VARAIBLES MISSING  |
 #-----------------------------+
 # If the Input, blast, and outfile are not specified 
 # at the command line show the user the program usage statement
@@ -208,40 +205,53 @@ if ( (!$infile) || (!$blastdir) || (!$outfile) || (!$bac_name)) {
 
 
 #-----------------------------+
+# CHECK FOR SLASH IN DIR      |
+# VARIABLES                   |
+#-----------------------------+
+# If the indir does not end in a slash then append one
+# TO DO: Allow for backslash
+unless ($blastdir =~ /\/$/ ) {
+    $blastdir = $blastdir."/";
+}
+
+#-----------------------------+
 # SET FULL PATHS AND CHECK    |
 # FOR FILE EXISTENCE          |
 #-----------------------------+ 
-my $infile_path = $work_dir.$infile;
-my $blast_path = $work_dir.$blastdir;
+#my $infile = $work_dir.$infile;
+#my $blastdir = $work_dir.$blastdir;
 
-unless (-e $infile_path) {
-    die "Infile could not be found:\n$infile_path\n";
+unless (-e $infile) {
+    die "Infile could not be found:\n$infile\n";
 }
 
-unless (-e $blast_path) {
-    die "blast dir could not be found:\b$blast_path\n";
+unless (-e $blastdir) {
+    die "blast dir could not be found:\b$blastdir\n";
 }
 
-open (ERRLOG,">".$err_log_path ) ||
-    die "Can not open error log:\n$err_log_path\n";
+if ($logfile) {
+    open (LOG,">".$logfile ) 
+	|| die "Can not open error log:\n$logfile\n";
+}
 
 #-----------------------------+
 # LOAD BLAST FILES TO ARRAY   |
 #-----------------------------+
-opendir DIR, $blast_path ||
-    die "Could not open the dir:\n$blast_path\n";
-my @blast_files = grep /blx/ || /blo/, readdir DIR;
+opendir DIR, $blastdir ||
+    die "Could not open the dir:\n$blastdir\n";
+my @blast_files = grep /\.blx$/ || /\.blo$/ || /\.bln$/, readdir DIR;
 my $num_blast = @blast_files;
-print "$num_blast blast files found\n";
+@blast_files = sort(@blast_files);
+print "$num_blast blast files found\n" if $verbose;
 
 # Print the blast dir info
 my $i=0;
 foreach my $ind_blast_file (@blast_files) {
-    print "\t$ind_blast_file\t";
-    print "$blast_files[$i]\n";
+    print "\t$ind_blast_file\t" if $verbose;
+    print "$blast_files[$i]\n" if $verbose;
     $i++;
 
-    my $in_blast_path = $work_dir.$blastdir."/".$ind_blast_file;
+    my $in_blast_path = $blastdir.$ind_blast_file;
     unless (-e $in_blast_path) {
 	die "Could not find blast file:\n$in_blast_path\n";
     }
@@ -269,14 +279,14 @@ if (WaitWindowViewable('Apollo: load data', undef, 10)) {
     # Get the name of the window that has the current focus
     my $win_focus = GetWindowName(GetInputFocus());
     
-    print "Focus win Name: $win_focus\n";       
+    print "Focus win Name: $win_focus\n" if $verbose;       
     
     if ($win_focus =~ 'Apollo: load data') { 
-	SendKeys('add{TAB}^(a){BAC}'.$infile_path.'{TAB 2}{SPA}') ||
-	    die "Could not send keys to open the file:\n$infile_path";
+	SendKeys('add{TAB}^(a){BAC}'.$infile.'{TAB 2}{SPA}') ||
+	    die "Could not send keys to open the file:\n$infile";
     } 
     else {
-	die "I expected Apollo: load data to be in focus for\n$infile_path";
+	die "I expected Apollo: load data to be in focus for\n$infile";
     } 
 }
 
@@ -288,16 +298,15 @@ if (WaitWindowViewable('Apollo: load data', undef, 10)) {
 foreach my $ind_blast_file (@blast_files) {
 
     # SET THE BLAST PATH
-    my $in_blast_path = $work_dir.$blastdir."/".$ind_blast_file;
+    my $in_blast_path = $blastdir.$ind_blast_file;
     $blast_file_count++;
 
-    print ERRLOG "\n\nProcessing:\n$in_blast_path\n" ||
-	die "Can not print to error file\n";
+    print LOG "\n\nProcessing:\n$in_blast_path\n" if $logfile;
     $add_dialog_open = 0;
 
-    print "PROCESSING:\n\t$in_blast_path\n";
-    print "NUM\t$blast_file_count\n";
-    print "TOTAL\t\n$num_blast\n";
+    print "PROCESSING:\n\t$in_blast_path\n" if $verbose;
+    print "NUM\t$blast_file_count\n" if $verbose;
+    print "TOTAL\t\n$num_blast\n" if $verbose;
 
     #-----------------------------+
     # OPEN THE IMPORT BLAST       |
@@ -307,7 +316,8 @@ foreach my $ind_blast_file (@blast_files) {
     # then make sure that it has the focus before trying to send 
     # the commands to open the import blast dialog. This is required
     # because the window may be viewable even if it does not have the focus
-    if (WaitWindowViewable($bac_name, undef, 10)) {
+    #if (WaitWindowViewable($bac_name, undef, 10)) {
+    if (WaitWindowViewable($bac_name, undef, 120)) {
 
 	my $win_focus = GetWindowName(GetInputFocus());
 	
@@ -338,12 +348,10 @@ foreach my $ind_blast_file (@blast_files) {
     if (WaitWindowViewable( 'Apollo: adding data' ,undef, 20)) {
 	
 
-	#my $win_focus = GetWindowName(GetInputFocus());
-	#
 	$win_focus_id = GetInputFocus();
 	my $win_focus = GetWindowName($win_focus_id);
-	print "\n\nFOCUS ID:\t$win_focus_id\n";
-	print "FOCUS NAME:\t$win_focus\n";
+	print "\n\nFOCUS ID:\t$win_focus_id\n" if $verbose;
+	print "FOCUS NAME:\t$win_focus\n" if $verbose;
 
 
 	#-----------------------------+
@@ -355,7 +363,10 @@ foreach my $ind_blast_file (@blast_files) {
 	    print "The window id did not change.\n";
 	    print "PREV:\t$win_focus_prev\n";
 	    print "NOW:\t$win_focus_id\n";
-
+	    print "NAME:\t$ind_blast_file\n";
+	    print "File $blast_file_count of $num_blast\n";
+	    print "";
+	    
 	    # ALT F4 Will close the current window in apollo
 	    # If the window currently in focus is the main widow
 	    # this will also be closed.
@@ -364,9 +375,13 @@ foreach my $ind_blast_file (@blast_files) {
 	    exit;
 	} 
 	else {
-	    print "The focus id has changed.\n";
-	    print "PREV:\t$win_focus_prev\n";
-	    print "NOW:\t$win_focus_id\n";
+	    print "The focus id has changed.\n" if $verbose;
+	    print "PREV:\t$win_focus_prev\n" if $verbose;
+	    print "NOW:\t$win_focus_id\n" if $verbose;
+
+	    print LOG "The focus id has changed.\n" if $logfile;
+	    print LOG "PREV:\t$win_focus_prev\n" if $logfile;
+	    print LOG "NOW:\t$win_focus_id\n" if $logfile;
 	}	
 #	exit;
 	
@@ -415,9 +430,7 @@ foreach my $ind_blast_file (@blast_files) {
 	    
 	    # Spacebar to select OK
 	    SendKeys('{SPA}') ||
-		die "ERROR: Problem with SendKeys SPACE";    
-
-	  
+		die "ERROR: Problem with SendKeys SPACE";
  
 	} # End of if adding data dialog has focus
 
@@ -439,14 +452,14 @@ foreach my $ind_blast_file (@blast_files) {
 	#$win_focus_id 
 	print "Trying to close the adding data window\n";
 	if (WaitWindowClose ($win_focus_id, 30)) {
-	    print "The add data window is now closed.\n";
+	    print "The add data window is now closed.\n" if $verbose;
 	}
 	else {
 	    die "The add data window did not close.\n";
 	}
     } 
     else {
-	print "The adding data widow appears to be closed.\n";
+	print "The adding data widow appears to be closed.\n" if $verbose;
     }
 
     # The alternative to the above is to always sleep
