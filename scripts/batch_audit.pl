@@ -409,7 +409,10 @@ for my $ind_file (@fasta_files)
     # Temp exit while debuging
     #if ($file_num > $file_num_max) {exit;}
     
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_file =~ m/(.*)\.hard\.fasta$/ ) {	    
+	$name_root = "$1";
+    } 
+    elsif ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
@@ -656,7 +659,7 @@ sub audit_ta {
 		    my $gff_file_path = $gff_dir.$ind_ta_file;
 		    copy ($ta_file_path, $gff_file_path)
 		}
-		print LOG "";
+		#print LOG "";
 	    }
 	    else {
 		$ta_fail = 1;
