@@ -26,7 +26,7 @@ fetch_tenest.pl - Fetch TE Nest LTR and SVG files
 
 =head1 VERSION
 
-This documentation refers to program version 1.0
+This documentation refers to $Rev$
 
 =head1 SYNOPSIS
 
