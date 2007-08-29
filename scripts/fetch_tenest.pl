@@ -16,7 +16,7 @@
 #  pipeline.                                                |
 #                                                           |
 # VERSION:                                                  |
-# $Id::                                                  $: |
+# $Id:: fetch_tenest.pl 85 2007-08-29 14:29:27Z JamesEst#$: |
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -123,7 +123,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =cut
 
-package JPERL;
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -134,11 +134,14 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = "0.1";
+my $VERSION = $Rev;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
+
+# my 
+
 my $infile;
 my $outfile;
 
@@ -184,17 +187,22 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-#-----------------------------+
-# MAIN PROGRAM BODY           |
-#-----------------------------+
-
-
+#-----------------------------------------------------------+
+# MAIN PROGRAM BODY                                         |
+#-----------------------------------------------------------+
 
 #-----------------------------+
 # LOAD DATA TO FETCH FROM     |
 # TAB DELIM TEXT FILE         |
 #-----------------------------+
+open (INFILE, "<$infile")
+    || die "Can not open the input file:\n$infile\n";
 
+while (<INFILE>) {
+
+}
+
+close INFILE;
 
 #-----------------------------+
 # FETCH DATA TO APPROPRIATE
@@ -255,7 +263,7 @@ STARTED:
 
 UPDATED:
 
-VERSION: $Id$
+VERSION: $Id: fetch_tenest.pl 85 2007-08-29 14:29:27Z JamesEstill $
 
 =cut
 
@@ -263,3 +271,5 @@ VERSION: $Id$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 08/29/2007
+# - Program started
