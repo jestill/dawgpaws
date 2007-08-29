@@ -134,7 +134,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = $Rev$;
+my $VERSION = "\$Rev: 87 \$";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
