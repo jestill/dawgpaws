@@ -364,7 +364,7 @@ for ($i=0; $i<$num_files; $i++) {
     # This is the image produced by TE Nest
     my $svg_url = "http://www.plantgdb.org/tmp/qry-$tenest_id.svg";
     my $svg_local = "$tenest_dir$tenest_id.svg";
-    my $svg_rename = "$tenest_dir$name_root.svg";
+    my $svg_rename = "$tenest_dir$name_root.svg.xml";
 
     print STDERR "\tFetching: $svg_url\n\tTo:$svg_local\n" if $verbose;
     my $svg_res = getstore($svg_url, $svg_local);
@@ -373,7 +373,7 @@ for ($i=0; $i<$num_files; $i++) {
     # If the http response is 200 (ok) then work with the local copy
     if ($svg_res =~ "200") {
 
-	copy ($svg_local, $svg_res) ||
+	copy ($svg_local, $svg_rename) ||
 	    print STDERR "Error copying file $svg_local\nto$svg_rename";
 
     }
