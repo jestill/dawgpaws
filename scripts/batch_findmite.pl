@@ -23,32 +23,49 @@ batch_findmite.pl - Run the findmite program in batch mode.
 
 =head1 VERSION
 
-This documentation refers to $Rev$.
+This documentation refers to $Rev$
 
 =head1 SYNOPSIS
 
- Usage:
-  Name.pl -i InFile -o OutFile
+  USAGE:
+    batch_findminte.pl -i InDir -o OutDir
 
 =head1 DESCRIPTION
 
-This is what the program does
 
-=head1 REQUIRED ARGUMENTS
+
+=head1 COMMAND LINE ARGUMENTS
+
+=head2 Required Argumens
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path of the input directory. This is a directory that contains the fasta
+files to process.
 
-=item -o,--outfile
+=item -o,--outdir
 
-Path of the output file.
+Path of the base output directory.
 
 =back
 
-=head1 OPTIONS
+=head2 Additional Options
+
+=over 2
+
+=item -q,--quiet
+
+Run the program with minimal output. Does not require user interaction.
+
+=item --verbose
+
+Run the program with maximal output.
+
+=back
+
+=head2 Additional Information
 
 =over 2
 
@@ -68,10 +85,6 @@ Show program version.
 
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
 
 =back
 
@@ -120,7 +133,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my ($VERSION) = q$Rev: 92 $ =~ /(\d+)/;
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -221,7 +234,7 @@ STARTED: 08/30/2007
 
 UPDATED: 08/30/2007
 
-VERSION: $Id$
+VERSION: $Id: batch_findmite.pl 95 2007-08-30 15:32:36Z JamesEstill $
 
 =cut
 
