@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# Name.pl                                                   |
+# cnv_findmite2gff.pl - Convert findmite results to gff     |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -12,22 +12,15 @@
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
-#                                                           |
-# USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
-#                                                           |
-# VERSION:                                                  |
-# $Id:: script_template.pl 68 2007-07-15 00:25:18Z James#$: |
-#                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME
 
-Name.pl - Short program description. 
+cnv_findmite2gff.pl - Convert FINDMITE output to gff format
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program $Rev$
 
 =head1 SYNOPSIS
 
@@ -113,7 +106,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =cut
 
-package JPERL;
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -124,13 +117,13 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = "0.1";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
-my $infile;
-my $outfile;
+my $infile;                    # Findmite outupt file to convert
+my $outfile;                   # The gff output file produced
 
 # Booleans
 my $help = 0;
@@ -139,17 +132,22 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
+my $verbose = 0;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions("i|infile=s"  => \$infile,
+my $ok = GetOptions(# Required arguments
+		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
+		    # Additional options
+		    "q|quiet"     => \$quiet,
+		    "verbose"     => \$verbose,
+		    # Additional information
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,
-		    "q|quiet"     => \$quiet,);
+		    "h|help"      => \$show_help,)
 
 
 #-----------------------------+
@@ -174,15 +172,38 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-#-----------------------------+
-# MAIN PROGRAM BODY           |
-#-----------------------------+
+#-----------------------------------------------------------+
+# MAIN PROGRAM BODY                                         |
+#-----------------------------------------------------------+
 
 exit;
 
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub findmite2gff {
+    
+    #-----------------------------+
+    # Subfunction Vars
+    #-----------------------------+
+    my ($findmite_in, $gff_out, $append, $seqname) = @_;
+    
+    my $start;
+    my $end;
+
+    open (INFILE, "<$findmite_in") ||
+	die "Can not open input file:\n$findmite_in\n";
+
+    open (GFFOUT, "$>gff_out") ||
+	die "Can not open output file:\n$gff_out\n";
+
+    while (<INFILE>) {
+	chomp;
+	print $_."\n";
+    }
+
+}
 
 sub print_help {
 
@@ -217,15 +238,17 @@ sub print_help {
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 08/30/2007
 
-UPDATED:
+UPDATED: 08/30/2007
 
-VERSION: $Id: script_template.pl 68 2007-07-15 00:25:18Z JamesEstill $
+VERSION: $Rev$
 
 =cut
 
 #-----------------------------------------------------------+
 # HISTORY                                                   |
 #-----------------------------------------------------------+
-#
+# 
+# 08/30/2007
+# - Program started
