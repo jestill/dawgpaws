@@ -134,6 +134,7 @@ my $show_man = 0;
 my $show_version = 0;
 my $verbose = 0;
 
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -147,8 +148,7 @@ my $ok = GetOptions(# Required arguments
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,)
-
+		    "h|help"      => \$show_help,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -175,6 +175,9 @@ if ($show_man) {
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
+print "test\n";
+
+findmite2gff ($infile,$outfile, 0, "HEXTEST");
 
 exit;
 
@@ -195,13 +198,16 @@ sub findmite2gff {
     open (INFILE, "<$findmite_in") ||
 	die "Can not open input file:\n$findmite_in\n";
 
-    open (GFFOUT, "$>gff_out") ||
+    open (GFFOUT, ">$gff_out") ||
 	die "Can not open output file:\n$gff_out\n";
 
     while (<INFILE>) {
 	chomp;
 	print $_."\n";
     }
+
+    close INFILE;
+    close GFFOUT;
 
 }
 
