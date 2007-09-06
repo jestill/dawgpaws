@@ -59,6 +59,10 @@ Path of the output file.
 
 =over 2
 
+=item -l
+
+New length
+
 =item --usage
 
 Short overview of how to use program from command line.
