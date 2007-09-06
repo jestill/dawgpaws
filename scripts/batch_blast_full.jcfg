@@ -151,12 +151,12 @@ blastx	blx	0	1e-5	UniProt_TrEMBL_34_7	-a 2 -U
 #-----------------------------+
 # BLASTN: REPEAT              |
 #-----------------------------+
-blastn	bln	0	1e-5	TATrans_200702	-a 2 -U
-blastn	bln	0	1e-5	mips_REdat_4_3	-a 2 -U
-blastn	bln	0	1e-5	RB_pln	-a 2 -U
-blastn	bln	0	1e-5	SanMiguel_200610	-a 2 -U
-blastn	bln	0	1e-5	TIGR_Gram_3_3	-a 2 -U
-blastn	bln	0	1e-5	TREP9_nr	-a 2 -U
-blastn	bln	0	1e-5	TREP9_total	-a 2 -U
-blastn	bln	0	1e-5	Wessler	-a 2 -U
+blastn	bln	0	1e-5	TATrans_200702	-a 2
+blastn	bln	0	1e-5	mips_REdat_4_3	-a 2
+blastn	bln	0	1e-5	RB_pln	-a 2
+blastn	bln	0	1e-5	SanMiguel_200610	-a 2
+blastn	bln	0	1e-5	TIGR_Gram_3_3	-a 2
+blastn	bln	0	1e-5	TREP9_nr	-a 2
+blastn	bln	0	1e-5	TREP9_total	-a 2
+blastn	bln	0	1e-5	Wessler	-a 2
 # END -- Leave this here
