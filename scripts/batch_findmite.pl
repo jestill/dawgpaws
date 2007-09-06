@@ -18,228 +18,6 @@
 # to print the full program manual.                         |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-batch_findmite.pl - Run the findmite program in batch mode.
-
-=head1 VERSION
-
-This documentation refers to $Rev$
-
-=head1 SYNOPSIS
-
-  USAGE:
-    batch_findminte.pl -i InDir -o OutDir -p ParamFile
-
-=head1 DESCRIPTION
-
-Run the findmite program in batch mode. This do multiple runs of 
-findmite for each row of parameters in the parameter file.
-
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Argumens
-
-=over 2
-
-=item -i,--indir
-
-Path of the input directory. This is a directory that contains the fasta
-files to process.
-
-=item -o,--outdir
-
-Path of the base output directory.
-
-=item -p,--params
-
-Path to the parameters file.
-file that indicates the parameters to use when running the findmite
-program. These parameters represent the answers to the series of
-questions that must be answered when running FINDMITE. Any lines
-starting with # are ignored.
-
-B<EXAMPLE>
-
-  #------------------------------------------------------------------
-  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
-  #------------------------------------------------------------------
-  TA_11		TA	11   1	 y  y  y	85	30	700
-  TA_12		TA	12   1   y  y  y	85	30	700	
-
-For a detail description, see the Paramters File heading under 
-the CONFIGURATION AND ENVIRONMENT section of the full program 
-documentation.
-
-=back
-
-=head2 Additional Options
-
-=over 2
-
-=item -q,--quiet
-
-Run the program with minimal output. Does not require user interaction.
-
-=item --verbose
-
-Run the program with maximal output.
-
-=back
-
-=head2 Additional Information
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-The main file to be aware of is the parameters file that is 
-refered to with the -p flag.
-
-=head2 Parameters File
-
-This file is a space delimited text
-file that indicates the parameters to use when running the findmite
-program. These parameters represent the answers to the series of
-questions that must be answered when running FINDMITE.
-
-B<EXAMPLE>
-
-  #------------------------------------------------------------------
-  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
-  #------------------------------------------------------------------
-  TA_11		TA	11   1	 y  y  y	85	30	700
-  TA_12		TA	12   1   y  y  y	85	30	700	
-
-The columns above represent the following information:
-
-=over 2
-
-=item Col. 1
-
-Base name to assign to putative mites
-
-=item Col. 2
-
-Direct Repeat
-
-=item Col. 3
-
-Length of the Terminal Inverted Repeat (TIR)
-
-=item Col. 4
-
-Number of mismatches
-
-=item Col. 5
-
-Boolean to fileter the A/T.
-This must be set to y or n. 
-
-=item Col. 6
-
-Boolean to Filter C/G
-This must be set to y or n.
-
-=item Col. 7
-
-Boolean to filter AT/TA
-This must be set to y or n.
-
-=item Col. 8
-
-Proporiton of 2Base to filter.
-This must be an integer between 0 and 100.
-
-=item Col. 9
-
-Minimum distance between TIRs
-This must be an integer.
-
-=item Col. 10
-
-Maximum distance between TIRs
-This must be an integer.
-
-=back
-
-
-=head1 DEPENDENCIES
-
-Other modules or software that the program is dependent on.
-
-=head2 Required Software
-
-B<FINDMITE>
-
-This program is dependent on the FINDMITE program. A version of 
-FINDMITE compiled for RedHat Linux is available at:
-L<http://jaketu.biochem.vt.edu/dl_software.htm>
-
-=head2 Required Perl Modules
-
-This program is dependent of the following Perl modules
-
-=over 2
-
-=item Getopt::Long - L<http://perldoc.perl.org/Getopt/Long.html>
-
-The Getopt module allows for the passing of command line options
-to perl scripts.
-
-=back
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 SEE ALSO
-
-The program batch_findmite.pl program is part of a larger body
-of perl scripts for the annotation of plant genome data.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-L<http://www.gnu.org/licenses/lgpl.html>
-
-THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
-WARRANTY. USE AT YOUR OWN RISK.
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
 package DAWGPAWS;
 
 #-----------------------------+
@@ -317,6 +95,18 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+# THROW ERROR WHEN REQUIRED INFORMATION NOT PROVIDED
+if ( (!$indir) || (!$outdir) || (!$parfile) ) {
+    print "\a";
+    print "ERROR: An input direcotry was not indicated with -i\n" 
+	if !$indir;
+    print "ERROR: An output directory was not indicate with -o\n" 
+	if !$outdir;
+    print "ERROR: A paramters file was not indiated with -p\n"
+	if !$parfile;
+    print_help("full");
 }
 
 #-----------------------------------------------------------+
@@ -853,7 +643,7 @@ sub print_help {
     my ($opt) = @_;
 
     my $usage = "USAGE:\n". 
-	"batch_findmite.pl -i InDir -o OutDir";
+	"batch_findmite.pl -i InDir -o OutDir -p ParamFile";
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --indir        # Directory of fasta files to process\n".
 	"  --outdir       # Path to the output direcotry\n".
@@ -877,12 +667,230 @@ sub print_help {
     exit;
 }
 
+=head1 NAME
+
+batch_findmite.pl - Run the findmite program in batch mode.
+
+=head1 VERSION
+
+This documentation refers to $Rev$
+
+=head1 SYNOPSIS
+
+  USAGE:
+    batch_findminte.pl -i InDir -o OutDir -p ParamFile
+
+=head1 DESCRIPTION
+
+Run the findmite program in batch mode. This do multiple runs of 
+findmite for each row of parameters in the parameter file.
+
+=head1 COMMAND LINE ARGUMENTS
+
+=head2 Required Argumens
+
+=over 2
+
+=item -i,--indir
+
+Path of the input directory. This is a directory that contains the fasta
+files to process.
+
+=item -o,--outdir
+
+Path of the base output directory.
+
+=item -p,--params
+
+Path to the parameters file.
+file that indicates the parameters to use when running the findmite
+program. These parameters represent the answers to the series of
+questions that must be answered when running FINDMITE. Any lines
+starting with # are ignored.
+
+B<EXAMPLE>
+
+  #------------------------------------------------------------------
+  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
+  #------------------------------------------------------------------
+  TA_11		TA	11   1	 y  y  y	85	30	700
+  TA_12		TA	12   1   y  y  y	85	30	700	
+
+For a detail description, see the Paramters File heading under 
+the CONFIGURATION AND ENVIRONMENT section of the full program 
+documentation.
+
+=back
+
+=head2 Additional Options
+
+=over 2
+
+=item -q,--quiet
+
+Run the program with minimal output. Does not require user interaction.
+
+=item --verbose
+
+Run the program with maximal output.
+
+=back
+
+=head2 Additional Information
+
+=over 2
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The list of error messages that can be generated,
+explanation of the problem
+one or more causes
+suggested remedies
+list exit status associated with each error
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The main file to be aware of is the parameters file that is 
+refered to with the -p flag.
+
+=head2 Parameters File
+
+This file is a space delimited text
+file that indicates the parameters to use when running the findmite
+program. These parameters represent the answers to the series of
+questions that must be answered when running FINDMITE.
+
+B<EXAMPLE>
+
+  #------------------------------------------------------------------
+  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
+  #------------------------------------------------------------------
+  TA_11		TA	11   1	 y  y  y	85	30	700
+  TA_12		TA	12   1   y  y  y	85	30	700	
+
+The columns above represent the following information:
+
+=over 2
+
+=item Col. 1
+
+Base name to assign to putative mites
+
+=item Col. 2
+
+Direct Repeat
+
+=item Col. 3
+
+Length of the Terminal Inverted Repeat (TIR)
+
+=item Col. 4
+
+Number of mismatches
+
+=item Col. 5
+
+Boolean to fileter the A/T.
+This must be set to y or n. 
+
+=item Col. 6
+
+Boolean to Filter C/G
+This must be set to y or n.
+
+=item Col. 7
+
+Boolean to filter AT/TA
+This must be set to y or n.
+
+=item Col. 8
+
+Proporiton of 2Base to filter.
+This must be an integer between 0 and 100.
+
+=item Col. 9
+
+Minimum distance between TIRs
+This must be an integer.
+
+=item Col. 10
+
+Maximum distance between TIRs
+This must be an integer.
+
+=back
+
+=head1 DEPENDENCIES
+
+Other modules or software that the program is dependent on.
+
+=head2 Required Software
+
+B<FINDMITE>
+
+This program is dependent on the FINDMITE program. A version of 
+FINDMITE compiled for RedHat Linux is available at:
+L<http://jaketu.biochem.vt.edu/dl_software.htm>
+
+=head2 Required Perl Modules
+
+This program is dependent of the following Perl modules
+
+=over 2
+
+=item Getopt::Long - L<http://perldoc.perl.org/Getopt/Long.html>
+
+The Getopt module allows for the passing of command line options
+to perl scripts.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+Any known bugs and limitations will be listed here.
+
+=head1 SEE ALSO
+
+The program batch_findmite.pl program is part of a larger body
+of perl scripts for the annotation of plant genome data.
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+L<http://www.gnu.org/licenses/lgpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 08/30/2007
 
-UPDATED: 08/31/2007
+UPDATED: 09/06/2007
 
 VERSION: $Rev$
 
@@ -899,3 +907,4 @@ VERSION: $Rev$
 # 09/06/2007
 # - Updating POD documentation.
 # - Deleted the empty run_findmite subfunction
+# - Moved POD documentation to the end of the program
