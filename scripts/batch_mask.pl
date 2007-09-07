@@ -51,6 +51,9 @@ my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
 my $rm_path;                   # Full path to the repeatmasker binary
 my $ap_path;                   # Full path to the apollo program
+my $config_file,               # Full path to the configuration file
+                               # This includes the db names and paths
+                               # of the fasta files to use for masking
 
 # Vars with default values
 my $engine = "crossmatch";
@@ -64,8 +67,10 @@ my $quiet = 0;                 # Boolean for reduced output to STOUT
 my $apollo = 0;                # Path to apollo and apollo variables
 my $test = 0;
 my $verbose = 0;
+
 # COUNTERS
 my $num_proc = 1;              # Number of processors to use
+my $i;                         # Used to index the config file
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -74,6 +79,7 @@ my $ok = GetOptions(
 		    # Required
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
+		    "c|config=s",  => \$config_file,
 		    # Optional strings
 		    "rm-path=s"    => \$rm_path,
 		    "ap-path=s",   => \$ap_path,
@@ -127,7 +133,14 @@ if ($show_version) {
 
 # Show full help when required options
 # are not present
-if ( (!$indir) || (!$outdir) ) {
+if ( (!$indir) || (!$outdir) || (!$config_file) ) {
+    print "\a";
+    print "ERROR: An input directory was not specified with the -i flag\n"
+	if !$indir;
+    print "ERROR: An output directory was not specified with the -o flag\n"
+	if !$outdir;
+    print "ERROR: A config file was not specified with the -c flag\n"
+	if !$config_file;
     print_help("full");
 }
 
@@ -182,17 +195,47 @@ closedir( DIR );
 # [1] - Path of the repeat library
 # The number of records in the fasta file shown in brackets
 # afte the description of the db
-@mask_libs = (
-    #-----------------------------+
-    # TREP v 9                    |
-    #-----------------------------+
-    ["TREP9",  
-     "/db/jlblab/repeats/TREP9.nr.fasta"]
-    );
+open (CONFIGFILE, "<$config_file") 
+    || die "Could not open the config file:\n$config_file\n";
+    
+
+$i = 0;
+
+while (<CONFIGFILE>) {
+    chomp;
+    unless (m/^\#/) {
+	# Split input by tab 
+	my @in_line = split(/\t/, $_);
+	my $num_in_line = @in_line;
+
+	print "$num_in_line sections\n";
+
+	# Only try to parse the inline if it has the 
+	# expected number of componenets
+	if ($num_in_line == 2) {
+	    $mask_libs[$i][0] = $inline[0];
+	    $mask_libs[$i][1] = $inline[1];
+	    $i++;
+	}
+
+    } # End of unless comment line
+
+} # End of while CONFIGFILE
 
 my $num_libs = @mask_libs;
 my $num_files = @fasta_files;
 my $num_proc_total = $num_libs * $num_files;
+
+#-----------------------------+
+# SHOW ERROR IF NO LIBS IN    |
+# THE CONFIG FILE             |
+#-----------------------------+ 
+if ($num_libs == 0) {
+    print "\a";
+    print STDERR "\nERROR: No library files were indicated in the ".
+	"config file\n$config_file\n";
+    exit;
+}
 
 #-----------------------------+
 # SHOW ERROR IF NO FILES      |
@@ -228,12 +271,12 @@ for $ind_lib (@mask_libs) {
 # CREATE THE OUT DIR          |
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
-
 print "Creating output dir ...\n" unless $quiet;
 unless (-e $outdir) {
     mkdir $outdir ||
-	die "Could not create the output directory:\n$outdir";
+	die "\aERROR: Could not create the output directory:\n$outdir\n";
 }
+
 
 #-----------------------------+
 # RUN REPEAT MAKSER AND PARSE |
@@ -621,9 +664,10 @@ sub print_help {
 	"                 # following file extensions:\n".
 	"                 # [fasta|fa]\n".
 	"  --outdir       # Path to the output directory\n".
+	"  --config       # Path to database list config file\n".
 	"\n".
-	"OPTIONS:\n".
-	"  --rm-path      # Full path to repeatmasker binary".
+	"ADDITIONAL OPTIONS:\n".
+	"  --rm-path      # Full path to repeatmasker binary\n".
 	"  --engine       # The repeatmasker engine to use:\n".
 	"                 # [crossmatch|wublast|decypher]\n".
 	"                 # default is to use crossmatch\n".
@@ -631,13 +675,16 @@ sub print_help {
 	"                 # default is one.\n".
 	"  --apollo       # Convert output to game.xml using apollo\n".
 	"                 # default is not to use apollo\n".
+	"  --quiet        # Run program with minimal output\n".
+	"  --test         # Run the program in test mode\n".
 	"  --logfile      # Path to file to use for logfile\n".
+	"\n".
+	"ADDITIONAL INFORMATION\n".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
 	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --test         # Run the program in test mode\n".
-	"  --quiet        # Run program with minimal output\n";
+	"  --man          # Open full program manual\n";
+
 	
     if ($opt =~ "full") {
 	print "\n$usage\n\n";
@@ -774,8 +821,8 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
- Usage:
- batch_mask.pl -i DirToProcess -o OutDir
+ USAGE:
+    batch_mask.pl -i DirToProcess -o OutDir -c ConfigFile
 
 =head1 DESCRIPTION
 
@@ -785,7 +832,9 @@ then converts the repeat masker *.out file into the
 GFF format and then to the game XML format for
 visualization by the Apollo genome anotation program.
 
-=head1 REQUIRED ARGUMENTS
+=head1 COMMAND LINE ARGUMENTS
+
+=head2 Required Arguments
 
 =over 2
 
@@ -797,9 +846,14 @@ Path of the directory containing the sequences to process.
 
 Path of the directory to place the program output.
 
+=item -c, --config
+
+Configuration file that lists the database names and paths of the
+fasta files to use as masking databases.
+
 =back
 
-=head1 OPTIONS
+=head2 Additional Options
 
 =over 2
 
@@ -810,7 +864,7 @@ The number of processors to use for RepeatMasker. Default is one.
 =item --engine
 
 The repeatmasker engine to use: [crossmatch|wublast|decypher].
-The default is to use crossmatch.
+The default is to use the crossmatch engine.
 
 =item --apollo
 
@@ -826,6 +880,20 @@ The full path to the RepeatMasker binary.
 Path to a file that will be used to log program status.
 If the file already exists, additional information will be concatenated
 to the existing file.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --test
+
+Run the program without doing the system commands.
+
+=back
+
+=head2 Additional Program Information
+
+=over 2
 
 =item --usage
 
@@ -844,14 +912,6 @@ Show program version.
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
 
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=item --test
-
-Run the program without doing the system commands.
-
 =back
 
 =head1 DIAGNOSTICS
@@ -860,9 +920,37 @@ The error messages that can be generated will be listed here.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+The major configuration file for this program is the list of
+datbases indicated by the -c flag.
+
+=head2 Databases Config File
+
+This file is a tab delimited text file. Line beginning with # are ignored.
+
+B<EXAMPLE>
+
+  #-------------------------------------------------------------
+  # DBNAME       DB_PATH
+  #-------------------------------------------------------------
+  TREP_9         /db/repeats/Trep9.nr.fasta
+  TIGR_Trit      /db/repeats/TIGR_Triticum_GSS_Repeats.v2.fasta
+  # END
+
+The columns above represent the following 
+
+=over 2
+
+=item Col. 1
+
+The name of the repeat library
+This will be used to name the output files from the analysis
+and to name the data tracks that will be used by Apollo.
+
+=item Col. 2
+
+The path to the fasta format file containing the repeats.
+
+=back
 
 =head1 DEPENDENCIES
 
