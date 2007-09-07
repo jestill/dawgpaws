@@ -211,7 +211,7 @@ sub tenest2gff {
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
     my ($tenestin, $gffout, $append, $seqname) = @_;
-    my $tename;          # Name of the hit
+    my $tename;           # Name of the hit
     my $start;            # Start of the feature
     my $end;              # End of the feature
     my $strand;           # Strand of the hit
