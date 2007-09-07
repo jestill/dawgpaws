@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_mask.pl - REPEAT MASK PARSER PIPELINE                 |
+# batch_mask.pl - REPEAT MASK PARSER PIPELINE                |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -18,191 +18,12 @@
 #  visualization by the Apollo genome anotation program.    |
 #                                                           |
 # USAGE:                                                    |
-#  RepMaskParse.pl                                          |
+#  batch_mask.pl --man                                      |
+# to get the full program manual.                           |
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
-
-=head1 VERSION
-
-This documentation refers to batch_mask version 1.0
-
-=head1 SYNOPSIS
-
- Usage:
- batch_mask.pl -i DirToProcess -o OutDir
-
-=head1 DESCRIPTION
-
-Runs the RepeatMasker program for a set of input
-FASTA files against a set of repeat library files &
-then converts the repeat masker *.out file into the
-GFF format and then to the game XML format for
-visualization by the Apollo genome anotation program.
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--indir
-
-Path of the directory containing the sequences to process.
-
-=item -o,--outdir
-
-Path of the directory to place the program output.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item -p,--num-proc
-
-The number of processors to use for RepeatMasker. Default is one.
-
-=item --engine
-
-The repeatmasker engine to use: [crossmatch|wublast|decypher].
-The default is to use crossmatch.
-
-=item --apollo
-
-Use the apollo program to convert the file from gff to game xml.
-The default is not to use apollo.
-
-=item --rm-path
-
-The full path to the RepeatMasker binary.
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=item --test
-
-Run the program without doing the system commands.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The error messages that can be generated will be listed here.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-=head2 Required Software
-
-=over
-
-=item *
-
-RepeatMasker
-(http://www.repeatmasker.org/)
-
-=item *
-
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
-
-=back
-
-=head2 Required Perl Modules
-
-=over
-
-=item *
-
-File::Copy
-
-=item *
-
-Getopt::Long
-
-=back
-
-=head1 BUGS AND LIMITATIONS
-
-=head2 TO DO
-
-=over 2
-
-=item *
-
-Load the RepLibs array from a config file.
-
-=item *
-
-Make the results compatable for an upload to a chado
-database.
-
-=item *
-
-Make it a variable to possible to put the gff output (1) all in positive 
-strand, (2) all in negative strand, (3) alignment to positive or
-negative strand, (4) cumulative in both positive and negative strand.
-Current behavior will be to do number 4 above.
-
-=back
-
-=head2 Limitations
-
-=over
-
-=item *
-
-Currently must use short names in the FASTA file.
-
-=item *
-
-This program has been tested with RepeatMasker v  3.1.6
-
-=back
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
+package DAWGPAWS;
 
 print "\n";
 
@@ -215,7 +36,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "1.0";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -269,36 +90,6 @@ my $ok = GetOptions(
 		    "h|help"       => \$show_help,
 		    "q|quiet"      => \$quiet,);
 
-#-----------------------------+
-# HARD CODE VARIABLES         |
-#-----------------------------+
-# TempWorkDir - A directory to temporarily store the data that will later
-#               be transfered to a more appropriate long term storage
-#               location. This could be a place to put the original fasta file
-#               and associated intermediate output.
-# FileToMask - The fasta file that will be masked using RepeatMasker
-# GFFOutfile - The path to write the gff outfile
-# RepMaskOutfile - The path of the *.out file produced by RepeatMasker
-# SeqName - The name of the sequence file in the original [name].fasta
-#           file that was used as input into RepeatMasker
-# RepDb - The short name of the repeat mask DB that was used
-
-# Many of the following variables will need to be changed to set to 
-# array elements, but these are hard coded for now to allow for testing and
-# getting the program up and running.
-
-# MakeGffDBCmd - Command to make a GFF file with the data grouped by the 
-#                the repeat database that was used for assignment.
-# MakeGffElCmd - Command to make a GFF file with the data grouped by the
-#                type of element that was identified.
-
-
-
-#my $bac_parent_dir = "/scratch/jestill/wheat/";  
-
-#my $local_cp_dir = "/scratch/jestill/wheat/copy/"; 
-#my $LocalCpDir = $local_cp_dir;
-
 my $bac_parent_dir = $outdir;  
 
 my ( $ind_lib , $RepMaskCmd, $MakeGffDbCmd, $MakeGffElCmd );
@@ -330,7 +121,7 @@ if ($show_help || (!$ok) ) {
 
 if ($show_version) {
     print "\nbatch_mask.pl:\n".
-	"Version: $ver\n\n";
+	"Version: $VERSION\n\n";
     exit;
 }
 
@@ -945,26 +736,26 @@ sub rmout_to_gff {
 	# CUMULATIVE IN BOTH STRANDS  |
 	# OR JUST THE POSITVE STRAND  |
 	#-----------------------------+
-	print RM_OUT "$rmout[4]\t";      # qry sequence name
+	print RM_OUT "$rmout[4]\t";            # qry sequence name
 	print RM_OUT "repeatmasker:trep9\t";   # software used
-	print RM_OUT "exon\t";  # attribute name
-	print RM_OUT "$rmout[5]\t";      # start
-	print RM_OUT "$rmout[6]\t";      # stop
-	print RM_OUT "$rmout[0]\t";      # smith waterman score"
-	print RM_OUT "+\t";              # Postive strand
-	print RM_OUT ".\t";              # frame
-	print RM_OUT "$rmout[9]";        # attribute
+	print RM_OUT "exon\t";                 # attribute name
+	print RM_OUT "$rmout[5]\t";            # start
+	print RM_OUT "$rmout[6]\t";            # stop
+	print RM_OUT "$rmout[0]\t";            # smith waterman score"
+	print RM_OUT "+\t";                    # Postive strand
+	print RM_OUT ".\t";                    # frame
+	print RM_OUT "$rmout[9]";              # attribute
 	print RM_OUT "\n";
 
-	#print RM_OUT "$rmout[4]\t";      # qry sequence name
+	#print RM_OUT "$rmout[4]\t";            # qry sequence name
 	#print RM_OUT "repeatmasker:trep9\t";   # software used
-	#print RM_OUT "exon\t";  # attribute name
-	#print RM_OUT "$rmout[5]\t";      # start
-	#print RM_OUT "$rmout[6]\t";      # stop
-	#print RM_OUT "$rmout[0]\t";      # smith waterman score"
-	#print RM_OUT "-\t";                # Negative strand
-	#print RM_OUT ".\t";              # frame
-	#print RM_OUT "$rmout[9]";        # attribute
+	#print RM_OUT "exon\t";                 # attribute name
+	#print RM_OUT "$rmout[5]\t";            # start
+	#print RM_OUT "$rmout[6]\t";            # stop
+	#print RM_OUT "$rmout[0]\t";            # smith waterman score"
+	#print RM_OUT "-\t";                    # Negative strand
+	#print RM_OUT ".\t";                    # frame
+	#print RM_OUT "$rmout[9]";              # attribute
 	#print RM_OUT "\n";
 
     }
@@ -973,12 +764,193 @@ sub rmout_to_gff {
     
 }
 
+=head1 NAME
+
+batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
+
+=head1 VERSION
+
+This documentation refers to program version $Rev$
+
+=head1 SYNOPSIS
+
+ Usage:
+ batch_mask.pl -i DirToProcess -o OutDir
+
+=head1 DESCRIPTION
+
+Runs the RepeatMasker program for a set of input
+FASTA files against a set of repeat library files &
+then converts the repeat masker *.out file into the
+GFF format and then to the game XML format for
+visualization by the Apollo genome anotation program.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--indir
+
+Path of the directory containing the sequences to process.
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item -p,--num-proc
+
+The number of processors to use for RepeatMasker. Default is one.
+
+=item --engine
+
+The repeatmasker engine to use: [crossmatch|wublast|decypher].
+The default is to use crossmatch.
+
+=item --apollo
+
+Use the apollo program to convert the file from gff to game xml.
+The default is not to use apollo.
+
+=item --rm-path
+
+The full path to the RepeatMasker binary.
+
+=item --logfile
+
+Path to a file that will be used to log program status.
+If the file already exists, additional information will be concatenated
+to the existing file.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --test
+
+Run the program without doing the system commands.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The error messages that can be generated will be listed here.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Names and locations of config files
+environmental variables
+or properties that can be set.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over
+
+=item *
+
+RepeatMasker
+(http://www.repeatmasker.org/)
+
+=item *
+
+Apollo (Genome Annotation Curation Tool)
+http://www.fruitfly.org/annot/apollo/
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item *
+
+File::Copy
+
+=item *
+
+Getopt::Long
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 TO DO
+
+=over 2
+
+=item *
+
+Load the RepLibs array from a config file.
+
+=item *
+
+Make the results compatable for an upload to a chado
+database.
+
+=item *
+
+Make it a variable to possible to put the gff output (1) all in positive 
+strand, (2) all in negative strand, (3) alignment to positive or
+negative strand, (4) cumulative in both positive and negative strand.
+Current behavior will be to do number 4 above.
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item *
+
+Currently must use short names in the FASTA file.
+
+=item *
+
+This program has been tested with RepeatMasker v  3.1.6
+
+=back
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+http://www.gnu.org/licenses/lgpl.html
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 04/10/2006
 
-UPDATED: 07/18/2007
+UPDATED: 09/07/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -1057,9 +1029,7 @@ UPDATED: 07/18/2007
 # - Changed the format of the repeat databases list
 #   This is currently a two-d array
 #
-#-----------------------------+
-# 07/13/2007 - VERSION 1.0    |
-#-----------------------------+
+# 07/13/2007
 # - Added POD documentation.
 # - Renamed to automask.pl
 # - Made this the official 1.0 release
@@ -1114,3 +1084,6 @@ UPDATED: 07/18/2007
 #   (ie. don't have to add RepeatMaker to user's path)
 # - Renamed program again to batch_mask.pl
 # 
+# 09/07/2007
+# - Moving POD documentation to the end of the program
+# - Changing to use a config file instead of internal 2-d array
