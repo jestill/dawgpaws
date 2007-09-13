@@ -1,22 +1,23 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# Name.pl                                                   |
+# cnf_findltr2gff.pl - Converts find_ltr output to gff      |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 00/00/2007                                       |
-# UPDATED: 00/00/2007                                       |
+# STARTED: 09/13/2007                                       |
+# UPDATED: 09/13/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Short Program Description                                |
+#  Converts output from the find_ltr.pl program to gff      |
+#  format for easy import into apollo.                      |
 #                                                           |
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION: $Rev$                                                  |
+# VERSION: $Rev$                                      |
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -279,11 +280,12 @@ This documentation refers to version $Rev$
 
 =head1 DESCRIPTION
 
-This is what the program does
+Converts output from the find_ltr.pl ltr annotation program to 
+the standard gff format.
 
 =head1 COMMAND LINE ARGUMENTS
 
-=head 2 Required Arguments
+=head2 Required Arguments
 
 =over 2
 
@@ -295,13 +297,23 @@ Path of the input file.
 
 Path of the output file.
 
+=back
 
+=head2 Additional Options
+
+=over 2
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --verbose
+
+Run the program in verbose mode.
 
 =back
 
-=head1 Additional Options
-
-=over
+=head2 Additional Information
 
 =over 2
 
@@ -322,10 +334,6 @@ Show program version.
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
 
-=item -q,--quiet
-
-Run the program with minimal output.
-
 =back
 
 =head1 DIAGNOSTICS
@@ -344,7 +352,13 @@ or properties that can be set.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+B<ltr_finder Program>
+
+This program is designed to parse output from the ltr_finder.pl
+program. H<http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz>
+
+M Rho et al. 2007. I<'De novo identificatio of LTR retrotransposons
+in eukaryotic genomes'> BMC Genomics 8:90.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -362,9 +376,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 09/13/2007
 
-UPDATED:
+UPDATED: 09/13/2007
 
 VERSION: $Rev$
 
