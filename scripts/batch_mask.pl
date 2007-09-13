@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 09/07/2007                                       |
+# UPDATED: 09/11/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -1077,10 +1077,6 @@ Getopt::Long
 
 =item *
 
-Load the rep_libs array from a config file.
-
-=item *
-
 Make the results compatable for an upload to a chado
 database.
 
@@ -1089,17 +1085,13 @@ database.
 Make it a variable to possible to put the gff output (1) all in positive 
 strand, (2) all in negative strand, (3) alignment to positive or
 negative strand, (4) cumulative in both positive and negative strand.
-Current behavior will be to do number 4 above.
+Current behavior is to do number 1 above.
 
 =back
 
 =head2 Limitations
 
 =over
-
-=item *
-
-Currently must use short names in the FASTA file.
 
 =item *
 
@@ -1121,7 +1113,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 09/07/2007
+UPDATED: 09/11/2007
 
 VERSION: $Rev$
 
