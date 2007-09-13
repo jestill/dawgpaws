@@ -38,8 +38,10 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 my $infile;
 my $outfile;
+my $inseqname;
 
 # Booleans
+my $do_gff_append = 0;
 my $quiet = 0;
 my $verbose = 0;
 my $show_help = 0;
@@ -53,7 +55,9 @@ my $show_version = 0;
 my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
+		    "s|seqname=s" => \$inseqname,
 		    # ADDITIONAL OPTIONS
+		    "append"      => \$do_gff_append,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -84,9 +88,26 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
+# SHOW HELP IF REQUIRED VARIABLES NOT PRESENT
+
+if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
+    print "\a";
+    print "ERROR: An input file must be specified\n" if (!$infile); 
+    print "ERROR: An output file must be specified\n" if (!$outfile);
+    print "ERROR: A sequence name must be specified\n" if (!$inseqname);
+    print_help("full");
+    exit;
+}
+
 #-----------------------------+
 # MAIN PROGRAM BODY           |
 #-----------------------------+
+if ($do_gff_append) {
+    findltr2gff ( $infile, $outfile, 1, $inseqname);
+}
+else {
+    findltr2gff ( $infile, $outfile, 0, $inseqname);
+}
 
 exit;
 
@@ -105,6 +126,7 @@ sub print_help {
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --infile       # Path to the input file\n".
 	"  --outfile      # Path to the output file\n".
+	"  --seqname      # Name to use in seqname column in gff file".
 	"\n".
 	"OPTIONS::\n".
 	"  --version      # Show the program version\n".     
@@ -125,21 +147,135 @@ sub print_help {
 }
 
 
+sub findltr2gff {
+
+    #-----------------------------+
+    # SUBFUNCTION VARS            |
+    #-----------------------------+
+    my ($findltr_in, $gff_out, $append_gff, $seqname) = @_;
+
+    # find_ltr
+    my $findltr_id;                 # Id as assigned from find_ltr.pl
+    my $findltr_name;               # Full name for the find_ltr prediction
+    my $ltr5_start;                 # Start of the 5' LTR
+    my $ltr5_end;                   # End of the 5' LTR
+    my $ltr5_len;                   # Length of the 5' LTR
+    my $ltr3_start;                 # Start of the 3' LTR
+    my $ltr3_end;                   # End of the 3' LTR
+    my $ltr3_len;                   # Length of the 3' LTR
+    my $el_len;                     # Length of the entire element
+    my $mid_start;                  # Start of the LTR Mid region
+    my $mid_end;                    # End of the LTR Mid region
+    my $ltr_similarity;             # Percent similarity between LTRs
+    my $ltr_strand;                 # Strand of the LTR
+
+    my @in_split = ();              # Split of the infile line
+    my $num_in;                     # Number of split vars in the infile
+
+     # Initialize Counters
+    my $findltr_num = 0;            # ID Number of putatitve LTR retro
+
+    #-----------------------------+
+    # OPEN FILES                  |
+    #-----------------------------+
+    open (INFILE, "<$findltr_in") ||
+	die "Can not open input file:\n$findltr_in\n";
+
+    if ($append_gff) {
+	open (GFFOUT, ">>$gff_out") ||
+	    die "Could not open output file for appending\n$gff_out\n";
+    }
+    else {
+	open (GFFOUT, ">$gff_out") ||
+	    die "Could not open output file for output\n$gff_out\n";
+    } # End of if append_gff
+    
+    #-----------------------------+
+    # PROCESS INFILE              |
+    #-----------------------------+
+    while (<INFILE>) {
+	chomp;
+
+	my @in_split = split;
+	my $num_in = @in_split;   
+	
+	# Load split data to vars if expected number of columns found
+	if ($num_in == 10) {
+
+	    $findltr_num++;
+
+	    $findltr_id = $in_split[0];
+	    $ltr5_start = $in_split[1];
+	    $ltr5_end = $in_split[2];
+	    $ltr3_start = $in_split[3];
+	    $ltr3_end = $in_split[4];
+	    $ltr_strand = $in_split[5];
+	    $ltr5_len = $in_split[6];	    
+	    $ltr3_len = $in_split[7];
+	    $el_len = $in_split[8];
+	    $ltr_similarity = $in_split[9];
+
+	    $mid_start = $ltr5_end + 1;
+	    $mid_end = $ltr3_start - 1;   
+
+	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
+
+	    # 5'LTR
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"find_ltr\t".          # Source
+		"exon\t".              # Features, exon for Apollo
+		"$ltr5_start\t".       # Feature start
+		"$ltr5_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		"$findltr_name\n";     # Features (name)
+
+	    # MID
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"find_ltr\t".          # Source
+		"exon\t".              # Features, exon for Apollo
+		"$mid_start\t".        # Feature start
+		"$mid_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		"$findltr_name\n";     # Features (name)
+	    
+	    # 3'LTR
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"find_ltr\t".          # Source
+		"exon\t".              # Features, exon for Apollo
+		"$ltr3_start\t".       # Feature start
+		"$ltr3_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		"$findltr_name\n";     # Features (name)
+
+	} # End of if num_in is 10
+
+    } # End of while INFILE
+
+
+} # End of findltr2gff
+
 =head1 NAME
 
-Name.pl - Short program description. 
+cnv_findltr2gff.pl - Convert output from find_ltr.pl to gff format.
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to version $Rev$
 
 =head1 SYNOPSIS
 
   USAGE:
-    Name.pl -i InFile -o OutFile
-
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    cnv_findltr2gff.pl -i InFile.ltrpos -o OutFile.gff
+    
+    --infile        # Path to the ltrpos input file 
+    --outfie        # Path to the gff format output file
+    --seqname       # Name to use in seqname column in gff file
 
 =head1 DESCRIPTION
 
@@ -158,6 +294,8 @@ Path of the input file.
 =item -o,--outfile
 
 Path of the output file.
+
+
 
 =back
 
