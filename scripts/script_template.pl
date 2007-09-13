@@ -16,104 +16,11 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION:                                                  |
-# $Id:: script_template.pl 68 2007-07-15 00:25:18Z James#$: |
+# VERSION: $Rev$                                                  |
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-Name.pl - Short program description. 
-
-=head1 VERSION
-
-This documentation refers to program version 0.1
-
-=head1 SYNOPSIS
-
- Usage:
-  Name.pl -i InFile -o OutFile
-
-=head1 DESCRIPTION
-
-This is what the program does
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--infile
-
-Path of the input file.
-
-=item -o,--outfile
-
-Path of the output file.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-Other modules or software that the program is dependent on.
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
-package JPERL;
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -124,7 +31,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = "0.1";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -133,8 +40,8 @@ my $infile;
 my $outfile;
 
 # Booleans
-my $help = 0;
 my $quiet = 0;
+my $verbose = 0;
 my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
@@ -143,14 +50,17 @@ my $show_version = 0;
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions("i|infile=s"  => \$infile,
+my $ok = GetOptions(# REQUIRED OPTIONS
+		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
+		    # ADDITIONAL OPTIONS
+		    "q|quiet"     => \$quiet,
+		    "verbose"     => \$verbose,
+		    # ADDITIONAL INFORMATION
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,
-		    "q|quiet"     => \$quiet,);
-
+		    "h|help"      => \$show_help,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -215,13 +125,110 @@ sub print_help {
 }
 
 
+=head1 NAME
+
+Name.pl - Short program description. 
+
+=head1 VERSION
+
+This documentation refers to program version 0.1
+
+=head1 SYNOPSIS
+
+  USAGE:
+    Name.pl -i InFile -o OutFile
+
+    --infile        # Path to the input file
+    --outfie        # Path to the output file
+
+=head1 DESCRIPTION
+
+This is what the program does
+
+=head1 COMMAND LINE ARGUMENTS
+
+=head 2 Required Arguments
+
+=over 2
+
+=item -i,--infile
+
+Path of the input file.
+
+=item -o,--outfile
+
+Path of the output file.
+
+=back
+
+=head1 Additional Options
+
+=over
+
+=over 2
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The list of error messages that can be generated,
+explanation of the problem
+one or more causes
+suggested remedies
+list exit status associated with each error
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Names and locations of config files
+environmental variables
+or properties that can be set.
+
+=head1 DEPENDENCIES
+
+Other modules or software that the program is dependent on.
+
+=head1 BUGS AND LIMITATIONS
+
+Any known bugs and limitations will be listed here.
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+http://www.gnu.org/licenses/lgpl.html
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
 =head1 HISTORY
 
 STARTED:
 
 UPDATED:
 
-VERSION: $Id: script_template.pl 68 2007-07-15 00:25:18Z JamesEstill $
+VERSION: $Rev$
 
 =cut
 
