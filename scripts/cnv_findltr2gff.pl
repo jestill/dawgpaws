@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/13/2007                                       |
-# UPDATED: 09/13/2007                                       |
+# UPDATED: 09/14/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the find_ltr.pl program to gff      |
@@ -40,6 +40,7 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $infile;
 my $outfile;
 my $inseqname;
+my $findltr_suffix = "def";    # find_ltr_suffix
 
 # Booleans
 my $do_gff_append = 0;
@@ -50,6 +51,8 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 
+
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -58,6 +61,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "s|seqname=s" => \$inseqname,
 		    # ADDITIONAL OPTIONS
+		    "suffix"      => \$findltr_suffix,
 		    "append"      => \$do_gff_append,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -104,10 +108,10 @@ if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
 # MAIN PROGRAM BODY           |
 #-----------------------------+
 if ($do_gff_append) {
-    findltr2gff ( $infile, $outfile, 1, $inseqname);
+    findltr2gff ( $infile, $outfile, 1, $inseqname, $findltr_suffix);
 }
 else {
-    findltr2gff ( $infile, $outfile, 0, $inseqname);
+    findltr2gff ( $infile, $outfile, 0, $inseqname, $findltr_suffix);
 }
 
 exit;
@@ -130,6 +134,7 @@ sub print_help {
 	"  --seqname      # Name to use in seqname column in gff file".
 	"\n".
 	"OPTIONS::\n".
+	"  --suffix       # Suffix added to the gff source name".
 	"  --version      # Show the program version\n".     
 	"  --usage        # Show program usage\n".
 	"  --help         # Show this help message\n".
@@ -153,9 +158,11 @@ sub findltr2gff {
     #-----------------------------+
     # SUBFUNCTION VARS            |
     #-----------------------------+
-    my ($findltr_in, $gff_out, $append_gff, $seqname) = @_;
+    # gff_suffix is the name appended to the end of the gff_source
+    my ($findltr_in, $gff_out, $append_gff, $seqname, $gff_suffix) = @_;
 
     # find_ltr
+    my $gff_source;                 # 
     my $findltr_id;                 # Id as assigned from find_ltr.pl
     my $findltr_name;               # Full name for the find_ltr prediction
     my $ltr5_start;                 # Start of the 5' LTR
@@ -220,10 +227,11 @@ sub findltr2gff {
 	    $mid_end = $ltr3_start - 1;   
 
 	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
+	    $gff_source = "findltr:".$gff_suffix;
 
 	    # 5'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
-		"find_ltr\t".          # Source
+		"$gff_source\t".       # Source
 		"exon\t".              # Features, exon for Apollo
 		"$ltr5_start\t".       # Feature start
 		"$ltr5_end\t".	       # Feature end
@@ -234,7 +242,7 @@ sub findltr2gff {
 
 	    # MID
 	    print GFFOUT "$seqname\t". # Name of sequence
-		"find_ltr\t".          # Source
+		"$gff_source\t".       # Source
 		"exon\t".              # Features, exon for Apollo
 		"$mid_start\t".        # Feature start
 		"$mid_end\t".	       # Feature end
@@ -245,7 +253,7 @@ sub findltr2gff {
 	    
 	    # 3'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
-		"find_ltr\t".          # Source
+		"$gff_source\t".       # Source
 		"exon\t".              # Features, exon for Apollo
 		"$ltr3_start\t".       # Feature start
 		"$ltr3_end\t".	       # Feature end
@@ -272,11 +280,12 @@ This documentation refers to version $Rev$
 =head1 SYNOPSIS
 
   USAGE:
-    cnv_findltr2gff.pl -i InFile.ltrpos -o OutFile.gff
+    cnv_findltr2gff.pl -i InFile.ltrpos -o OutFile.gff [-suffix def]
     
     --infile        # Path to the ltrpos input file 
     --outfie        # Path to the gff format output file
     --seqname       # Name to use in seqname column in gff file
+    --suffix        # Name of use as a suffix in the gff source column
 
 =head1 DESCRIPTION
 
@@ -297,11 +306,22 @@ Path of the input file.
 
 Path of the output file.
 
+
 =back
 
 =head2 Additional Options
 
 =over 2
+
+=item --suffix
+
+Name to use as the suffix when naming the source in the gff output. This
+can be used to distinguish among find_ltr runs that used different paramater
+sets. This will be append to findltr: to produce a name that can be
+unique for each parameter set result. For example the default parameter set
+could be given a I<def> suffix while and alternate paramater set could
+be given the suffix I<alt>. This will produce gff source lines of
+I<findltr:def> and I<findltr:alt>.
 
 =item -q,--quiet
 
@@ -378,7 +398,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/13/2007
 
-UPDATED: 09/13/2007
+UPDATED: 09/14/2007
 
 VERSION: $Rev$
 
@@ -387,4 +407,9 @@ VERSION: $Rev$
 #-----------------------------------------------------------+
 # HISTORY                                                   |
 #-----------------------------------------------------------+
-#
+# 09/13/2007
+# - Base program written
+# 09/14/2007
+# - Added the suffix to the gff_source variable this allows
+#   for different parameter sets to recieve unique names in
+#   the gff output file.
