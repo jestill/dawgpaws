@@ -13,7 +13,7 @@
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #-----------------------------------------------------------+
 
