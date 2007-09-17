@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 09/14/2007                                       |
+# UPDATED: 09/17/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -98,6 +98,58 @@ my $lf_tsr_string;             # String of bases in the TSR
 # BOUNDARY SHARPNESS
 my $lf_sharp_5;                # Sharpness of 5' Boundary
 my $lf_sharp_3;                # Sharpness of 3' Boundary
+
+# PBS
+my $lf_pbs_num_match;          # Number of matched bases in the PBS
+my $lf_pbs_aln_len;            # PBS alignment length
+my $lf_pbs_start;              # Start of the PBS signal
+my $lf_pbs_end;                # End of the PBS signal
+my $lf_pbs_trna;               # PBS tRNA type and anti-codon
+
+# PPT 
+my $lf_ppt_num_match;          # Number of matched based in the PPT
+my $lf_ppt_aln_len;            # PPT alignment length
+my $lf_ppt_start;              # Start of the PPT
+my $lf_ppt_end;                # End of the PPT
+
+#-----------------------------+
+# DOMAIN DATA                 |
+#-----------------------------+
+
+# GENERAL DOMAIN VARS
+my $lf_domain_dom_start;
+my $lf_domain_dom_end;
+my $lf_domain_orf_start;
+my $lf_domain_orf_end;
+my $lf_domain_name;            # Type of the domain
+
+# INTEGRASE CORE
+#my $has_in_core = 0;           # Boolean for has integrase core
+my $lf_in_core_dom_start;
+my $lf_in_core_dom_end;
+my $lf_in_core_orf_start;
+my $lf_in_core_orf_end;
+
+# INTEGRASE C-TERM
+#my $has_in_cterm = 0;
+my $lf_in_cterm_dom_start;
+my $lf_in_cterm_dom_end;
+my $lf_in_cterm_orf_start;
+my $lf_in_cterm_orf_end;
+
+# RNASEH
+#my $has_rh = 0;
+my $lf_rh_dom_start;
+my $lf_rh_dom_end;
+my $lf_rh_orf_start;
+my $lf_rh_orf_end;
+
+# RT
+#my $has_rt = 0;
+my $lf_rt_dom_start;
+my $lf_rt_dom_end;
+my $lf_rt_orf_start;
+my $lf_rt_orf_end;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -233,9 +285,81 @@ while (<INFILE>) {
     }
 
     # PBS
-    elsif (m//) {
-	
+    elsif (m/PBS   : \[(\d*)\/(\d*)\] (\d*) - (\d*) \((.*)\)/) {
+	$lf_pbs_num_match = $1;
+	$lf_pbs_aln_len = $2;
+	$lf_pbs_start = $3;
+	$lf_pbs_end = $4;
+	$lf_pbs_trna = $5;
     }
+
+    # PPT
+    elsif (m/PPT   : \[(\d*)\/(\d*)\] (\d*) - (\d*)/) {
+	$lf_ppt_num_match = $1;
+	$lf_ppt_aln_len = $2;
+	$lf_ppt_start = $3;
+	$lf_ppt_end = $4;
+    }
+    
+    # PROTEIN DOMAINS
+    # This will need to be modified and checked after another run
+    # using ps_scan to get the additional domains
+    #
+    #Domain: 56796 - 57326 [possible ORF:56259-59144, (IN (core))]
+    elsif (m/Domain: (\d*) - (\d*) \[possible ORF:(\d*)-(\d*), \((.*)\)\]/) {
+	
+	$lf_domain_dom_start = $1;
+	$lf_domain_dom_end = $2;
+	$lf_domain_orf_start = $3;
+	$lf_domain_orf_end = $4;
+	$lf_domain_name = $5;
+	
+	# Temp while I work with this data
+	#print "DOMAIN:".$lf_domain_name."\n";
+
+	if ($lf_domain_name =~ 'IN \(core\)') {
+
+	    $lf_in_core_dom_start = $lf_domain_dom_start;
+	    $lf_in_core_dom_end = $lf_domain_dom_end;
+	    $lf_in_core_orf_start = $lf_domain_orf_start;
+	    $lf_in_core_orf_end = $lf_domain_orf_end;
+
+	    # Temp while debug
+	    # This is to check the regexp vars can be fetched here
+	    #print "\tDom Start: $lf_in_core_dom_start\n";
+	    #print "\tDom End:   $lf_in_core_dom_end\n";
+	    #print "\tOrf Start: $lf_in_core_orf_start\n";
+	    #print "\tOrf End:   $lf_in_core_orf_end\n";
+
+	}
+	elsif ($lf_domain_name =~ 'IN \(c-term\)') {
+	    $lf_in_cterm_dom_start = $lf_domain_dom_start;
+	    $lf_in_cterm_dom_end = $lf_domain_dom_end;
+	    $lf_in_cterm_orf_start = $lf_domain_orf_start;
+	    $lf_in_cterm_orf_end = $lf_domain_orf_end;
+	}
+	elsif ($lf_domain_name =~ 'RH') {
+	    $lf_rh_dom_start = $lf_domain_dom_start;
+	    $lf_rh_dom_end = $lf_domain_dom_end;
+	    $lf_rh_orf_start = $lf_domain_orf_start;
+	    $lf_rh_orf_end = $lf_domain_orf_end;
+	}
+	elsif ($lf_domain_name =~ 'RT') {
+	    	  
+	    $lf_rt_dom_start = $lf_domain_dom_start;
+	    $lf_rt_dom_end = $lf_domain_dom_end;
+	    $lf_rt_orf_start = $lf_domain_orf_start;
+	    $lf_rt_orf_end = $lf_domain_orf_end;  
+
+	}
+	else {
+	    print "\a";
+	    print STDERR "Unknown domain type: $lf_domain_name\n";
+	}
+
+
+
+    } # End of elsif Domain
 
     #-----------------------------+
     # FILE HEADER INFORMATION     |
@@ -291,6 +415,19 @@ print STDOUT "TSR-STRING:\t$lf_tsr_string\n";
 print STDOUT "\nMETRICS:\n";
 print STDOUT "5 SHARP: $lf_sharp_5\n";
 print STDOUT "3 SHARP: $lf_sharp_3\n";
+
+print STDOUT "\nPBS:\n";
+print STDOUT "NUM MATCH:\t$lf_pbs_num_match\n";
+print STDOUT "ALN LENGT:\t$lf_pbs_aln_len\n";
+print STDOUT "PBS START:\t$lf_pbs_start\n";
+print STDOUT "PBS END:\t$lf_pbs_end\n";
+print STDOUT "PBS tRNA:\t$lf_pbs_trna\n";
+
+print STDOUT "\nPPT:\n";
+print STDOUT "NUM MATCH:\t$lf_ppt_num_match\n";
+print STDOUT "ALN LENT:\t$lf_ppt_aln_len\n";
+print STDOUT "PPT START:\t$lf_ppt_start\n";
+print STDOUT "PPT END:\t$lf_ppt_end\n";
 
 print STDOUT "\nCOMPONENT STATUS:\n";
 print STDOUT "5LTR_TG\n" if $has_5ltr_tg;
@@ -443,7 +580,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/14/2007
 
-UPDATED: 09/14/2007
+UPDATED: 09/17/2007
 
 VERSION: $Rev$
 
