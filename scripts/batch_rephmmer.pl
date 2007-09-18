@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/17/2007                                       |
-# UPDATED: 09/17/2007                                       |
+# UPDATED: 09/18/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
@@ -29,9 +29,6 @@
 # -E Evalue cutoff
 # -T T bit threshold
 # -Z # seqs for E-Value calc
-
-
-
 
 
 package DAWGPAWS;
@@ -544,19 +541,19 @@ batch_rephmmer.pl - Short program description.
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
   USAGE:
-    Name.pl -i InFile -o OutFile
+    batch_rephmmer.pl -i InDir -o OutDir
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    --indir         # Path to the input dir containing fasta files
+    --outdir        # Path to the base output directory
 
 =head1 DESCRIPTION
 
-This is what the program does
+Given a config file describing sets of 
 
 =head1 COMMAND LINE ARGUMENTS
 
@@ -564,21 +561,34 @@ This is what the program does
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path of the input directory. This is the directory that contains
+the 
 
-=item -o,--outfile
+=item -o,--outdir
 
-Path of the output file.
+Path of the base output directory.
 
 =back
 
-=head1 Additional Options
+=head2 Additional Options
 
 =over
 
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head2 Additional Information
+
 =over 2
+
+=item --version
+
+Show program version.
 
 =item --usage
 
@@ -588,18 +598,10 @@ Short overview of how to use program from command line.
 
 Show program usage with summary of options.
 
-=item --version
-
-Show program version.
-
 =item --man
 
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
 
 =back
 
@@ -639,7 +641,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/17/2007
 
-UPDATED: 09/17/2007
+UPDATED: 09/18/2007
 
 VERSION: $Rev$
 
@@ -651,4 +653,7 @@ VERSION: $Rev$
 #
 # 09/17/2007
 # - Program started
-# - 
+# - Basic boilerplate stuff laid out
+# 
+# 09/18/2007
+# -
