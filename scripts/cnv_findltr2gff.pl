@@ -51,8 +51,6 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 
-
-
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
