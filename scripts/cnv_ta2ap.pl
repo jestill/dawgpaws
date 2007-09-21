@@ -24,7 +24,7 @@
 # TO DO:
 # [ ] Grep the GFF directory to load the array of GFF files
 #     into the Files2Convert array
-
+# [ ] DON'T HARD CODE APOLLO PATH USE ENV VAR
 =head1 NAME
 
 app_gffcon.pl - Convert TriAnnot gff files to Apollo format
