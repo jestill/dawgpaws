@@ -287,9 +287,9 @@ foreach my $FileRoot (@Files2Convert)
 	# on the FGENESH and GenMark conversion subfunctions
 	if ($Valid == '1')
 	{
-	    # Convert GFF file to game format
-	    &ApolloConvert ($ApGffPath, "gff", $OutPath, 
-			    "game", $InFastaFile, "NULL");
+#	    # Convert GFF file to game format
+#	    &ApolloConvert ($ApGffPath, "gff", $OutPath, 
+#			    "game", $InFastaFile, "NULL");
 	    
 	    # Add apollo formatted GFF output to concatenated
             # GFF output file
