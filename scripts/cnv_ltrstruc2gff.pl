@@ -24,6 +24,7 @@ package DAWGPAWS;
 # INCLUDES                    |
 #-----------------------------+
 use strict;
+#use File:Copy;
 use Getopt::Long;
 
 #-----------------------------+
@@ -34,10 +35,11 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
+
+# Required variables
 my $indir;
 my $outdir;
 my $repdir;
-my $flist;                     # Flist is the file list used by LTR_Struc
 
 # Booleans
 my $quiet = 0;
@@ -47,6 +49,8 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 
+#
+my $name_root;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -55,7 +59,6 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"     => \$indir,
                     "o|outdir=s"    => \$outdir,
 		    "r|repdir=s"    => \$repdir,
-		    "f|flist=s"     => \$flist,
 		    # ADDITIONAL OPTIONS
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
@@ -88,7 +91,7 @@ if ($show_man) {
 }
 
 # THROW ERROR IF REQRUIED VARIABLES NOT SPECIFIED
-if ( (!$indir) || (!$outdir) || (!$repdir) || (!$flist) ) {
+if ( (!$indir) || (!$outdir) || (!$repdir) ) {
     print "ERROR: Input directory must be specified\n" if !$indir;
     print "ERROR: Output directory must be specified\n" if !$outdir;
     print "ERROR: Reports directory must be specified\n" if !$repdir;
@@ -149,7 +152,6 @@ if ($num_fasta_files == 0) {
     exit;
 }
 
-
 #-----------------------------+
 # Get the LTR_STRUC report    |
 # files                       |
@@ -164,26 +166,111 @@ closedir (REPDIR);
 my $num_report_files = @report_files;
 
 print "\n-----------------------------------------------\n";
-print "Report files to process: $num_report_files\n";
+print " Report files to process: $num_report_files\n";
+print " Fasta files to process: $num_fasta_files\n";
 print "-----------------------------------------------\n\n";
 
-my $report_num = 0;
-for my $ind_report (@report_files) {
-    
-    $report_num++;
 
-    print "Processing report $report_num of $num_report_files: $ind_report\n";
-    
-#    my $fasta_file = $indir.
 
-#    ltrstruc2gff ()
+my $fasta_file_num = 0;
+
+for my $ind_fasta_file (@fasta_files) {
     
-    if ($report_num = 1) {exit;}
+    my $ind_report_num=0;
     
+    $fasta_file_num++;
+    
+    #-----------------------------+
+    # GET ROOT FILE NAME          |
+    #-----------------------------+
+    if ($ind_fasta_file =~ m/(.*)\.fasta$/ ) {	    
+	$name_root = "$1";
+    }  
+    elsif ($ind_fasta_file =~ m/(.*)\.fa$/ ) {	    
+	$name_root = "$1";
+    } 
+    else {
+	$name_root = "UNDEFINED";
+    }
+    my $name_root_len = length($name_root);
+    
+    print STDERR "\n--------------------------------------------------\n";
+    print STDERR "Processing $name_root: $fasta_file_num of".
+	" $num_fasta_files\n";
+    print STDERR "--------------------------------------------------\n";
+    
+    #-----------------------------+
+    # CREATE ROOT NAME DIR        |
+    #-----------------------------+
+    my $name_root_dir = $outdir.$name_root."/";
+    unless (-e $name_root_dir) {
+	mkdir $name_root_dir ||
+	    die "Could not create dir:\n$name_root_dir\n"
+    }
+
+    #-----------------------------+
+    # CREATE LTR_STRUC OUTDIR     |
+    #-----------------------------+
+    # Dir to hold copies of the ltr_struc results
+    my $ltrstruc_dir = $name_root_dir."ltr_struc/";
+    unless (-e $ltrstruc_dir) {
+	mkdir $ltrstruc_dir ||
+	    die "Could not create ltr_struc out dir:\n$ltrstruc_dir\n";
+    }
+
+    #-----------------------------+
+    # CREATE GFF OUTDIR           |
+    #-----------------------------+
+    my $gff_dir = $name_root_dir."gff/";
+    unless (-e $gff_dir) {
+	mkdir $gff_dir ||
+	    die "Could not create gff out dir:\n$gff_dir\n";
+    }
+
+    my $fasta_file_path = $indir.$ind_fasta_file;
+    my $gff_out_path = $gff_dir.$name_root."_ltrstruc.gff";
+    
+    #-----------------------------+
+    # FIND REPORTS THAT MATCH     |
+    #-----------------------------+
+    for my $ind_report (@report_files) {
+
+	# This is the id of the sequence the report is for
+	my $ind_report_id = substr ($ind_report,0,$name_root_len);
+
+	if ($name_root =~ $ind_report_id) {
+
+	    print STDERR "\tReport: $ind_report\n";
+	    $ind_report_num++;
+
+	    my $report_file_path = $repdir.$ind_report;
+  
+	    if ($ind_report_num == 1) {
+		# If first record start new gff file
+		ltrstruc2gff ( $fasta_file_path, $report_file_path,
+			       $gff_out_path, 0);
+	    }
+	    else {
+		# If not first record append to existing gff file
+		ltrstruc2gff ( $fasta_file_path, $report_file_path,
+			       $gff_out_path, 1);
+
+	    }
+
+	    
+
+	}
+	
+	print STDERR "\tRepID: $ind_report_id\n" if $verbose;
+
+    }
+
+    print STDERR "\tNum Reports: $ind_report_num\n";
+
+    # Temp exit while working on the code
+    if ($fasta_file_num == 2) {exit;}
+
 }
-
-
-# Test of using the ltrstruc2gff subfunction on a single sequence
 
 
 exit;
@@ -230,29 +317,37 @@ sub ltrstruc2gff {
 
     # FASTA RELATED VARS
     my $qry_seq;
+    
+    # Counters
+    my $ltr5_blank_count = 0;
 
     # LTR STRUC VARS
-    my $ls_score;
-    my $ls_contig_len;
-    my $ls_orientation;
-    my $ls_longest_orf;
+    my $ls_score;        # Score assigned by LTR_STRUC
+    my $ls_contig_len;   # Length of the source contig
+    my $ls_orientation;  # Orientation 
+    my $ls_retro_len;    # Overall length of the retrotransposon
+    my $ls_longest_orf;  # Length of the longest ORF
     my $ls_rt_frame1;
     my $ls_rt_frame2;
     my $ls_rt_frame3;
-    my $ls_5ltr_len;
-    my $ls_3ltr_len;
-    my $ls_ltr_homology;
-    my $ls_5dinuc;
-    my $ls_3dinuc;
-    my $ls_5flank_seq;
-    my $ls_3flank_seq;
-    my $ls_pbs_seq;
-    my $ls_ppt_seq;
+    my $ls_5ltr_len;     # Length of the 5' LTR
+    my $ls_3ltr_len;     # Length of the 3' LTR
+    my $ls_ltr_homology; # Percent ID of LTRs
+    my $ls_5dinuc;       # 5' dinucleotide sequence
+    my $ls_3dinuc;       # 3' dinucleotide sequence
+    my $ls_5tsr_seq;     # 5' Target site rep sequence
+    my $ls_3tsr_seq;     # 3' Target site rep sequence
+    my $ls_5flank_seq;   # 5' Flanking sequence
+    my $ls_3flank_seq;   # 3' Flanking sequence
+    my $ls_pbs_seq;      # Primer Binding Site Sequence
+    my $ls_ppt_seq;      # Polypuring Tract sequence
     my $ls_5id_seq;
     my $ls_3id_seq;
-    my $ls_5ltr_seq;
+    my $ls_5ltr_seq;     # Sequence of the 5' LTR
     my $ls_3ltr_seq;
-    my $ls_full_retro_seq;
+    my $ls_full_retro_seq; 
+    my $par_5ltr_len;      # Length of the 5' LTR as parsed
+    my $par_3ltr_len;      # Length of the 3' LTR as parsed
 
     # BOOLEANS
     my $in_rt_frame_1 = 0;
@@ -263,24 +358,43 @@ sub ltrstruc2gff {
     my $in_5ltr = 0;
     my $in_3ltr = 0;
     my $in_complete_seq = 0;
+    my $in_aligned_ltrs = 0;
+
+    # Coordinate values
+    my $full_retro_start;
+    my $full_retro_end;
+    my $ltr5_start;
+    my $ltr5_end;
+    my $ltr3_start;
+    my $ltr3_end;
+    my $pbs_start;
+    my $pbs_end;
+    my $ppt_start;
+    my $ppt_end;
+
+    # Coordinate substring tests
+    my $ppt_from_full_retro;
+    my $ppt_from_query_seq;
+    my $pbs_from_full_retro;
+    my $pbs_from_query_seq;
 
     #-----------------------------+
     # OPEN GFF OUTPUT FILE        |
     #-----------------------------+
     if ($gff_append) {
-	open (GFFOUT, ">>gff_out") 
-	    || die "ERROR: Could not open gff output file:\b$gff_out\n"
-    }
+	open (GFFOUT, ">>gff_out") ||
+	    die "ERROR: Could not open gff output file:\b$gff_out\n"
+	}
     else {
-	open (GFFOUT, ">$gff_out") 
-	    || die "ERROR: Could not open gff output file:\n$gff_out\n";
+	open (GFFOUT, ">$gff_out") ||
+	    die "ERROR: Could not open gff output file:\n$gff_out\n";
     }
     
     #-----------------------------+
     # LOAD FASTA SEQUENCE         |
     #-----------------------------+
-    open (INFASTA, "$fasta_in") 
-	|| die "Can not open fasta input file:\n$fasta_in\n";
+    open (INFASTA, "$fasta_in") ||
+	die "Can not open fasta input file:\n$fasta_in\n";
     while (<INFASTA>) {
 	chomp;
 	unless(m/^\>/) {
@@ -300,6 +414,14 @@ sub ltrstruc2gff {
 	if ($in_rt_frame_1) {
 
 	}
+	elsif (m/COMPLETE SEQUENCE OF PUTATIVE TRANSPOSON/) {
+	    $in_3ltr = 0;
+	    $in_complete_seq = 1;
+	}
+	elsif (m/^ALIGNED LTRS:/) {
+	    $in_complete_seq = 0;
+	    $in_aligned_ltrs = 1;
+	}
 	elsif ($in_rt_frame_2) {
 
 	}
@@ -312,19 +434,181 @@ sub ltrstruc2gff {
 	elsif ($in_3id_seq) {
 
 	}
-	elsif ($in_5ltr) {
-	    
-	}
-	elsif ($in_3ltr) {
-	    # Jump out on the first empty line encountered
-	}
 	elsif ($in_complete_seq) {
 	    $ls_full_retro_seq = $ls_full_retro_seq.$_;
 	}
-    }
-    close (REPIN);
+	elsif(/CUT-OFF SCORE:\s+(\d\.\d+)/){
+	    $ls_score = $1;
+	}
+	elsif(m/TRANSPOSON IS IN (.*) ORIENTATION/) {
+	    $ls_orientation = $1;
+	    if ($ls_orientation =~ "NEGATIVE") {
+		$ls_orientation = "-";
+	    }
+	    elsif ($ls_orientation =~ "POSITIVE") {
+		$ls_orientation = "+";
+	    }
+	    else {
+		# If return can not be parsed just use dot
+		# this indicates unknown orientation if gff
+		$ls_orientation = "."; 
+	    }
+	}
+	#-----------------------------+
+	# SEQUENCE DATA               |
+	#-----------------------------+
+	elsif ($in_5ltr) {
+	    $ls_5ltr_seq = $ls_5ltr_seq.$_;
+	    my $len_inline = length ($_);
 
+	    # The following for debug
+	    #print "\tLEN: $len_inline\n";
+
+	    if ($len_inline == 0) {
+		$ltr5_blank_count++;
+		if ($ltr5_blank_count == 2) {
+		    # Set in_5ltr boolean to false
+		    $in_5ltr = 0;
+		    $in_3ltr = 1;
+		}
+	    }
+
+	}
+	elsif ($in_3ltr) {
+	    $ls_3ltr_seq = $ls_3ltr_seq.$_;
+	}
+	elsif (m/DINUCLEOTIDES: (.*)\/(.*)/) {
+	    $ls_5dinuc = $1;
+	    $ls_3dinuc = $2;
+	}
+	elsif (m/DIRECT REPEATS: (.*)\/(.*)/) {
+	    $ls_5tsr_seq = $1;
+	    $ls_3tsr_seq = $2;
+	}
+	elsif (m/PBS: (.*)/) {
+	    $ls_pbs_seq = $1;
+	}
+	elsif (m/POLYPURINE TRACT: (.*)/){
+	    $ls_ppt_seq = $1;
+	}
+	elsif (m/5\' FLANK: (.*)/) {
+	    $ls_5flank_seq = $1;
+	}
+	elsif (m/3\' FLANK: (.*)/) {
+	    $ls_3flank_seq = $1;
+	}
+	#-----------------------------+
+	# OTHER DATA                  |
+	#-----------------------------+
+	elsif(m/OVERALL LENGTH OF TRANSPOSON:\s+(\d+)/){
+	    $ls_retro_len = $1;
+	}
+	elsif(m/LENGTH OF LONGEST ORF:\s+(\d+)/){
+	    $ls_longest_orf = $1;
+	}
+	elsif(m/LENGTH OF PUTATIVE 3\' LTR:\s+(\d+)/){
+	    $ls_3ltr_len = $1;
+	}
+	elsif(m/LENGTH OF PUTATIVE 5\' LTR:\s+(\d+)/){
+	    $ls_5ltr_len = $1;
+	}
+	elsif(m/LTR PAIR HOMOLOGY:\s+(\S+)%/){
+	    $ls_ltr_homology = $1;
+	}
+	#-----------------------------+
+	# SET BOOLEAN FLAGS           |
+	#-----------------------------+
+	elsif (m/LTRS:/) {
+	    $in_5ltr = 1;
+	}
+    }
+
+    close (REPIN);
     close (GFFOUT);
+
+    #-----------------------------+
+    # GET COORDINATES             |
+    #-----------------------------+
+    $par_5ltr_len = length($ls_5ltr_seq);
+    $par_3ltr_len = length($ls_3ltr_seq);
+
+    $full_retro_start = index($qry_seq,$ls_full_retro_seq) + 1;
+    $full_retro_end = $full_retro_start + $ls_retro_len;
+    
+    # The following will have a problem on 100% identical LTRs
+    # however, telling the search to start at the end of the
+    # 5' LTR will solve this problem since the index function
+    # will accept an offset at the third argument
+    $ltr5_start = index ($ls_full_retro_seq, $ls_5ltr_seq) + 1;
+    $ltr5_end = $ltr5_start + $ls_5ltr_len;
+    $ltr3_start = index ($ls_full_retro_seq, $ls_3ltr_seq) + 1;
+    $ltr3_end = $ltr3_start + $ls_3ltr_len;
+    $pbs_start = index ($ls_full_retro_seq, $ls_pbs_seq) + 1 ;
+    $pbs_end = $pbs_start + length($ls_pbs_seq);
+    $ppt_start = index ($ls_full_retro_seq, $ls_ppt_seq) + 1;
+    $ppt_end = $ppt_start + length($ls_ppt_seq);
+
+    #-----------------------------+
+    # GET EXTRACTED SEQS          |
+    #-----------------------------+
+    # This is to test if the coordinates I am returning matches the
+    # observations that LTR_STRUC is reporting
+    $ppt_from_full_retro = substr ($ls_full_retro_seq, $ppt_start - 1,
+				   length($ls_ppt_seq) );
+
+
+    # Note that the coordinates to get the correct substring below
+    # start the  string index from 0 so to get this in gff I would need
+    # to set 
+    # ppt_abs_start to $ppt_start - 1 + $full_retro_start
+    $ppt_from_query_seq = substr ( $qry_seq, 
+				   $ppt_start - 2 + $full_retro_start, 
+				   length($ls_ppt_seq) );
+
+    #-----------------------------+
+    # PRINT SUMMARY OUTPUT        |
+    #-----------------------------+
+    print "\t\tScore: $ls_score\n";
+    print "\t\tOrientation: $ls_orientation\n";
+    print "\t\tRetro Len: $ls_retro_len\n";
+    print "\t\tLongest Orf: $ls_longest_orf\n";
+    print "\t\tPair Homology: $ls_ltr_homology\n";
+    print "\t\t5LTR Len LST: $ls_5ltr_len\n";
+    print "\t\t5LTR Lem PAR: $par_5ltr_len\n";
+    print "\t\t3LTR Len LST: $ls_3ltr_len\n";
+    print "\t\t3LTR Len PAR: $par_3ltr_len\n";
+
+    print "\n\t\tEXTRACTED COORDINATES:\n";
+    print "\t\t5\'LTR Start: $ltr5_start\n";
+    print "\t\t5\'LTR End: $ltr5_end\n";
+    print "\t\t3\'LTR Start: $ltr3_start\n";
+    print "\t\t3\'LTR End: $ltr3_end\n";
+    print "\t\tPBS Start: $pbs_start\n";
+    print "\t\tPBS end : $pbs_end\n";
+    print "\t\tPPT Start: $ppt_start\n";
+    print "\t\tPPT End: $ppt_end\n";
+
+    print "\t\tRetro Start: $full_retro_start\n";
+    print "\t\tRetro End: $full_retro_end\n";
+
+    # SEQUENCE DATA
+    print "\n\t\tSEQUENCE DATA:\n";
+    print "\t\t5Dinuc: $ls_5dinuc\n";
+    print "\t\t3Dinuc: $ls_3dinuc\n";
+    print "\t\t5TSD: $ls_5tsr_seq\n";
+    print "\t\t3TSD: $ls_3tsr_seq\n";
+    print "\t\tPBS: $ls_pbs_seq\n";
+    print "\t\t=====================\n";
+    print "\t\tPPT STRING TEST\n";
+    print "\t\tLTR_STRUC:  $ls_ppt_seq\n";
+    print "\t\tFROM RETRO: $ppt_from_full_retro\n";
+    print "\t\tFULL SEQ:   $ppt_from_query_seq\n";
+    print "\t\t=====================\n";
+    print "\t\t5\'Flank: $ls_5flank_seq\n";
+    print "\t\t3\'Flank: $ls_3flank_seq\n";
+    #print "\t\t5\'LTR: $ls_5ltr_seq\n";
+    #print "\t\t3\'LTR: $ls_3ltr_seq\n";
+    #print "$ls_full_retro_seq\n";
 
 }
 
