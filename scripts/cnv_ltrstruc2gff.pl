@@ -8,18 +8,15 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/25/2007                                       |
-# UPDATED: 09/25/2007                                       |
+# UPDATED: 09/27/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert *rpt.txt output files from LTR_STRUC to          |
 #  gff formatted annotation coordinates.                    |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #-----------------------------------------------------------+
-# TO DO: Copy LTR Struc files to ltr_struc directory
-#        Add Rev to svn
-#        Verify results on seq contig to results returned in LTR_STRUC
 
 package DAWGPAWS;
 
@@ -27,7 +24,7 @@ package DAWGPAWS;
 # INCLUDES                    |
 #-----------------------------+
 use strict;
-#use File:Copy;
+use File::Copy;
 use Getopt::Long;
 
 #-----------------------------+
@@ -51,6 +48,7 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
+my $do_copy = 0;
 
 #
 my $name_root;
@@ -63,6 +61,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"    => \$outdir,
 		    "r|repdir=s"    => \$repdir,
 		    # ADDITIONAL OPTIONS
+		    "c|copy"        => \$do_copy,
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -269,6 +268,30 @@ for my $ind_fasta_file (@fasta_files) {
 
     print STDERR "\tNum Reports: $ind_report_num\n" if $verbose;
 
+
+    #-----------------------------+
+    # COPY FILES TO ltr_struc DIR |
+    #-----------------------------+
+    if ($do_copy) {
+	opendir(REPDIR,$repdir) 
+	    || die "Can not open directory:\n$repdir\n";
+	my @ls_files = grep /^$name_root/, readdir REPDIR;
+	closedir (REPDIR); 
+	
+	
+	for my $ind_ls_file (@ls_files) {
+	    print STDERR "Copying file: \t$ind_ls_file\n" if $verbose;
+
+	    my $ind_ls_file_path = $repdir.$ind_ls_file;
+	    my $file_copy_path = $ltrstruc_dir.$ind_ls_file;
+	    
+	    copy ($ind_ls_file_path, $file_copy_path) ||
+		print STDERR "Can not copy file:\n $ind_ls_file_path TO\n".
+		" $file_copy_path\n";
+	} # End of for each individual ltr_struc file
+	
+    }
+
     # Temp exit while working on the code
     #if ($fasta_file_num == 2) {exit;}
 
@@ -316,6 +339,7 @@ sub ltrstruc2gff {
     
     # VARS PASSED TO THE SUBFUNCTION
     my ($fasta_in, $report_in, $gff_out, $gff_append, $ls_id_num) = @_;
+
 
     # FASTA RELATED VARS
     my $qry_seq;
@@ -404,10 +428,11 @@ sub ltrstruc2gff {
     # OPEN GFF OUTPUT FILE        |
     #-----------------------------+
     if ($gff_append) {
-	open (GFFOUT, ">>gff_out") ||
-	    die "ERROR: Could not open gff output file:\b$gff_out\n"
-	}
-    else {
+	open (GFFOUT, ">>$gff_out") ||
+	    die "ERROR: Could not open gff output file:\b$gff_out\n";
+    }
+    else 
+    {
 	open (GFFOUT, ">$gff_out") ||
 	    die "ERROR: Could not open gff output file:\n$gff_out\n";
     }
@@ -601,37 +626,37 @@ sub ltrstruc2gff {
 				    $ls_retro_len - 1,
 				    length($ls_3tsr_seq) );
     
-
-
     #-----------------------------+
     # GFF COORDINATES             |
     #-----------------------------+
     # Full retro (not includings tsds)
-    $gff_full_retro_start = $full_retro_start + 1;
-    $gff_full_retro_end = $gff_full_retro_start + $ls_retro_len;
+    $gff_full_retro_start = $full_retro_start;                      # OK
+    $gff_full_retro_end = $gff_full_retro_start + $ls_retro_len - 1;# OK
     # Subunits (including the putative tsds)
-    $gff_pbs_start = $pbs_start - 1 + $full_retro_start;
-    $gff_pbs_end = $gff_pbs_start + length($ls_pbs_seq);
-    $gff_ppt_start = $ppt_start - 1 + $full_retro_start;
-    $gff_ppt_end = $gff_ppt_start + length($ls_ppt_seq);
+    $gff_pbs_start = $pbs_start - 1 + $full_retro_start;            # OK
+    $gff_pbs_end = $gff_pbs_start + length($ls_pbs_seq) - 1;        # OK
+    $gff_ppt_start = $ppt_start - 1 + $full_retro_start;            # OK
+    $gff_ppt_end = $gff_ppt_start + length($ls_ppt_seq) - 1;        # OK
     # LTRs
-    $gff_ltr5_start = $gff_full_retro_start;
-    $gff_ltr5_end = $gff_ltr5_start + $ls_5ltr_len;
-    $gff_ltr3_end = $gff_full_retro_end;
-    $gff_ltr3_start = $gff_ltr3_end - $ls_3ltr_len;
-    # TSRs
-    $gff_5tsr_start = $gff_full_retro_start - length($ls_5tsr_seq);
-    $gff_5tsr_end = $gff_5tsr_start + length($ls_5tsr_seq);
-    $gff_3tsr_start = $gff_full_retro_start + $ls_retro_len;
-    $gff_3tsr_end = $full_retro_start + $ls_retro_len + length($ls_3tsr_seq);
+    $gff_ltr5_start = $gff_full_retro_start;                        # OK
+    $gff_ltr5_end = $gff_ltr5_start + $ls_5ltr_len - 1;             # OK
+    $gff_ltr3_end = $gff_full_retro_end;                            # OK
+    $gff_ltr3_start = $gff_ltr3_end - $ls_3ltr_len + 1;             # OK
+    # TSRs - Currently returning correct on positive strand
+    $gff_5tsr_start = $gff_full_retro_start - length($ls_5tsr_seq); # OK
+    $gff_5tsr_end = $gff_5tsr_start + length($ls_5tsr_seq) - 1;     # OK
+    $gff_3tsr_start = $gff_full_retro_start + $ls_retro_len;        # OK
+    $gff_3tsr_end = $gff_3tsr_start + length($ls_3tsr_seq) - 1;     # OK
 
     #-----------------------------+
     # PRINT GFF OUTPUT            |
     #-----------------------------+
+    # Data type follows SONG
+    # http://song.cvs.sourceforge.net/*checkout*/song/ontology/so.obo
     my $gff_result_id = "ltr_struc_".$ls_id_num;
     print GFFOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"ltr_retro_span\t".        # Data type, has to be exon for APOLLO
+	"LTR_retrotransposon\t".        # Data type, has to be exon for APOLLO
 	"$gff_full_retro_start\t". # Start
 	"$gff_full_retro_end\t".   # End
 	"$ls_score\t".             # Score
@@ -641,7 +666,8 @@ sub ltrstruc2gff {
 
     print GFFOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
+	"primer_binding_site\t".   # SO:0005850
+#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_pbs_start\t".        # Start
 	"$gff_pbs_end\t".          # End
 	"$ls_score\t".             # Score
@@ -651,7 +677,8 @@ sub ltrstruc2gff {
 
     print GFFOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
+	"RR_tract\t".              # SO:0000435 
+#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ppt_start\t".        # Start
 	"$gff_ppt_end\t".          # End
 	"$ls_score\t".             # Score
@@ -661,9 +688,10 @@ sub ltrstruc2gff {
 
     print GFFOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_ltr5_start\t".        # Start
-	"$gff_ltr5_end\t".          # End
+	"five_prime_LTR\t".        # SO:0000425
+#	"exon\t".                  # Data type, has to be exon for APOLLO
+	"$gff_ltr5_start\t".       # Start
+	"$gff_ltr5_end\t".         # End
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
@@ -671,37 +699,41 @@ sub ltrstruc2gff {
 
     print GFFOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_ltr3_start\t".        # Start
-	"$gff_ltr3_end\t".          # End
+	"three_prime_LTR\t".       # SO:0000426  
+#	"exon\t".                  # Data type, has to be exon for APOLLO
+	"$gff_ltr3_start\t".       # Start
+	"$gff_ltr3_end\t".         # End
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
 	"$gff_result_id\n";        # Retro Id
 
-    print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_5tsr_start\t".        # Start
-	"$gff_5tsr_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+    print GFFOUT "$name_root\t".     # Seq ID
+	"ltr_struc\t".               # Source
+	"target_site_duplication\t". # SO:0000434
+#	"exon\t".                    # Data type, has to be exon for APOLLO
+	"$gff_5tsr_start\t".         # Start
+	"$gff_5tsr_end\t".           # End
+	"$ls_score\t".               # Score
+	"$ls_orientation\t".         # Strand
+	".\t".                       # Frame
+	"$gff_result_id\n";          # Retro Id
 
-    print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_3tsr_start\t".        # Start
-	"$gff_3tsr_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+    print GFFOUT "$name_root\t".     # Seq ID
+	"ltr_struc\t".               # Source
+	"target_site_duplication\t". # SO:0000434
+#	"exon\t".                    # Data type, has to be exon for APOLLO
+	"$gff_3tsr_start\t".         # Start
+	"$gff_3tsr_end\t".           # End
+	"$ls_score\t".               # Score
+	"$ls_orientation\t".         # Strand
+	".\t".                       # Frame
+	"$gff_result_id\n";          # Retro Id
+
 
     print STDOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"ltr_retro_span\t".        # Data type, has to be exon for APOLLO
+	"LTR_retrotransposon\t".        # Data type, has to be exon for APOLLO
 	"$gff_full_retro_start\t". # Start
 	"$gff_full_retro_end\t".   # End
 	"$ls_score\t".             # Score
@@ -711,7 +743,8 @@ sub ltrstruc2gff {
 
     print STDOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
+	"primer_binding_site\t".   # SO:0005850
+#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_pbs_start\t".        # Start
 	"$gff_pbs_end\t".          # End
 	"$ls_score\t".             # Score
@@ -721,7 +754,8 @@ sub ltrstruc2gff {
 
     print STDOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
+	"RR_tract\t".              # SO:0000435 
+#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ppt_start\t".        # Start
 	"$gff_ppt_end\t".          # End
 	"$ls_score\t".             # Score
@@ -731,9 +765,10 @@ sub ltrstruc2gff {
 
     print STDOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_ltr5_start\t".        # Start
-	"$gff_ltr5_end\t".          # End
+	"five_prime_LTR\t".        # SO:0000425
+#	"exon\t".                  # Data type, has to be exon for APOLLO
+	"$gff_ltr5_start\t".       # Start
+	"$gff_ltr5_end\t".         # End
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
@@ -741,33 +776,37 @@ sub ltrstruc2gff {
 
     print STDOUT "$name_root\t".   # Seq ID
 	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_ltr3_start\t".        # Start
-	"$gff_ltr3_end\t".          # End
+	"three_prime_LTR\t".       # SO:0000426  
+#	"exon\t".                  # Data type, has to be exon for APOLLO
+	"$gff_ltr3_start\t".       # Start
+	"$gff_ltr3_end\t".         # End
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
 	"$gff_result_id\n";        # Retro Id
 
-    print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_5tsr_start\t".        # Start
-	"$gff_5tsr_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+    print STDOUT "$name_root\t".     # Seq ID
+	"ltr_struc\t".               # Source
+	"target_site_duplication\t". # SO:0000434
+#	"exon\t".                    # Data type, has to be exon for APOLLO
+	"$gff_5tsr_start\t".         # Start
+	"$gff_5tsr_end\t".           # End
+	"$ls_score\t".               # Score
+	"$ls_orientation\t".         # Strand
+	".\t".                       # Frame
+	"$gff_result_id\n";          # Retro Id
 
-    print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"exon\t".                  # Data type, has to be exon for APOLLO
-	"$gff_3tsr_start\t".        # Start
-	"$gff_3tsr_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+    print STDOUT "$name_root\t".     # Seq ID
+	"ltr_struc\t".               # Source
+	"target_site_duplication\t". # SO:0000434
+#	"exon\t".                    # Data type, has to be exon for APOLLO
+	"$gff_3tsr_start\t".         # Start
+	"$gff_3tsr_end\t".           # End
+	"$ls_score\t".               # Score
+	"$ls_orientation\t".         # Strand
+	".\t".                       # Frame
+	"$gff_result_id\n";          # Retro Id
+
 
     #-----------------------------+
     # PRINT SUMMARY OUTPUT        |
@@ -950,7 +989,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/25/2007
 
-UPDATED: 09/26/2007
+UPDATED: 09/27/2007
 
 VERSION: $Rev$
 
@@ -963,3 +1002,7 @@ VERSION: $Rev$
 # - Basic input output started 
 # 09/26/2007
 # - ltrstruc2gff subfunction added
+# 09/27/2007
+# - Fixed coordinates in the gff output
+# - Added code to copy ltr_struc related files to the
+#   outdir.
