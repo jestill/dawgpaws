@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/25/2007                                       |
-# UPDATED: 09/27/2007                                       |
+# UPDATED: 09/28/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert *rpt.txt output files from LTR_STRUC to          |
@@ -49,6 +49,7 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 my $do_copy = 0;
+my $do_seq_data = 0;          # Create files in outdir with sequence data
 
 #
 my $name_root;
@@ -63,6 +64,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    # ADDITIONAL OPTIONS
 		    "c|copy"        => \$do_copy,
 		    "q|quiet"       => \$quiet,
+		    "s|seq-data"    => \$do_seq_data,
 		    "verbose"       => \$verbose,
 		    # ADDITIONAL INFORMATION
 		    "usage"         => \$show_usage,
@@ -251,12 +253,14 @@ for my $ind_fasta_file (@fasta_files) {
 	    if ($ind_report_num == 1) {
 		# If first record start new gff file
 		ltrstruc2gff ( $fasta_file_path, $report_file_path,
-			       $gff_out_path, 0, $ind_report_num);
+			       $gff_out_path, 0, $ind_report_num, 
+			       $do_seq_data);
 	    }
 	    else {
 		# If not first record append to existing gff file
 		ltrstruc2gff ( $fasta_file_path, $report_file_path,
-			       $gff_out_path, 1, $ind_report_num);
+			       $gff_out_path, 1, $ind_report_num,
+			       $do_seq_data);
 
 	    }
 
@@ -338,7 +342,11 @@ sub print_help {
 sub ltrstruc2gff {
     
     # VARS PASSED TO THE SUBFUNCTION
-    my ($fasta_in, $report_in, $gff_out, $gff_append, $ls_id_num) = @_;
+    my ($fasta_in, $report_in, $gff_out, $gff_append, $ls_id_num, 
+	$print_seq_data) = @_;
+
+    # print_seq_data - create fasta files containing the sequences
+    #                  for the prediced LTRS, PBS etc. [Boolean]
 
 
     # FASTA RELATED VARS
@@ -874,6 +882,77 @@ sub ltrstruc2gff {
 	#print "$ls_full_retro_seq\n";
     }
 
+
+
+
+
+    #-----------------------------+
+    # PRINT SEQ DATA              |
+    #-----------------------------+
+    if ($print_seq_data) {
+	
+	# This uses the global $outdir variable
+
+	#-----------------------------+
+	# 5' LTR                      |
+	#-----------------------------+
+	my $ltr5_seq_path = $outdir."ltr5_ltr_struc.fasta";
+	open (LTR5OUT, ">>$ltr5_seq_path") ||
+	    die "Can not open 5\'LTR sequence output file:\n$ltr5_seq_path\n";
+	print LTR5OUT ">".$name_root."_".$gff_result_id.
+	    "|five_prime_ltr\n";
+	print LTR5OUT "$ls_5ltr_seq\n";
+	close (LTR5OUT);
+	
+	#-----------------------------+
+	# 3' LTR                      |
+	#-----------------------------+
+	my $ltr3_seq_path = $outdir."ltr3_ltr_struc.fasta";
+	open (LTR3OUT, ">>$ltr3_seq_path") ||
+	    die "Can not open 3\'LTR sequence output file:\n$ltr3_seq_path\n";
+	print LTR3OUT ">".$name_root."_".$gff_result_id.
+	    "|three_prime_ltr\n";
+	print LTR3OUT "$ls_3ltr_seq\n";
+	close (LTR3OUT);
+
+	#-----------------------------+
+	# PBS                         |
+	#-----------------------------+
+	my $pbs_seq_path = $outdir."pbs_ltr_struc.fasta";
+	open (PBSOUT, ">>$pbs_seq_path") ||
+	    die "Can not open PBS sequence output file:\n$pbs_seq_path\n";
+	print PBSOUT ">".$name_root."_".$gff_result_id.
+	    "|primer_binding_site\n";
+	print PBSOUT "$ls_pbs_seq\n";
+	close (PBSOUT);
+
+	#-----------------------------+
+	# PPT                         |
+	#-----------------------------+
+	my $ppt_seq_path = $outdir."ppt_ltr_struc.fasta";
+	open (PBSOUT, ">>$ppt_seq_path") ||
+	    die "Can not open PPT sequence output file:\n$ppt_seq_path\n";
+	print PBSOUT ">".$name_root."_".$gff_result_id.
+	    "|RR_tract\n";
+	print PBSOUT "$ls_pbs_seq\n";
+	close (PBSOUT);
+	
+	#-----------------------------+
+	# FULL RETRO MODEL            |
+	#-----------------------------+ 
+	# NOTE THIS INCLUDES NESTED LTR RETROS
+	# LTR_retrotransposon
+	my $ltr_seq_out = $outdir."full_ltr_retro.fasta";
+	open (LTROUT, ">>$ltr_seq_out") ||
+	    die "Can not open full ltr retro sequence outfile\n";
+	print LTROUT ">".$name_root."_".$gff_result_id.
+	    "|LTR_retrotransposon\n";
+	print LTROUT "$ls_full_retro_seq\n";
+	close (LTROUT);
+	    
+
+    }
+
     close (GFFOUT);
 
 }
@@ -989,7 +1068,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/25/2007
 
-UPDATED: 09/27/2007
+UPDATED: 09/28/2007
 
 VERSION: $Rev$
 
@@ -1006,3 +1085,14 @@ VERSION: $Rev$
 # - Fixed coordinates in the gff output
 # - Added code to copy ltr_struc related files to the
 #   outdir.
+# 09/28/2007
+# - Working with gff files produced and wheat.tiers file to
+#   to display the LTR-Retro subcomponent. Not really working out.
+#   May have to define features of the ltr_retrospans
+#   and do annotation of the LTR retromodels in external process
+# - Added code to generate fasta files for the following components
+#    - Full Retro Sequence
+#    - 5' LTR
+#    - 3' LTR
+#    - PBS
+#    - PPT
