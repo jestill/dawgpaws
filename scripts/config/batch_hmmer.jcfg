@@ -19,11 +19,11 @@ pfam	/home/jestill/HMMData/db/hmm/pfam/	-E 0.00001
 # THE FOLLOWINS LISTS THE AVAILABLE OPTIONS THAT CAN BE INCLUDED
 # IN THE THIRD COLUMN
 #  Available options are:
-#   -h        : help; print brief help on version and usage
-#   -A <n>    : sets alignment output limit to <n> best domain alignments
-#   -E <x>    : sets E value cutoff (globE) to <= x
-#   -T <x>    : sets T bit threshold (globT) to >= x
-#   -Z <n>    : sets Z (# seqs) for E-value calculation
+#   -h             : help; print brief help on version and usage
+#   -A <n>         : sets alignment output limit to <n> best domain alignments
+#   -E <x>         : sets E value cutoff (globE) to <= x
+#   -T <x>         : sets T bit threshold (globT) to >= x
+#   -Z <n>         : sets Z (# seqs) for E-value calculation
 # 
 #   --compat       : make best effort to use last version's output style
 #   --cpu <n>      : run <n> threads in parallel (if threaded)
