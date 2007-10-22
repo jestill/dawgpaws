@@ -6,13 +6,17 @@
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
-# CONTACT: JamesEstill at gmail.com 
+# CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 02/09/2007                                       |
 # UPDATED: 08/07/2007                                       |
 # DESCRIPTION:                                              |
 #  Converts gff data tracks from gff format to the game     |
 #  xml format for use in the Apollo Genome Annotation       |
 #  Curation program.                                        |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+ 
 

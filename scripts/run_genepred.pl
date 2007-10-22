@@ -13,6 +13,10 @@
 #  Lu. Jamie added varaibles and made numerous other changes|
 #  to the original script.                                  |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 # WORKING:
 # Modify to run multiple gene prediction programs

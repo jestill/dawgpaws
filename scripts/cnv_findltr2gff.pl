@@ -14,10 +14,11 @@
 #  Converts output from the find_ltr.pl program to gff      |
 #  format for easy import into apollo.                      |
 #                                                           |
-# USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
-#                                                           |
 # VERSION: $Rev$                                      |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 

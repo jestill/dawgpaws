@@ -11,9 +11,13 @@
 # UPDATED: 08/31/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Parses findmite results to a gff file. Assigns unique
-#  name to all of the results
-#
+#  Parses findmite results to a gff file. Assigns unique    |
+#  name to all of the results                               |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 #
 # TO DO: 

@@ -15,9 +15,9 @@
 #  separate dirs where n is a variable passed at the        |
 #  command line.                                            |
 #                                                           |
-# LICENSE                                                   |
-#  GNU LESSER GENERAL PUBLIC LICENSE                        |
-#  http://www.gnu.org/licenses/lgpl.html                    |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 

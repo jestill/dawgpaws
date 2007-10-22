@@ -16,7 +16,12 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION: $Rev$                                                  |
+# VERSION: $Rev$                                            |
+#                                                           |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -147,7 +152,7 @@ This is what the program does
 
 =head1 COMMAND LINE ARGUMENTS
 
-=head 2 Required Arguments
+=head2 Required Arguments
 
 =over 2
 
@@ -162,8 +167,6 @@ Path of the output file.
 =back
 
 =head1 Additional Options
-
-=over
 
 =over 2
 
@@ -214,9 +217,9 @@ Any known bugs and limitations will be listed here.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU General Public License, Version 3
 
-http://www.gnu.org/licenses/lgpl.html
+L<http://www.gnu.org/licenses/gpl.html>
 
 =head1 AUTHOR
 

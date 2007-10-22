@@ -13,6 +13,10 @@
 # DESCRIPTION:                                              |
 #  Converts LTR_seq output to gff file format.              |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 # TODO: Extract only the unique LTR Predictions 
 

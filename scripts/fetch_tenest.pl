@@ -18,6 +18,10 @@
 # VERSION:                                                  |
 # $Id:: fetch_tenest.pl 85 2007-08-29 14:29:27Z JamesEst#$: |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 # TODO: Update POD
 #       Fix help function

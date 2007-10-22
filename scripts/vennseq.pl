@@ -28,52 +28,15 @@
 #   This will facilitate parsing information from sequence  |
 #   features that are all indexed from 1 to L               |
 #  -q is quiet, Q is super quiet                            |
+#                                                           |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 # To do. If no fasta file then the sequence length may
 #        be passed as a variable from the command line.
-=head1 NAME
-
-vennseq.pl - DAWG-PAWS Venn Diagram Program
-
-=head1 SYNOPSIS
-
-    vennseq.pl -i InputFastaFile.fasta -o OutputFile -d FeatureFileDir
-               -f tab
-           
-=head1 DESCRIPTION
-
-Creates a Venn Diagram comparing the overlap of sequence
-features along a query sequence. The purpose is to allow
-me to visualize the overlap of Repeat Databases or gene
-models along a BAC.            
-
-=head1 ARGUMENTS
-
-=over 2
-
-=item -i InputFastaFile
-
-=item -o OutputFile
-
-=item -d FeatureFileDir
-
-=item -f tab
-
-The feature file format. This must be one of ( tab | blast | gff ).
-Currently only tab delim blast hits are supported.
-
-=back
-
-=head1 REQUIREMENTS
-
-Requires the VennMaster program 
-L<http://www.informatik.uni-ulm.de/ni/staff/HKestler/vennm/doc.html>.
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
 
 package DAWGPAWS::VennSeq;
 
@@ -608,6 +571,9 @@ sub GetShortName
 # This is a kluge that will only work for the BLAST databases
 # that I am working with in wheat (03/12/2007 - JCE)
 # I should definited convert this to as hash table
+# 
+# THIS SHOULD BE DONE AS A HASH AND NOT IF ELSE STATEMETNS
+# 10/22/2007 -JCE
 
     my $InName = $_[0]; #  Input name string
     my $OutName;        #  Set scope for the name to return
@@ -766,6 +732,48 @@ sub GetShortName
     return $OutName;
 
 }
+
+=head1 NAME
+
+vennseq.pl - DAWG-PAWS Venn Diagram Program
+
+=head1 SYNOPSIS
+
+    vennseq.pl -i InputFastaFile.fasta -o OutputFile -d FeatureFileDir
+               -f tab
+           
+=head1 DESCRIPTION
+
+Creates a Venn Diagram comparing the overlap of sequence
+features along a query sequence. The purpose is to allow
+me to visualize the overlap of Repeat Databases or gene
+models along a BAC.            
+
+=head1 ARGUMENTS
+
+=over 2
+
+=item -i InputFastaFile
+
+=item -o OutputFile
+
+=item -d FeatureFileDir
+
+=item -f tab
+
+The feature file format. This must be one of ( tab | blast | gff ).
+Currently only tab delim blast hits are supported.
+
+=back
+
+=head1 REQUIREMENTS
+
+Requires the VennMaster program 
+L<http://www.informatik.uni-ulm.de/ni/staff/HKestler/vennm/doc.html>.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 

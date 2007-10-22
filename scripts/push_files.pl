@@ -18,7 +18,12 @@
 #                                                           |
 # DEPENDENCIES:                                             |
 #  * Net::SFTP may need to be installed from CPAN           |
-#                                                           |  
+#                                                           |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+ 
 
 #-----------------------------+
