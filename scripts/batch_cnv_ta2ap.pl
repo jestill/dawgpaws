@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_mask.pl - REPEAT MASK PARSER PIPELINE                 |
+# batch_cnv_ta2ap.pl - Convert TriAnnotation to Apollo GFF  |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -11,20 +11,19 @@
 # UPDATED: 07/18/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Runs the RepeatMasker program for a set of input         |
-#  FASTA files against a set of repeat library files &      |
-#  then converts the repeat masker *.out file into the      |
-#  GFF format and then to the game XML format for           |
-#  visualization by the Apollo genome anotation program.    |
+#  Converts the TriAnnotation gff output to a format that   |
+#  can be used by the Apollo Genome Annotation Curation     |
+#  program.                                                 |
 #                                                           |
-# USAGE:                                                    |
-#  RepMaskParse.pl                                          |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME
 
-batch_cnv_ta2ap.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_cnv_ta2ap.pl - Convert TriAnnotation to Apollo GFF
 
 =head1 VERSION
 

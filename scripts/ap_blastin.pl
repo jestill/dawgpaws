@@ -16,10 +16,12 @@
 #  curation program.                                        |
 #                                                           |
 # LICENSE:                                                  |
-#  GNU Lesser Public License                                |
-#  http://www.gnu.org/licenses/lgpl.html                    |  
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+#
+# WARNING: THIS SOFTWARE IS CURRENTLY NOT A FUNCTIONAL 
 #
 # TODO: REGEXP Test to see if multiple windows are open that could
 #       take the focus HEX---

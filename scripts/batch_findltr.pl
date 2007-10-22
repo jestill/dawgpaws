@@ -13,7 +13,11 @@
 # DESCRIPTION:                                              |
 #  Run the find_ltr.pl LTR finding program in batch mode.   |
 #                                                           |
-# VERSION: $Rev$                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
+# VERSION: $Rev$                                      |
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -210,7 +214,8 @@ print STDERR "$num_proc_total find_ltr runs to process\n";
 for my $ind_file (@fasta_files) {
 
     $file_num++;
-    
+
+
     # Get root file name
     if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
 	$name_root = "$1";
@@ -221,6 +226,11 @@ for my $ind_file (@fasta_files) {
     else {
 	$name_root = "UNDEFINED";
     }
+
+    # The following added for temp work with gff output
+    # 09/28/2007
+#    if ($file_num == 5) {exit;}
+#    print "Processing: $name_root\n";
 
     #-----------------------------+
     # CREATE ROOT NAME DIR        |
@@ -272,6 +282,9 @@ for my $ind_file (@fasta_files) {
 	my $fl_range_bin    = $fl_params[$i][7];
 	my $fl_min_orf      = $fl_params[$i][8];
 	my $fl_e_val        = $fl_params[$i][9];
+
+	# Show processing information
+	print "Processing: $name_root $fl_suffix\n";
 	
 	# The following name will need to be copied from the default 
 	# named output from find_ltr
@@ -452,38 +465,56 @@ sub findltr2gff {
 	    $mid_end = $ltr3_start - 1;   
 
 	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
-	    $gff_source = "findltr:".$gff_suffix;
+	    $gff_source = "find_ltr:".$gff_suffix;
+
+	    #-----------------------------+
+	    # PRINT GFF OUTPUT            |
+	    #-----------------------------+
+	    # Data type follows SONG
+	    # http://song.cvs.sourceforge.net/*checkout*/song/ontology/so.obo
+
+	    # Full span of LTR Retrotransposon
+	    print GFFOUT "$seqname\t".  # Name of sequence
+		"$gff_source\t".        # Source
+		"LTR_retrotransposon\t".# Features, exon for Apollo
+		"$ltr5_start\t".        # Feature start
+		"$ltr3_end\t".	        # Feature end
+		".\t".                  # Score, Could use $ltr_similarity
+		"$ltr_strand\t".        # Strand
+		".\t".                  # Frame
+		"$findltr_name\n";      # Features (name)
 
 	    # 5'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
+		"five_prime_LTR\t".    # Features, exon for Apollo
 		"$ltr5_start\t".       # Feature start
 		"$ltr5_end\t".	       # Feature end
 		".\t".                 # Score, Could use $ltr_similarity
-		"$ltr_strand\t".         # Strand
+		"$ltr_strand\t".       # Strand
 		".\t".                 # Frame
 		"$findltr_name\n";     # Features (name)
 
-	    # MID
-	    print GFFOUT "$seqname\t". # Name of sequence
-		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
-		"$mid_start\t".        # Feature start
-		"$mid_end\t".	       # Feature end
-		".\t".                 # Score, Could use $ltr_similarity
-		"$ltr_strand\t".         # Strand
-		".\t".                 # Frame
-		"$findltr_name\n";     # Features (name)
+#	    # MID
+#	    # This is not a SONG complient feature type name
+#	    print GFFOUT "$seqname\t". # Name of sequence
+#		"$gff_source\t".       # Source
+#		"mid\t".               # Features, exon for Apollo
+#		"$mid_start\t".        # Feature start
+#		"$mid_end\t".	       # Feature end
+#		".\t".                 # Score, Could use $ltr_similarity
+#		"$ltr_strand\t".       # Strand
+#		".\t".                 # Frame
+#		"$findltr_name\n";     # Features (name)
 	    
 	    # 3'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
+		"three_prime_LTR\t".   # Features, exon for Apollo
 		"$ltr3_start\t".       # Feature start
 		"$ltr3_end\t".	       # Feature end
 		".\t".                 # Score, Could use $ltr_similarity
-		"$ltr_strand\t".         # Strand
+		"$ltr_strand\t".       # Strand
 		".\t".                 # Frame
 		"$findltr_name\n";     # Features (name)
 
@@ -736,6 +767,7 @@ VERSION: $Rev$
 #-----------------------------------------------------------+
 # 09/13/2007
 # - Basic input and output working
-#
 # 09/14/2007
 # - Added findltr2gff from cnv_findltr2gff.pl 
+# 09/28/2007
+# - Making gff output type column SONG complient

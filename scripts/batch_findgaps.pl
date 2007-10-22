@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_findgaps.pl - Hardmask a batch of softmasked files  |
+# batch_findgaps.pl - Annotate gaps in a fasta file         |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -15,19 +15,21 @@
 #  in the fasta file and report these as gaps in a gff file |
 #  as well as produce a game.xml file for apollo.           |
 #                                                           |
-# LICENSE                                                   |
-#  GNU LESSER GENERAL PUBLIC LICENSE                        |
-#  http://www.gnu.org/licenses/lgpl.html                    |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |
 #                                                           |
 #-----------------------------------------------------------+
-
+#
+# TO DO: Appears to have error in delineating stop of the gap
+#
 =head1 NAME
 
-batch_findgaps.pl - Hardmask a batch of softmasked fasta files. 
+batch_findgaps.pl - Annotate gaps in a fasta file
 
 =head1 VERSION
 
-This documentation refers to batch_hardmask version 1.0
+This documentation refers to batch_findgaps version 1.0
 
 =head1 SYNOPSIS
 

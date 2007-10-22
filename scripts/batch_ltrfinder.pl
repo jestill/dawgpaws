@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_ltrfinder.pl - Rune ltr_finder in batch mode        |
+# batch_ltrfinder.pl - Run ltr_finder in batch mode         |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -15,7 +15,15 @@
 #                                                           |
 # VERSION: $Rev$                                            |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
+# TO DO: -Reset vals to null and only print output when expected vals
+#         are not null
+#        -No gff output if no hits in ltr_finder
+#        -Add possiblity to extract sequence data
 
 package DAWGPAWS;
 
@@ -1018,9 +1026,9 @@ sub ltrfinder2gff {
     
     if ($has_tsr) {
 	
-	$gff_str_out = "$lf_seq_id\t".  # Seq ID
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
 #		    print STDOUT "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
+	    "$gff_src\t".                # Source
 	    "target_site_duplication\t". # Data type
 	    "$lf_5tsr_start\t".          # Start
 	    "$lf_5tsr_end\t".            # End
@@ -1031,8 +1039,8 @@ sub ltrfinder2gff {
 	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;	    
 	
-	$gff_str_out = "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
+	    "$gff_src\t".                # Source
 	    "target_site_duplication\t". # Data type
 	    "$lf_3tsr_start\t".          # Start
 	    "$lf_3tsr_end\t".            # End

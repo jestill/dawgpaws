@@ -1,24 +1,28 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# ltrstruc_prep.pl - Creates files needed for LTR_SRUC      |
+# batch_seq_summary.pl - Display summary info for a seq dir |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 09/24/2007                                       |
-# UPDATED: 09/24/2007                                       |
+# STARTED: 10/05/2007                                       |
+# UPDATED: 10/05/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Given a directory of fasta files with UNIX line endings  |
-#  this will create DOS formated files with the txt         |
-#  extension. This will also create the flist.txt file.     | 
+#  Display basic summary information for a direcotry of     |
+#  sequences. Files must end in fasta to be recognized      |
+#  as a fasta file.                                         |
 #                                                           |
 # USAGE:                                                    |
-#  ltrstruc_prep.pl -i InDir -o OutDir                      |
+#  batch_seq_summary.pl -i InDir -o Outfile                 |
 #                                                           |
 # VERSION: $Rev$                                            |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -38,9 +42,8 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
-my $indir;                      # Input directory, has the fasta files
-my $outdir;                     # Output directory, the txt files go here
-my $name_root;                  # Root name of the file
+my $indir;
+my $outfile;
 
 # Booleans
 my $quiet = 0;
@@ -51,14 +54,19 @@ my $show_man = 0;
 my $show_version = 0;
 
 # Counters
-my $file_num =0;
+my $file_num = 0;
+
+# Set scope
+my $cmd;
+my $name_root;
+my $sum_base_non;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"   => \$indir,
-                    "o|outdir=s"  => \$outdir,
+                    "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -93,7 +101,6 @@ if ($show_man) {
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
-
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
 # VARIABLES                   |
@@ -103,21 +110,6 @@ if ($show_man) {
 unless ($indir =~ /\/$/ ) {
     $indir = $indir."/";
 }
-
-unless ($outdir =~ /\/$/ ) {
-    $outdir = $outdir."/";
-}
-
-#-----------------------------+
-# CREATE THE OUT DIR          |
-# IF IT DOES NOT EXIST        |
-#-----------------------------+
-unless (-e $outdir) {
-    print "Creating output dir ...\n" if $verbose;
-    mkdir $outdir ||
-	die "Could not create the output directory:\n$outdir";
-}
-
 
 #-----------------------------+
 # Get the FASTA files from the|
@@ -129,90 +121,44 @@ opendir( DIR, $indir ) ||
 my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 my $num_files = @fasta_files;
+sort @fasta_files;
 
 if ($num_files == 0) {
     print "\a";
-    print "No fasta files were found in the input direcotry:\n";
-    print "$indir\n";
-    print "Fasta file MUST have the fasta or fa extension to be".
-	" recognized as fasta files\n";
+    print "ERROR: No input fasta files were found in the directroy:\n$indir\n";
+    print "Fasta files must end with the fasta or fa extension\n";
     exit;
 }
 
 
-my $flist_path = $outdir."flist.txt";
-open (FLISTOUT, ">$flist_path")
-    || die "Can not open flist for output at:\n$flist_path\n";
-
-
 for my $ind_file (@fasta_files) {
 
-    $file_num++;   
-    
-    #-----------------------------+
-    # GET ROOT FILE NAME          |
-    #-----------------------------+
+    $file_num++;
+
+    # Get root file name
     if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
-    elsif ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
+    elsif ($ind_file =~ m/(.*)\.fa$/ ) {	    
 	$name_root = "$1";
     } 
     else {
 	$name_root = "UNDEFINED";
     }
 
-    # File paths
-    my $unix_file_in = $indir.$ind_file;
-    my $dos_file_out = $outdir.$name_root.".txt";
-    my $dos_file_name = $name_root.".txt";
 
-    print FLISTOUT $dos_file_name."\n";
-
-    unix2dos($unix_file_in, $dos_file_out);
-
-
+#    my $sum_base_result = system($cmd);
+    print STDOUT "$name_root\t";
+    $cmd = "seq_countbase_non.sh $indir$ind_file";
+    system($cmd);
+    
 }
-
-close (FLISTOUT);
-
 
 exit;
 
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
-sub unix2dos {
-    
-    # Path of the file in UNIX Format
-    my $file_in = $_[0];
-    my $file_out = $_[1];
-
-    # Original dos line
-    my $dos = "\012\015";
-    my $unix = "\n";
-    # Start lineNo at zero
-    my $line_num = 0;
-    my $line;
-
-    open( IN, $file_in)  || die ("\n Can not read $file_in \n");
-    open( OUT, ">".$file_out) || die ("\n Can not write $file_out \n");
-
-    while( <IN>){
-       $line_num++;
-       $line = $_;
-       # Use the regular expression search operator to replace unix
-       $line =~ s/$unix/$dos/g;
-       print OUT "$line";
-       print "$line_num \n" if $verbose;
-    }
-    close(IN);
-    close(OUT);
-
-    print "Unix2DOX Conversion is complete. \n" if $verbose;
-
-}
 
 sub print_help {
 
@@ -221,7 +167,7 @@ sub print_help {
     my ($opt) = @_;
 
     my $usage = "USAGE:\n". 
-	"ltrstruc_prep.pl -i InDir -o OutDir";
+	"MyProg.pl -i InDir -o OutFile";
     my $args = "REQUIRED ARGUMENTS:\n".
 	"  --infile       # Path to the input file\n".
 	"  --outfile      # Path to the output file\n".
@@ -247,7 +193,7 @@ sub print_help {
 
 =head1 NAME
 
-ltrstruc_prep.pl - Prepare files needed to do a run in LTR_STRUC
+Name.pl - Short program description. 
 
 =head1 VERSION
 
@@ -256,7 +202,7 @@ This documentation refers to program version 0.1
 =head1 SYNOPSIS
 
   USAGE:
-    ltrstruc_prep.pl -i InDir -o OutDir
+    Name.pl -i InFile -o OutFile
 
     --infile        # Path to the input file
     --outfie        # Path to the output file
@@ -344,9 +290,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED: 09/24/2007
+STARTED:
 
-UPDATED: 09/24/2007
+UPDATED:
 
 VERSION: $Rev$
 

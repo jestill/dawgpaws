@@ -14,6 +14,10 @@
 #  Run the genscan gene prediction program in batch mode.   |
 #  Runs genscan as well as converts output to gff format.   |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME

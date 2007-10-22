@@ -10,6 +10,11 @@
 # STARTED: 09/06/2007                                       |
 # UPDATED: 09/06/2007                                       |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
+#                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME

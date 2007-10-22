@@ -1,9 +1,24 @@
 #!/usr/bin/perl -w
-
-# J. Estill
-# 08/07/2007
-# Short script to convert and copy the wheat BACs
-# Run this in the parent dir that the HEX* dirs exist
+#-----------------------------------------------------------+
+#                                                           |
+# batch_convert.pl - Convert gff to game xml format         |
+#                                                           |
+#-----------------------------------------------------------+
+#                                                           |
+#  AUTHOR: James C. Estill                                  |
+# CONTACT: JamesEstill_at_gmail.com                         |
+# STARTED: 08/07/2007                                       |
+# UPDATED: 08/09/2007                                       |
+#                                                           |
+# DESCRIPTION:                                              | 
+# Short script to convert and copy the wheat BACs           |
+# Run this in the parent dir that the HEX* dirs exist       |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
+#-----------------------------------------------------------+
 
 use File::Copy;
 

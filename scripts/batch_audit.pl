@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_audit.pl - Audit DAWG PAWS analysis directory       |
+# batch_audit.pl - Audit the DAWG PAWS analysis directory   |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -12,6 +12,10 @@
 #                                                           |
 # DESCRIPTION:                                              |
 #  Audit the dawg paws analysis output.                     |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 

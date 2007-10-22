@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_blast.pl - Run wheat blast on a set of fasta files. |
+# batch_blast.pl - Run blast on a set of fasta files.       |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -15,15 +15,15 @@
 #  BLAST the files against a standard set of BLAST          | 
 #  databases used for wheat genome annotation.              |
 #                                                           |
-# LICENSE                                                   |
-#  GNU LESSER GENERAL PUBLIC LICENSE                        |
-#  http://www.gnu.org/licenses/lgpl.html                    |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
 =head1 NAME
 
-batch_blast.pl - Hardmask a batch of softmasked fasta files. 
+batch_blast.pl - Run blast on a set of fasta files
 
 =head1 VERSION
 

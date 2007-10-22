@@ -14,9 +14,10 @@
 #  Given information from the command line, write the shell |
 #  scripts required to run jobs on the rcluster.            |
 #                                                           |
-# LICENSE                                                   |
-#  GNU LESSER GENERAL PUBLIC LICENSE                        |
-#  http://www.gnu.org/licenses/lgpl.html                    |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
@@ -222,15 +223,15 @@ my $ok = GetOptions(
 		    "n|num-dir=s"   => \$num_dir,
 		    "b|base-name=s" => \$base_name,
 		    # Optional strings
-		    "logfile=s"    => \$logfile,
+		    "logfile=s"     => \$logfile,
 		    # Booleans
-		    "verbose"      => \$verbose,
-		    "test"         => \$test,
-		    "usage"        => \$show_usage,
-		    "version"      => \$show_version,
-		    "man"          => \$show_man,
-		    "h|help"       => \$show_help,
-		    "q|quiet"      => \$quiet,);
+		    "verbose"       => \$verbose,
+		    "test"          => \$test,
+		    "usage"         => \$show_usage,
+		    "version"       => \$show_version,
+		    "man"           => \$show_man,
+		    "h|help"        => \$show_help,
+		    "q|quiet"       => \$quiet,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |

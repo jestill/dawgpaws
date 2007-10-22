@@ -19,6 +19,11 @@
 #    Requires that apollo be installed on the local machine |
 #    since apollo is being used as the engine to do the     | 
 #    conversion between formats.                            |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+ 
 
 # TO DO:

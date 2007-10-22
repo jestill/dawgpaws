@@ -16,6 +16,10 @@
 #                                                           | 
 # VERSION: $Rev$                                            |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |
+#                                                           |
 #-----------------------------------------------------------+
 #
 # TO DO:
@@ -50,7 +54,6 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $indir;
 my $outdir;
 my $config_file;
-
 my $name_root;                  # Root name of the sequence file
 my $i;
 
@@ -469,8 +472,7 @@ sub run_hmmer {
 } # End of run hmmer subfunction
 
 
-sub hmmer2gff 
-{
+sub hmmer2gff {
 #-----------------------------+
 # PARSE THE OUTPUT FROM A     |
 # HMMER RUN AGAINST A SET OF  |
@@ -757,5 +759,5 @@ VERSION: $Rev$
 # - Program started
 # - Basic boilerplate stuff laid out
 # 
-# 09/18/2007
+# 10/03/2007
 # -

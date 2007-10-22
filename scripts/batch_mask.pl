@@ -22,6 +22,10 @@
 #                                                           |
 #  batch_mask.pl --man                                      |
 #                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
 
 package DAWGPAWS;

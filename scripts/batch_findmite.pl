@@ -8,15 +8,250 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 08/30/2007                                       |
-# UPDATED: 08/30/2007                                       |
+# UPDATED: 09/28/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Short Program Description                                |
+#  Run the FINDMITE program in batch mode using a config    |
+#  file to allow the program to run in a high-throughput    |
+#  batch mode.                                              |
 #                                                           |
 # USAGE:                                                    |
 #  batch_findmite.pl --man                                  |
 # to print the full program manual.                         |
+#                                                           |
+# LICENSE:                                                  |
+#  GNU General Public License, Version 3                    |
+#  http://www.gnu.org/licenses/gpl.html                     |  
+#                                                           |
 #-----------------------------------------------------------+
+
+=head1 NAME
+
+batch_findmite.pl - Run the findmite program in batch mode.
+
+=head1 VERSION
+
+This documentation refers to $Rev$
+
+=head1 SYNOPSIS
+
+  USAGE:
+    batch_findminte.pl -i InDir -o OutDir -c ConfigFile
+
+=head1 DESCRIPTION
+
+Run the findmite program in batch mode. This do multiple runs of 
+findmite for each row of parameters in the parameter file.
+
+=head1 COMMAND LINE ARGUMENTS
+
+=head2 Required Argumens
+
+=over 2
+
+=item -i,--indir
+
+Path of the input directory. This is a directory that contains the fasta
+files to process.
+
+=item -o,--outdir
+
+Path of the base output directory.
+
+=item -c,--config
+
+Path to the parameters file.
+file that indicates the parameters to use when running the findmite
+program. These parameters represent the answers to the series of
+questions that must be answered when running FINDMITE. Any lines
+starting with # are ignored.
+
+B<EXAMPLE>
+
+  #------------------------------------------------------------------
+  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
+  #------------------------------------------------------------------
+  TA_11		TA	11   1	 y  y  y	85	30	700
+  TA_12		TA	12   1   y  y  y	85	30	700	
+
+For a detail description, see the Paramters File heading under 
+the CONFIGURATION AND ENVIRONMENT section of the full program 
+documentation.
+
+=back
+
+=head2 Additional Options
+
+=over 2
+
+=item -f,--fasta
+
+Create a fasta file with the . A different fasta file will be created
+for each of the parameter set names. This will currently append to
+any existing data in the outfile.
+
+=item -q,--quiet
+
+Run the program with minimal output. Does not require user interaction.
+
+=item --verbose
+
+Run the program with maximal output.
+
+=back
+
+=head2 Additional Information
+
+=over 2
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The list of error messages that can be generated,
+explanation of the problem
+one or more causes
+suggested remedies
+list exit status associated with each error
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The main file to be aware of is the parameters file that is 
+refered to with the -p flag.
+
+=head2 Parameters File
+
+This file is a space delimited text
+file that indicates the parameters to use when running the findmite
+program. These parameters represent the answers to the series of
+questions that must be answered when running FINDMITE.
+
+B<EXAMPLE>
+
+  #------------------------------------------------------------------
+  # Name      	Rep	TIR  Mis AT GC ATTA	2Base	Min	Max
+  #------------------------------------------------------------------
+  TA_11		TA	11   1	 y  y  y	85	30	700
+  TA_12		TA	12   1   y  y  y	85	30	700	
+
+The columns above represent the following information:
+
+=over 2
+
+=item Col. 1
+
+Base name to assign to putative mites
+
+=item Col. 2
+
+Direct Repeat
+
+=item Col. 3
+
+Length of the Terminal Inverted Repeat (TIR)
+
+=item Col. 4
+
+Number of mismatches
+
+=item Col. 5
+
+Boolean to fileter the A/T.
+This must be set to y or n. 
+
+=item Col. 6
+
+Boolean to Filter C/G
+This must be set to y or n.
+
+=item Col. 7
+
+Boolean to filter AT/TA
+This must be set to y or n.
+
+=item Col. 8
+
+Proporiton of 2Base to filter.
+This must be an integer between 0 and 100.
+
+=item Col. 9
+
+Minimum distance between TIRs
+This must be an integer.
+
+=item Col. 10
+
+Maximum distance between TIRs
+This must be an integer.
+
+=back
+
+
+=head1 DEPENDENCIES
+
+Other modules or software that the program is dependent on.
+
+=head2 Required Software
+
+B<FINDMITE>
+
+This program is dependent on the FINDMITE program. A version of 
+FINDMITE compiled for RedHat Linux is available at:
+L<http://jaketu.biochem.vt.edu/dl_software.htm>
+
+=head2 Required Perl Modules
+
+This program is dependent of the following Perl modules
+
+=over 2
+
+=item Getopt::Long - L<http://perldoc.perl.org/Getopt/Long.html>
+
+The Getopt module allows for the passing of command line options
+to perl scripts.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+Any known bugs and limitations will be listed here.
+
+=head1 SEE ALSO
+
+The program batch_findmite.pl program is part of a larger body
+of perl scripts for the annotation of plant genome data.
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+L<http://www.gnu.org/licenses/lgpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
+=cut
 
 package DAWGPAWS;
 
@@ -25,6 +260,7 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+use File::Copy;
 
 # Array to hold the findmite parameters
 my @fm_params = ();
@@ -57,6 +293,8 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 my $do_gff_convert = 0;
+my $do_fasta_out = 0;          # Create a fasta file with all predicted MITEs
+
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -64,8 +302,9 @@ my $do_gff_convert = 0;
 my $ok = GetOptions(# Required Arguments
 		    "i|indir=s"       => \$indir,
                     "o|outdir=s"      => \$outdir,
-		    "p|params=s"      => \$parfile,
+		    "c|config=s"      => \$parfile,
 		    # Additional options
+		    "f|fasta"         => \$do_fasta_out,
 		    "q|quiet"         => \$quiet,
 		    "verbose"         => \$verbose,
 		    "gff"             => \$do_gff_convert,
@@ -95,6 +334,14 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+# Throw error if required variables not present 
+if ( (!$indir) || (!$outdir) || (!$parfile) ) {
+    print "ERROR: Input directory path required\n" if !$indir;
+    print "ERROR: Output directory path required\n" if !$outdir;
+    print "ERROR: Config file required\n" if !$parfile;
+    print_help("full");
 }
 
 # THROW ERROR WHEN REQUIRED INFORMATION NOT PROVIDED
@@ -323,14 +570,28 @@ for my $ind_file (@fasta_files) {
 	if ($do_gff_convert) {
 	    my $findmite_gff = $findmite_dir.$name_root.
 		"_".$mite_name."mite.gff";
-	    
+	    my $findmite_fasta = $outdir."FINDMITE_".
+		$mite_name."mite.fasta";
+
 	    if (-e $fm_out) {
-		findmite2gff ($fm_out, $findmite_gff, 0, $name_root, 0, 0);
+		# Currently will do_fasta_file creation if requested
+		# This last boolean set to 1 will append to any existing
+		# fasta file that is present
+		findmite2gff ($fm_out, $findmite_gff, 0, $name_root, 
+			      $do_fasta_out, 1, $findmite_fasta);
 		
-		# Copy the file
+		# Copy the gff file file
+		my $gff_copy_path = $gff_dir.$name_root.
+		    "_".$mite_name."mite.gff";
+		my $cp_err_msg = "Can not copy from:\n".
+		    " $findmite_gff TO $gff_copy_path\n";
+		copy ($findmite_gff, $gff_copy_path) ||
+		    die "$cp_err_msg\n";
+		
+
 	    }
 	    else {
-		print STDERR "ERROR: Could not find the findmite out file\n".
+		print STDERR "\nERROR: Could not find the findmite out file\n".
 		    "$fm_out\nto convert to gff\n";
 	    }
 	}
@@ -357,8 +618,7 @@ sub findmite2gff {
     # SUBFUNCTION VARS            |
     #-----------------------------+
     my ($findmite_in, $gff_out, $append_gff, $seqname, 
-	$fasta_out, $append_fasta) = @_;
-    
+	$fasta_out, $append_fasta, $fasta_out_path) = @_;
 
     # GFF OUT VARS
     my $gff_seq_id;                 # Seq id for use in gff
@@ -413,16 +673,21 @@ sub findmite2gff {
 	    die "Can not open gff output file:\n$gff_out\n";
     }
 
+
     if ($fasta_out) {
+#	my $fasta_out_path = $outdir."FINDMITE_".
+#	    $fm_dir_repeats."_".$fm_tir_len.".fasta";
+
 	if ($append_fasta) {
-	    open (FASTAOUT, ">>$fasta_out") ||
-		die "Can not FASTA output file:\n$fasta_out\n";
+	    open (FASTAOUT, ">>$fasta_out_path") ||
+		die "Can not FASTA output file:\n$fasta_out_path\n";
 	} 
 	else {
-	    open (FASTAOUT, ">$fasta_out") ||
-	    die "Can not FASTA output file:\n$fasta_out\n";
+	    open (FASTAOUT, ">$fasta_out_path") ||
+		die "Can not FASTA output file:\n$fasta_out_path\n";
 	}
     } # End of if $fasta_out
+
 
     #-----------------------------+
     # PROCESS FINDMITE FILE       |
@@ -600,7 +865,7 @@ sub findmite2gff {
     print GFFOUT 
 	"$gff_seq_id\t".            # Seq name
 	"$gff_source\t".            # Source
-	"mite\t".                   # Feature type
+	"MITE\t".                   # Feature type
 	"$gff_start\t".             # Start
 	"$gff_end\t".               # End
 	".\t".                      # Score
@@ -632,6 +897,7 @@ sub findmite2gff {
 
     close INFILE;
     close GFFOUT;
+    close FASTAOUT;
 
 }
 
@@ -890,6 +1156,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/30/2007
 
+UPDATED: 09/28/2007
 UPDATED: 09/06/2007
 
 VERSION: $Rev$
@@ -907,4 +1174,11 @@ VERSION: $Rev$
 # 09/06/2007
 # - Updating POD documentation.
 # - Deleted the empty run_findmite subfunction
+# 09/28/2007
+# - Change variable for the file giving parameter sets from
+#   param to config
+# - Made gff name SONG complient
+# - Added throw error and exit when the required variables not present
+# - Adding code to copy the gff output to the gff directory
+#   for the contig
 # - Moved POD documentation to the end of the program
