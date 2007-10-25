@@ -24,6 +24,9 @@ use File::Copy;
 
 print "Begin the batch conversion has\n";
 
+# ap_path is the path to apollo on your local machine
+
+my $ap_path = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
 my @root_names = (
 		  #-----------------------------+
 		  # CONVERTED
@@ -178,6 +181,7 @@ for my $bat_root_name (@root_names) {
     if (-e $gff_src) {
 	my $cnv_cmd = "cnv_gff2game.pl".
 	    " -g $bat_root_name/gff/$bat_root_name.gff".
+	    " --ap-path ".$ap_path.
 	    " -i $bat_root_name/rm/".$bat_root_name."_TREP9.masked.fasta".
 	    " -o $bat_root_name/$bat_root_name.game.xml";
 	system ($cnv_cmd);
