@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR : JAMES C. ESTILL                                  |
 # STARTED: 02/08/2007                                       |
-# UPDATED: 08/01/2007                                       |
+# UPDATED: 10/02/2007                                       |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -110,6 +110,39 @@
 
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
+# GAP ANNOTATION                                            |
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# Gap annotation placed nearest the central axis so that
+# it is always visible.
+
+#-----------------------------+
+# GAP                         |
+#-----------------------------+
+# 08/28/2007
+# This will be used to show gaps in the 
+# assembled BAC
+[Tier]
+tiername : Gap Annotation
+expanded : false
+labeled : false
+curated : true
+warnonedit : true
+
+[Type]
+label : gap
+tiername : Gap Annotation
+datatype : gap	
+glyph : Zigzag
+color : 255,0,0
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+name_method : FlyNameAdapter
+idformat : DPgap\d{7}
+
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
 # ANNOTATION                                                |
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
@@ -143,26 +176,6 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 number_of_levels : 3
-
-#-----------------------------+
-# GAP                         |
-#-----------------------------+
-# ADDED BY JAMIE 02/20/2007
-# This will be used to show gaps in the 
-# assembled BAC
-[Type]
-label : gap	
-tiername : Annotation
-datatype : gap	
-glyph : Zigzag
-color : 255,0,0
-//utr_color : 176,224,230
-//overlap_method : ORF_Overlap
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-sortbycolumn : GENOMIC_RANGE
-name_method : FlyNameAdapter
-idformat : DPgap\d{7}
 
 ##-----------------------------+
 ## Transfer RNA                |
@@ -305,11 +318,11 @@ tiername : Annotation
 //tiername : Dispersed Repeats
 datatype : transposable_element
 // Jamie added the following two
-datatype : LTR
+//datatype : LTR
 datatype : repeat_region
 glyph : DoubleHeadedArrow
 color : 255,0,203
-idformat : DPte\d{7}
+idformat : HEX_te\d{7}
 name_method : FlyNameAdapter
 overlap_method : NoOverlap
 column : ID
@@ -317,7 +330,54 @@ column : GENOMIC_RANGE
 sortbycolumn : GENOMIC_RANGE
 groupby : HOMOLOGY
 warnonedit : true
-number_of_levels : 1
+number_of_levels : 3
+
+#09/28/2007
+# Added MITE TYPE
+[Type]
+label : MITE
+tiername : Annotation
+//tiername : Dispersed Repeats
+// Jamie added the following two
+datatype : MITE
+glyph : DoubleHeadedArrow
+color : 255,0,203
+idformat : HEX_MITE\d{7}
+name_method : FlyNameAdapter
+overlap_method : NoOverlap
+column : ID
+column : GENOMIC_RANGE
+sortbycolumn : GENOMIC_RANGE
+groupby : HOMOLOGY
+warnonedit : false
+number_of_levels : 3
+
+# 09/27/2007
+# The following added to try to work with 
+# the complex features of ltr retrotransposons
+[Type]
+label : LTR Retrotransposon
+tiername : Annotation
+//tiername : Dispersed Repeats
+//datatype : transposable_element
+//datatype : transposable_element
+// Jamie added the following two
+datatype : ltr_struc
+datatype : ltr_retrotransposon
+//datatype : LTR Retro
+//datatype : repeat_region
+#glyph : DoubleHeadedArrow
+glyph : DrawableResultFeatureSet
+color : 255,0,203
+idformat : HEX_ltr\d{7}
+name_method : FlyNameAdapter
+overlap_method : NoOverlap
+column : ID
+column : GENOMIC_RANGE
+sortbycolumn : GENOMIC_RANGE
+groupby : HOMOLOGY
+warnonedit : false
+number_of_levels : 3
 
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
@@ -332,6 +392,7 @@ expanded : true
 labeled : true
 curated : true
 warnonedit : true
+
 
 //[Type]
 //label : P insertion_site
@@ -562,12 +623,35 @@ column : MATCH_LENGTH
 sortbycolumn : GENOMIC_RANGE
 
 #-----------------------------------------------------------+
+# COMPUTATIONAL GAPS                                        |
+#-----------------------------------------------------------+ 
+# Gaps that need to be added to the annotation tier
+# 
+[Tier]
+tiername : Comp Gap
+expanded : false
+labeled : false
+curated : true
+warnonedit : true
+
+[Type]
+label : gap
+tiername : Comp Gap
+datatype : gap	
+glyph : Zigzag
+color : 255,0,0
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+annot_type : gap
+
+#-----------------------------------------------------------+
 # E. coli BLASTN                                            |
 #-----------------------------------------------------------+
 # ADDED 03/01/2007
 # This will highlight PROBLEMS in the assembly
 # Red empty boxes these will be the nearest to the central
-# axis to highlight some problem regions
+# axis to highlight problem regions
 #
 [Tier]
 tiername : Contamination
@@ -651,13 +735,6 @@ sortbycolumn : GENOMIC_RANGE
 #-----------------------------------------------------------+
 # GENSCAN                                                   |
 #-----------------------------------------------------------+
-# GENSCAN added 02/14/2007
-# Apollo is currently doing something very strange with the
-# GENSCAN data, it is lumping them into hte GENSCAN-mus
-# and showing them as a single gene model on the minus
-# strand.
-# 04/17/2007
-# I did not have the above trouble on the jlb10 machine
 [Tier]
 tiername : GENSCAN
 expanded : true
@@ -845,12 +922,10 @@ sortbycolumn : GENOMIC_RANGE
 # 07/18/2007
 # - Modified to be the same as ensj.tiers to try to
 #   get the RepeatMasker files to parse correctly
-
-
 [Tier]
 tiername : RepeatMasker
-#expanded : false
-expanded : true
+expanded : false
+#expanded : true
 
 [Type]
 typename : RepeatMasker
@@ -877,6 +952,31 @@ reversesort : false
 //groupby : HOMOLOGY
 groupby : SINGLE
 
+#-----------------------------+
+# TE Nest results             |
+#-----------------------------+
+//# 08/28/2007
+//# May also add a TE 
+[Tier]
+tiername : TE Nest Result
+expanded : false
+//
+[Type]
+typename : TE Nest
+tiername : TE Nest Result
+datatype : tenest
+glyph : DrawableResultFeatureSet
+color : 164,164,164
+//annot_type : transposable_element
+column : NAME
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+overlap_method : ORF_Overlap
+//groupby : NAME
+
 #-----------------------------------------------------------+
 # TRF - Tandem Repeat Finder                                |
 #-----------------------------------------------------------+
@@ -900,6 +1000,282 @@ annot_type : transposable_element
 // name as given in the GFF file
 //column : NAME
 column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# FINDMITE - de novo MITE discovery                         |
+#-----------------------------------------------------------+
+[Tier]
+tiername : FINDMITE Results
+expanded : false
+
+# This will need to be expanded to show a different row for
+# each of the types below to allow to distinguish between 11 and 12
+# len tiers etc
+
+[Type]
+label : FINDMITE
+tiername : FINDMITE Results
+datatype : findmite:TA_11
+datatype : findmite:TA_12
+datatype : findmite:TA_13
+glyph : DoubleHeadedArrow
+#color : 64,64,64
+color : 0,255,255
+annot_type : MITE
+//Leaving Name out to see
+// if this helps the parse of the
+// name as given in the GFF file
+column : NAME
+column : ID
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# HMM RICE MITES                                            |
+#-----------------------------------------------------------+
+[Tier]
+tiername : MITE HMM Results
+expanded : false
+
+[Type]	
+label : Rice Mite 	
+tiername : MITE HMM Results
+datatype : hmmer:rice_mite
+glyph : DoubleHeadedArrow
+#color : 64,64,64
+color : 255,255,255
+annot_type : MITE
+//Leaving Name out to see
+// if this helps the parse of the
+// name as given in the GFF file
+column : NAME
+column : ID
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# HMM RICE MULES                                            |
+#-----------------------------------------------------------+
+# 10/04/2007
+[Tier]
+tiername : MULE HMM Results
+expanded : false
+
+[Type]	
+label : Rice MULES 	
+tiername : MULE HMM Results
+datatype : hmmer:rice_mule
+glyph : DoubleHeadedArrow
+#color : 64,64,64
+color : 255,255,255
+annot_type : MITE
+//Leaving Name out to see
+// if this helps the parse of the
+// name as given in the GFF file
+column : NAME
+column : ID
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# LTR_STRUC                                                 |
+#-----------------------------------------------------------+
+# 09/27/2007
+# Currently only using a single LTR_STRUC result tier. However
+# it may be useful in the future to add additional tiers for
+# different sensitivites 1 through 10
+[Tier]
+tiername : LTR_STRUC Results
+expanded : false
+
+[Type]
+label : LTR_STRUC
+tiername : LTR_STRUC Results
+datatype : ltr_struc
+//glyph : DrawableResultFeatureSet
+// The DrawableResultFeatureSet glyph does not
+// do a good job for LTR component visualization
+glyph : DoubleHeadedArrow
+color : 255,255,64
+//usescore : true
+annot_type : LTR Retrotransposon
+//annot_type : ltr_retrotransposon
+//Leaving Name out to see
+// if this helps the parse of the
+// name as given in the GFF file
+// ID Appears to be the same as NAME
+column : NAME
+column : SCORE
+column : ID
+//column : data_type 
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# LTR_seq Results
+#-----------------------------------------------------------+
+[Tier]
+tiername : LTR_seq Results
+expanded : false
+
+[Type]
+label : LTR_seq
+tiername : LTR_seq Results
+datatype : ltr_seq
+//glyph : DrawableResultFeatureSet
+// The DrawableResultFeatureSet glyph does not
+// do a good job for LTR component visualization
+glyph : DoubleHeadedArrow
+color : 0,0,255
+//usescore : true
+annot_type : LTR Retrotransposon
+column : NAME
+column : SCORE
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# fidn_ltr RESULTS                                          |
+#-----------------------------------------------------------+
+# Currently drawing separate tiers that could be placed
+# in a single tier
+
+[Tier]
+tiername : find_ltr Results
+expanded : false
+
+[Type]
+label : find_ltr
+tiername :  find_ltr Results
+datatype : find_ltr:def
+//glyph : DrawableResultFeatureSet
+// The DrawableResultFeatureSet glyph does not
+// do a good job for LTR component visualization
+glyph : DoubleHeadedArrow
+color : 255,0,0
+//usescore : true
+annot_type : LTR Retrotransposon
+column : NAME
+//column : SCORE
+column : ID
+//column : data_type 
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+[Tier]
+tiername : find_ltr Old
+expanded : false
+
+[Type]
+label : find_ltr_old
+tiername :  find_ltr Old
+datatype : find_ltr:old
+//glyph : DrawableResultFeatureSet
+// The DrawableResultFeatureSet glyph does not
+// do a good job for LTR component visualization
+glyph : DoubleHeadedArrow
+color : 255,40,40
+//usescore : true
+annot_type : LTR Retrotransposon
+column : NAME
+//column : SCORE
+column : ID
+//column : data_type 
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+[Tier]
+tiername : find_ltr Older
+expanded : false
+
+[Type]
+label : find_ltr_older
+tiername :  find_ltr Older
+datatype : find_ltr:older
+//glyph : DrawableResultFeatureSet
+// The DrawableResultFeatureSet glyph does not
+// do a good job for LTR component visualization
+glyph : DoubleHeadedArrow
+color : 255,80,80
+//usescore : true
+annot_type : LTR Retrotransposon
+column : NAME
+//column : SCORE
+column : ID
+//column : data_type 
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# LTR_Finder                                                |
+#-----------------------------------------------------------+
+# Added 10/01/2007
+[Tier]
+tiername : LTR_Finder Younger Results
+expanded : false
+
+[Type]
+label : LTR_Finder Younger
+tiername : LTR_Finder Younger Results
+datatype : ltr_finder:p_30
+glyph : DoubleHeadedArrow
+color : 20,255,20
+annot_type : LTR Retrotransposon
+column : NAME
+column : SCORE
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+
+[Tier]
+tiername : LTR_Finder Result
+expanded : false
+
+[Type]
+label : LTR_Finder
+tiername : LTR_Finder Result
+datatype : ltr_finder:def
+glyph : DoubleHeadedArrow
+color : 0,255,0
+annot_type : LTR Retrotransposon
+column : NAME
+column : SCORE
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+[Tier]
+tiername : LTR_Finder Older Results
+expanded : false
+
+[Type]
+label : LTR_Finder Older
+tiername : LTR_Finder Older Results
+datatype : ltr_finder:p_10
+glyph : DoubleHeadedArrow
+color : 40,255,40
+annot_type : LTR Retrotransposon
+column : NAME
+column : SCORE
+column : ID
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
