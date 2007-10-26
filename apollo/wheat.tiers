@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR : JAMES C. ESTILL                                  |
 # STARTED: 02/08/2007                                       |
-# UPDATED: 10/02/2007                                       |
+# UPDATED: 10/26/2007                                       |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -631,7 +631,7 @@ sortbycolumn : GENOMIC_RANGE
 tiername : Comp Gap
 expanded : false
 labeled : false
-curated : true
+curated : false
 warnonedit : true
 
 [Type]
@@ -883,7 +883,6 @@ sortbycolumn : GENOMIC_RANGE
 #-----------------------------------------------------------+
 # EUGENE                                                    |
 #-----------------------------------------------------------+
-
 [Tier]
 tiername : eugene
 expanded : true
