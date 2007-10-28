@@ -18,6 +18,8 @@
 #  individual annotation methods.                           |
 #                                                           |	
 #-----------------------------------------------------------+
+#
+# $Rev$
 
 #-----------------------------------------------------------+
 # TO DO                                                     |
@@ -623,10 +625,10 @@ column : MATCH_LENGTH
 sortbycolumn : GENOMIC_RANGE
 
 #-----------------------------------------------------------+
-# COMPUTATIONAL GAPS                                        |
+# COMPUTATIONALLY DETERMINED GAPS                           |
 #-----------------------------------------------------------+ 
 # Gaps that need to be added to the annotation tier
-# 
+# These are determined by reading the FASTA file 
 [Tier]
 tiername : Comp Gap
 expanded : false
@@ -706,25 +708,6 @@ column : MATCH_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_LENGTH
 sortbycolumn : GENOMIC_RANGE
-
-#-----------------------------------------------------------+
-# SEQUENCE                                                  |
-#-----------------------------------------------------------+
-#
-#[Tier]
-#tiername : sequence
-#expanded : true
-#labeled : true
-#
-#[Type]
-#label : sequence
-#tiername : sequence
-#datatype : sequence:dummy
-#glyph : DrawableResultFeatureSet
-#color : 51,102,255
-#usescore : false
-#column : GENOMIC_RANGE
-#column : ID
 
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
