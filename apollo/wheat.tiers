@@ -831,7 +831,7 @@ typename : GeneMarkHMM_Os
 tiername : GeneMark.hmm
 resulttype : GeneMarkHMM_Os
 glyph : DrawableResultFeatureSet
-color : white
+color : 255,255,255
 //usescore : true
 //minscore : 0.0
 //scorethreshold : -1.0
@@ -878,7 +878,8 @@ label : eugene
 tiername : eugene
 resulttype : eugene
 glyph : DrawableResultFeatureSet
-color : 75,147,216
+#color : 75,147,216
+color : 128,0,0
 //usescore : true
 //minscore : 0.0
 column : SCORE
@@ -1923,7 +1924,9 @@ reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
 #-----------------------------------------------------------+
-# TIGR GIs BLASTN
+#-----------------------------------------------------------+
+# TIGR GIs BLASTN                                           |
+#-----------------------------------------------------------+
 #-----------------------------------------------------------+
 # GIs are from the TIGR Gene Index database:
 # I believe that this has largely been replaced by the 
@@ -1939,35 +1942,16 @@ weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 tiername : TIGR GIs BLASTN
 expanded : false
 
-# The following is currently a BLASTN 
-# search, this may need to be replaced
-# by a TBLASTX, However since these are 
-# from T. aestivum may be able to just
-# stick with BLASTn
-# Show this is yellow
-
-[Type]
-typename : Arabidopsis thaliana GI BLASTN
-tiername : TIGR GIs BLASTN
-resulttype : blastn:AtGI_13
-resulttype : BLASTN:AtGI_13
-glyph : DrawableResultFeatureSet
-color : 0,0,255
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
+#-----------------------------------------------------------+
+# TRITICEAE GI BLASTN
+#-----------------------------------------------------------+
+[Tier]
+tiername : TRITICEAE GIs BLASTN
+expanded : false
 
 [Type]
 typename : Hordeum vulgare GI BLASTN
-tiername : TIGR GIs BLASTN
+tiername : TRITICEAE GIs BLASTN
 resulttype : blastn:HvGI_9
 resulttype : BLASTN:HvGI_9
 glyph : DrawableResultFeatureSet
@@ -1984,8 +1968,33 @@ column : MATCH_RANGE
 reversesort : false
 
 [Type]
+typename : Triticum aestivum GI BLASTN
+tiername : TRITICEAE GIs BLASTN
+resulttype : blastn:TaGI_10
+resulttype : BLASTN:TaGI_10
+glyph : DrawableResultFeatureSet
+color : 0,0,255
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+
+#-----------------------------------------------------------+
+# POACEAE GI BLASTN                                         |
+#-----------------------------------------------------------+
+[Tier]
+tiername : POACEAE GIs BLASTN
+expanded : false
+
+[Type]
 typename : Oryza sativa GI BLASTN
-tiername : TIGR GIs BLASTN
+tiername : POACEAE GIs BLASTN
 resulttype : blastn:OsGI_17
 resulttype : BLASTN:OsGI_17
 glyph : DrawableResultFeatureSet
@@ -2003,7 +2012,7 @@ reversesort : false
 
 [Type]
 typename : Sorghum bicolor GI BLASTN
-tiername : TIGR GIs BLASTN
+tiername : POACEAE GIs BLASTN
 resulttype : blastn:SbGI_9
 resulttype : blastn:SbGI_8
 resulttype : BLASTN:SbGI_9
@@ -2022,30 +2031,8 @@ column : MATCH_RANGE
 reversesort : false
 
 [Type]
-typename : Triticum aestivum GI BLASTN
-tiername : TIGR GIs BLASTN
-resulttype : blastn:TaGI_10
-resulttype : BLASTN:TaGI_10
-//resulttype : TBLASTX_TA_tigrta
-glyph : DrawableResultFeatureSet
-//color : 255,255,0
-// BLUE
-color : 0,0,255
-//commented out score 02/08/2007
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
-[Type]
 typename : Zea mays GI BLASTN
-tiername : TIGR GIs BLASTN
+tiername : POACEAE GIs BLASTN
 resulttype : blastn:ZmGI_17
 resulttype : BLASTN:ZmGI_17
 glyph : DrawableResultFeatureSet
@@ -2062,18 +2049,37 @@ column : MATCH_RANGE
 reversesort : false
 
 #-----------------------------------------------------------+
-# TIGR GIs TBLASTX
+# PLANT GI BLASTN                                           |
+#-----------------------------------------------------------+
+# Other plants not triticeae or Poaceae
+[Tier]
+tiername : PLANT GIs BLASTN
+expanded : false
+
+[Type]
+typename : Arabidopsis thaliana GI BLASTN
+tiername : PLANT GIs BLASTN
+resulttype : blastn:AtGI_13
+resulttype : BLASTN:AtGI_13
+glyph : DrawableResultFeatureSet
+color : 0,0,255
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+
+#-----------------------------------------------------------+
+# TIGR GIs TBLASTX                                          |
 #-----------------------------------------------------------+
 [Tier]
 tiername : TIGR GIs TBLASTX
 expanded : false
-
-# The following is currently a BLASTN 
-# search, this may need to be replaced
-# by a TBLASTX, However since these are 
-# from T. aestivum may be able to just
-# stick with BLASTn
-# Show this is yellow
 
 [Type]
 typename : Arabidopsis thaliana GI TBLASTX
