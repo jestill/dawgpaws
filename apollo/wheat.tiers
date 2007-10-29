@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR : JAMES C. ESTILL                                  |
 # STARTED: 02/08/2007                                       |
-# UPDATED: 10/26/2007                                       |
+# UPDATED: 10/28/2007                                       |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -19,6 +19,7 @@
 #                                                           |	
 #-----------------------------------------------------------+
 #
+# VERSION
 # $Rev$
 
 #-----------------------------------------------------------+
@@ -26,6 +27,7 @@
 #-----------------------------------------------------------+
 # [ ] Edit the default names to work with the format that
 #     we will be using for wheat annotation.
+#     Default names will have the DP prefix (DAWG-PAWS)
 # [ ] Add the rest of the potential PUTs databases
 
 #-----------------------------------------------------------+
@@ -639,7 +641,7 @@ warnonedit : true
 [Type]
 label : gap
 tiername : Comp Gap
-datatype : gap	
+resulttype : gap	
 glyph : Zigzag
 color : 255,0,0
 column : GENOMIC_RANGE
@@ -671,8 +673,8 @@ labeled : true
 [Type]
 typename : E. coli BLASTN
 tiername : Contamination
-datatype : blastn:contam_Ecoli
-datatype : BLASTN:contam_Ecoli
+resulttype : blastn:contam_Ecoli
+resulttype : BLASTN:contam_Ecoli
 glyph : ThinRectangle
 //glyph : DrawableResultFeatureSet
 color : 255,0,0
@@ -694,8 +696,8 @@ sortbycolumn : GENOMIC_RANGE
 [Type]
 typename : UniVec BLASTN
 tiername : Contamination
-datatype : blastn:contam_UniVec
-datatype : BLASTN:contam_UniVec
+resulttype : blastn:contam_UniVec
+resulttype : BLASTN:contam_UniVec
 glyph : ThinRectangle
 //glyph : DrawableResultFeatureSet
 color : 255,0,0
@@ -912,9 +914,9 @@ expanded : false
 [Type]
 typename : RepeatMasker
 tiername : RepeatMasker
-datatype : RepeatMasker
-datatype : repeatmasker
-datatype : repeatmasker:trep9
+resulttype : RepeatMasker
+resulttype : repeatmasker
+resulttype : repeatmasker:trep9
 //glyph : DoubleHeadedArrow
 glyph : DrawableResultFeatureSet
 color : 124,124,124
@@ -946,7 +948,7 @@ expanded : false
 [Type]
 typename : TE Nest
 tiername : TE Nest Result
-datatype : tenest
+resulttype : tenest
 glyph : DrawableResultFeatureSet
 color : 164,164,164
 //annot_type : transposable_element
@@ -972,8 +974,8 @@ label : TRFv4.00
 tiername : TRF
 // TriAnnot used to Use TRF 3.21
 // but now appears to be using TRF v4.00
-datatype : TRFv3.21
-datatype : TRFv4.00
+resulttype : TRFv3.21
+resulttype : TRFv4.00
 glyph : DoubleHeadedArrow
 color : 64,64,64
 annot_type : transposable_element
@@ -1000,9 +1002,9 @@ expanded : false
 [Type]
 label : FINDMITE
 tiername : FINDMITE Results
-datatype : findmite:TA_11
-datatype : findmite:TA_12
-datatype : findmite:TA_13
+resulttype : findmite:TA_11
+resulttype : findmite:TA_12
+resulttype : findmite:TA_13
 glyph : DoubleHeadedArrow
 #color : 64,64,64
 color : 0,255,255
@@ -1027,7 +1029,7 @@ expanded : false
 [Type]	
 label : Rice Mite 	
 tiername : MITE HMM Results
-datatype : hmmer:rice_mite
+resulttype : hmmer:rice_mite
 glyph : DoubleHeadedArrow
 #color : 64,64,64
 color : 255,255,255
@@ -1053,7 +1055,7 @@ expanded : false
 [Type]	
 label : Rice MULES 	
 tiername : MULE HMM Results
-datatype : hmmer:rice_mule
+resulttype : hmmer:rice_mule
 glyph : DoubleHeadedArrow
 #color : 64,64,64
 color : 255,255,255
@@ -1082,7 +1084,7 @@ expanded : false
 [Type]
 label : LTR_STRUC
 tiername : LTR_STRUC Results
-datatype : ltr_struc
+resulttype : ltr_struc
 //glyph : DrawableResultFeatureSet
 // The DrawableResultFeatureSet glyph does not
 // do a good job for LTR component visualization
@@ -1113,7 +1115,7 @@ expanded : false
 [Type]
 label : LTR_seq
 tiername : LTR_seq Results
-datatype : ltr_seq
+resulttype : ltr_seq
 //glyph : DrawableResultFeatureSet
 // The DrawableResultFeatureSet glyph does not
 // do a good job for LTR component visualization
@@ -1141,7 +1143,7 @@ expanded : false
 [Type]
 label : find_ltr
 tiername :  find_ltr Results
-datatype : find_ltr:def
+resulttype : find_ltr:def
 //glyph : DrawableResultFeatureSet
 // The DrawableResultFeatureSet glyph does not
 // do a good job for LTR component visualization
@@ -1164,7 +1166,7 @@ expanded : false
 [Type]
 label : find_ltr_old
 tiername :  find_ltr Old
-datatype : find_ltr:old
+resulttype : find_ltr:old
 //glyph : DrawableResultFeatureSet
 // The DrawableResultFeatureSet glyph does not
 // do a good job for LTR component visualization
@@ -1187,7 +1189,7 @@ expanded : false
 [Type]
 label : find_ltr_older
 tiername :  find_ltr Older
-datatype : find_ltr:older
+resulttype : find_ltr:older
 //glyph : DrawableResultFeatureSet
 // The DrawableResultFeatureSet glyph does not
 // do a good job for LTR component visualization
@@ -1214,7 +1216,7 @@ expanded : false
 [Type]
 label : LTR_Finder Younger
 tiername : LTR_Finder Younger Results
-datatype : ltr_finder:p_30
+resulttype : ltr_finder:p_30
 glyph : DoubleHeadedArrow
 color : 20,255,20
 annot_type : LTR Retrotransposon
@@ -1233,7 +1235,7 @@ expanded : false
 [Type]
 label : LTR_Finder
 tiername : LTR_Finder Result
-datatype : ltr_finder:def
+resulttype : ltr_finder:def
 glyph : DoubleHeadedArrow
 color : 0,255,0
 annot_type : LTR Retrotransposon
@@ -1251,7 +1253,7 @@ expanded : false
 [Type]
 label : LTR_Finder Older
 tiername : LTR_Finder Older Results
-datatype : ltr_finder:p_10
+resulttype : ltr_finder:p_10
 glyph : DoubleHeadedArrow
 color : 40,255,40
 annot_type : LTR Retrotransposon
@@ -1308,9 +1310,9 @@ expanded : false
 //label : BLASTN_TREP_total
 label : TREP_total
 tiername : TREP total 
-datatype : BLASTN_TREP_total
-datatype : blastn:TREP9_total
-datatype : BLASTN:TREP9_total
+resulttype : BLASTN_TREP_total
+resulttype : blastn:TREP9_total
+resulttype : BLASTN:TREP9_total
 glyph : DoubleHeadedArrow
 color : 84,84,84
 annot_type : transposable_element
@@ -1335,11 +1337,11 @@ expanded : false
 //label : BLASTN_TREP_nr
 label : TREP_nr
 tiername : TREP nr
-datatype : BLASTN_TREP_nr
+resulttype : BLASTN_TREP_nr
 # The following is for local TREP_9
 # manually imported into Apollo
-datatype : blastn:TREP9_nr
-datatype : BLASTN:TREP9_nr
+resulttype : blastn:TREP9_nr
+resulttype : BLASTN:TREP9_nr
 glyph : DoubleHeadedArrow
 color : 104,104,104
 annot_type : transposable_element
@@ -1370,10 +1372,10 @@ expanded : false
 label : RepBase
 //label : BLASTN_ALL_RepBase
 tiername : RepBase
-datatype : BLASTN_ALL_Repbase
+resulttype : BLASTN_ALL_Repbase
 // The following for manual import of BLAST results
-datatype : blastn:RB_pl
-datatype : BLASTN:RB_pln
+resulttype : blastn:RB_pl
+resulttype : BLASTN:RB_pln
 glyph : DoubleHeadedArrow
 color : 144,144,144
 annot_type : transposable_element
@@ -1410,10 +1412,10 @@ expanded : false
 [Type]
 label : SanMiguel
 tiername : SanMiguel
-datatype : BLASTN_SanMiguel
+resulttype : BLASTN_SanMiguel
 // The following added for manual import of local BLAST
-datatype : blastn:SanMiguel_200610
-datatype : BLASTN:SanMiguel_200610
+resulttype : blastn:SanMiguel_200610
+resulttype : BLASTN:SanMiguel_200610
 glyph : DoubleHeadedArrow
 color : 184,184,184
 annot_type : transposable_element
@@ -1439,10 +1441,10 @@ expanded : false
 [Type]
 label : MIPS REdat 4.3
 tiername : MIPS_REdat
-//datatype : BLASTN_
+//resulttype : BLASTN_
 // The following added for manual import of local BLAST
-datatype : blastn:mips_REdat_4_3
-datatype : BLASTN:mips_REdat_4_3
+resulttype : blastn:mips_REdat_4_3
+resulttype : BLASTN:mips_REdat_4_3
 glyph : DoubleHeadedArrow
 color : 164,164,164
 annot_type : transposable_element
@@ -1473,10 +1475,10 @@ expanded : false
 [Type]
 label : Wessler
 tiername : Wessler
-//datatype : BLASTN_SanMiguel
+//resulttype : BLASTN_SanMiguel
 // The following added for manual import of local BLAST
-datatype : blastn:Wessler
-datatype : BLASTN:Wessler
+resulttype : blastn:Wessler
+resulttype : BLASTN:Wessler
 glyph : DoubleHeadedArrow
 //color : 144,144,144
 color : 174,174,174
@@ -1502,9 +1504,9 @@ expanded : false
 [Type]
 label : TriAnnot_Transposon_BLASTN 
 tiername : Transposon
-datatype : BLASTN_CF_TRANSPOSON
-datatype : blastn:TATrans_200702
-datatype : BLASTN:TATrans_200702
+resulttype : BLASTN_CF_TRANSPOSON
+resulttype : blastn:TATrans_200702
+resulttype : BLASTN:TATrans_200702
 glyph : DoubleHeadedArrow
 //color : 124,124,124
 color : 184,184,184
@@ -1530,8 +1532,8 @@ expanded : false
 [Type]
 label : TIGR Gramineae Repeats
 tiername : TIGR_Gram_Repeats
-datatype : blastn:TIGR_Gram_3_3
-datatype : BLASTN:TIGR_Gram_3_3
+resulttype : blastn:TIGR_Gram_3_3
+resulttype : BLASTN:TIGR_Gram_3_3
 glyph : DoubleHeadedArrow
 //color : 104,104,104
 color : 194,194,194
@@ -1551,7 +1553,7 @@ weburl : http://www.tigr.org/tdb/e2k1/plant.repeats/index.shtml
 [Type]
 label : auto blastn
 tiername :  Auto blastn
-datatype : BLASTN_seq.tfa.db
+resulttype : BLASTN_seq.tfa.db
 glyph : DoubleHeadedArrow
 color : 164,164,164
 annot_type : transposable_element
@@ -3084,8 +3086,6 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 
-
-
 #-----------------------------------------------------------+
 # Plant GDB PUTS TBLASTS                                    |
 #-----------------------------------------------------------+
@@ -3269,7 +3269,7 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 #typename : BLASTN_OS_CDS
 #label : TIGR oryza sativa CDS prediction 
 #tiername : CDS
-#datatype : BLASTN_OS_CDS
+#resulttype : BLASTN_OS_CDS
 #glyph : DrawableResultFeatureSet
 #color : 255,255,255
 #//usescore : true
@@ -3286,7 +3286,7 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 #typename : BLASTN_embl_est_pln
 #label : EST other 
 #tiername : EST
-#datatype : BLASTN_embl_est_pln
+#resulttype : BLASTN_embl_est_pln
 #glyph : DrawableResultFeatureSet
 #color : 102,255,102
 #//usescore : true
@@ -3319,8 +3319,8 @@ expanded : false
 [Type]	
 label : UniProt Swiss-Prot (BLASTX)
 tiername : EMBL UniProt (BLASTX)
-datatype : blastx:UniProt_SProt_34_7
-datatype : BLASTX:UniProt_SProt_34_7
+resulttype : blastx:UniProt_SProt_34_7
+resulttype : BLASTX:UniProt_SProt_34_7
 glyph : DrawableResultFeatureSet
 color : 255,20,0
 usescore : true
@@ -3339,8 +3339,8 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 [Type]
 label : UniProt TrEMBL (BLASTX)
 tiername : EMBL UniProt (BLASTX)
-datatype : blastx:UniProt_TrEMBL_34_7
-datatype : BLASTX:UniProt_TrEMBL_34_7
+resulttype : blastx:UniProt_TrEMBL_34_7
+resulttype : BLASTX:UniProt_TrEMBL_34_7
 glyph : DrawableResultFeatureSet
 color : 200,20,0
 usescore : true
@@ -3380,7 +3380,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 #typename : BLASTN_CF_bac
 #label : local BACdb 
 #tiername : genomic homologies
-#datatype : BLASTN_CF_bac
+#resulttype : BLASTN_CF_bac
 #glyph : DrawableResultFeatureSet
 #color : 239,130,031
 #//usescore : true
@@ -3397,7 +3397,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 #typename : BLASTN_embl_gss_pln
 #label : PLN GSS
 #tiername : genomic homologies
-#datatype : BLASTN_embl_gss_pln
+#resulttype : BLASTN_embl_gss_pln
 #glyph : DrawableResultFeatureSet
 #color : 239,130,031
 #usescore : true
@@ -3414,7 +3414,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 #typename : BLASTN_Embl_htg_pln
 #label : PLN HTG
 #tiername : genomic homologies
-#datatype : BLASTN_Embl_HTG_PLN
+#resulttype : BLASTN_Embl_HTG_PLN
 #glyph : DrawableResultFeatureSet
 #color : 239,130,031
 #//usescore : true
@@ -3439,7 +3439,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 #typename : BLASTN_embl_sts_pln
 #label : STS
 #tiername : STS
-#datatype : BLASTN_embl_sts_pln
+#resulttype : BLASTN_embl_sts_pln
 #glyph : DrawableResultFeatureSet
 #color : 102,255,102
 #//usescore : true
@@ -3464,7 +3464,7 @@ weburl : http://www.ebi.uniprot.org/uniprot-srv/uniProtView.do?primaryAc=
 #typename : BLASTN_Embl_PLN
 #label : EMBL
 #tiername : other homologies
-#datatype : BLASTN_Embl_PLN
+#resulttype : BLASTN_Embl_PLN
 #glyph : DrawableResultFeatureSet
 #color : 102,255,102
 #//usescore : true
@@ -3492,8 +3492,8 @@ expanded : false
 [Type]
 typename : Arabidopsis CDS BLASTX
 tiername : CDS Arabidopsis
-datatype : blastx:TAIR6
-datatype : BLASTX:TAIR6
+resulttype : blastx:TAIR6
+resulttype : BLASTX:TAIR6
 glyph : DrawableResultFeatureSet
 color : 255,0,0
 usescore : true
@@ -3513,8 +3513,8 @@ groupby : HOMOLOGY
 [Type]
 typename : Arabidopsis CDS TBLASTX (TIGR)
 tiername : CDS Arabidopsis
-datatype : blastx:ATH1_cds
-datatype : BLASTX:ATH1_cds
+resulttype : blastx:ATH1_cds
+resulttype : BLASTX:ATH1_cds
 glyph : DrawableResultFeatureSet
 color : 255,0,0
 usescore : true
@@ -3541,8 +3541,8 @@ expanded : false
 [Type]
 typename : Rice CDS BLASTX
 tiername : CDS Rice TIGR
-datatype : blastx:Os_5_cds_pep
-datatype : BLASTX:Os_5_cds_pep
+resulttype : blastx:Os_5_cds_pep
+resulttype : BLASTX:Os_5_cds_pep
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3562,10 +3562,10 @@ groupby : HOMOLOGY
 [Type]
 typename : Rice CDS TBLASTX
 tiername : CDS Rice TIGR
-datatype : blastx:Os_5_cds
-datatype : tblastx:Os_5_cds
-datatype : BLASTX:Os_5_cds
-datatype : TBLASTX:Os_5_cds
+resulttype : blastx:Os_5_cds
+resulttype : tblastx:Os_5_cds
+resulttype : BLASTX:Os_5_cds
+resulttype : TBLASTX:Os_5_cds
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3589,8 +3589,8 @@ expanded : false
 [Type]
 typename : Rice CDS BLASTN
 tiername : CDS BLASTN Rice TIGR 
-datatype : blastn:Os_5_cds
-datatype : BLASTN:Os_5_cds
+resulttype : blastn:Os_5_cds
+resulttype : BLASTN:Os_5_cds
 glyph : DrawableResultFeatureSet
 color : 20,255,20
 usescore : true
@@ -3605,8 +3605,6 @@ column : MATCH_LENGTH
 sortbycolumn : GENOMIC_RANGE
 groupby : HOMOLOGY
 
-
-
 #-----------------------------------------------------------+
 # PROTEIN MODEL (CDS) RAP 1                                 |
 # http://rapdownload.lab.nig.ac.jp/                         |
@@ -3620,10 +3618,10 @@ typename : Rice CDS BLASTX
 tiername : CDS Rice RAP1
 // The _pe is a problem with the database on an early version
 // of the DAWG-PAWS pipeline
-datatype : blastx:Os_Rap1_pep
-datatype : blastx:Os_Rap1_pe    
-datatype : BLASTX:Os_Rap1_pep
-datatype : BLASTX:Os_Rap1_pe    
+resulttype : blastx:Os_Rap1_pep
+resulttype : blastx:Os_Rap1_pe    
+resulttype : BLASTX:Os_Rap1_pep
+resulttype : BLASTX:Os_Rap1_pe    
 glyph : DrawableResultFeatureSet
 color : 255,255,255
 usescore : true
