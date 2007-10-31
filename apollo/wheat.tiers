@@ -5,9 +5,10 @@
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
-# AUTHOR : JAMES C. ESTILL                                  |
-# STARTED: 02/08/2007                                       |
-# UPDATED: 10/28/2007                                       |
+# AUTHOR  : JAMES C. ESTILL                                 |
+# STARTED : 02/08/2007                                      |
+# UPDATED : 10/31/2007                                      |
+# VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
 #  This tiers file has a focus on gene model annotation.    |
@@ -18,9 +19,7 @@
 #  individual annotation methods.                           |
 #                                                           |	
 #-----------------------------------------------------------+
-#
-# VERSION
-# $Rev$
+
 
 #-----------------------------------------------------------+
 # TO DO                                                     |
@@ -1281,7 +1280,6 @@ tiername : TREP prot
 resulttype : BLASTX_TREP_prot
 resulttype : blastx:PTREP_9
 resulttype : BLASTX:PTREP_9
-//glyph : DoubleHeadedArrow
 glyph : ThinRectangle
 color : 124,124,124
 annot_type : transposable_element
@@ -1768,6 +1766,8 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
+
+
 #-----------------------------------------------------------+
 # NCBI UNIGENES TBLASTX                                     |
 #-----------------------------------------------------------+
@@ -1783,6 +1783,7 @@ tiername : UniGenes TBLASTX
 resulttype : BLASTN_AT_unigene
 resulttype : blastx:AtUniGene_56
 resulttype : tblastx:AtUniGene_56
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1804,6 +1805,7 @@ tiername : UniGenes TBLASTX
 resulttype : BLASTN_HV_unigene
 resulttype : blastx:HvUniGene_47
 resulttype : tblastx:HvUniGene_47
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1825,6 +1827,7 @@ tiername : UniGenes TBLASTX
 resulttype : BLASTN_OS_unigene
 resulttype : blastx:OsUniGene_65
 resulttype : tblastx:OsUniGene_65
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1845,6 +1848,7 @@ typename : Sorghum bicolor UniGene TBLASTX
 tiername : UniGenes TBLASTX
 resulttype : blastx:SbUniGene_21
 resulttype : tblastx:SbUniGene_21
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1865,6 +1869,7 @@ typename : Saccharum officinarum UniGene TBLASTX
 tiername : UniGenes TBLASTX
 resulttype : blastx:SoUniGene_8
 resulttype : tblastx:SoUniGene_8
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1886,6 +1891,7 @@ tiername : UniGenes TBLASTX
 resulttype : BLASTN_TA_unigene
 resulttype : blastx:TaUniGene_46
 resulttype : tblastx:TaUniGene_46
+#glyph : ThinRectangle
 glyph : DrawableResultFeatureSet
 color : red
 usescore : true
@@ -1929,21 +1935,9 @@ weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
 # GIs are from the TIGR Gene Index database:
-# I believe that this has largely been replaced by the 
-# TIGR TAs but I will need to take a look at these for
-# at least 10 BACs to be sure.
-# -- JCE 02/14/2007
-# MAY want to switc to a BLASTN search for the TaGI
-# while all others get the tBLASTx treatment
-# THESE ARE CURRENTLY ALL IN BLUE
-# THIS SHOULD PROBABLY BE CHANGED
-
-[Tier]
-tiername : TIGR GIs BLASTN
-expanded : false
 
 #-----------------------------------------------------------+
-# TRITICEAE GI BLASTN
+# TRITICEAE GI BLASTN                                       |
 #-----------------------------------------------------------+
 [Tier]
 tiername : TRITICEAE GIs BLASTN
@@ -1998,7 +1992,7 @@ tiername : POACEAE GIs BLASTN
 resulttype : blastn:OsGI_17
 resulttype : BLASTN:OsGI_17
 glyph : DrawableResultFeatureSet
-color : 0,0,255
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2018,7 +2012,7 @@ resulttype : blastn:SbGI_8
 resulttype : BLASTN:SbGI_9
 resulttype : BLASTN:SbGI_8
 glyph : DrawableResultFeatureSet
-color : 0,0,255
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2036,7 +2030,7 @@ tiername : POACEAE GIs BLASTN
 resulttype : blastn:ZmGI_17
 resulttype : BLASTN:ZmGI_17
 glyph : DrawableResultFeatureSet
-color : 0,0,255
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2062,7 +2056,7 @@ tiername : PLANT GIs BLASTN
 resulttype : blastn:AtGI_13
 resulttype : BLASTN:AtGI_13
 glyph : DrawableResultFeatureSet
-color : 0,0,255
+color : 100,100,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2074,85 +2068,28 @@ column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
 
+#-----------------------------------------------------------+
 #-----------------------------------------------------------+
 # TIGR GIs TBLASTX                                          |
 #-----------------------------------------------------------+
+#-----------------------------------------------------------+
+
+#-----------------------------------------------------------+
+# TRITICEAE GIs TBLASTX                                     |
+#-----------------------------------------------------------+
 [Tier]
-tiername : TIGR GIs TBLASTX
+tiername : TRITICEAE GIs TBLASTX
 expanded : false
 
 [Type]
-typename : Arabidopsis thaliana GI TBLASTX
-tiername : TIGR GIs TBLASTX
-resulttype : blastx:AtGI_13
-resulttype : tblastx:AtGI_13
-resulttype : BLASTX:AtGI_13
-resulttype : TBLASTX:AtGI_13
-glyph : DrawableResultFeatureSet
-color : 0,0,255
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
-[Type]
 typename : Hordeum vulgare GI TBLASTX
-tiername : TIGR GIs TBLASTX
+tiername : TRITICEAE GIs TBLASTX
 resulttype : BLASTX:HvGI_9
 resulttype : TBLASTX:HvGI_9
 resulttype : blastx:HvGI_9
 resulttype : tblastx:HvGI_9
-glyph : DrawableResultFeatureSet
-color : 0,0,255
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
-[Type]
-typename : Oryza sativa GI TBLASTX
-tiername : TIGR GIs TBLASTX
-resulttype : blastx:OsGI_17
-resulttype : tblastx:OsGI_17
-resulttype : BLASTX:OsGI_17
-resulttype : TBLASTX:OsGI_17
-glyph : DrawableResultFeatureSet
-color : 0,0,255
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
-[Type]
-typename : Sorghum bicolor GI TBLASTX
-tiername : TIGR GIs TBLASTX
-resulttype : blastx:SbGI_9
-resulttype : tblastx:SbGI_9
-resulttype : blastx:SbGI_8
-resulttype : tblastx:SbGI_8
-resulttype : BLASTX:SbGI_9
-resulttype : TBLASTX:SbGI_9
-resulttype : BLASTX:SbGI_8
-resulttype : TBLASTX:SbGI_8
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
 minscore : 0.0
@@ -2167,34 +2104,14 @@ reversesort : false
 
 [Type]
 typename : Triticum aestivum GI TBLASTX
-tiername : TIGR GIs TBLASTX
+tiername : TRITICEAE GIs TBLASTX
 resulttype : blastx:TaGI_10
 resulttype : tblastx:TaGI_10
 resulttype : BLASTX:TaGI_10
 resulttype : TBLASTX:TaGI_10
 resulttype : TBLASTX_TA_tigrta
-glyph : DrawableResultFeatureSet
-//color : 255,255,0
-color : 0,0,255
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-
-[Type]
-typename : Zea mays GI TBLASTX
-tiername : TIGR GIs TBLASTX
-resulttype : blastx:ZmGI_17
-resulttype : tblastx:ZmGI_17
-resulttype : BLASTX:ZmGI_17
-resulttype : TBLASTX:ZmGI_17
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
 minscore : 0.0
@@ -2208,29 +2125,22 @@ column : MATCH_RANGE
 reversesort : false
 
 #-----------------------------------------------------------+
-# TIGR TAs BLASTN                                           |
-#-----------------------------------------------------------+ 
-# TAs are TIGR transcript assemblies:
-# These may or may not be redundant with the TGI
-# TIGR Gene Indices and may or may not be redundant
-# with the NCBI unigenes.
-# Either way I should add the following TIERS for evaluation
-# by the ateam group.
-# TAS may be downloaded from
-# ftp://ftp.tigr.org/pub/data/plantta/
-
+# POACEAE GI BLASTN                                         |
+#-----------------------------------------------------------+
 [Tier]
-tiername : TIGR TAs BLASTN
+tiername : POACEAE GIs TBLASTX
 expanded : false
 
 [Type]
-typename : Agrostis capillaris TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:AcTA_1
-resulttype : BLASTN:AcTA_1
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+typename : Oryza sativa GI TBLASTX
+tiername : POACEAE GIs TBLASTX
+resulttype : blastx:OsGI_17
+resulttype : tblastx:OsGI_17
+resulttype : BLASTX:OsGI_17
+resulttype : TBLASTX:OsGI_17
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2241,34 +2151,21 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
-typename : Agrostis stolonifera TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:AsTA_1
-resulttype : BLASTN:AsTA_1
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : score
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Arabidopsis thaliana TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:AtTA_2
-resulttype : BLASTN:AtTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+typename : Sorghum bicolor GI TBLASTX
+tiername : POACEAE GIs TBLASTX
+resulttype : blastx:SbGI_9
+resulttype : tblastx:SbGI_9
+resulttype : blastx:SbGI_8
+resulttype : tblastx:SbGI_8
+resulttype : BLASTX:SbGI_9
+resulttype : TBLASTX:SbGI_9
+resulttype : BLASTX:SbGI_8
+resulttype : TBLASTX:SbGI_8
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2279,16 +2176,17 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
-typename : Avena sativa TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:AvenSatTA_2
-resulttype : BLASTN:AvenSatTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+typename : Zea mays GI TBLASTX
+tiername : POACEAE GIs TBLASTX
+resulttype : blastx:ZmGI_17
+resulttype : tblastx:ZmGI_17
+resulttype : BLASTX:ZmGI_17
+resulttype : TBLASTX:ZmGI_17
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
+color : 50,50,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2299,16 +2197,25 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+#-----------------------------------------------------------+
+# PLANT GI TBLASTX                                          |
+#-----------------------------------------------------------+
+# Other plants not triticeae or Poaceae
+[Tier]
+tiername : PLANT GIs TBLASTX
+expanded : false
 
 [Type]
-typename : Cynodon dactylon TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:CdTA_2
-resulttype : BLASTN:CdTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+typename : Arabidopsis thaliana GI TBLASTX
+tiername : PLANT GIs TBLASTX
+resulttype : blastx:AtGI_13
+resulttype : tblastx:AtGI_13
+resulttype : BLASTX:AtGI_13
+resulttype : TBLASTX:AtGI_13
+glyph : ThinRectangle
+#glyph : DrawableResultFeatureSet
+color : 100,100,255
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2319,158 +2226,49 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+#weburl      : http://compbio.dfci.harvard.edu/tgi/cgi-bin/tgi/tc_report.pl?gudb=arab&tc=TC310963
+weburl      : http://compbio.dfci.harvard.edu/tgi/cgi-bin/tgi/tc_report.pl?gudb=arab&tc=
 
-[Type]
-typename : Festuca arundinaceae TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:FaTA_2
-resulttype : BLASTN:FaTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# TIGR TAs BLASTN                                           |
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+ 
+# TAs are TIGR transcript assemblies:
+# SOURCE: ftp://ftp.tigr.org/pub/data/plantta/
+
+#-----------------------------------------------------------+
+# TRITICEAE TAs BLASTN                                      |
+#-----------------------------------------------------------+
+[Tier]
+tiername : TRITICEAE TAs BLASTN
+expanded : false
+
+# MAY WANT TO GET AEGILOPS
+# I don't know if I have this one
+#[Type]
+#typename : Aegilops tauschii Tas
+#tiername : TIGR TAs BLASTN
+#resulttype : TBLASTX_AS_tigrta
+#glyph : DrawableResultFeatureSet
+#color : 178,139,57
+#column : SCORE
+#column : expect
+#column : identity
+#column : GENOMIC_RANGE
+#column : GENOMIC_LENGTH
+#column : MATCH_RANGE
+#reversesort : false
+#weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Hordeum vulgare TAs BLASTN
-tiername : TIGR TAs BLASTN
+tiername : TRITICEAE TAs BLASTN
 resulttype : blastn:HvTA_2
 resulttype : BLASTN:HvTA_2
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Oryza sativa TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:OsTA_2
-resulttype : blastn:OsTA2
-resulttype : BLASTN:OsTA_2
-resulttype : BLASTN:OsTA2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Pennistum glaucum TAs BLASTN
-tiername : TIGR TAs BLASTN
-resulttype : blastn:PgTA_2
-resulttype : BLASTN:PgTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Saccharum officinarum TAs BLASTN	
-tiername : TIGR TAs BLASTN
-resulttype : blastn:SoTA_2
-resulttype : BLASTN:SoTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum bicolor TAs BLASTN	
-tiername : TIGR TAs BLASTN
-resulttype : blastn:SbTA_2
-resulttype : BLASTN:SbTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum halepense TAs BLASTN	
-tiername : TIGR TAs BLASTN
-resulttype : blastn:ShTA_2
-resulttype : BLASTN:ShTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum propinquum TAs BLASTN	
-tiername : TIGR TAs BLASTN
-resulttype : blastn:SpTA_2
-resulttype : BLASTN:SpTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2485,11 +2283,11 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum aestivum TAs BLASTN
-tiername : TIGR TAs BLASTN
+tiername : TRITICEAE TAs BLASTN
 resulttype : blastn:TaTA_2
 resulttype : BLASTN:TaTA_2
 glyph : DrawableResultFeatureSet
-color : 212,76,99
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2499,16 +2297,15 @@ column : identity
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 column : MATCH_RANGE
-//weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=TA67744_4530
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum monococcum Tas
-tiername : TIGR TAs BLASTN
+tiername : TRITICEAE TAs BLASTN
 resulttype : blastn:TmTA_2
 resulttype : BLASTN:TmTA_2
 glyph : DrawableResultFeatureSet
-color : 230,180,96
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2523,12 +2320,37 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum turgidum Tas
-tiername : TIGR TAs BLASTN
-//resulttype : TBLASTX_TT_tigrta
+tiername : TRITICEAE TAs BLASTN
 resulttype : blastn:TtTa_1
 resulttype : BLASTN:TtTa_1
 glyph : DrawableResultFeatureSet
-color : 163,100,38
+color : 148,0,211
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+#-----------------------------------------------------------+
+# POACEAE TAs BLASTN                                        |
+#-----------------------------------------------------------+
+[Tier]
+tiername : POACEAE TAs BLASTN
+expanded : false
+
+[Type]
+typename : Agrostis capillaris TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:AcTA_1
+resulttype : BLASTN:AcTA_1
+glyph : DrawableResultFeatureSet
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2542,13 +2364,205 @@ reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
-typename : Zea mays B73 TAs BLASTN	
+typename : Agrostis stolonifera TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:AsTA_1
+resulttype : BLASTN:AsTA_1
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : score
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Avena sativa TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:AvenSatTA_2
+resulttype : BLASTN:AvenSatTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Cynodon dactylon TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:CdTA_2
+resulttype : BLASTN:CdTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Festuca arundinaceae TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:FaTA_2
+resulttype : BLASTN:FaTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Oryza sativa TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:OsTA_2
+resulttype : blastn:OsTA2
+resulttype : BLASTN:OsTA_2
+resulttype : BLASTN:OsTA2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Pennistum glaucum TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:PgTA_2
+resulttype : BLASTN:PgTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Saccharum officinarum TAs BLASTN
+tiername : POACEAE TAs BLASTN
+tiername : TIGR TAs BLASTN
+resulttype : blastn:SoTA_2
+resulttype : BLASTN:SoTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum bicolor TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:SbTA_2
+resulttype : BLASTN:SbTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum halepense TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:ShTA_2
+resulttype : BLASTN:ShTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum propinquum TAs BLASTN
+tiername : POACEAE TAs BLASTN
+resulttype : blastn:SpTA_2
+resulttype : BLASTN:SpTA_2
+glyph : DrawableResultFeatureSet
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+
+[Type]
+typename : Zea mays B73 TAs BLASTN
+tiername : POACEAE TAs BLASTN
 tiername : TIGR TAs BLASTN
 resulttype : blastn:ZmB73TA_1
 resulttype : BLASTN:ZmB73TA_1
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2567,8 +2581,7 @@ tiername : TIGR TAs BLASTN
 resulttype : blastn:ZmTA_3
 resulttype : BLASTN:ZmTA_3
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2581,49 +2594,20 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
-# MAY WANT TO GET AEGILOPS
-# I don't think I have this one
-[Type]
-typename : Aegilops tauschii Tas
-tiername : TIGR TAs BLASTN
-resulttype : TBLASTX_AS_tigrta
-glyph : DrawableResultFeatureSet
-color : 178,139,57
-//commented out score
-//usescore : true
-//minscore : 0.0
-//scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-# DO THE BLASTX HERE FOR TIGR TAs
-
 #-----------------------------------------------------------+
-# TIGR TAs TBLASTX
+# PLANT TAs BLASTn                                          |
 #-----------------------------------------------------------+
-# BLASTX allows for the direction of the sequence when
-# importing into Apollo
-
 [Tier]
-tiername : TIGR TAs TBLASTX
+tiername : PLANT TAs BLASTN
 expanded : false
 
 [Type]
-typename : Agrostis capillaris TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:AcTA_1
-resulttype : tblastx:AcTA_1
-resulttype : BLASTX:AcTA_1
-resulttype : TBLASTX:AcTA_1
+typename : Arabidopsis thaliana TAs BLASTN
+tiername : PLANT TAs BLASTN
+resulttype : blastn:AtTA_2
+resulttype : BLASTN:AtTA_2
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+color : 221,160,221
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2636,258 +2620,30 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
-[Type]
-typename : Agrostis stolonifera TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : BLASTX:AsTA_1
-resulttype : TBLASTX:AsTA_1
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# TIGR TAs TBLASTX
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# TAs are TIGR transcript assemblies:
+# SOURCE: ftp://ftp.tigr.org/pub/data/plantta/
 
-[Type]
-typename : Arabidopsis thaliana TAs TBLASTNX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:AtTA_2
-resulttype : tblastx:AtTA_2
-resulttype : BLASTX:AtTA_2
-resulttype : TBLASTX:AtTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Avena sativa TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : BLASTX:AvenSatTA_2
-resulttype : TBLASTX:AvenSatTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Cynodon dactylon TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:CdTA_2
-resulttype : tblastx:CdTA_2
-resulttype : BLASTX:CdTA_2
-resulttype : TBLASTX:CdTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Festuca arundinaceae TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:FaTA_2
-resulttype : tblastx:FaTA_2
-resulttype : BLASTX:FaTA_2
-resulttype : TBLASTX:FaTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+#-----------------------------------------------------------+
+# TRITICEAE TAs TBLASTX                                     |
+#-----------------------------------------------------------+
+[Tier]
+tiername : TRITICEAE TAs TBLASTX
+expanded : false
 
 [Type]
 typename : Hordeum vulgare TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : TRITICEAE TAs TBLASTX
 resulttype : blastx:HvTA_2
 resulttype : tblastx:HvTA_2
 resulttype : BLASTX:HvTA_2
 resulttype : TBLASTX:HvTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Oryza sativa TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:OsTA_2
-resulttype : blastx:OsTA2
-resulttype : tblastx:OsTA_2
-resulttype : tblastx:OsTA2
-resulttype : BLASTX:OsTA_2
-resulttype : BLASTX:OsTA2
-resulttype : TBLASTX:OsTA_2
-resulttype : TBLASTX:OsTA2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Pennistum glaucum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:PgTA_2
-resulttype : tblastx:PgTA_2
-resulttype : BLASTX:PgTA_2
-resulttype : TBLASTX:PgTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Saccharum officinarum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:SoTA_2
-resulttype : tblastx:SoTA_2
-resulttype : BLASTX:SoTA_2
-resulttype : TBLASTX:SoTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum bicolor TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:SbTA_2
-resulttype : tblastx:SbTA_2
-resulttype : BLASTX:SbTA_2
-resulttype : TBLASTX:SbTA2_
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum halepense TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:ShTA_2
-resulttype : tblastx:ShTA_2
-resulttype : BLASTX:ShTA_2
-resulttype : TBLASTX:ShTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
-[Type]
-typename : Sorghum propinquum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
-resulttype : blastx:SpTA_2
-resulttype : tblastx:SpTA_2
-resulttype : BLASTX:SpTA_2
-resulttype : TBLASTX:SpTA_2
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+glyph : ThinRectangle
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2902,14 +2658,14 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum aestivum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : TRITICEAE TAs TBLASTX
 resulttype : TBLASTX_TA_tigrta
 resulttype : blastx:TaTA_2
 resulttype : tblastx:TaTA_2
 resulttype : BLASTX:TaTA_2
 resulttype : TBLASTX:TaTA_2
-glyph : DrawableResultFeatureSet
-color : 212,76,99
+glyph : ThinRectangle
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2923,14 +2679,14 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum monococcum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : TRITICEAE TAs TBLASTX
 resulttype : TBLASTX_TM_tigrta
 resulttype : blastx:TmTA_2
 resulttype : tblastx:TmTA_2
 resulttype : BLASTX:TmTA_2
 resulttype : TBLASTX:TmTA_2
-glyph : DrawableResultFeatureSet
-color : 230,180,96
+glyph : ThinRectangle
+color : 148,0,211
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2945,14 +2701,252 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Triticum turgidum TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : TRITICEAE TAs TBLASTX
 resulttype : TBLASTX_TT_tigrta
 resulttype : blastx:TtTa_1
 resulttype : tblastx:TtTa_1
 resulttype : BLASTX:TtTa_1
 resulttype : TBLASTX:TtTa_1
-glyph : DrawableResultFeatureSet
-color : 163,100,38
+glyph : ThinRectangle
+color : 148,0,211
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+#-----------------------------------------------------------+
+# POACEAE TAs TBLASTX                                       |
+#-----------------------------------------------------------+
+[Tier]
+tiername : POACEAE TAs TBLASTX
+expanded : false
+
+[Type]
+typename : Agrostis capillaris TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:AcTA_1
+resulttype : tblastx:AcTA_1
+resulttype : BLASTX:AcTA_1
+resulttype : TBLASTX:AcTA_1
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Agrostis stolonifera TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : BLASTX:AsTA_1
+resulttype : TBLASTX:AsTA_1
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Avena sativa TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : BLASTX:AvenSatTA_2
+resulttype : TBLASTX:AvenSatTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Cynodon dactylon TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:CdTA_2
+resulttype : tblastx:CdTA_2
+resulttype : BLASTX:CdTA_2
+resulttype : TBLASTX:CdTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Festuca arundinaceae TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:FaTA_2
+resulttype : tblastx:FaTA_2
+resulttype : BLASTX:FaTA_2
+resulttype : TBLASTX:FaTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Oryza sativa TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:OsTA_2
+resulttype : blastx:OsTA2
+resulttype : tblastx:OsTA_2
+resulttype : tblastx:OsTA2
+resulttype : BLASTX:OsTA_2
+resulttype : BLASTX:OsTA2
+resulttype : TBLASTX:OsTA_2
+resulttype : TBLASTX:OsTA2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Pennistum glaucum TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:PgTA_2
+resulttype : tblastx:PgTA_2
+resulttype : BLASTX:PgTA_2
+resulttype : TBLASTX:PgTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Saccharum officinarum TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:SoTA_2
+resulttype : tblastx:SoTA_2
+resulttype : BLASTX:SoTA_2
+resulttype : TBLASTX:SoTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum bicolor TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:SbTA_2
+resulttype : tblastx:SbTA_2
+resulttype : BLASTX:SbTA_2
+resulttype : TBLASTX:SbTA2_
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum halepense TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:ShTA_2
+resulttype : tblastx:ShTA_2
+resulttype : BLASTX:ShTA_2
+resulttype : TBLASTX:ShTA_2
+glyph : ThinRectangle
+color : 218,12,214
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+[Type]
+typename : Sorghum propinquum TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
+resulttype : blastx:SpTA_2
+resulttype : tblastx:SpTA_2
+resulttype : BLASTX:SpTA_2
+resulttype : TBLASTX:SpTA_2
+glyph : ThinRectangle
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2967,14 +2961,13 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Zea mays B73 TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
 resulttype : blastx:ZmB73TA_1
 resulttype : tblastx:ZmB73TA_1
 resulttype : BLASTX:ZmB73TA_1
 resulttype : TBLASTX:ZmB73TA_1
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+glyph : ThinRectangle
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2989,14 +2982,13 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
 typename : Zea mays TAs TBLASTX
-tiername : TIGR TAs TBLASTX
+tiername : POACEAE TAs TBLASTX
 resulttype : blastx:ZmTA_3
 resulttype : tblastx:ZmTA_3
 resulttype : BLASTX:ZmTA_3
 resulttype : TBLASTX:ZmTA_3
-glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : yellow
+glyph : ThinRectangle
+color : 218,12,214
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -3010,21 +3002,54 @@ reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 #-----------------------------------------------------------+
+# PLANT TAs TBLASTX                                         |
+#-----------------------------------------------------------+
+[Tier]
+tiername : PLANT TAs TBLASTX
+expanded : false
+
+[Type]
+typename : Arabidopsis thaliana TAs TBLASTNX
+tiername : PLANT TAs TBLASTX
+resulttype : blastx:AtTA_2
+resulttype : tblastx:AtTA_2
+resulttype : BLASTX:AtTA_2
+resulttype : TBLASTX:AtTA_2
+glyph : ThinRectangle
+color : 221,160,221
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
+
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
 # Plant GDB PUTs BLASTN
 #-----------------------------------------------------------+
-# Partial list for today 02/20/2007 
-# This needs to be finished for all potential PUTs
+#-----------------------------------------------------------+
+# Full list of PUTs available at:
+# http://www.plantgdb.org/prj/ESTCluster/progress.php
+
+#-----------------------------------------------------------+
+# TRITICEAE PUTs BLASTN                                     |
+#-----------------------------------------------------------+
 [Tier]
-tiername : PlantGDB PUTs BLASTN
+tiername : TRITICEAE PUTs BLASTN
 expanded : false
 
 [Type]
 typename : Hordeum vulgare PUTs BLAST
-tiername : PlantGDB PUTs BLASTN
+tiername : TRITICEAE PUTs BLASTN
 resulttype : blastn:HvPUT_157
 resulttype : BLASTN:HvPUT_157
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
 color : 0,255,0
 usescore : true
 minscore : 0.0
@@ -3044,11 +3069,10 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 
 [Type]
 typename : Triticum aestivum PUTs BLASTN
-tiername : PlantGDB PUTs BLASTN
+tiername : TRITICEAE PUTs BLASTN
 resulttype : blastn:TaPUT_157
 resulttype : BLASTN:TaPUT_157
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
 color : 0,255,0
 usescore : true
 minscore : 0.0
@@ -3062,24 +3086,161 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 
-// May want to split the following into
-// finer groups
 [Type]
-typename : POACEAE PUTs BLASTN
-tiername : PlantGDB PUTs BLASTN
-resulttype : blastn:OsIndPUT_157
-resulttype : blastn:OsJapPUT_157
-resulttype : blastn:OsPUT_157
+typename : Triticum monococcum PUTs BLASTN
+tiername : TRITICEAE PUTs BLASTN
 resulttype : blastn:TmPUT_157
-resulttype : blastn:SbPUT_157
-resulttype : BLASTN:OsIndPUT_157
-resulttype : BLASTN:OsJapPUT_157
-resulttype : BLASTN:OsPUT_157
 resulttype : BLASTN:TmPUT_157
+glyph : DrawableResultFeatureSet
+color : 0,255,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+#-----------------------------------------------------------+
+# POACEAE PUTs BLASTN                                       |
+#-----------------------------------------------------------+
+[Tier]
+tiername : POACEAE PUTs BLASTN
+expanded : false
+
+[Type]
+typename : Avena sativa PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+resulttype : blastn:AsIndPUT_157
+resulttype : BLASTN:AsIndPUT_157
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+[Type]
+typename : O. sativa (Indica) PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+resulttype : blastn:OsIndPUT_157
+resulttype : BLASTN:OsIndPUT_157
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+[Type]
+typename : O. sativa (Japonica) PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+resulttype : blastn:OsJapPUT_157
+resulttype : BLASTN:OsJapPUT_157
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+[Type]
+typename : Oryza sativa PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+typename : Oryza sativa PUTs BLASTN
+resulttype : blastn:OsPUT_157
+resulttype : BLASTN:OsPUT_157
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+[Type]
+typename : Sorghum bicolor PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+resulttype : blastn:SbPUT_157
 resulttype : BLASTN:SbPUT_157
 glyph : DrawableResultFeatureSet
-//color : 212,76,99
-color : 0,255,0
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+[Type]
+typename : Zea mays PUTs BLASTN
+tiername : POACEAE PUTs BLASTN
+resulttype : blastn:ZmPUT_157
+resulttype : BLASTN:ZmPUT_157
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
+
+#-----------------------------------------------------------+
+# PLANT PUTs BLASTn                                         |
+#-----------------------------------------------------------+
+[Tier]
+tiername : PLANT PUTs BLASTN
+expanded : false
+
+[Type]
+typename : Arabidopsis thaliana PUTs BLASTN
+tiername : PLANT PUTs BLASTN
+resulttype : blastn:ZmPUT_157
+resulttype : BLASTN:ZmPUT_157
+glyph : DrawableResultFeatureSet
+color : 100,255,100
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
