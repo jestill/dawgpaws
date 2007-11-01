@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR  : JAMES C. ESTILL                                 |
 # STARTED : 02/08/2007                                      |
-# UPDATED : 10/31/2007                                      |
+# UPDATED : 11/01/2007                                      |
 # VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
@@ -19,15 +19,6 @@
 #  individual annotation methods.                           |
 #                                                           |	
 #-----------------------------------------------------------+
-
-
-#-----------------------------------------------------------+
-# TO DO                                                     |
-#-----------------------------------------------------------+
-# [ ] Edit the default names to work with the format that
-#     we will be using for wheat annotation.
-#     Default names will have the DP prefix (DAWG-PAWS)
-# [ ] Add the rest of the potential PUTs databases
 
 #-----------------------------------------------------------+
 # TIER FIELDS                                               |
@@ -1606,51 +1597,28 @@ reversesort : false
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
 
-
 #-----------------------------------------------------------+
-# NCBI UNIGENES                                             |
+#-----------------------------------------------------------+
+# NCBI UNIGENES BLASTN                                      |
+#-----------------------------------------------------------+
 #-----------------------------------------------------------+
 # BLASTN against NCBI unigene datasets
-# The ones availabe from the TriAnnot pipeline include
-# BLASTN_OS_unigene .......... Oryza sative
-# BLASTN_WHP_gpi_contigs .....
-# I will use the same color scheme by species for the 
-# TIGR GIs and TIGR TAs
 
+#-----------------------------------------------------------+
+# TRITICEAE UNIGENES BLASTN                                 |
+#-----------------------------------------------------------+
 [Tier]
-tiername : UniGenes BLASTN
+tiername : TRITICEAE UNIGENES BLASTN
 expanded : false
 
-# Arabidopsis thaliana Unique UniGenes
-[Type]
-typename : Arabidopsis thaliana UniGene BLASTN
-tiername : UniGenes BLASTN
-resulttype : BLASTN_AT_unigene
-resulttype : blastn:AtUniGene_56
-resulttype : BLASTN:AtUniGene_56
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-
-# Hordeum vulgare Unique UniGenes
 [Type]
 typename : Hordeum vulgare UniGene BLASTN
-tiername : UniGenes BLASTN
+tiername : TRITICEAE UNIGENES BLASTN
 resulttype : BLASTN_HV_unigene
 resulttype : blastn:HvUniGene_47
 resulttype : BLASTN:HvUniGene_47
 glyph : DrawableResultFeatureSet
-color : red
+color : 255,69,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1662,16 +1630,44 @@ column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
+[Type]
+typename : Triticum aestivum UniGene BLASTN
+tiername : TRITICEAE UNIGENES BLASTN
+resulttype : BLASTN_TA_unigene
+resulttype : blastn:TaUniGene_46
+glyph : DrawableResultFeatureSet
+color : 255,69,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?CID=__ID.__
+
+
+#-----------------------------------------------------------+
+# POACEAE UNIGENES BLASTN                                   |
+#-----------------------------------------------------------+
+[Tier]
+tiername : POACEAE UNIGENES BLASTN
+expanded : false
+
 
 # Oryza sativa Unique Unigenes
 [Type]
 typename : Oryza sativa Unigene BLASTN
-tiername : UniGenes BLASTN
+tiername : POACEAE UNIGENES BLASTN
 resulttype : BLASTN_OS_unigene
 resulttype : blastn:OsUniGene_65
 resulttype : BLASTN:OsUniGene_65
 glyph : DrawableResultFeatureSet
-color : red
+color : 255,99,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1684,14 +1680,13 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
-# Sorghum bicolor Unique UniGenes
 [Type]
 typename : Sorghum bicolor UniGene BLASTN
-tiername : UniGenes BLASTN
+tiername : POACEAE UNIGENES BLASTN
 resulttype : blastn:SbUniGene_21
 resulttype : BLASTN:SbUniGene_21
 glyph : DrawableResultFeatureSet
-color : red
+color : 255,99,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1704,13 +1699,12 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
-# Saccharum Unique UniGenes
 [Type]
 typename : Saccharum officinarum UniGene BLASTN
-tiername : UniGenes BLASTN
+tiername : POACEAE UNIGENES BLASTN
 resulttype : BLASTN:SoUniGene_8
 glyph : DrawableResultFeatureSet
-color : red
+color : 255,99,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1723,29 +1717,6 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
-# Triticum aestivum Unique Unigene
-[Type]
-typename : Triticum aestivum UniGene BLASTN
-tiername : UniGenes BLASTN
-resulttype : BLASTN_TA_unigene
-resulttype : blastn:TaUniGene_46
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-#weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-#weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?CID=__ID.__
-
-# Zea mays Unique UniGene
 [Type]
 typename : Zea mays UniGene BLASTN
 tiername : UniGenes BLASTN
@@ -1753,7 +1724,7 @@ resulttype : BLASTN_ZM_unigene
 resulttype : blastn:ZmUniGene_61
 resulttype : BLASTN:ZmUniGene_61
 glyph : DrawableResultFeatureSet
-color : red
+color : 255,99,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1766,48 +1737,55 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
+#-----------------------------------------------------------+
+# PLANT UNIGENES BLASTN                                     |
+#-----------------------------------------------------------+
 
+[Tier]
+tiername : PLANT UNIGENES BLASTN
+expanded : false
 
+[Type]
+typename : Arabidopsis thaliana UniGene BLASTN
+tiername : PLANT UNIGENES BLASTN
+resulttype : BLASTN_AT_unigene
+resulttype : blastn:AtUniGene_56
+resulttype : BLASTN:AtUniGene_56
+glyph : DrawableResultFeatureSet
+color : 255,169,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
+#-----------------------------------------------------------+
 #-----------------------------------------------------------+
 # NCBI UNIGENES TBLASTX                                     |
 #-----------------------------------------------------------+
-# TO DO: ADD ALL UNIGENES HERE
+#-----------------------------------------------------------+
+
+#-----------------------------------------------------------+
+# TRITICEAE UNIGENES TBLASTX                                |
+#-----------------------------------------------------------+
 [Tier]
-tiername : UniGenes TBLASTX
+tiername : TRITICEAE UNIGENES TBLASTX
 expanded : false
 
-# Arabidopsis thaliana Unique UniGenes
-[Type]
-typename : Arabidopsis thaliana UniGene TBLASTX
-tiername : UniGenes TBLASTX
-resulttype : BLASTN_AT_unigene
-resulttype : blastx:AtUniGene_56
-resulttype : tblastx:AtUniGene_56
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-
-# Hordeum vulgare Unique UniGenes
 [Type]
 typename : Hordeum vulgare UniGene_TBLASTX
-tiername : UniGenes TBLASTX
+tiername : TRITICEAE UNIGENES TBLASTX
 resulttype : BLASTN_HV_unigene
 resulttype : blastx:HvUniGene_47
 resulttype : tblastx:HvUniGene_47
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
+glyph : ThinRectangle
+color : 255,69,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1820,80 +1798,14 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
 
-# Oryza sativa Unique Unigenes
-[Type]
-typename : Oryza sativa Unigene TBLASTX
-tiername : UniGenes TBLASTX
-resulttype : BLASTN_OS_unigene
-resulttype : blastx:OsUniGene_65
-resulttype : tblastx:OsUniGene_65
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-
-# Sorghum bicolor Unique UniGenes
-[Type]
-typename : Sorghum bicolor UniGene TBLASTX
-tiername : UniGenes TBLASTX
-resulttype : blastx:SbUniGene_21
-resulttype : tblastx:SbUniGene_21
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-
-# Saccharum Unique UniGenes
-[Type]
-typename : Saccharum officinarum UniGene TBLASTX
-tiername : UniGenes TBLASTX
-resulttype : blastx:SoUniGene_8
-resulttype : tblastx:SoUniGene_8
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
-usescore : true
-minscore : 0.0
-scorethreshold : -1.0
-column : SCORE
-column : expect
-column : identity
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-column : MATCH_RANGE
-reversesort : false
-weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
-
-# Triticum aestivum Unique Unigene
 [Type]
 typename : Triticum aestivum UniGene TBLASTX
-tiername : UniGenes TBLASTX
+tiername : TRITICEAE UNIGENES TBLASTX
 resulttype : BLASTN_TA_unigene
 resulttype : blastx:TaUniGene_46
 resulttype : tblastx:TaUniGene_46
-#glyph : ThinRectangle
-glyph : DrawableResultFeatureSet
-color : red
+glyph : ThinRectangle
+color : 255,69,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -1907,16 +1819,110 @@ column : MATCH_RANGE
 reversesort : false
 weburl : http://www.ncbi.nlm.nih.gov/UniGene/seq.cgi?ORG=__ID#__&SID=__ID__
 
-# Zea mays Unique UniGene
+
+#-----------------------------------------------------------+
+# POACEAE UNIGENES TBLASTX                                  |
+#-----------------------------------------------------------+
+
+[Tier]
+tiername : POACEAE UNIGENES TBLASTX
+expanded : false
+
+[Type]
+typename : Oryza sativa Unigene TBLASTX
+tiername : POACEAE UNIGENES TBLASTX
+resulttype : BLASTN_OS_unigene
+resulttype : blastx:OsUniGene_65
+resulttype : tblastx:OsUniGene_65
+glyph : ThinRectangle
+color : 255,99,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
+[Type]
+typename : Sorghum bicolor UniGene TBLASTX
+tiername : POACEAE UNIGENES TBLASTX
+resulttype : blastx:SbUniGene_21
+resulttype : tblastx:SbUniGene_21
+glyph : ThinRectangle
+color : 255,99,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
+[Type]
+typename : Saccharum officinarum UniGene TBLASTX
+tiername : POACEAE UNIGENES TBLASTX
+resulttype : blastx:SoUniGene_8
+resulttype : tblastx:SoUniGene_8
+glyph : ThinRectangle
+color : 255,99,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
 [Type]
 typename : Zea mays UniGene TBLASTX
-tiername : UniGenes TBLASTX
+tiername : POACEAE UNIGENES TBLASTX
 resulttype : BLASTN_ZM_unigene 
 resulttype : blastx:ZmUniGene_61
 resulttype : tblastx:ZmUniGene_61
 resulttype : TBLAST:ZmUniGene_61
-glyph : DrawableResultFeatureSet
-color : red
+glyph : ThinRectangle
+color : 255,99,0
+usescore : true
+minscore : 0.0
+scorethreshold : -1.0
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+column : MATCH_RANGE
+reversesort : false
+weburl : http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG=__ID.__&CID=__ID__
+
+#-----------------------------------------------------------+
+# PLANT UNIGENES TBLASTX                                    |
+#-----------------------------------------------------------+
+
+[Tier]
+tiername : PLANT UNIGENES TBLASTX
+expanded : false
+
+[Type]
+typename : Arabidopsis thaliana UniGene TBLASTX
+tiername : PLANT UNIGENES TBLASTX
+resulttype : BLASTN_AT_unigene
+resulttype : blastx:AtUniGene_56
+resulttype : tblastx:AtUniGene_56
+glyph : ThinRectangle
+color : 255,169,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -2576,8 +2582,8 @@ reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 
 [Type]
-typename : Zea mays TAs BLASTN	
-tiername : TIGR TAs BLASTN
+typename : Zea mays TAs BLASTN
+tiername : POACEAE TAs BLASTN
 resulttype : blastn:ZmTA_3
 resulttype : BLASTN:ZmTA_3
 glyph : DrawableResultFeatureSet
@@ -3172,7 +3178,6 @@ weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 [Type]
 typename : Oryza sativa PUTs BLASTN
 tiername : POACEAE PUTs BLASTN
-typename : Oryza sativa PUTs BLASTN
 resulttype : blastn:OsPUT_157
 resulttype : BLASTN:OsPUT_157
 glyph : DrawableResultFeatureSet
@@ -3682,6 +3687,8 @@ typename : Arabidopsis CDS TBLASTX (TIGR)
 tiername : CDS Arabidopsis
 resulttype : blastx:ATH1_cds
 resulttype : BLASTX:ATH1_cds
+resulttype : TBLASTX:ATH1_cds
+resulttype : tblastx:ATH1_cds
 glyph : DrawableResultFeatureSet
 color : 255,0,0
 usescore : true
@@ -3781,7 +3788,7 @@ tiername : CDS RICE RAP1
 expanded : false
 
 [Type]
-typename : Rice CDS BLASTX
+typename : Rice RAP1 BLASTX
 tiername : CDS Rice RAP1
 // The _pe is a problem with the database on an early version
 // of the DAWG-PAWS pipeline
