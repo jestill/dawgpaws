@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR  : JAMES C. ESTILL                                 |
 # STARTED : 02/08/2007                                      |
-# UPDATED : 11/01/2007                                      |
+# UPDATED : 11/05/2007                                      |
 # VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
@@ -2045,7 +2045,6 @@ resulttype : TBLASTX:HvGI_9
 resulttype : blastx:HvGI_9
 resulttype : tblastx:HvGI_9
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
 minscore : 0.0
@@ -2067,7 +2066,6 @@ resulttype : BLASTX:TaGI_10
 resulttype : TBLASTX:TaGI_10
 resulttype : TBLASTX_TA_tigrta
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
 minscore : 0.0
@@ -2095,7 +2093,6 @@ resulttype : tblastx:OsGI_17
 resulttype : BLASTX:OsGI_17
 resulttype : TBLASTX:OsGI_17
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 50,50,255
 usescore : true
 minscore : 0.0
@@ -2120,7 +2117,6 @@ resulttype : TBLASTX:SbGI_9
 resulttype : BLASTX:SbGI_8
 resulttype : TBLASTX:SbGI_8
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 50,50,255
 usescore : true
 minscore : 0.0
@@ -2141,7 +2137,6 @@ resulttype : tblastx:ZmGI_17
 resulttype : BLASTX:ZmGI_17
 resulttype : TBLASTX:ZmGI_17
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 50,50,255
 usescore : true
 minscore : 0.0
@@ -2170,7 +2165,6 @@ resulttype : tblastx:AtGI_13
 resulttype : BLASTX:AtGI_13
 resulttype : TBLASTX:AtGI_13
 glyph : ThinRectangle
-#glyph : DrawableResultFeatureSet
 color : 100,100,255
 usescore : true
 minscore : 0.0
@@ -2183,7 +2177,6 @@ column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
 weburl      : http://compbio.dfci.harvard.edu/tgi/cgi-bin/tgi/tc_report.pl?gudb=arab&tc=
-
 
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
@@ -2435,7 +2428,6 @@ weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
 [Type]
 typename : Saccharum officinarum TAs BLASTN
 tiername : POACEAE TAs BLASTN
-tiername : TIGR TAs BLASTN
 resulttype : blastn:SoTA_2
 resulttype : BLASTN:SoTA_2
 glyph : DrawableResultFeatureSet
@@ -2508,7 +2500,6 @@ column : GENOMIC_LENGTH
 column : MATCH_RANGE
 reversesort : false
 weburl : http://plantta.tigr.org/cgi-bin/plantta_report.pl?ta=
-
 
 [Type]
 typename : Zea mays B73 TAs BLASTN
@@ -3222,7 +3213,7 @@ resulttype : tblastx:HvPUT_157
 resulttype : BLASTX:HvPUT_157
 resulttype : TBLASTX:HvPUT_157
 glyph : ThinRectangle
-color : 0,0,255
+color : 0,255,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -3243,7 +3234,7 @@ resulttype : tblastx:TaPUT_157
 resulttype : BLASTX:TaPUT_157
 resulttype : TBLASTX:TaPUT_157
 glyph : ThinRectangle
-color : 0,0,255
+color : 0,255,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -3262,7 +3253,7 @@ tiername : TRITICEAE PUTs TBLASTX
 resulttype : BLASTX:TmPUT_157
 resulttype : TBLASTX:TmPUT_157
 glyph : ThinRectangle
-color : 0,0,255
+color : 0,255,0
 usescore : true
 minscore : 0.0
 scorethreshold : -1.0
@@ -3289,7 +3280,7 @@ resulttype : blastx:AsPUT_157
 resulttype : tblastx:AsPUT_157
 resulttype : BLASTX:AsPUT_157
 resulttype : TBLASTX:AsPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3304,13 +3295,13 @@ reversesort : false
 weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 
 [Type]
-typename : Oryza sativa Inica PUTs TBLASTX
+typename : Oryza sativa Indica PUTs TBLASTX
 tiername : POACEAE PUTs TBLASTX
 resulttype : blastx:OsIndPUT_157
 resulttype : tblastx:OsIndPUT_157
 resulttype : BLASTX:OsIndPUT_157
 resulttype : TBLASTX:OsIndPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3325,13 +3316,13 @@ reversesort : false
 weburl : http://www.plantgdb.org/search/display/data.php?Seq_ID=__ID#__
 
 [Type]
-typename : Oryza sativa Inica PUTs TBLASTX
+typename : Oryza sativa Japonica PUTs TBLASTX
 tiername : POACEAE PUTs TBLASTX
 resulttype : blastx:OsJapPUT_157
 resulttype : tblastx:OsJapPUT_157
 resulttype : BLASTX:OsJapPUT_157
 resulttype : TBLASTX:OsJapPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3352,7 +3343,7 @@ resulttype : blastx:OsPUT_157
 resulttype : tblastx:OsPUT_157
 resulttype : BLASTX:OsPUT_157
 resulttype : TBLASTX:OsPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3373,7 +3364,7 @@ resulttype : blastx:SbPUT_157
 resulttype : tblastx:SbPUT_157
 resulttype : BLASTX:SbPUT_157
 resulttype : TBLASTX:SbPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3394,7 +3385,7 @@ resulttype : blastx:SpPUT_157
 resulttype : tblastx:SpPUT_157
 resulttype : BLASTX:SpPUT_157
 resulttype : TBLASTX:SpPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3415,7 +3406,7 @@ resulttype : blastx:ZmPUT_157
 resulttype : tblastx:ZmPUT_157
 resulttype : BLASTX:ZmPUT_157
 resulttype : TBLASTX:ZmPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 50,255,50
 usescore : true
 minscore : 0.0
@@ -3443,7 +3434,7 @@ resulttype : blastx:AtPUT_157
 resulttype : tblastx:AtPUT_157
 resulttype : BLASTX:AtPUT_157
 resulttype : TBLASTX:AtPUT_157
-glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 100,255,100
 usescore : true
 minscore : 0.0
@@ -3695,7 +3686,7 @@ tiername : BLASTX: CDS Rice TIGR
 resulttype : blastx:Os_5_cds_pep
 resulttype : BLASTX:Os_5_cds_pep
 glyph : DrawableResultFeatureSet
-color : 20,255,20
+color : 255,255,0
 usescore : true
 column : NAME
 column : SCORE
@@ -3714,7 +3705,7 @@ tiername : BLASTX: CDS Rice TIGR
 resulttype : tblastx:Os_5_cds
 resulttype : TBLASTX:Os_5_cds
 glyph : DrawableResultFeatureSet
-color : 20,255,20
+color : 255,255,40
 usescore : true
 column : NAME
 column : SCORE
