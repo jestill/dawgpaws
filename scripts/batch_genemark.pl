@@ -26,6 +26,7 @@
 #-----------------------------+
 use File::Copy;
 use Getopt::Long;
+use Bio::Tools::Genemark; 
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -89,7 +90,7 @@ my $ok = GetOptions(
 my $proc_num = 0;
 
 #//////////////////////
-my $file_num_max = 2;
+my $file_num_max = 4;
 my $file_num = 0;
 #\\\\\\\\\\\\\\\\\\\\\\
 
@@ -155,8 +156,8 @@ my $num_files = @fasta_files;
 # WERE FOUND IN THE INPUT DIR |
 #-----------------------------+
 if ($num_files == 0) {
-    print "\a";
-    print "\nERROR: No fasta files were found in the input directory\n".
+    print STDERR "\a";
+    print STDERR "\nERROR: No fasta files were found in the input directory\n".
 	"$indir\n".
 	"Fasta files must have the fasta or fa extension.\n\n";
     exit;
@@ -167,7 +168,7 @@ if ($num_files == 0) {
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
 unless (-e $outdir) {
-    print "Creating output dir ...\n" unless $quiet;
+    print STDERR "Creating output dir ...\n" unless $quiet;
     mkdir $outdir ||
 	die "Could not create the output directory:\n$outdir";
 }
@@ -222,50 +223,93 @@ for my $ind_file (@fasta_files)
     my $genmark_out_dir = $outdir.$name_root."/genemark/";
     unless (-e $genmark_out_dir) {
 	mkdir $genmark_out_dir ||
-	    die "Could not create genscan out dir:\n$genmark_dir\n";
+	    die "Could not create genemark out dir:\n$genmark_out_dir\n";
     }
+
+    #-----------------------------+
+    # CREATE GFF OUTDIR           |
+    #-----------------------------+
+    # Dir to hold gene prediction output from local software
+    my $gff_out_dir = $outdir.$name_root."/gff/";
+    #print STDERR "$gff_out_dir\n";
+    unless (-e $gff_out_dir) {
+	mkdir $gff_out_dir ||
+	    die "Could not create gff out dir:\n$gff_out_dir\n";
+    }
+
+    print STDERR "\n=======================================\n" if $verbose;
+    print STDERR "Running GeneMark for $name_root\n" if $verbose;
+    print STDERR " File $file_num of $num_files\n" if $verbose;
+    print STDERR "=======================================\n" if $verbose;
+
     
     my $infile_path = $indir.$ind_file;
-    my $out_path = $genmark_out_dir.$name_root.".genmark.out";
+    my $out_dir = $genmark_out_dir.$name_root.".genmark.out";
     my $gff_path = $genmark_out_dir.$name_root.".genmark.gff";
 
     # To be more generalizable the following vars for each matrix
     # should be read in from a config file, but I am cutting 
     # corners here and hard coding this
-    my $gm_os_cmd = $genmark_dir."gmhmme3 -m ".$lib_dir."o_sativa.mod".
-	" -o $out_path $infile_path";
-    my $gm_zm_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."corn.mtx".
-	" -o $out_path $infile_path";
-    my $gm_ta_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."wheat.mtx".
-	" -o $out_path $infile_path";
-    my $gm_hv_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."barley.mtx".
-	" -o $out_path $infile_path";
 
-    print "=======================================\n" if $verbose;
-    print "Running Genmark for $name_root\n" if $verbose;
-    print " File $file_num of $num_files\n" if $verbose;
-    print "=======================================\n" if $verbose;
-
-    print "\n$gm_os_cmd\n" if $verbose;
+    #-----------------------------+
+    # RICE                        |
+    #-----------------------------+ 
+    my $gff_os_out = $gff_out_dir.$name_root."_genemark_os.gff";
+    my $gm_os_out = $genmark_out_dir.$name_root."_genemark_os.out";
+    my $gm_os_cmd = $genmark_dir."gmhmme3 -p -m ".$lib_dir."o_sativa.mod".
+	" -o $gm_os_out".
+	" $infile_path";
+    print STDERR "\n$gm_os_cmd\n" if $verbose;
     system($gm_os_cmd) unless $test;
+    if (-e $gm_os_out) {
+	genemark_to_gff($gm_os_out, $gff_os_out, 
+			$name_root, "GeneMarkHMM_Os" );
+    }
 
-    print "\n$gm_zm_cmd\n" if $verbose;
+    #-----------------------------+
+    # MAIZE                       |
+    #-----------------------------+
+    my $gff_zm_out = $gff_out_dir.$name_root."_genemark_zm.gff";
+    my $gm_zm_out = $genmark_out_dir.$name_root."_genemark_zm.out";
+    my $gm_zm_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."corn.mtx".
+	" -o $gm_zm_out".
+	" $infile_path";
+    print STDERR "\n$gm_zm_cmd\n" if $verbose;
     system($gm_zm_cmd) unless $test;
+    if (-e $gm_zm_out) {
+	genemark_to_gff($gm_zm_out, $gff_zm_out, 
+			$name_root, "GeneMarkHMM_Zm" );
+    }
 
-    print "\n$gm_ta_cmd\n" if $verbose;
+    #-----------------------------+
+    # WHEAT                       |
+    #-----------------------------+
+    my $gff_ta_out = $gff_out_dir.$name_root."_genemark_ta.gff";
+    my $gm_ta_out = $genmark_out_dir.$name_root."_genemark_ta.out";
+    my $gm_ta_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."wheat.mtx".
+	" -o $gm_ta_out".
+	" $infile_path";
+    print STDERR "\n$gm_ta_cmd\n" if $verbose;
     system($gm_ta_cmd) unless $test;
+    if (-e $gm_ta_out) {
+	genemark_to_gff($gm_ta_out, $gff_ta_out, 
+			$name_root, "GeneMarkHMM_Ta" );
+    }
 
-    print "\n$gm_hv_cmd\n" if $verbose;
+    #-----------------------------+
+    # BARLEY                      |
+    #-----------------------------+
+    my $gff_hv_out = $gff_out_dir.$name_root."_genemark_hv.gff";
+    my $gm_hv_out = $genmark_out_dir.$name_root."_genemark_hv.out";
+    my $gm_hv_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."barley.mtx".
+	" -o $gm_hv_out".
+	" $infile_path";
+    print STDERR "\n$gm_hv_cmd\n" if $verbose;
     system($gm_hv_cmd) unless $test;
-
-
-#    print "Converting Genscan output\n";
-#    if (-e $out_path) {
-#	genscan_2_gff($out_path, $gff_path, $name_root) unless $test;
-#    }
-#    else {
-#	print "ERROR: Could not find genscan output at:\n$out_path\n"
-#    }
+    if (-e $gm_hv_out) {
+	genemark_to_gff($gm_hv_out, $gff_hv_out, 
+			$name_root, "GeneMarkHMM_Hv" );
+    }
 
 } # End of for each file in the input folder
 
@@ -274,11 +318,72 @@ exit;
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-sub genmark_2_gff 
-{
 
-} #End of genscan_2_gff subfunction
+sub genemark_to_gff {
+    
+    my ($gm_in_path, $gff_out_path, $gm_src_seq, $gm_src_prog) = @_;
 
+    # OPEN THE GENEMARK INFILE
+    my $gm_obj = Bio::Tools::Genemark->new(-file => $gm_in_path);
+
+    # OPEN THE GFF OUTFILE
+     open (GFFOUT, ">$gff_out_path") ||
+	die "Can not open outfile:\n$gff_out_path\n";
+
+    my $rna_count = 0;
+    while(my $gene = $gm_obj->next_prediction()) {
+       
+	$rna_count++;
+	#$result = sprintf("%08d", $number);
+	my $rna_id = sprintf("%04d", $rna_count);
+
+	my @exon_ary = $gene->exons();
+	my $num_exon = @exon_ary;
+
+	#print "START\tEND\tORIENT";
+	for my $ind_gene (@exon_ary) {
+	    my $start = $ind_gene->start;
+	    my $end = $ind_gene->end;
+	    my $strand = $ind_gene->strand;
+	    if ($strand == 1) {
+		$strand = "+"; 
+	    }
+	    elsif ($strand == -1) {
+		$strand = "-";
+	    }
+	    else {
+		$strand = ".";
+	    }
+	    
+	    # GFFOUTPUT
+#	    print $gm_src_seq."\t".   # seq name
+#		$gm_src_prog."\t".    # source
+#		"exon\t".             # feature
+#		$start."\t".          # start
+#		$end."\t".            # end
+#		".\t".                # score
+#		$strand."\t".         # strand
+#		".\t".                # frame
+#		"RNA$rna_id\n";       # attribute
+
+	    print GFFOUT $gm_src_seq."\t".   # seq name
+		$gm_src_prog."\t".    # source
+		"exon\t".             # feature
+		$start."\t".          # start
+		$end."\t".            # end
+		".\t".                # score
+		$strand."\t".         # strand
+		".\t".                # frame
+		"RNA$rna_id\n";       # attribute
+
+	}
+
+    }
+
+    close GFFOUT;
+    $gm_obj->close();
+
+}
 
 sub print_help {
 
