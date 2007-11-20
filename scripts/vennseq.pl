@@ -756,11 +756,11 @@ print "Running the VennMaster program.\n" if $verbose;
 #-----------------------------+
 my $vm_cmd; # Command to run in vmatch
 if (!$svg_outfile) {
-    $vm_cmd = "java -Xms256m -Xmx256m -jar $vmaster_dir".
+    $vm_cmd = "$java_bin -Xms256m -Xmx256m -jar $vmaster_dir".
 	"venn.jar --list $outfile $@";
 }
 else {
-    $vm_cmd = "java -Xms256m -Xmx256m -jar $vmaster_dir".
+    $vm_cmd = "$java_bin -Xms256m -Xmx256m -jar $vmaster_dir".
 	"venn.jar --list $outfile --svg $svg_outfile";
 }
 

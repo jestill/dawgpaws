@@ -14,7 +14,7 @@
 #  Run hmmer against repeat hmmer models in batch mode,     |
 #  produce results in gff format if requested.              |
 #                                                           | 
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -733,9 +733,9 @@ Any known bugs and limitations will be listed here.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, Version 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html
 
 =head1 AUTHOR
 
