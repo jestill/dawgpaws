@@ -264,7 +264,7 @@ my $num_proc = 1;              # Number of processors to use
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required
-		    "i|indir=s"    => \$indir,
+                    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
 		    "logfile=s"    => \$logfile,
