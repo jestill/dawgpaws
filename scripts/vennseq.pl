@@ -748,6 +748,9 @@ print "Running the VennMaster program.\n" if $verbose;
 #my $vm_cmd = "$java_bin -Xms256m -Xmx256m -jar $vmaster_dir".
 #    "venn.jar --list $outfile --svg $svg_outfile";
 
+# CAN ALSO HAVE
+#java -ea -Xms256m -Xmx256m -cp /Applications/Vennmaster-0.36.0/venn.jar:/Applications/Vennmaster-0.36.0/junit.jar:/Applications/Vennmaster-0.36.0/batik venn.VennMaster
+
 #-----------------------------+
 # RUN VENN MASTER             |
 #-----------------------------+
@@ -760,6 +763,12 @@ else {
     $vm_cmd = "java -Xms256m -Xmx256m -jar $vmaster_dir".
 	"venn.jar --list $outfile --svg $svg_outfile";
 }
+
+$vm_cmd = "java -ea -Xms256m -Xmx256m -cp".
+    " /Applications/Vennmaster-0.36.0/venn.jar:".
+    "/Applications/Vennmaster-0.36.0/junit.jar:".
+    "/Applications/Vennmaster-0.36.0/batik venn.VennMaster".
+    " --list $outfile --svg $svg_outfile";
 
 system ($vm_cmd) ||
     die "Could not run the VennMaster program with cmd:\n$vm_cmd\n";
