@@ -38,7 +38,7 @@ This documentation refers to batch_blast version 1.0
 
 Given a directory of softmasked fasta files, this will
 BLAST the files against a standard set of BLAST
-databases used for wheat genome annotation.
+databases specified in the configuration file.
 
 All of the BLAST output files will be stored in a directory
 name for the intput file in a subdirectory named blast.
@@ -184,7 +184,6 @@ Getopt::Long
 
 =over 2
 
-
 =item *
 
 No current items on the to do list.
@@ -203,9 +202,9 @@ Limited to NCBI BLAST
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html   
 
 =head1 AUTHOR
 
