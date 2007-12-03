@@ -1,0 +1,12 @@
+h1	{ font-size:large; }
+h2	{ font-size:medium; }
+body {
+	font-family:verdana, arial, helvetica, sans-serif;
+	color:#000;
+	font-size:small;
+	font-weight:normal;
+	padding-left:10px;
+	padding-right:10px;
+	padding-top:10px;
+}
+a 	{ color:#666666; text-decoration:none; }
