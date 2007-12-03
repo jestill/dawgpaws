@@ -4,9 +4,9 @@
   <meta http-equiv="Content-Language" content="en-us">
   <meta http-equiv="Content-Type"
  content="text/html; charset=windows-1252">
-  <title>BACMan</title>
+  <title>DAWG-PAWS</title>
   <link rel="stylesheet" type="text/css" href="css/dawgpaws.css">
-  <link rel="SHORTCUT ICON" href="http://bacman.sourceforge.net/DNA.ico">
+  <link rel="SHORTCUT ICON" href="images/dawgpaws.ico">
 </head>
 <body>
 <table style="border-collapse: collapse;" id="AutoNumber1" border="0"
@@ -14,20 +14,22 @@
   <tbody>
     <tr>
       <td width="50%">
-      <p align="center"> <img src="index_files/TitleImageMed.png"
+      <p align="center"> <img src="images/DAWGPAWS_med.png"
  align="left" border="2" height="115" width="326"></p>
       </td>
       <td width="50%">
       <ul>
-        <li><i><a href="#description">Description</a><a
- href="http://bacman.sourceforge.net/program/screenshots.html"></a></i></li>
+        <li><i><a href="#description">Description</a></i></li>
         <li><i><a href="#features">Features</a></i></li>
-        <li><i><a href="#download">Download</a> - <a
- href="http://www.gnu.org/licenses/gpl.html">License</a></i></li>
+        <li><i><a href="#download">Download</a> <br>
+          </i></li>
+        <li><i><a href="http://www.gnu.org/licenses/gpl.html">License :
+General Public License <br>
+          </a></i></li>
         <li><i><a href="#manual">User Manual</a></i></li>
-        <li><i><a href="http://sourceforge.net/projects/bacman/">SourceForge
+        <li><i><a href="http://sourceforge.net/projects/dawgpaws/">SourceForge
 Project Website</a></i></li>
-        <li>Admin: <a href="http://www.arches.uga.edu/%7Ejestill">James
+        <li>Admin: <a href="http://jestill.myweb.uga.edu">James
 C. Estill</a></li>
       </ul>
       </td>
@@ -36,82 +38,282 @@ C. Estill</a></li>
 </table>
 <hr>
 <h2><a name="description"></a>Description</h2>
-<p>DAWG-PAWS is a <br>
+<p>DAWG-PAWS is a suite of scripts written in Perl that are desinged to
+assist a Distributed Annotation Working Group (<span
+ style="font-weight: bold;">DAWG)</span> in the sequence annotation of
+BAC
+sized contigs. Since this suite of software was initially
+written to annotate randomly sampled wheat BACs, it is refered to as a
+Pipeline
+to Annoate Wheat Sequnces (<span style="font-weight: bold;">PAWS</span>).
+Although these program were initially designed for wheat, the scripts
+can be applied to nearly any eukaryotic sequence annoation pipeline.<br>
 </p>
-<h2><a name="features"></a>Features</h2>
-<p><span lang="en-us">The current features of BACMan v2.1 include:</span></p>
+<p>The scripts in this suite are designed to facilitate high throughput
+generation of computational results for both gene annotation and
+transposable element
+annotation using a number of existing sequence
+anotation programs . These results are converted from the native output
+of the individual annotation programs to the standard <a
+ href="http://www.sanger.ac.uk/Software/formats/GFF/">GFF&nbsp; file
+format</a>. Since a GFF file is a simple tab delmited text file,
+multiple computational results for a single sequence can easily be
+concatenated together using standard text maninpulation tools such as <a
+ href="http://linux.die.net/man/1/cat">cat</a>; proof that cats and
+dawgs can play well together. DAWG-PAWS provides
+additional tools to facilitate using the <a
+ href="http://www.fruitfly.org/annot/apollo/">Apollo Genome Annotation
+Curation Tool</a> for visualization and curation of the computational
+results.<br>
+</p>
+<p>Usage of DAWG-PAWS is through a series of command line programs. A
+command line interface was chosen since these programs will usually be
+run on remote high preformance machines running some version of the
+Linux operating system. Since a command line inteface has been written
+into all scripts, no special knowledge of Perl is required to use this
+suite. However,
+since some the Perl scripts rely on external Perl modules, a working
+knowledge of Perl will be helpful when installing the DAWG-PAWS package.<br>
+</p>
+<h2>Features</h2>
+<p><span lang="en-us">The current features of DAWG-PAWS include:</span></p>
 <ul>
-  <li><span lang="en-us">Integrated management of BAC based physical
-mapping hybridization data including:</span>
-    <ul>
-      <li><span lang="en-us">Gridding of library filters</span></li>
-      <li><span lang="en-us">Preparation of probes as genomic clones or
-development as overgos</span></li>
-      <li><span lang="en-us">Probe sequence information</span></li>
-      <li><span lang="en-us">Experimental data for hybridizations</span></li>
-    </ul>
+  <li>Running gene anotation and transposable element annotation
+programs in a high throughput manner</li>
+  <li>Conversion of output from annotation software to the common gff
+file format<br>
   </li>
-  <li><span lang="en-us">Production of 'Code 39' Bar Code labels for
-autoradiographs</span></li>
-  <li>Creation of scoring grids for printing on transparency film </li>
-  <li>An experiment builder for pooled probe multiplex hybridization
-experiments</li>
-  <li><span lang="en-us">Deconvolution of pooled probe multiplex
-designs for up to 576 probes with triple redundancy</span></li>
-  <li>Experiment definition tool which allows user to define additional
-pooled probe multiplex experiment formats </li>
-  <li><span lang="en-us">Overview queries of the database including
-probe hybridization status and film scoring status</span></li>
-  <li><span lang="en-us">Multiple data entry interfaces including</span>
-    <ul>
-      <li><span lang="en-us">Bar code assisted manual data entry using
-a programmable <a href="http://www.zebex.com/prodinfo.asp#CCD">Zebex
-CCD bar code scanner</a></span></li>
-      <li><span lang="en-us"> <a
- href="http://bacman.sourceforge.net/program/BACGrid.html">BACGrid</a>
-data entry</span></li>
-      <li><span lang="en-us">OCR data entry using <a
- href="http://www.abbyy.com/"> ABBYY Fine Reader</a> in conjunction
-with the BACEater data processing application</span></li>
-    </ul>
-  </li>
-  <li>Identification of films that possibly contain scoring errors and
-may need to be error checked</li>
-  <li><span lang="en-us">Printing error checking sheets</span></li>
+  <li><span lang="en-us">Files for viewing the results generated by
+DAWG-PAWS in the Apollo genome annotation curation program<br>
+    </span></li>
+  <ul>
+    <li><span lang="en-us">wheat.tiers</span></li>
+    <li><span lang="en-us">wheat.style<br>
+      </span></li>
+  </ul>
+  <li><span lang="en-us"><a
+ href="http://tldp.org/HOWTO/Emacs-Beginner-HOWTO-3.html">Emacs modes</a>
+for working with the apollo in the <a
+ href="http://www.gnu.org/software/emacs/">Emacs text editing program</a>.<br>
+These files are for use with the emacs text editing program. They will
+add <a href="http://en.wikipedia.org/wiki/Syntax_highlighting">syntax
+highlighing to</a> the tiers and style files and make manually edting
+Apollo files a lot easier.</span></li>
+  <ul>
+    <li><span lang="en-us"><br>
+      </span></li>
+  </ul>
 </ul>
-<h2><a name="download"></a>Download</h2>
-<p>DThe full BACMan suite download includes includes a self installing
-package that includes the full set of programs that are used by PGML
-for physical mapping. The individual packages may also be downloaded
+<h2>Download</h2>
+<p>The full DAWG-PAWS suite will be available in a single download in
+the future. Until then, the individual scripts may be downloaded
 separately. By downloading this software you agree to abide by the
 <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public
 License</a>.</p>
-FULL BACMAN SUITE - This self installing package includes all of the
-following packages as well as the BACMan manual.
+Individual DAWG-PAWS scripts:<span style="text-decoration: underline;"><br>
+</span>
 <ul>
-  <li><a href="http://bacman.sourceforge.net/BACManDownload.htm">BACMan</a>
-- Main BACMan MS Access database. This includes an example dataset and
-requires a local copy of MS Access to run.</li>
-  <li><a href="http://bacman.sourceforge.net/program/BACGrid.html">BACGrid</a>
-- A MS Word macro for entering scored film data from scoring templates.</li>
-  <li><a href="http://bacman.sourceforge.net/program/BACEater.html">BACEater</a>
-- Converts scored template data from <a href="http://www.abbyy.com/">ABBYY
-FineReader</a> into the format used for BACMan.</li>
-  <li><a href="http://bacman.sourceforge.net/program/barcode/code39.zip">Barcode
-Font</a> - The bar-coding capabilities of BACMan rely on a free Code 39
-barcode font. This font must be installed in your windows font
-directory.</li>
-  <li>BACMan Web Package - includes the <a
- href="http://bacman.sourceforge.net/program/web/MyBACMan.pl">
-MyBACMan.pl</a> Perl script that creates the tables needed for web
-publication of BACMan as well as the php pages for presenting data on
-the web</li>
+  <li>this is here<br>
+  </li>
 </ul>
-<p>The use of this full suite of packages is described in the BACMan
-User Manual.</p>
-<h2><a name="manual"></a>User Manual<span style="font-weight: 400;"></span></h2>
-<p>An extensive user manual describing the use of DAWG-PAWS for genome
-annotation is currently under developement.</p>
+<span style="text-decoration: underline;"></span>
+<ul>
+</ul>
+<h2>User Manual<span style="font-weight: 400;"></span></h2>
+<p>A user manual describing the use of DAWG-PAWS for genome
+annotation is currently under developement. This will be available for
+download here when complete, until then you can access the manual that
+is under development from the SVN. The 'man' pages for&nbsp; individual
+programs will be available as well . <br>
+</p>
+<ul>
+  <li><a href="man/venseq.html">venseq.html</a></li>
+</ul>
+<h2>Supported Annotation Programs<br>
+</h2>
+<p>DAWG-PAWS includes scripts to work with computational evidences from
+the following standalone programs and web sites. You can get
+information for the following programs by clicking on the annotation
+program name, and you can get the documentation for the DAWG-PAWS
+script by clicking on the script name.<br>
+</p>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td colspan="2" rowspan="1"
+ style="vertical-align: top; background-color: rgb(192, 192, 192);"><span
+ style="font-weight: bold;">Gene Annotation</span></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Annotation
+Program</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">DAWG-PAWS
+Scripts</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Genemark<br>
+      </td>
+      <td style="vertical-align: top;">batch_genemark.pl<br>
+cnv_genemark2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.ncbi.nlm.nih.gov/blast/Blast.cgi">NCBI-BLAST</a> </td>
+      <td style="vertical-align: top;">batch_blast.pl<br>
+batch_cnv_blast2gff.pl<br>
+cnv_blast2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">TriAnnot Web Service<br>
+      </td>
+      <td style="vertical-align: top;">batch_cnv_ta2ap.pl<br>
+cnv_ta2ap.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Genscan<br>
+      </td>
+      <td style="vertical-align: top;">run_genscan.pl<br>
+batch_genscan.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Fgenesh<br>
+      </td>
+      <td style="vertical-align: top;">run_fgenesh.pl<br>
+cnv_fgenesh2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" rowspan="1"
+ style="vertical-align: top; background-color: rgb(192, 192, 192);"><span
+ style="font-weight: bold;">Transposable Element Annotation</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Annotation
+Program</span><br>
+      </td>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">DAWG-PAWS
+Scripts</span><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.repeatmasker.org/">RepeatMasker</a><br>
+      </td>
+      <td style="vertical-align: top;">batch_mask.pl<br>
+batch_hardmask.pl<br>
+cnv_repmask2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.ncbi.nlm.nih.gov/blast/Blast.cgi">NCBI-BLAST</a><br>
+      </td>
+      <td style="vertical-align: top;">batch_blast.pl<br>
+batch_cnv_blast2gff.pl<br>
+cnv_blast2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">TE
+Nest</a><br>
+      </td>
+      <td style="vertical-align: top;">fetch_tenest.pl<br>
+cnv_tenest2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">FindMite<br>
+      </td>
+      <td style="vertical-align: top;">batch_findmite.pl<br>
+cnv_findmite2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">FindLTR<br>
+      </td>
+      <td style="vertical-align: top;">batch_findltr.pl<br>
+cnv_findltr2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ltr_seq<br>
+      </td>
+      <td style="vertical-align: top;">batch_ltrseq.pl<br>
+cnv_ltrseq2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ltrstruc<br>
+      </td>
+      <td style="vertical-align: top;">ltrstruc_prep.pl<br>
+batch_ltrstruc.vbs<br>
+cnv_ltrstruc2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">HMMER<br>
+      </td>
+      <td style="vertical-align: top;">batch_hmmer.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ltr_finder<br>
+      </td>
+      <td style="vertical-align: top;">cnv_ltrfinder2gff.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"> <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<p></p>
+<p><br>
+<br>
+</p>
 <hr>
 <table style="border-collapse: collapse;" id="AutoNumber2" border="0"
  bordercolor="#111111" cellpadding="0" cellspacing="0" width="100%">
@@ -120,7 +322,7 @@ annotation is currently under developement.</p>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
 Last Updated:
-Wednesday,15 June 2005</i></td>
+Nov 30, 2007</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
