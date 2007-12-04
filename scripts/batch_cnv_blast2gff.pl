@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# cnv_blast2gff.pl Convert BLAST output to gff 
+# cnv_blast2gff.pl - Convert BLAST output to gff            |
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
@@ -26,13 +26,13 @@ use Getopt::Long;              # Get options from the command line
 use Bio::SearchIO;             # Parse BLAST output
 use File::Copy;                # Copy the gff output to the gff dir
 use Pod::Select;               # Print subsections of POD documentation
-#use Pod::Text;                 # Print POD doc as formatted text file
+use Pod::Text;                 # Print POD doc as formatted text file
 use IO::String;
 use IO::Scalar;
 use IO::File;
 use IO::Pipe;
 use Pod::Html qw( &pod2html );
-use Pod::Text qw( &pod2text );
+#use Pod::Text qw( &pod2text );
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -138,7 +138,9 @@ if ($show_usage) {
 	    or die "failed to dup \$fd to STDIN: $!";
 	# BEGIN AT WORK HERE
 	#pod2html();	
-	pod2text();
+	#pod2text();
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
 	# END AT WORK HERE
 	open(STDIN, "<&TMPSTDIN")
 	    or die "failed to restore dup'ed stdin: $!";
@@ -151,6 +153,7 @@ if ($show_usage) {
     }
     
     $pipe->close();
+    close TMPSTDIN;
 
     #-----------------------------+
     # PRINT POD SECTION           |
