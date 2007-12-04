@@ -27,17 +27,22 @@ batch_blast.pl - Run blast on a set of fasta files
 
 =head1 VERSION
 
-This documentation refers to batch_blast version 1.0
+This documentation refers to batch_blast version $Rev$
 
 =head1 SYNOPSIS
 
- Usage:
- batch_blast.pl -i DirToProcess -o OutDir -d DbDir -c ConfigFile
+  Usage:
+    batch_blast.pl -i DirToProcess -o OutDir -d DbDir -c ConfigFile
+
+    -i, --indir    # Directory of fasta files to process
+    -d, --db-dir   # Directory to hold program output
+    -o, --outdir   # Path to the base output directory
+    -c, --config   # Path to the config file
 
 =head1 DESCRIPTION
 
 Given a directory of softmasked fasta files, this will
-BLAST the files against a standard set of BLAST
+BLAST the files against a the set of BLAST formatted
 databases specified in the configuration file.
 
 All of the BLAST output files will be stored in a directory
@@ -63,40 +68,8 @@ Path of the directory containing the blast formatted databases.
 =item -c, --config
 
 Path to the batch_blast config file. This is a tab delimited text file
-indicating required information for each of the databases to blast
-against. Lines beginning with # are ignored, and data are in six 
-columns as shown below:
-
-=over 2
-
-=item Col 1. Blast program to use [ tblastx | blastn | blastx ]
-
-=item Col 2. Extension to use in blast output file. (ie. bln )
-
-=item Col 3. Alignment output options (-m options from blast)
-
-=item Col 4. Evalue threshold
-
-=item Col 5. Database name
-
-=item Col 6. Additional blast command switches
-
-=back
-
-An example config file would be:
-
- #-----------------------------+
- # BLASTN: TIGR GIs            |
- #-----------------------------+
- blastn	bln	8	1e-5	TaGI_10	-a 2 -U
- blastn	bln	8	1e-5	AtGI_13	-a 2 -U
- blastn	bln	8	1e-5	ZmGI_17	-a 2 -U
- #-----------------------------+
- # TBLASTX: TIGR GIs           |
- #-----------------------------+
- tblastx	blx	8	1e-5	TaGI_10	-a 2 -U
- tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
- tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
+indicating the required information for each of the databases to blast
+against. Lines beginning with # are ignored.
 
 =back
 
@@ -131,7 +104,7 @@ Show program version.
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
 
-=item -verbose
+=item --verbose
 
 Run the program with maximum output.
 
@@ -151,9 +124,76 @@ The error messages that can be generated will be listed here.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+=head2 Config File
+
+The location of the config file is indicated by the --config option
+at the command line.
+This is a tab delimited text file
+indicating required information for each of the databases to blast
+against. Lines beginning with # are ignored, and data are in six 
+columns as shown below:
+
+=over 2
+
+=item Col 1. Blast program to use [ tblastx | blastn | blastx ]
+
+The blastall program to use. DAWG-PAWS will support blastn,
+tblastx, and blastx format.
+
+=item Col 2. Extension to add to blast output file. (ie. bln )
+
+This is the suffix which will be added to the end of your blast
+output file. You can use this option to set different extensions
+for different types of blast. For example *.bln for blastn
+output and *.blx for blastx output.
+
+=item Col 3. Alignment output options (-m options from blast)
+
+DAWG-PAWS supports output in the default pairise format (0),
+the tabular format (8), and the tabular format with
+comments (9). See the blastall documentation for a full list
+of all possible alignment output options.
+
+=item Col 4. Evalue threshold
+
+The maximum e-value to include in the blast report
+
+=item Col 5. Database name
+
+The name of the database that is being blasted against.
+
+=item Col 6. Additional blast command line options
+
+This is the place to indicate additional options in your BLAST command such 
+as multiple processors (-a 2) or use lowercase filtering (-U). Options
+should be space separated.
+For a list of all options available in blast, type blastall --help
+at the comand line.
+
+=back
+
+An example config file would be:
+
+ #-----------------------------+
+ # BLASTN: TIGR GIs            |
+ #-----------------------------+
+ blastn	bln	8	1e-5	TaGI_10	-a 2 -U
+ blastn	bln	8	1e-5	AtGI_13	-a 2 -U
+ blastn	bln	8	1e-5	ZmGI_17	-a 2 -U
+ #-----------------------------+
+ # TBLASTX: TIGR GIs           |
+ #-----------------------------+
+ tblastx	blx	8	1e-5	TaGI_10	-a 2 -U
+ tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
+ tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
+
+=head2 Environment
+
+The path to blastall can be set as an environmental option.
+
+An example of this is the bash shell is:
+
+  PATH blah blah
 
 =head1 DEPENDENCIES
 
@@ -161,9 +201,8 @@ or properties that can be set.
 
 =over
 
-=item *
+=item * NCBI blastall
 
-NCBI blastall
 ftp://ftp.ncbi.nih.gov/blast/executables/LATEST
 
 =back
@@ -172,21 +211,26 @@ ftp://ftp.ncbi.nih.gov/blast/executables/LATEST
 
 =over
 
-=item *
+=item * File::Copy
 
-Getopt::Long
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
 
 =back
 
 =head1 BUGS AND LIMITATIONS
 
-=head2 TO DO
+=head2 Bugs
 
 =over 2
 
-=item *
+=item * No bugs currently known 
 
-No current items on the to do list.
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
@@ -194,9 +238,16 @@ No current items on the to do list.
 
 =over
 
-=item *
+=item * Limited to NCBI BLAST
 
-Limited to NCBI BLAST
+The current version is limited to using the NCBI version of BLAST.
+
+=item * Config file must use UNIX format line endings
+
+The config file must have UNIX formatted line endings. Because of
+this any config files that have been edited in programs such as
+MS Word must be converted to a UNIX compatible text format before
+being used with batch_blast.
 
 =back
 
@@ -223,7 +274,7 @@ use Getopt::Long;
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "1.0";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -279,7 +330,7 @@ my $ok = GetOptions(
 		    # Required Arguments
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
-		    "d|db-dir=s" => \$dir_blast_db,
+		    "d|db-dir=s"   => \$dir_blast_db,
 		    "c|config=s"   => \$file_config,
 		    # Optional strings
 		    "blast-path=s" => \$blast_path,
@@ -323,7 +374,7 @@ if ($show_help || (!$ok) ) {
 
 if ($show_version) {
     print "\nbatch_mask.pl:\n".
-	"Version: $ver\n\n";
+	"Version: $VERSION\n\n";
     exit;
 }
 
@@ -686,7 +737,9 @@ sub print_help {
 
 STARTED: 07/23/2007
 
-UPDATED: 07/24/2007
+UPDATED: 12/03/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -705,3 +758,7 @@ UPDATED: 07/24/2007
 # 07/24/2007
 # - Adding test_blast_db to test the existence of blast
 #   databases
+#
+# 12/03/2007
+# - Updating program POD documentation 
+# - Changed version to SVN Revision Number
