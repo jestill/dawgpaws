@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 08/06/2007                                       |
+# UPDATED: 12/04/2007                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 # Convert blast output to a Apollo compatible gff file.     |
@@ -20,11 +20,11 @@
 
 =head1 NAME
 
-batch_cnv_blast2gff.pl - Short program description. 
+batch_cnv_blast2gff.pl - Convert blast output to gff format
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
@@ -121,7 +121,7 @@ use File::Copy;                # Copy the gff output to the gff dir
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = "0.1";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
