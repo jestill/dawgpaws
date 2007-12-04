@@ -27,12 +27,8 @@ use Bio::SearchIO;             # Parse BLAST output
 use File::Copy;                # Copy the gff output to the gff dir
 use Pod::Select;               # Print subsections of POD documentation
 use Pod::Text;                 # Print POD doc as formatted text file
-use IO::String;
 use IO::Scalar;
-use IO::File;
-use IO::Pipe;
-use Pod::Html qw( &pod2html );
-#use Pod::Text qw( &pod2text );
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -87,8 +83,6 @@ my $ok = GetOptions(# REQUIRED
 		    # BOOLEANS
 		    "verbose"     => \$verbose,
 		    "append"      => \$do_append,
-		    #"maxe"        => \$max_e,
-		    #"minlen"      => \$min_len,
 		    "usage"       => \$show_usage,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
@@ -98,14 +92,9 @@ my $ok = GetOptions(# REQUIRED
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-#if ($show_usage) {
-#    print_help("");
-#}
 
+if ( ($show_usage) || ($show_help) || (!$ok) ) {
 
-# Printing Help with POD::Select
-if ($show_usage) {
-    
     print "\n";
     
     #-----------------------------+
@@ -119,7 +108,14 @@ if ($show_usage) {
     my $podfile = $0;
     my $scalar = '';
     tie *STDOUT, 'IO::Scalar', \$scalar;
-    podselect({-sections => ["NAME|SYNOPSIS|MORE"]}, $0);
+
+    if ($show_usage) {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    elsif ( ($show_help) || (!$ok) ) {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
     untie *STDOUT;
     # now $scalar contains the pod from $podfile you can see this below
     #print $scalar;
@@ -136,9 +132,6 @@ if ($show_usage) {
 	$fd = $pipe->fileno;
 	open(STDIN, "<&=$fd")
 	    or die "failed to dup \$fd to STDIN: $!";
-	# BEGIN AT WORK HERE
-	#pod2html();	
-	#pod2text();
 	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
 	$pod_txt->parse_from_filehandle;
 	# END AT WORK HERE
@@ -155,40 +148,10 @@ if ($show_usage) {
     $pipe->close();
     close TMPSTDIN;
 
-    #-----------------------------+
-    # PRINT POD SECTION           |
-    #-----------------------------+
-    # The following prints NAME and SYNOPSIS
-    #podselect({-sections => ["NAME|SYNOPSIS|MORE"]}, $0);
-
-    #-----------------------------+
-    # PRINT ENTIRE POD
-    #-----------------------------+
-    #podselect ($0);
-
-    #-----------------------------+
-    # PRINT RAW POD               |
-    # OBJ ORIENTED                |
-    #-----------------------------+
-    #my $parser = new Pod::Select(-output => ">&STDERR");
-    #my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
-    #$parser->select("NAME|SYNOPSIS|BLANK");
-    #$parser->parse_from_file($0);
-
-    #-----------------------------+
-    # USE SYSTEM COMMANDS         |
-    #-----------------------------+
-    #my $usage_cmd = "podselect -section 'SYNOPSIS|MORE' $0 | pod2text";
-    #system ($usage_cmd);
-
     print "\n";
 
     exit 0;
 
-}
-
-if ($show_help || (!$ok) ) {
-    print_help("full");
 }
 
 if ($show_version) {
