@@ -359,8 +359,6 @@ close LOG if $logfile;
 
 exit;
 
-
-
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
@@ -462,38 +460,6 @@ sub blast2gff {
     
 }
 
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"cnv_blast2gff.pl -i InFile -o OutFile\n";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir       # Path to the input directory\n".
-	"  --outdir      # Path to the output direcotry\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --append       # Append results to an existing file\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
-1;
 __END__
 
 =head1 NAME
