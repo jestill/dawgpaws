@@ -25,10 +25,12 @@ use strict;                    # Follow the rules
 use Getopt::Long;              # Get options from the command line
 use Bio::SearchIO;             # Parse BLAST output
 use File::Copy;                # Copy the gff output to the gff dir
+# The following needed for printing help
 use Pod::Select;               # Print subsections of POD documentation
 use Pod::Text;                 # Print POD doc as formatted text file
-use IO::Scalar;
+use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # To convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -92,66 +94,14 @@ my $ok = GetOptions(# REQUIRED
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
+}
 
-if ( ($show_usage) || ($show_help) || (!$ok) ) {
-
-    print "\n";
-    
-    #-----------------------------+
-    # PIPE WITHIN PERL            |
-    #-----------------------------+
-    # This code made possible by:
-    # http://www.perlmonks.org/index.pl?node_id=76409
-    # Tie info developed on:
-    # http://www.perlmonks.org/index.pl?node=perltie 
-    #
-    my $podfile = $0;
-    my $scalar = '';
-    tie *STDOUT, 'IO::Scalar', \$scalar;
-
-    if ($show_usage) {
-	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
-    }
-    elsif ( ($show_help) || (!$ok) ) {
-	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
-    }
-
-    untie *STDOUT;
-    # now $scalar contains the pod from $podfile you can see this below
-    #print $scalar;
-
-    my $pipe = IO::Pipe->new()
-	or die "failed to create pipe: $!";
-    
-    my ($pid,$fd);
-
-    if ( $pid = fork() ) { #parent
-	open(TMPSTDIN, "<&STDIN")
-	    or die "failed to dup stdin to tmp: $!";
-	$pipe->reader();
-	$fd = $pipe->fileno;
-	open(STDIN, "<&=$fd")
-	    or die "failed to dup \$fd to STDIN: $!";
-	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
-	$pod_txt->parse_from_filehandle;
-	# END AT WORK HERE
-	open(STDIN, "<&TMPSTDIN")
-	    or die "failed to restore dup'ed stdin: $!";
-    }
-    else { #child
-	$pipe->writer();
-	$pipe->print($scalar);
-	$pipe->close();	
-	exit 0;
-    }
-    
-    $pipe->close();
-    close TMPSTDIN;
-
-    print "\n";
-
-    exit 0;
-
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -166,10 +116,16 @@ if ($show_man) {
 }
 
 #-----------------------------+
-# CHECK REQUIRED OPTIONS      |
+# CHECK REQUIRED ARGS         |
 #-----------------------------+
 if ( (!$indir) || (!$outdir) ) {
-    print_help("full");
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the command line\n" 
+	if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the command line\n"
+	if (!$outdir);
+    print_help("usage", $0);
 }
 
 #-----------------------------+
@@ -363,6 +319,70 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+
 sub blast2gff {
 # CONVERT BLAST TO GFF 
     
@@ -460,6 +480,7 @@ sub blast2gff {
     
 }
 
+1;
 __END__
 
 =head1 NAME
@@ -661,10 +682,14 @@ VERSION: $Rev$
 # 12/04/2007
 # - POD Documentation updated
 # - Version number changed to SVN Revision Number
-#
-# 12/04/2007
 # - Changed terminal output to STDERR
 # - Moved POD documentation to end of the code
 # - Trying to add POD select to print help and usage
 #   message from the POD documentation
 # - Addd an end statement
+#
+# 12/05/2007
+# - Created the print_help as a subfunction that
+#   takes type of help to print and POD source as 
+#   variables.
+# - Added 
