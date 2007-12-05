@@ -538,8 +538,11 @@ This documentation refers to batch_blast version $Rev$
 
 =head1 SYNOPSIS
 
-  Usage:
+=head2 Usage
+
     batch_blast.pl -i DirToProcess -o OutDir -d DbDir -c ConfigFile
+
+=head2 Required Arguments
 
     -i, --indir    # Directory of fasta files to process
     -d, --db-dir   # Directory to hold program output

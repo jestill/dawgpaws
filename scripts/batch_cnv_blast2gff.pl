@@ -485,7 +485,7 @@ __END__
 
 =head1 NAME
 
-batch_cnv_blast2gff.pl - Convert blast output to gff format
+Batch_cnv_blast2gff.pl - Convert blast output to GFF format
 
 =head1 VERSION
 
