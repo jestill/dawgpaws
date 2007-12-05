@@ -26,7 +26,8 @@
         <li><i><a href="http://www.gnu.org/licenses/gpl.html">License :
 General Public License <br>
           </a></i></li>
-        <li><i><a href="#manual">User Manual</a></i></li>
+        <li><i><a href="man.html">Manual Pages<br>
+          </a></i></li>
         <li><i><a href="http://sourceforge.net/projects/dawgpaws/">SourceForge
 Project Website</a></i></li>
         <li>Author: <a href="http://jestill.myweb.uga.edu">James
@@ -69,7 +70,8 @@ results.<br>
 <p>Usage of DAWG-PAWS is through a series of command line programs. A
 command line interface was chosen since these programs will usually be
 run on remote high preformance machines running some version of the
-Linux operating system. Since a command line inteface has been written
+Unix/Linux operating system. Since a command line inteface has been
+written
 into all scripts, no special knowledge of Perl is required to use this
 suite. However,
 since some the Perl scripts rely on external Perl modules, a working
@@ -117,22 +119,27 @@ for working with the apollo in the <a
     <li><span lang="en-us"><a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/emacs_modes/apollo-tiers-mode.el?view=log">apollo-tiers-mode.el</a></span></li>
   </ul>
-  <li><span lang="en-us">Help incorporated in all command line programs
-using command line flags. Help info and man files are still under
-development for some programs. Where progname is the name of the
+  <li><span lang="en-us">Help is available in all command line programs
+using command line flags. Help info and full manual files are still
+under
+development for some programs. To access help where </span><big><code>progname</code></big><span
+ lang="en-us"> is the name of the
 individual program:<br>
     </span></li>
   <ul>
     <li><big><code>progname --usage </code></big><br>
-generate a basic usage message<br>
+generate a basic usage message with info on the required arguments<br>
     </li>
     <li><span lang="en-us"><big><code>progname --help</code></big><br>
-generate a more extensive help state</span></li>
+generate a more extensive help message that includes required arguments
+and all options<br>
+      </span></li>
     <li><span lang="en-us"><big><code>progname --man</code></big><br>
 view the full manual for the program</span></li>
   </ul>
-  <li><span lang="en-us">Manual pages for the individual programs are
-being made available on DAWG-PAWS web site<br>
+  <li><span lang="en-us"><a href="man.html">Manual pages</a> for the
+individual programs are
+being made available on DAWG-PAWS web site as they are processed<br>
     </span></li>
 </ul>
 <h2><a name="download"></a>Download</h2>
@@ -149,12 +156,14 @@ License</a>.</p>
 <span style="text-decoration: underline;"></span>
 <ul>
 </ul>
-<h2><a name="manual"></a>User Manual<span style="font-weight: 400;"></span></h2>
+<h2><a name="manual"></a>User Manual and Software Documentation<span
+ style="font-weight: 400;"></span></h2>
 <p>A user manual describing the use of DAWG-PAWS for genome
 annotation is currently under developement. This will be available for
 download here when complete, until then you can access the manual that
-is under development from the SVN. The 'man' pages for&nbsp; individual
-programs will be available as well . <br>
+is under development from the SVN. The manual pages for&nbsp;
+individual
+programs will be available as well. <br>
 </p>
 <h2>Supported Annotation Programs<br>
 </h2>
@@ -183,8 +192,8 @@ Scripts</span><br>
     <tr>
       <td style="vertical-align: top;"><a
  href="http://www.ncbi.nlm.nih.gov/blast/Blast.cgi">NCBI-BLAST</a> </td>
-      <td style="vertical-align: top;">batch_blast.pl<br>
-batch_cnv_blast2gff.pl<br>
+      <td style="vertical-align: top;"><a href="man/batch_blast.html">batch_blast.pl</a><br>
+      <a href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a><br>
 cnv_blast2gff.pl<br>
       </td>
     </tr>
@@ -309,8 +318,6 @@ cnv_ltrstruc2gff.pl<br>
     </tr>
   </tbody>
 </table>
-<p></p>
-<p></p>
 <hr>
 <table style="border-collapse: collapse;" id="AutoNumber2" border="0"
  bordercolor="#111111" cellpadding="0" cellspacing="0" width="100%">
@@ -318,7 +325,7 @@ cnv_ltrstruc2gff.pl<br>
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Dec 2, 2007</i></td>
+Last Updated: Dec 5, 2007</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
@@ -339,5 +346,12 @@ Last Updated: Dec 2, 2007</i></td>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+<script src="http://www.google-analytics.com/urchin.js"
+ type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-2207628-5";
+urchinTracker();
+</script>
 </body>
 </html>
