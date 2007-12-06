@@ -9,4 +9,26 @@ body {
 	padding-right:10px;
 	padding-top:10px;
 }
-a 	{ color:#666666; text-decoration:none; }
+a:link{ 
+	color:navy; text-decoration:none; 
+}
+a:visited{ 
+	color:navy; text-decoration:none; 
+}
+a:hovor{ 
+	color:navy; text-decoration:underline; 
+}
+a:active{ 
+	color:navy; text-decoration:underline; 
+}
+pre {	
+	font-weight:bold;
+	color:black;
+	font-family:courier;
+	border-style: dashed;
+	border-width:1px;
+	border-color:gray;
+	padding: 1em 0;
+	white-space: pre;
+	background: rgb(240,240,240);
+}
