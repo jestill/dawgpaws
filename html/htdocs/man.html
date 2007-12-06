@@ -4,7 +4,7 @@
   <meta http-equiv="Content-Language" content="en-us">
   <meta http-equiv="Content-Type"
  content="text/html; charset=windows-1252">
-  <title>DAWG-PAWS: Man Pages</title>
+  <title>DAWG-PAWS: Manual</title>
   <link rel="stylesheet" type="text/css" href="css/dawgpaws.css">
   <link rel="SHORTCUT ICON" href="images/dawgpaws.ico">
 </head>
@@ -21,7 +21,7 @@
       <ul>
       </ul>
       <h1>DAWG-PAWS<br>
-Manual and<br>
+User Manual and<br>
 Documentation<span style="text-decoration: underline;"><span
  style="font-style: italic;"><span style="font-style: italic;"><span
  style="text-decoration: underline;"><br>
@@ -35,25 +35,625 @@ Documentation<span style="text-decoration: underline;"><span
   </tbody>
 </table>
 <hr>
+<h1>Table of Contents</h1>
+<a href="#getting_started">Getting Started</a><br>
+<a href="#structural_features">Structural Feature Annotation</a><br>
+<a href="#gene_annotation">Gene Annotation Computational Results</a><br>
+<a href="#te_annotation">Transpoasable Element Computational Results</a><br>
+<a href="#apollo_data_tiers">Apollo Data Tiers</a><br>
+<a href="#directory_structure">Directory Structure</a><br>
+<a href="#manfiles">Manual Files for Individual Programs</a><br>
+<br>
+<hr style="width: 100%; height: 2px;">
 <h1><a name="getting_started"></a>Getting Started</h1>
 Getting started using DAWG-PAWS may require that you install some the
-required software or define some variables in your user environment.<br>
-<h1><a name="gene_annotation"></a>Gene Annotation Process</h1>
-Process for Gene Annotation will go here.<br>
+required software or define some variables in your user environment.
+These will be described here in greater detail<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="structural_features"></a>Structural Feature Annotation<br>
+</h1>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="gene_annotation"></a>Generating Gene Annotation
+Computational Results<br>
+</h1>
+The following is
+an overview of the process used to annotate sequences with the
+DAWG-PAWS set of programs. This assumes that you are running the
+analysis on a linux machine, and that you are storing your annotation
+computational results in the directory
+<pre class="prettyprint"><span class="str">/home/</span><span
+ class="typ">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+ class="pun">/</span><span class="pln">wheat_annotation</span><span
+ class="pun">/</span><span class="pln">wheat_analysis</span><span
+ class="pun">/</span></pre>
+<p>This
+directory will have a subdirectory named for every annotated sequence.
+The subdirectories for the annotated sequence will follow the directory
+structure indicated in the <a href="#directory_structure">DAWG-PAWS
+Directory Structure</a> below. </p>
+<p>In all of the following command examples, the &gt; character
+represents the command line prompt. </p>
+<h3>1. Rename FASTA files to a short unique name</h3>
+<p>Because
+many of the programs that are used in the DAWG-PAWS process have limits
+on the size of FASTA headers, it may be necessary to first shorten the
+name of the FASTA files. </p>
+<p>Starting with a directory in which you have a single fasta file for
+every BAC to process at the following directory path </p>
+<pre class="prettyprint"><span class="str">/home/</span><span
+ class="typ">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+ class="pun">/</span><span class="pln">wheat_annotation</span><span
+ class="pun">/</span><span class="pln">wheat_analysis</span><span
+ class="pun">/</span><span class="pln">fasta_orig</span></pre>
+<p>Navigate to the wheat_analysis directory using the cd command to
+change directories: </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis</span></pre>
+<p>Issue the following command from the wheat_analysis directory: </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">fasta_shorten</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i fasta_orig</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o fasta_short</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">l </span><span class="lit">10</span><span class="pln"> </span><span
+ class="pun">--</span><span class="pln">uppercase</span></pre>
+<p>This
+will rename all of the fasta files in the fasta_orig directory and will
+place the results in the fasta_short directory. The -l option of 10
+will shorten the names to 10 characters, and the --uppercase flag will
+convert all lowercase base calls to uppercase. </p>
+<h3>2. Soft mask the renamed files using RepeatMasker and the TREP
+database</h3>
+<p>For the wheat BACs, the <a
+ href="http://wheat.pw.usda.gov/ITMI/Repeats/flatfile.nr" rel="nofollow">nonredundant
+TREP database</a> is used. </p>
+<p>Navigate to the wheat_annotation directory </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span></pre>
+<p>Issue the following command from the wheat_annotation directory </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">batch_mask</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">fasta_short</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o wheat_analysis</span><span
+ class="pun">/</span><span class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span
+ class="pun">-</span><span class="pln">c wheat_analysis</span><span
+ class="pun">/</span><span class="pln">batch_mask</span><span
+ class="pun">.</span><span class="pln">jcfg <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span
+ class="pun">--</span><span class="pln">engine wublast</span></pre>
+<p>This will softmask all fasta files in the fasta_short directory and
+will place the results in the wheat_analysis directory. </p>
+<p>The
+-c option should point to the location of the batch_mask configuration
+file. The --engine wublast option will use the wublast engine for
+masking the sequences. The default behavior is to mask with crossmatch.
+</p>
+<h3>3. Hard mask the softmasked files generated above</h3>
+<p>Many
+of the gene prediction programs are not soft-masked "aware" so it is
+necessary to also make a hard masked copy of the fasta file. </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">batch_hardmask</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i soft_masked</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o hard_masked</span><span
+ class="pun">/</span></pre>
+<h3>4. Run the <a
+ href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php"
+ rel="nofollow">TriAnnot</a> gene annotation processes.</h3>
+<p>This step. makes use of the <a
+ href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php"
+ rel="nofollow">TriAnnot</a>
+webserver. This will use the hard masked file generated above. These
+will need to be processed one at a time using the TriAnnot web
+interface. The files will use the <a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/step.xml"
+ rel="nofollow">step.xml</a> file </p>
+<ol>
+  <li>Submit jobs to the TriAnnot website. You will receive an email
+when the process is completed. </li>
+  <li>Download
+the zip file from the TriAnnot server and place in a subdirectory named
+ta. The file will have a name like JamesEstill19052247.zip. For
+example, the results for the BAC named HEX0014K09 would be placed in </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="str">/home/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis</span><span class="pun">/</span><span
+ class="pln">HEX0014K09</span><span class="pun">/</span><span
+ class="pln">ta</span></pre>
+  <li>unzip the zip file with the -j flag to place the results in the
+ta directory </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis</span><span class="pun">/</span><span
+ class="pln">HEX0014K09</span><span class="pun">/</span><span
+ class="pln">ta<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">unzip </span><span class="pun">-</span><span class="pln">j JamesEstill19052247</span><span
+ class="pun">.</span><span class="pln">zip</span></pre>
+  <li>Convert the TriAnnot output
+to a manageable Apollo output </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis</span><span class="pun">/</span><span
+ class="pln">HEX0014K09<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">cnv_ta2ap</span><span class="pun">.</span><span class="pln">pl </span><span
+ class="pun">-</span><span class="pln">i rm</span><span class="pun">/</span><span
+ class="pln">HEX0014K09_TREP9</span><span class="pun">.</span><span
+ class="pln">masked</span><span class="pun">.</span><span class="pln">fasta </span><span
+ class="pun">-</span><span class="pln">g ta</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o ta</span><span
+ class="pun">/</span></pre>
+</ol>
+<h3>5. Run GENSCAN gene prediction program</h3>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">batch_genscan</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">hard_masked</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o wheat_analysis</span><span
+ class="pun">/</span></pre>
+<h3>6. Run the BLAST processes</h3>
+<p>This will use the soft masked files generated above. </p>
+<p>For a small number of blast jobs, you can run the BLAST jobs on your
+machine using the batch_blast.pl program with the <a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_blast_full.jcfg"
+ rel="nofollow">batch_blast_full.jcfg</a> configuration file. The -d
+argument is used to indicate the location of the BLAST databses. </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">batch_blast</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i wheat_annotation</span><span class="pun">/</span><span
+ class="pln">soft_masked </span><span class="pun">-</span><span
+ class="pln">o wheat_annotation</span><span class="pun">/</span><span
+ class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span
+ class="pun">-</span><span class="pln">c batch_blast_full</span><span
+ class="pun">.</span><span class="pln">jcfg </span><span class="pun">-</span><span
+ class="pln">d </span><span class="pun">/</span><span class="pln">db</span><span
+ class="pun">/</span><span class="pln">paws</span><span class="pun">/</span><span
+ class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span
+ class="pun">--</span><span class="pln">logfile wheat_annotation</span><span
+ class="pun">/</span><span class="pln">blast_job</span><span class="pun">.</span><span
+ class="pln">log</span></pre>
+<p>For
+larger number of BLAST jobs, the BLAST program will generally be run in
+a parallel cluster computing framework. This will require the
+following: </p>
+<ol>
+  <li>Split the fasta directory into subdirectories. Each subdirectory
+will be analyzed on a separate node on the cluster machine. </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">fasta_dirsplit </span><span
+ class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">soft_masked </span><span
+ class="pun">-</span><span class="pln">o wheat_analysis</span><span
+ class="pun">/</span><span class="pln">blast_dirs</span><span
+ class="pun">/</span><span class="pln"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span
+ class="pun">-</span><span class="pln">n </span><span class="lit">16</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">b geterdone</span></pre>
+  <li>Copy the new dirs to the cluster machine </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">scp </span><span class="pun">-</span><span
+ class="pln">p </span><span class="pun">-</span><span class="pln">r geterdone</span><span
+ class="pun">*</span><span class="str">/ YourName@yourclustermachine:/</span><span
+ class="pln">scratch</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">wheat_in</span><span class="pun">/</span></pre>
+  <li>Run
+blast processes on the cluster machine. The specifics of running the
+blast processes on your cluster will depend on the schedulding software
+used by your cluster. The easiest way to deal with this is to write a
+shell script which submits the jobs to your queue. The you will just
+need to run the
+shell script to execute this blast on the cluster. </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;.</span><span class="str">/subjob.sh</span></pre>
+  <li>Download BLAST results to your local machine </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">scp </span><span class="pun">-</span><span
+ class="pln">p </span><span class="pun">-</span><span class="pln">r YourName@yourclustermachine</span><span
+ class="pun">:</span><span class="str">/scratch/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">wheat_out</span><span class="pun">/</span><span
+ class="pln"> <br>&nbsp; &nbsp; &nbsp; &nbsp;</span><span class="str">/home/</span><span
+ class="pln">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+ class="pun">/</span><span class="pln">wheat_annotation</span><span
+ class="pun">/</span><span class="pln">blast_results</span></pre>
+  <li>Merge the BLAST results into the wheat_analysis directory </li>
+  <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">dir_merge</span><span class="pun">.</span><span class="pln">pl </span><span
+ class="pun">-</span><span class="pln">i blast_results</span><span
+ class="pun">/</span><span class="pln">wheat_out </span><span
+ class="pun">-</span><span class="pln">o wheat_analysis</span></pre>
+</ol>
+<h3>7. Convert BLAST output to gff format</h3>
+<p>All
+of the BLAST results for the query sequence will be added to a single
+gff output file named root_name_all_blast.gff. Where root_name is the
+name of the sequence file being processed. </p>
+<p>For example, the
+file HEX0014K09.fasta will have the BLAST results named
+HEX0014K09_all_blast.gff. The gff file will be placed in the directory <tt>wheat_analysis/HEX0014K09/gff</tt>.
+The gff directory will be created if it does not already exist. </p>
+<p>Currently, all blast files must end in a <strong>.blo, </strong>.bln,
+or <strong>.blx file extension to be recognized as a BLAST output
+file. </strong></p>
+<p>The program batch_cnv_blast2gff.pl provides the ability to convert
+the blast output from </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_cnv_blast2gff</span><span class="pun">.</span><span
+ class="pln">pl &nbsp;i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">soft_masked </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/</span><span
+ class="pln"> </span></pre>
+<h3>8. Annotate the gaps in the original assembly</h3>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_findgaps</span><span class="pun">.</span><span
+ class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">masked_soft</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/</span></pre>
+<p>The
+batch_findgaps.pl program is slow and uses and ugly algorithm but it
+does work. Results will be placed in gff format in the gff directory as
+well as in game.xml format in the game directory. </p>
+<h3>9. Annotate the gaps in the original assembly</h3>
+<p>The audit program will move gff files to the gff dir and will alert
+you to any expected files that could not be found. </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_audit</span><span class="pun">.</span><span
+ class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">masked_soft</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">--</span><span class="pln">full </span><span
+ class="pun">--</span><span class="pln">color</span></pre>
+<p>The <tt>--full</tt> option will run a complete audit. This
+currently includes the TriAnnotation output, </p>
+<p>The <tt>--color</tt> option will print error messages about missing
+files in red font. </p>
+<h2>10. Concatenate the gff files</h2>
+<p>This is currently a manual step that needs to be automated. </p>
+<p>For each query sequence, navigate to the directory containing the
+gff output files. For example, for the file HEX0014K09 </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis</span><span class="pun">/</span><span
+ class="pln">HEX0014K09</span><span class="pun">/</span><span
+ class="pln">gff</span><span class="pun">/</span></pre>
+<p>Concatenated all of the gff files in this directory into a single
+gff output file. </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cat </span><span class="pun">*.</span><span
+ class="pln">gff </span><span class="pun">&gt;</span><span class="pln"> HEX0014K09</span><span
+ class="pun">.</span><span class="pln">gff</span></pre>
+<h2>11. Convert concatenated gff file to game.xml format</h2>
+<p>This
+uses the batch_convert.pl program. This is currently a somewhat sloppy
+program that requires you to modify the source code for each file you
+wish to convert...this can be changed to use an external config file.
+However, currently you must first add the root name of the sequences
+you want to convert in the @root_names array. </p>
+<p>Once this has been done simply run batch_convert.pl </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation</span><span class="pun">/</span><span
+ class="pln">wheat_analysis<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_convert</span><span class="pun">.</span><span
+ class="pln">pl</span></pre>
+<hr>
 <h1><a name="te_annotation"></a>Transposable Element Annotation Process<br>
 </h1>
 Process for TE Annotation will go here.<br>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="apollo_data_tiers"></a>Apollo Data Tiers</h1>
+The GFF files produced by the computational results above are intended
+to be visualized using the Apollo Genome Annotation Curation Tool. The
+list below was copied from the old wiki page. This should be updated to
+HTML tables. A pdf file of <br>
+<br>
+<h2>General Structural Features</h2>
+<ul>
+  <li><strong>Gaps</strong> - <i>These are gaps in the assembled
+sequence</i> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findgaps.pl"
+ rel="nofollow">batch_findgaps.pl</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findgaps.pl"
+ rel="nofollow">batch_findgaps.pl</a> </li>
+    </ul>
+    <li>Tiers </li>
+    <ul>
+      <li>Comp Gap </li>
+    </ul>
+  </ul>
+</ul>
+<h2>Gene Annotation Results</h2>
+<p>The following Gene Annotation tiers are available. </p>
+<h3>De Novo Gene Annotation</h3>
+<p>The following de Novo gene annotation tiers are used: </p>
+<ul>
+  <li><strong>EuGene</strong> - <i>an
+open gene finder for eukaryotic organisms. Compared to most existing
+gene finders, EuGène is characterized by its ability to simply
+integrate arbitrary sources of information in its prediction process.</i>
+  </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a
+ href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"
+ rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a>
+      </li>
+    </ul>
+  </ul>
+  <li><strong>GeneMark.HMM</strong> - <i>Uses HMM to identify genes</i>
+  </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://opal.biology.gatech.edu/GeneMark/"
+ rel="nofollow">http://opal.biology.gatech.edu/GeneMark/</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
+ rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
+    </ul>
+  </ul>
+  <li><strong>FGeneSH</strong> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://www.softberry.com/berry.phtml" rel="nofollow">http://www.softberry.com/berry.phtml</a>
+      </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
+ rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
+    </ul>
+  </ul>
+  <li><strong>GeneID</strong> - </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://www1.imim.es/software/geneid/index.html"
+ rel="nofollow">http://www1.imim.es/software/geneid/index.html</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
+ rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
+    </ul>
+  </ul>
+  <li><strong>GENSCAN</strong> - </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://genes.mit.edu/GENSCANinfo.html" rel="nofollow">http://genes.mit.edu/GENSCANinfo.html</a>
+      </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_genscan.pl"
+ rel="nofollow">batch_genscan.pl</a> </li>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/run_genscan.pl"
+ rel="nofollow">run_genscan.pl</a> </li>
+    </ul>
+  </ul>
+</ul>
+<h3>Homology Based Gene Annotation</h3>
+<p>Homology
+based annotation tiers are currently limited to NCBI BLAST results.
+These are broken down by the type of BLAST program used to generate
+results. </p>
+<ul>
+  <li><strong>BLASTn</strong> - </li>
+  <li><strong>BLASTx</strong> - </li>
+  <li><strong>tBLASTx</strong> - </li>
+</ul>
+<h2>TE Annotation Results</h2>
+<h3>De Novo TE Annotation</h3>
+<p>The following de novo annotation tiers are available for TE
+annotation. </p>
+<ul>
+  <li><strong>FINDMITE</strong>- <i>Identifies putative MITES based on
+structural criteria.</i> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://jaketu.biochem.vt.edu/dl_software.htm"
+ rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_findmite2gff.pl"
+ rel="nofollow">cnv_findmite2gff.pl</a> </li>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findmite.pl"
+ rel="nofollow">batch_findmite.pl</a> </li>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/findmite_params.jcfg"
+ rel="nofollow">findmite_params.jcfg</a> - Example configuration file. </li>
+    </ul>
+  </ul>
+  <li><strong>LTR_seq</strong> - <i>Identifies LTR retrotransposons
+based on structural criteria</i> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://www.eecs.wsu.edu/%7Eananth/software.htm"
+ rel="nofollow">http://www.eecs.wsu.edu/~ananth/software.htm</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_ltrseq2gff.pl"
+ rel="nofollow">cnv_ltrseq2gff.pl</a> </li>
+    </ul>
+  </ul>
+  <li><strong>TRF</strong> - <i>Tandem Repeats Finder</i> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://tandem.bu.edu/trf/trf.html" rel="nofollow">http://tandem.bu.edu/trf/trf.html</a>
+      </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
+ rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
+    </ul>
+  </ul>
+</ul>
+<h3>Homology Based TE Annotation</h3>
+<ul>
+  <li><strong>RepeatMasker</strong> - <i>RepeatMasker is a program
+that screens DNA sequences for interspersed repeats and low complexity
+DNA sequences</i> </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://www.repeatmasker.org/" rel="nofollow">http://www.repeatmasker.org/</a>
+      </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_mask.pl"
+ rel="nofollow">batch_mask.pl</a> </li>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_hardmask.pl"
+ rel="nofollow">batch_hardmask.pl </a> </li>
+    </ul>
+  </ul>
+</ul>
+<ul>
+  <li><strong>TE-NEST</strong> - <i>TE
+nest is an annotation and visualization tool for the identification
+transposable elements. TE nest is unique in that it reconstructs
+transposable elements separated by nesting of subsequent insertions.</i>
+  </li>
+  <ul>
+    <li>Program source </li>
+    <ul>
+      <li><a href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html"
+ rel="nofollow">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a> </li>
+    </ul>
+    <li>Scripts </li>
+    <ul>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_tenest2gff.pl"
+ rel="nofollow">cnv_tenest2gff.pl</a> </li>
+      <li><a
+ href="http://dawg-paws.googlecode.com/svn/trunk/scripts/fetch_tenest.pl"
+ rel="nofollow">fetch_tenest.pl</a> </li>
+    </ul>
+  </ul>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="directory_structure"></a>Directory Structure</h1>
+The DAWG-PAWS programs will store the computational results in a
+predefined directory structure. The software will establish this
+structure when output from the various annotation programs are produced
+or parsed. <br>
+<br>
+An example below shows an example directory structure of computational
+results for the BAC identified as HEX0014K09.<br>
+<ul>
+  <li><strong>HEX0014K09</strong> </li>
+  <ul>
+    <li><strong>blast</strong> - <i>Results of blast searches</i> </li>
+    <li><strong>find_ltr</strong> - <i>Results from the find_ltr
+program.</i> </li>
+    <li><strong>findmite</strong> - <i>Results from the FINDMITE
+program</i> </li>
+    <li><strong>game</strong> - <i>game.xml files</i> </li>
+    <li><strong>gff</strong> - <i>gff format data files</i> </li>
+    <li><strong>hmmer</strong> - <i>Results from the hmmsearch program.</i>
+    </li>
+    <ul>
+      <li><strong>rice_mite</strong> - <i>Rice MITE hmm profiles</i> </li>
+      <li><strong>rice_mule</strong> - <i>Rice MULE hmm profiles</i> </li>
+      <li><strong>wheat_ltr</strong> - <i>Wheat LTR hmm profiles</i> </li>
+    </ul>
+    <li><strong>ltr_finder</strong> - <i>Results from the ltr_finder
+program.</i> </li>
+    <li><strong>ltr_seq</strong> - <i>ltr_seq output</i> </li>
+    <li><strong>ltr_struc</strong> - <i>Results from the ltr_struc
+program.</i> </li>
+    <li><strong>repseek</strong> - <i>Results from the Repseek program</i>
+    </li>
+    <li><strong>rm</strong> - <i>Repeatmasker results</i> </li>
+    <li><strong>ta</strong> - <i>TriAnnotation results</i> </li>
+    <li><strong>tenest</strong> - <i>Results from TE NEST</i></li>
+  </ul>
+</ul>
+<hr style="width: 100%; height: 2px;">
 <h1><a name="manfiles"></a>Manual Files for Individual Programs<br>
 </h1>
 Manual files for the various programs are listed below in alphabetical
 order. <br>
 <dl>
   <dt><a href="man/batch_blast.html">batch_blast.pl</a></dt>
-  <dd>&nbsp;Do NCBI-BLAST searches for a set of fasta files</dd>
+  <dd>Do NCBI-BLAST searches for a set of fasta files</dd>
   <dt><a href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a></dt>
-  <dd>&nbsp; Convert blast output to GFF format</dd>
+  <dd>Convert blast output to GFF format</dd>
   <dt><a href="man/batch_cnv_ta2ap.html">batch_cnv_ta2ap.pl</a></dt>
-  <dd>&nbsp;Convert TriAnnotation to Apollo GFF</dd>
+  <dd>Convert TriAnnotation to Apollo GFF</dd>
 </dl>
 <hr>
 <table style="border-collapse: collapse;" id="AutoNumber2" border="0"
