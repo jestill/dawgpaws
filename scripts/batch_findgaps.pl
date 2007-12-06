@@ -26,6 +26,7 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
+#use strict;
 use File::Copy;
 use Getopt::Long;              # Get options from the command line
 use Bio::SeqIO;                # Allows for treatment of seqs as objects
@@ -110,10 +111,15 @@ my $file_num = 0;
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
@@ -121,22 +127,24 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
 if ($show_version) {
     print "\nbatch_mask.pl:\n".
-	"Version: $ver\n\n";
+	"Version: $VERSION\n\n";
     exit;
 }
 
-# Show full help when required options
-# are not present
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) ) {
-    print_help("full");
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
+    print_help("usage", $0);
 }
-
 
 #-----------------------------+
 # OPEN THE LOG FILE           |
@@ -385,45 +393,69 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
     
-    my $usage = "USAGE:\n".
-	"  batch_findgaps.pl -i DirToProcess -o OutDir";
-
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"\n".
-	"OPTIONS:\n".
-	"  --len          # Min length to be considered gap\n".
-	"  --gapchar      # Character indicating a gap\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --test         # Run the program in test mode\n".
-	"  --quiet        # Run program with minimal output\n";
-
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub apollo_convert {
 #-----------------------------+
@@ -493,18 +525,27 @@ sub apollo_convert {
 
 }
 
+1;
+__END__
+
 =head1 NAME
 
 batch_findgaps.pl - Annotate gaps in a fasta file
 
 =head1 VERSION
 
-This documentation refers to batch_findgaps version 1.0
+This documentation refers to batch_findgaps version $Rev$
 
 =head1 SYNOPSIS
 
- Usage:
- batch_findgaps.pl -i DirToProcess -o OutDir
+=head2 Usage
+
+    batch_findgaps.pl -i DirToProcess -o OutDir
+
+=head2 Required Arguments
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
 
 =head1 DESCRIPTION
 
@@ -575,70 +616,102 @@ Run the program without doing the system commands.
 
 =head1 DIAGNOSTICS
 
-The error messages that can be generated will be listed here.
+=over 2
+
+=item ERROR: No fasta files were found in the input directory
+
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+No configuration files or environmental variables are required to use
+this program.
 
 =head1 DEPENDENCIES
 
 =head2 Required Software
 
-=over
-
-=item *
-
-RepeatMasker
-(http://www.repeatmasker.org/)
-
-=item *
-
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
-
-=back
+Additional software is not required to use this program.
 
 =head2 Required Perl Modules
 
-=over
+=over 2
 
-=item *
+=item * File::Copy
 
-Getopt::Long
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
 
 =back
 
 =head1 BUGS AND LIMITATIONS
 
-=head2 TO DO
+=head2 Bugs
 
 =over 2
 
+=item * Incorrect end position of annotated gap
 
-=item *
+Early versions of this script would assign an incorrect end position the
+the 3' end of a gap.
 
-No current items on the to do list.
+=item * Bug Reporting
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
 =head2 Limitations
 
-=over
+=over 2
 
-=item *
+* Recognized gap characters
 
-No known majors limitations at this time.
+Due to the way that regular expressions are coded in PERL, the characters
+that can be used to indicate gaps must be hard coded. The characters that are
+currently hard coded for recognition by batch_findgaps are n,N,x, and X. If 
+there are additional characters you would like to add as a recognized
+gap character, file a Feature Request on the DAWG-PAWS poject page on
+Sourceforge ( http://sourceforge.net/tracker/?group_id=204962&atid=991722 ).
+
+=item * Limited file extensions are supported
+
+BLAST output file must currently end with blo, bln, or blx. For example
+a BLASTx output may be named BlastOut.blx while a BLASTN output
+may be names BlastOut.bln. FASTA files must end with a fasta or fa extension.
+For examples must have names like my_seq.fasta or my_seq.fa.
 
 =back
 
+=head1 SEE ALSO
+
+The batch_blast.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html
 
 =head1 AUTHOR
 
@@ -649,6 +722,8 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 STARTED: 08/01/2007
 
 UPDATED: 12/06/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -662,3 +737,5 @@ UPDATED: 12/06/2007
 #
 # 12/06/2007
 # - Moved POD documentation to the end of the file
+# - Added info to POD documentation
+# - 
