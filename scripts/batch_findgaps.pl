@@ -680,7 +680,7 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =over 2
 
-* Recognized gap characters
+=item * Recognized gap characters
 
 Due to the way that regular expressions are coded in PERL, the characters
 that can be used to indicate gaps must be hard coded. The characters that are

@@ -121,10 +121,10 @@ if ($show_man) {
 if ( (!$indir) || (!$outdir) ) {
     print "\a";
     print STDERR "\n";
-    print STDERR "ERROR: An input directory was not specified at the command line\n" 
-	if (!$indir);
-    print STDERR "ERROR: An output directory was specified at the command line\n"
-	if (!$outdir);
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
     print_help("usage", $0);
 }
 
