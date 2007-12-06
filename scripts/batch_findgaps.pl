@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/01/2007                                       |
-# UPDATED: 08/01/2007                                       |
+# UPDATED: 12/06/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files, this will find gaps    |
@@ -23,172 +23,23 @@
 #
 # TO DO: Appears to have error in delineating stop of the gap
 #
-=head1 NAME
-
-batch_findgaps.pl - Annotate gaps in a fasta file
-
-=head1 VERSION
-
-This documentation refers to batch_findgaps version 1.0
-
-=head1 SYNOPSIS
-
- Usage:
- batch_findgaps.pl -i DirToProcess -o OutDir
-
-=head1 DESCRIPTION
-
-Runs the RepeatMasker program for a set of input
-FASTA files against a set of repeat library files &
-then converts the repeat masker *.out file into the
-GFF format and then to the game XML format for
-visualization by the Apollo genome anotation program.
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--indir
-
-Path of the directory containing the sequences to process.
-
-=item -o,--outdir
-
-Path of the directory to place the program output.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --m,mask
-
-Single letter to mask with. Valid options are: [ N | n | X | x ]
-
-=item --ext
-
-The new outfile extension to use. Default value is .hard.fasta
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=item --test
-
-Run the program without doing the system commands.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The error messages that can be generated will be listed here.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-=head2 Required Software
-
-=over
-
-=item *
-
-RepeatMasker
-(http://www.repeatmasker.org/)
-
-=item *
-
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
-
-=back
-
-=head2 Required Perl Modules
-
-=over
-
-=item *
-
-Getopt::Long
-
-=back
-
-=head1 BUGS AND LIMITATIONS
-
-=head2 TO DO
-
-=over 2
-
-
-=item *
-
-No current items on the to do list.
-
-=back
-
-=head2 Limitations
-
-=over
-
-=item *
-
-No known majors limitations at this time.
-
-=back
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
-print "\n";
-
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use File::Copy;
 use Getopt::Long;              # Get options from the command line
 use Bio::SeqIO;                # Allows for treatment of seqs as objects
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # To convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "1.0";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -642,13 +493,162 @@ sub apollo_convert {
 
 }
 
+=head1 NAME
 
+batch_findgaps.pl - Annotate gaps in a fasta file
+
+=head1 VERSION
+
+This documentation refers to batch_findgaps version 1.0
+
+=head1 SYNOPSIS
+
+ Usage:
+ batch_findgaps.pl -i DirToProcess -o OutDir
+
+=head1 DESCRIPTION
+
+Runs the RepeatMasker program for a set of input
+FASTA files against a set of repeat library files &
+then converts the repeat masker *.out file into the
+GFF format and then to the game XML format for
+visualization by the Apollo genome anotation program.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--indir
+
+Path of the directory containing the sequences to process.
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --m,mask
+
+Single letter to mask with. Valid options are: [ N | n | X | x ]
+
+=item --ext
+
+The new outfile extension to use. Default value is .hard.fasta
+
+=item --logfile
+
+Path to a file that will be used to log program status.
+If the file already exists, additional information will be concatenated
+to the existing file.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --test
+
+Run the program without doing the system commands.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The error messages that can be generated will be listed here.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+Names and locations of config files
+environmental variables
+or properties that can be set.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over
+
+=item *
+
+RepeatMasker
+(http://www.repeatmasker.org/)
+
+=item *
+
+Apollo (Genome Annotation Curation Tool)
+http://www.fruitfly.org/annot/apollo/
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item *
+
+Getopt::Long
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 TO DO
+
+=over 2
+
+
+=item *
+
+No current items on the to do list.
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item *
+
+No known majors limitations at this time.
+
+=back
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+http://www.gnu.org/licenses/lgpl.html
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 08/01/2007
 
-UPDATED: 08/01/2007
+UPDATED: 12/06/2007
 
 =cut
 
@@ -658,3 +658,7 @@ UPDATED: 08/01/2007
 #
 # 08/01/2007
 # - Program started
+# - Base program and POD docs written
+#
+# 12/06/2007
+# - Moved POD documentation to the end of the file
