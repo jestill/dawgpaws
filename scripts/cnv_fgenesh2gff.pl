@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# cnv_fgenesh2gff.pl - Convert FGENESH output to gff foramt |
+# cnv_fgenesh2gff.pl - Convert FGENESH output to gff format |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -425,6 +425,7 @@ foreach  my $file (@files)
 
 close GFFOUT;
 
+exit;
 
 # Three tables:
 # General clone info

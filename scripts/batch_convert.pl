@@ -19,6 +19,8 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+# This program needs a lot of cleaning up.
+# Switch to a config file or fasta input list
 
 use File::Copy;
 
@@ -202,3 +204,10 @@ for my $bat_root_name (@root_names) {
 } # End of for each base ind_root_name in the root names list
 
 exit;
+
+#-----------------------------------------------------------+
+# SUBFUNCTIONS                                              |
+#-----------------------------------------------------------+
+
+
+

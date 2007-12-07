@@ -22,7 +22,7 @@
 
 =head1 NAME
 
-batch_genscan.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_genscan.pl - Run genscan and parse results to a gff format file. 
 
 =head1 VERSION
 

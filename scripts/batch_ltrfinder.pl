@@ -1190,7 +1190,7 @@ sub ltrfinder2gff {
 
 =head1 NAME
 
-Name.pl - Short program description. 
+batch_ltrfinder.pl - Run the LTRFinder program in batch mode
 
 =head1 VERSION
 

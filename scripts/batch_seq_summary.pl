@@ -193,7 +193,7 @@ sub print_help {
 
 =head1 NAME
 
-Name.pl - Short program description. 
+batch_seq_sumary.pl - Print summary info for a directory of sequence files
 
 =head1 VERSION
 

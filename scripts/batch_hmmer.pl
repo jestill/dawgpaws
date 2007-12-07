@@ -629,7 +629,7 @@ sub hmmer2gff {
 
 =head1 NAME
 
-batch_hmmer.pl - Short program description. 
+batch_hmmer.pl - Run hmmer in batch mode
 
 =head1 VERSION
 

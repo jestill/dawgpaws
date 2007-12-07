@@ -26,7 +26,7 @@
 
 =head1 NAME
 
-batch_hardmask.pl - Hardmask a batch of softmasked fasta files. 
+batch_hardmask.pl - Hardmask a directory of softmasked fasta files. 
 
 =head1 VERSION
 
