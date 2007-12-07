@@ -22,7 +22,8 @@
       </ul>
       <h1>DAWG-PAWS<br>
 User Manual</h1>
-Dec. 6, 2007<br>
+      <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
+Dec. 7, 2007<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -33,43 +34,249 @@ Dec. 6, 2007<br>
   </tbody>
 </table>
 <hr>
-<h1>Table of Contents</h1>
-<a href="#getting_started">Getting Started</a><br>
-<a href="#structural_features">Structural Feature Annotation</a><br>
-<a href="#gene_annotation">Gene Annotation Computational Results</a><br>
-<a href="#te_annotation">Transpoasable Element Computational Results</a><br>
-<a href="#human_curation">Human Curation of Computational Results</a><br>
-<a href="#apollo_data_tiers">Apollo Data Tiers</a><br>
-<a href="#directory_structure">Directory Structure</a><br>
-<a href="#manfiles">Manual Files for Individual Programs</a><br>
+<h1>TABLE OF CONTENTS<br>
+</h1>
+<h2 style="margin-left: 40px;"><a style="font-weight: bold;"
+ href="#getting_started">I. GETTING STARTED<br>
+</a></h2>
+<div style="margin-left: 80px;">
+<ol>
+  <li><a style="font-weight: bold;" href="#dawg_paws_installation">Install
+DAWG-PAWS</a></li>
+  <li><a href="#install_additional_software"><span
+ style="font-weight: bold;">Install Additional Required Software</span></a></li>
+  <li><a href="#define_env_vars"><span style="font-weight: bold;">Define
+Environment Variables</span></a></li>
+</ol>
+</div>
+<h2 style="margin-left: 40px;"><a href="#annotation_process">II.
+ANNOTATION PROCESS</a><br>
+</h2>
+<div style="margin-left: 80px;">
+<ol>
+  <li><a style="font-weight: bold;" href="#sequence_preparation">Prepare
+Sequence Files for Annotation</a></li>
+  <li><a style="font-weight: bold;" href="#structural_features">Structural
+Feature Annotation</a></li>
+  <li><a style="font-weight: bold;" href="#gene_annotation">Gene
+Annotation Computational Results</a></li>
+  <li><a style="font-weight: bold;" href="#te_annotation">Transpoasable
+Element Computational Results</a></li>
+  <li><a style="font-weight: bold;" href="#apollo_preparation">Preparing
+Computational Results for Apollo</a></li>
+  <li><a style="font-weight: bold;" href="#human_curation">Human
+Curation of Computational Results</a></li>
+  <li><a style="font-weight: bold;" href="#curation_quality_control">Curation
+Quality Contro</a><a style="font-weight: bold;"
+ href="#curation_quality_control">l</a><span style="font-weight: bold;"><br>
+    </span></li>
+</ol>
+</div>
+<h3 style="margin-left: 40px;"><a href="#additional_information">III.
+ADDITIONAL INFORMATION</a></h3>
+<div style="margin-left: 40px;">
+<div style="margin-left: 40px;">
+<ol>
+  <li><a style="font-weight: bold;" href="#apollo_data_tiers">Apollo
+Data Tiers</a></li>
+  <li><a style="font-weight: bold;" href="#directory_structure">Computational
+Results Directory Structure</a></li>
+</ol>
+</div>
+<h3><a style="font-weight: bold;" href="#manfiles">IV. MANUAL FILES FOR
+INDIVUDAL PROGRAMS</a></h3>
+</div>
+<br>
 <br>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="getting_started"></a>Getting Started</h1>
+<h1><a name="getting_started"></a>I. GETTING STARTED<br>
+</h1>
 Getting started using DAWG-PAWS may require that you install some the
 required software or define some variables in your user environment.
-These will be described here in greater detail<br>
-<hr style="width: 100%; height: 2px;">
-<h1><a name="structural_features"></a>Structural Feature Annotation<br>
-</h1>
+The steps involved in preparing to do genome annotation with the
+DAWG-PAWS package is described in detail below.<br>
 <br>
-<hr style="width: 100%; height: 2px;">
-<h1><a name="gene_annotation"></a>Generating Gene Annotation
-Computational Results<br>
+This user documentation will generally assume that you are running
+DAWG-PAWS on a unix or linux machine and operating from the bash shell.
+Anywhere where I have written <big><code>yourname</code></big> below,
+simply substitute your username.<br>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="dawg_paws_installation"></a>Install DAWG-PAWS</h1>
+Currently the best way to download the DAWG-PAWS program is to "check
+out" the SVN code from the code repository on SourceForge. This will
+require that you have the svn client program installed which can be
+downloaded from <a
+ href="http://subversion.tigris.org/project_packages.html">http://subversion.tigris.org/project_packages.html</a>.
+Once you have the SVN client program installed, navigate to the
+location where you want to place the dawgpaws program and checkout the
+code. This is illustrated by the following commands:<br>
+<pre class="prettyprint"><span class="str">  &gt;mkdir /home/yourname/code<br>  &gt;cd /home/yourname/code/<br>  &gt;svn co https://dawgpaws.svn.sourceforge.net/svnroot/dawgpaws/trunk dawgpaws </span><span
+ class="typ"></span><span class="pun"></span><span class="pln"></span><span
+ class="pun"></span><span class="pln"></span><span class="pun"></span><span
+ class="pln"></span><span class="pun"></span></pre>
+This will download all of the scripts, program documentation in html
+format, and emacs modes. These will be placed in the following
+directory structure:<br>
+<ul>
+  <li style="font-weight: bold;"><span style="font-weight: normal;"><span
+ style="font-weight: bold;">dawgpaws</span><br>
+This base directory will be created when you check out dawgpaws for the
+first time<br>
+    </span></li>
+  <ul>
+    <li><span style="font-weight: bold;">apollo</span><br>
+      <span style="font-style: italic;">Thetiers and type file for
+using the apollo program are installed here</span><br>
+    </li>
+    <li><span style="font-weight: bold;">docs</span><br>
+      <span style="font-style: italic;">Additinal documentation for
+using the DAWG-PAWS program and the full text of the GNU GPL license.</span><br>
+    </li>
+    <li><span style="font-weight: bold;">emacs_modes</span><br>
+      <span style="font-style: italic;">Major modes files for emacs,
+this will provide syntax highlighting to the apollo tiers file, types
+files and configuration files.</span><br>
+    </li>
+    <li><span style="font-weight: bold;">html</span><br>
+      <span style="font-style: italic;">This is a copy of the web pages
+that are hosted at http://dawgpaws.sourceforge.net</span><br>
+    </li>
+    <ul>
+      <li><span style="font-weight: bold;">htdocs</span><br>
+        <span style="font-style: italic;">The base directory of the
+html files</span><br>
+      </li>
+      <li><span style="font-weight: bold;">cgi-bin</span><br>
+        <span style="font-style: italic;">Programs run through the
+dawgpaws web are here</span><br>
+      </li>
+    </ul>
+    <li><span style="font-weight: bold;">scripts</span><br>
+      <span style="font-style: italic;">The scripts that are the
+backbone of DAWG-PAWS are stored in this directory</span><br>
+    </li>
+  </ul>
+</ul>
+The svn co command will check out the version of DAWG-PAWS that is the
+most up to date at the time of your initial download. To update to the
+most recent version of DAWG-PAWS at any time in the future you will
+just need to run the svn update command from within the dawgpaws
+directory:<br>
+<pre class="prettyprint"><span class="str">  &gt;cd /home/yourname/code/dawgpaws<br>  &gt;svn update </span></pre>
+This will update to the most current version of DAWG-PAWS.<br>
+<h3>Symbolic Link to the Perl Binary</h3>
+All of the DAWG-PAWS commands should be able to run at the command line
+without needing to type the perl before the program name. To make this
+possible, all of the DAWG-PAWS programs assume that your local
+installation of perl is at /usr/bin/perl. You can see this by opening
+up a DAWG-PAWS program in a text editor. You will see that <big><code>#!/usr/bin/perl
+-w</code> </big>is the first line in the program.<br>
+<br>
+If your local copy of perl is not at the <big><code>/usr/bin/perl</code></big>
+location, you can make a symbolic link using the ln command. In
+general, the ln command is used as <br>
+<pre class="prettyprint"><span class="str">  &gt;ln existing_file new_name<br></span></pre>
+where existing_file is the name of the file on your machine, and
+new_name is the name to the new shortcut. The following command example
+shows to to make a shortcut when your local installation of perl is at
+/usr/local/bin/perl instead of the expected /usr/bin/perl. <br>
+<pre class="prettyprint"><span class="str">  &gt;ln -s /usr/local/bin/perl /usr/bin/perl<br></span></pre>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="install_additional_software"></a>Install Additional
+Required Software</h1>
+<br>
+A List of required software and where to obtain it will go here.<br>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="define_env_vars"></a>Define Environmental Variables</h1>
+<br>
+In the unix-like operating systems including Unix, Linux, and Mac OSX,
+you can define variables in your comand line environment. This will
+allow you to use a program at the command line with referring to its
+full path, and can simplify using DAWG-PAWS scripts by letting you
+define variables in your environement instead of defining them at the
+command line every time you use a program. The following information
+shows you how to define commonly used environment variables that are
+used by the DAWG-PAWS suite of programs.<br>
+<h4>Add the DAWG-PAWS code directory</h4>
+Adding the DAWG-PAWS code directory to your path will allow you type in
+the DAWG-PAWS commands without needing to type the entire path to the
+DAWG-PAWS program. For example, you will be able to type <big><code>batch_blast.pl</code></big>
+to launch the batch_blat program instead of needing to type <big><code>/home/yourname/code/dawgpaws/scripts/batch_blast.pl</code></big>.
+In the bash shell you would add the following line to your user profile.<br>
+<pre class="prettyprint"><span class="str">  export PATH=$PATH:/home/yourname/code/dawgpaws/scripts</span></pre>
+<h4>Define paths to required software</h4>
+Many of the DAWG-PAWS command line programs use external software that
+may be stored at different locations in different user environments.
+You can define the location of these external programs at the command
+line, but you are also able to define these paths in your user
+environment. <br>
+<br>
+An example of settings these path variables in the bash shell is below:<br>
+<br>
+<pre class="prettyprint"><span class="str">1.  <span
+ style="color: rgb(255, 0, 0);">#FIND_LTR</span><br></span>2.  export PATH=$PATH:/home/yourname/apps/LTRDeNovo/LTR/tool
+<br></pre>
+The above information is not complete.<br>
+<h4>DAWG-PAWS Options</h4>
+A number of environment variable options are also available for the
+DAWG-PAWS scripts. These variables include things such as the path to
+commonly used programs, paths to&nbsp; user name and dsn connection for
+logging onto databases, a<br>
+<h4>Full variable set for the bash shell</h4>
+Putting the above set of environment options together in a single file
+gives the following. In the bash shell you can copy and paste the
+following to your .bashrc file. You will of course need to modify the
+directory paths to the true locations of the software on your machine.<br>
+<pre class="prettyprint"><span class="str"><span
+ style="color: rgb(255, 0, 0);">#-----------------------------+</span></span><br><span
+ class="str"><span style="color: rgb(255, 0, 0);"># SOFTWARE                    |<br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br><br>#DAWG-PAWS <br></span></span><span
+ class="str">export PATH=$PATH:/home/yourname/code/dawgpaws/scripts</span><br><br><span
+ style="color: rgb(255, 0, 0);"># FIND_LTR</span><br>export PATH=$PATH:/home/yourname/apps/LTRDeNovo/LTR/tool<br>export FIND_LTR_ROOT='/home/yourname/apps/LTRDeNovo/LTR/tool/'<span
+ class="str"><span style="color: rgb(255, 0, 0);"><br><br># LTR_FINDER</span></span><br><span
+ class="str">export TRNA_DB='/home/yourname/apps/LTR_FINDER.'<br>export PROSITE_DIR='/home/yourname/'</span>
+<span class="str"><span style="color: rgb(255, 0, 0);"><br>#-----------------------------+</span></span><br><span
+ class="str"><span style="color: rgb(255, 0, 0);"># DAWG-PAWS                   |<br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br># The following variables are used directly by DAWG-PAWS scripts<br><br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);"></span></span><span
+ style="color: rgb(255, 0, 0);"># LTR_Finder path</span><br><span
+ class="str">export LTR_FINDER='/home/yourname/apps/ltr_finder/ltr_finder'</span>
+<br><span class="str"><span style="color: rgb(255, 0, 0);"># GeneMark</span>                                <br>export GM_BIN_DIR='/home/yourname/apps/GenMark/genemark_hmm_euk.linux/'<br>export GM_LIB_DIR='/home/yourname/apps/GenMark/genemark_hmm_euk.linux/'<br><br><span
+ style="color: rgb(255, 0, 0);"># VennMaster</span><br>export VMASTER_DIR='/home/jestill/Apps/VennMaster/VennMaster-0.36.0/'<br>export VMASTER_JAVA_BIN='/usr/java/jre1.6.0/bin/java'<br><br></span></pre>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="annotation_process"></a>II. ANNOTATION PROCESS</h1>
+Despite the name, the use of DAWG-PAWS for annotation is really more of
+a process then a pipeline. There is not a single place where you drop
+in a sequence, push a button and get a fully annotated genome as
+output. The series of scripts that comprise DAWG-PAWS are designed to
+be robust across operating systems, and are expected to be usable in an
+a la carte fashion. The following outline of an annotation process
+indicates the use of DAWG-PAWS programs, but a subset of these programs
+could be chosen for use in producing copmutational results for genome
+annotation.<br>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="sequence_preparation"></a>Preparing Sequence Files for
+Annotation<br>
 </h1>
 The following is
 an overview of the process used to annotate sequences with the
 DAWG-PAWS set of programs. This assumes that you are running the
 analysis on a linux machine, and that you are storing your annotation
 computational results in the directory
-<pre class="prettyprint"><span class="str">/home/</span><span
- class="typ">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+<pre class="prettyprint"><span class="str">  /home/</span><span
+ class="typ">yourname</span><span class="pun">/</span><span class="pln">projects</span><span
  class="pun">/</span><span class="pln">wheat_annotation</span><span
  class="pun">/</span><span class="pln">wheat_analysis</span><span
  class="pun">/</span></pre>
 <p>This
 directory will have a subdirectory named for every annotated sequence.
 The subdirectories for the annotated sequence will follow the directory
-structure indicated in the <a href="#directory_structure">DAWG-PAWS
+structure indicated in the <a href="man.html#directory_structure">DAWG-PAWS
 Directory Structure</a> below. </p>
 <p>In all of the following command examples, the &gt; character
 represents the command line prompt. </p>
@@ -80,7 +287,7 @@ on the size of FASTA headers, it may be necessary to first shorten the
 name of the FASTA files. </p>
 <p>Starting with a directory in which you have a single fasta file for
 every BAC to process at the following directory path </p>
-<pre class="prettyprint"><span class="str">/home/</span><span
+<pre class="prettyprint"><span class="str">  /home/</span><span
  class="typ">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
  class="pun">/</span><span class="pln">wheat_annotation</span><span
  class="pun">/</span><span class="pln">wheat_analysis</span><span
@@ -147,7 +354,42 @@ necessary to also make a hard masked copy of the fasta file. </p>
  class="pln">i soft_masked</span><span class="pun">/</span><span
  class="pln"> </span><span class="pun">-</span><span class="pln">o hard_masked</span><span
  class="pun">/</span></pre>
-<h3>4. Run the <a
+<br>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="structural_features"></a>III. Structural Feature Annotation<br>
+</h1>
+DAWG-PAWS can currently only annotate a few structural features.
+Structural features are defined here as features of the sequence such
+as gaps, gc content, etc. that are not directly related to gene
+annotation or transposable element annotation.<br>
+<h3>1. Annotate the gaps in the assembly</h3>
+<p>The audit program will move gff files to the gff dir and will alert
+you to any expected files that could not be found. </p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_audit</span><span class="pun">.</span><span
+ class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">masked_soft</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">--</span><span class="pln">full </span><span
+ class="pun">--</span><span class="pln">color</span></pre>
+<p>The <tt>--full</tt> option will run a complete audit. This
+currently includes the TriAnnotation output, </p>
+<p>The <tt>--color</tt> option will print error messages about missing
+files in red font. </p>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="gene_annotation"></a>Generating Gene Annotation
+Computational Results</h1>
+The information below assumes that you have properly prepared the
+sequence files for annotation <a href="#sequence_preparation">as
+described above</a>.<br>
+<h3>1. Run the <a
  href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php"
  rel="nofollow">TriAnnot</a> gene annotation processes.</h3>
 <p>This step. makes use of the <a
@@ -201,7 +443,7 @@ to a manageable Apollo output </li>
  class="pln"> </span><span class="pun">-</span><span class="pln">o ta</span><span
  class="pun">/</span></pre>
 </ol>
-<h3>5. Run GENSCAN gene prediction program</h3>
+<h3>2. Run GENSCAN gene prediction program</h3>
 <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
  class="pun">&gt;</span><span class="pln">batch_genscan</span><span
  class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
@@ -209,7 +451,7 @@ to a manageable Apollo output </li>
  class="pln">hard_masked</span><span class="pun">/</span><span
  class="pln"> </span><span class="pun">-</span><span class="pln">o wheat_analysis</span><span
  class="pun">/</span></pre>
-<h3>6. Run the BLAST processes</h3>
+<h3>3. Run the BLAST processes</h3>
 <p>This will use the soft masked files generated above. </p>
 <p>For a small number of blast jobs, you can run the BLAST jobs on your
 machine using the batch_blast.pl program with the <a
@@ -284,7 +526,7 @@ shell script to execute this blast on the cluster. </li>
  class="pun">/</span><span class="pln">wheat_out </span><span
  class="pun">-</span><span class="pln">o wheat_analysis</span></pre>
 </ol>
-<h3>7. Convert BLAST output to gff format</h3>
+<h3>4. Convert BLAST output to gff format</h3>
 <p>All
 of the BLAST results for the query sequence will be added to a single
 gff output file named root_name_all_blast.gff. Where root_name is the
@@ -308,42 +550,20 @@ the blast output from </p>
  class="pln">soft_masked </span><span class="pun">-</span><span
  class="pln">o wheat_analysis</span><span class="pun">/</span><span
  class="pln"> </span></pre>
-<h3>8. Annotate the gaps in the original assembly</h3>
-<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
- class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
- class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
- class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
- class="pln">wheat_annotation</span><span class="pun">/</span><span
- class="pln">wheat_analysis<br>&nbsp; </span><span class="pun">&gt;</span><span
- class="pln">batch_findgaps</span><span class="pun">.</span><span
- class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
- class="pun">/</span><span class="pln">masked_soft</span><span
- class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
- class="pln">o wheat_analysis</span><span class="pun">/</span></pre>
-<p>The
-batch_findgaps.pl program is slow and uses and ugly algorithm but it
-does work. Results will be placed in gff format in the gff directory as
-well as in game.xml format in the game directory. </p>
-<h3>9. Annotate the gaps in the original assembly</h3>
-<p>The audit program will move gff files to the gff dir and will alert
-you to any expected files that could not be found. </p>
-<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
- class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
- class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
- class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
- class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
- class="pln">batch_audit</span><span class="pun">.</span><span
- class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
- class="pun">/</span><span class="pln">masked_soft</span><span
- class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
- class="pln">o wheat_analysis</span><span class="pun">/</span><span
- class="pln"> </span><span class="pun">--</span><span class="pln">full </span><span
- class="pun">--</span><span class="pln">color</span></pre>
-<p>The <tt>--full</tt> option will run a complete audit. This
-currently includes the TriAnnotation output, </p>
-<p>The <tt>--color</tt> option will print error messages about missing
-files in red font. </p>
-<h2>10. Concatenate the gff files</h2>
+<hr>
+<h1><a name="te_annotation"></a>Transposable Element Annotation Process</h1>
+The information below assumes that you have properly prepared the
+sequence files for annotation <a href="man.html#sequence_preparation">as
+described above</a>.<br>
+<br>
+Process for TE Annotation will go here.<br>
+<hr style="width: 100%; height: 2px;">
+<h1><a name="apollo_preparation"></a> Preparing Computational Results
+for Apollo<br>
+</h1>
+<h2>1. Audit your computaitonal results</h2>
+<br>
+<h2>2. Concatenate the gff files</h2>
 <p>This is currently a manual step that needs to be automated. </p>
 <p>For each query sequence, navigate to the directory containing the
 gff output files. For example, for the file HEX0014K09 </p>
@@ -361,7 +581,7 @@ gff output file. </p>
  class="pun">&gt;</span><span class="pln">cat </span><span class="pun">*.</span><span
  class="pln">gff </span><span class="pun">&gt;</span><span class="pln"> HEX0014K09</span><span
  class="pun">.</span><span class="pln">gff</span></pre>
-<h2>11. Convert concatenated gff file to game.xml format</h2>
+<h2>3. Convert concatenated gff file to game.xml format</h2>
 <p>This
 uses the batch_convert.pl program. This is currently a somewhat sloppy
 program that requires you to modify the source code for each file you
@@ -377,22 +597,30 @@ you want to convert in the @root_names array. </p>
  class="pln">wheat_analysis<br>&nbsp; </span><span class="pun">&gt;</span><span
  class="pln">batch_convert</span><span class="pun">.</span><span
  class="pln">pl</span></pre>
-<hr>
-<h1><a name="te_annotation"></a>Transposable Element Annotation Process<br>
-</h1>
-Process for TE Annotation will go here.<br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="human_curation"></a>Human Curation of Computational Results<br>
 </h1>
 Basic information on using Apollo for human curation of computational
 results will go here.<br>
-<br>
 <hr style="width: 100%; height: 2px;">
+<h1><a name="curation_quality_control"></a>Curation Quality Control<br>
+</h1>
+There are scripts available for quality control and feature comparison.<br>
+<br>
+Venn Diagram<br>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="additional_information"></a>IV. ADDITIONAL INFORMATION</h1>
+The following information is provided for additional reference.<br>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
 <h1><a name="apollo_data_tiers"></a>Apollo Data Tiers</h1>
 The GFF files produced by the computational results above are intended
 to be visualized using the Apollo Genome Annotation Curation Tool. The
 list below was copied from the old wiki page. This should be updated to
-HTML tables. A pdf file of <br>
+HTML tables. <br>
+<br>
+A pdf file of the default images you will see in the i<br>
 <br>
 <h2>General Structural Features</h2>
 <ul>
@@ -609,7 +837,8 @@ transposable elements separated by nesting of subsequent insertions.</i>
   </ul>
 </ul>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="directory_structure"></a>Directory Structure</h1>
+<h1><a name="directory_structure"></a>Computational Results Directory
+Structure</h1>
 The DAWG-PAWS programs will store the computational results in a
 predefined directory structure. The software will establish this
 structure when output from the various annotation programs are produced
@@ -649,17 +878,94 @@ program.</i> </li>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="manfiles"></a>Manual Files for Individual Programs<br>
 </h1>
-Manual files for the various programs are listed below in alphabetical
-order. <br>
+Links to the manual files for the various programs are listed below in
+alphabetical
+order. These are essentialy extensive help files for each command line
+program use in the genome annotation process.<br>
 <dl>
-  <dt><a href="man/batch_blast.html">batch_blast.pl</a></dt>
+  <dt style="font-weight: bold;"><a href="man/batch_blast.html">batch_blast.pl</a></dt>
   <dd>Do NCBI-BLAST searches for a set of fasta files</dd>
-  <dt><a href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a></dt>
+  <dt style="font-weight: bold;"><a href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a></dt>
   <dd>Convert blast output to GFF format</dd>
-  <dt><a href="man/batch_cnv_ta2ap.html">batch_cnv_ta2ap.pl</a></dt>
+  <dt style="font-weight: bold;"><a href="man/batch_cnv_ta2ap.html">batch_cnv_ta2ap.pl</a></dt>
   <dd>Convert TriAnnotation to Apollo GFF</dd>
-  <dt><a href="man/batch_findgaps.html">batch_findgaps.pl</a></dt>
+  <dt>batch_convert.pl</dt>
+  <dd>Convert GFF files to the game.xml format<br>
+  </dd>
+  <dt style="font-weight: bold;"><a href="man/batch_findgaps.html">batch_findgaps.pl</a></dt>
   <dd>Annotate gaps in a fasta file</dd>
+  <dt>batch_findltr.pl</dt>
+  <dd>Run the find_ltr.pl program in batch mode</dd>
+  <dt>batch_findmite.pl</dt>
+  <dd>Run the findmite program in batch mode</dd>
+  <dt>batch_game2gff.pl</dt>
+  <dd>Convert game.xml annotations to gff format<br>
+  </dd>
+  <dt>batch_genmark.pl</dt>
+  <dd>&nbsp;Run GenMark.hmm and parse results to a gff format file</dd>
+  <dt>batch_genscan.pl</dt>
+  <dd>Run genscan in batch mode and parse results to gff format</dd>
+  <dt>batch_hardmask.pl</dt>
+  <dd>&nbsp;Hardmask a directory of softmasked fasta files</dd>
+  <dt>batch_hmmer.pl</dt>
+  <dd>Run the HMMER program in batch mode</dd>
+  <dt>batch_ltrfinder.pl</dt>
+  <dd>Run the LTRFinder program in batch mode</dd>
+  <dt>batch_ltrseq.pl</dt>
+  <dd>Run the LTR_seq program in batch mode</dd>
+  <dt>batch_mask.pl</dt>
+  <dd>Run RepeatMasker and parse results to a gff format file.</dd>
+  <dt>batch_seq_summary.pl</dt>
+  <dd>Print summary info for a directory of sequence files</dd>
+  <dt>clust_write_shell.pl</dt>
+  <dd>Write shell scripts for the Platform LSF
+queuing system</dd>
+  <dt>cnv_fgenesh2gff.pl</dt>
+  <dd>Convert a single FGENESH output to GFF format</dd>
+  <dt>cnv_findltr2gff.pl</dt>
+  <dd>Convert a single findltr output file to GFF format</dd>
+  <dt>cnv_findmite2gff.pl</dt>
+  <dd>Convert a single findmite output file to GFF format</dd>
+  <dt>cnv_genemark2gff.pl</dt>
+  <dd>Convert a single output file from genemark to GFF format</dd>
+  <dt>cnv_gff2game.pl</dt>
+  <dd>Convert a GFF file to the game.xml format.</dd>
+  <dt>cnv_ltrfinder2gff.pl</dt>
+  <dd>Convert a single output file from ltrfinder to GFF format</dd>
+  <dt>cnv_ltrseq2gff.pl</dt>
+  <dd>Convert a single output file from LTR_seq to GFF formmat</dd>
+  <dt>cnv_ltrsruc2gff.pl</dt>
+  <dd>Convert a single output file from LTR_struc to GFF format<br>
+  </dd>
+  <dt>cnv_repmask2gff.pl</dt>
+  <dd>Convert a single output file from RepeatMasker to GFF format</dd>
+  <dt>cnv_ta2ap.pl</dt>
+  <dd>Convert the TriAnnotation GFF3 output to apollo compatible GFF
+format</dd>
+  <dt>cnv_tenest2gff.pl</dt>
+  <dd>Convert a single output from the TE Nest to GFF format</dd>
+  <dt>dir_merge.pl</dt>
+  <dd>Merge directories of DAWG-PAWS output to a single directory</dd>
+  <dt>fasta_dirsplit.pl</dt>
+  <dd>Split a directry of fasta files into a n subdirectories</dd>
+  <dt>fasta_shorten.pl</dt>
+  <dd>Change fasta headers to shorter names</dd>
+  <dt>fasta_trep_shorten.pl</dt>
+  <dd>Change fasta headers in a TREP fasta file to shorter names</dd>
+  <dt>fetch_tenest.pl</dt>
+  <dd>Download a set of results from the TE Nest web server&nbsp;</dd>
+  <dt>ltrstruc_prep.pl</dt>
+  <dd>Create the files needed to run the LTR_struc program</dd>
+  <dt>push_files.pl</dt>
+  <dd>Push a set of files from the local machine to a set of machines
+using SFTP</dd>
+  <dt>run_fgenesh.pl</dt>
+  <dd>Run fgenesh in the softberry interface</dd>
+  <dt>run_genscan.pl</dt>
+  <dd>Run the genescan program</dd>
+  <dt>vennseq.pl</dt>
+  <dd>Create Venn Diagrams of sequence features<br>
+  </dd>
 </dl>
 <hr>
 <table style="border-collapse: collapse;" id="AutoNumber2" border="0"
