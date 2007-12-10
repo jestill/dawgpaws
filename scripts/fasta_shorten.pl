@@ -103,6 +103,19 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
+if ( (!$indir) || (!$outdir) ) {
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
+    print_help ("usage", $0 );
+}
+
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
@@ -315,9 +328,9 @@ This documentation refers to fasta_shorten version $Rev$
 =head1 DESCRIPTION
 
 This program will take all of the fasta files in a input directory 
-and will shorten the name in the fasta header file. This is primarily
-developed for the wheat project. The name used in the fasta header
-is the name used by apollo as well as RepeatMaksker.
+and will shorten the name in the fasta headers. 
+Creating shorter names is often required for programs that have a 
+maximum length that they can use for fasta headers.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -337,7 +350,7 @@ Path of the directory to place the program output.
 
 =over 2
 
-=item -l
+=item -l,--length
 
 New length. The fasta header will be shortened to this length.
 Default length is 20.
@@ -425,7 +438,7 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =over
 
-=item * Short names limited to a length
+=item * Shorter names limited to a length variable
 
 There is currently no feature to support any sort of shorted names
 based on a delimiting character. You are therefore limited to setting
