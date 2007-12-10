@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/17/2007                                       |
-# UPDATED: 07/17/2007                                       |
+# UPDATED: 12/10/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #   Change headers in a fasta file to give shorter names    |
@@ -16,133 +16,37 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION:                                                  |
-# $Id::                                                  $: |
-#                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-fasta_shorten.pl - Change headers in a fasta file to give shorter names.
-
-=head1 VERSION
-
-This documentation refers to program version 0.1
-
-=head1 SYNOPSIS
-
- Usage:
-  fasta_shorten.pl -i InDir -o OutDir
-
-=head1 DESCRIPTION
-
-This program will take all of the fasta files in a input directory 
-and will shorten the name in the fasta header file. This is primarily
-developed for the wheat project. The name used in the fasta header
-is the name used by apollo as well as RepeatMaksker.
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--infile
-
-Path of the input file.
-
-=item -o,--outfile
-
-Path of the output file.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item -l
-
-New length
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-Other modules or software that the program is dependent on.
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
-package JPERL;
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "0.1";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
 my $indir;                     # Input dir of fasta files to shorten
 my $outdir;                    # Output dir for shortened fasta files
-my $new_len = 20;             # New length of the header
+my $new_len = 20;              # New length of the header
 my $head_new;                  # New, shorter header
 my $test_len;                  # Test length of the header
 my $cur_len;                   # Current length of the header
@@ -162,8 +66,8 @@ my $uppercase = 0;            # Convert sequence strigs to uppercase
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required options
-		    "i|infile=s"  => \$indir,
-                    "o|outfile=s" => \$outdir,
+		    "i|indir=s"   => \$indir,
+                    "o|oudir=s"   => \$outdir,
 		    # Additional options
 		    "l|length=s"  =>, \$new_len,
 		    # Booleans
@@ -178,16 +82,18 @@ my $ok = GetOptions(
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $ver\n\n";
+    print "\n$0:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -239,7 +145,6 @@ unless (-e $outdir) {
     mkdir $outdir ||
 	die "Could not create the output directory:\n$outdir";
 }
-
 
 #-----------------------------+
 # PROCESS EACH INDIVIDUAL     |
@@ -323,49 +228,237 @@ exit;
 #-----------------------------------------------------------+
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
     
-    my $usage = "USAGE:\n". 
-	"fasta_shorten.pl -i InFile -o OutFile";
+    print "\n";
     
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the input directory\n".
-	"  --outdir       # Path to the output directory\n".
-	"                 # Will be created if needed".
-	"\n".
-	"OPTIONS:\n".
-	"  --length       # Length to shorten the name to\n".
-	"                 # default is 20\n".
-	"  --uppercase    # All sequence strings are converted to uppercase\n".
-	"  --test         # Run a program test\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
+1;
+__END__
+
+=head1 NAME
+
+fasta_shorten.pl - Change headers in a fasta file to give shorter names.
+
+=head1 VERSION
+
+This documentation refers to fasta_shorten version $Rev$
+
+=head1 SYNOPSIS
+
+=head2 Usage
+
+    fasta_shorten.pl -i InDir -o OutDir
+
+=head2 Required Arguments
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
+
+=head1 DESCRIPTION
+
+This program will take all of the fasta files in a input directory 
+and will shorten the name in the fasta header file. This is primarily
+developed for the wheat project. The name used in the fasta header
+is the name used by apollo as well as RepeatMaksker.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--indir
+
+Path of the directory containing the sequences to process.
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item -l
+
+New length. The fasta header will be shortened to this length.
+Default length is 20.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: No fasta files were found in the input directory
+
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This program does not currently make use of configuration files
+or settings in the user's environment.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+No external software is currently required to use this program
+
+=head2 Required Perl Modules
+
+=over
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Short names limited to a length
+
+There is currently no feature to support any sort of shorted names
+based on a delimiting character. You are therefore limited to setting
+a length for making the fasta file shorter.
+
+=back
+
+=head1 SEE ALSO
+
+The fasta_shorten.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html   
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 07/17/2007
 
-UPDATED: 07/17/2007
+UPDATED: 12/10/2007
 
-VERSION: $Id: script_template.pl 68 2007-07-15 00:25:18Z JamesEstill $
+VERSION: $Rev$
 
 =cut
 
@@ -375,3 +468,10 @@ VERSION: $Id: script_template.pl 68 2007-07-15 00:25:18Z JamesEstill $
 #
 # 07/17/2007
 # - Program started.
+#
+# 12/10/2007
+# - Moved POD docs to end of script
+# - Changed program version reference to SVN revision
+# - Added new help subfunction that extracts help and usage
+#   text from POD documentation
+# - Added check for required arguments
