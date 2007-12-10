@@ -1,0 +1,398 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>batch_findltr.pl</title>
+<link rel="stylesheet" href="../css/dawgpaws_man.html" type="text/css" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;batch_findltr.pl</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<ul>
+
+		<li><a href="#usage">Usage</a></li>
+		<li><a href="#required_arguments">Required Arguments</a></li>
+	</ul>
+
+	<li><a href="#required_arguments">REQUIRED ARGUMENTS</a></li>
+	<li><a href="#options">OPTIONS</a></li>
+	<li><a href="#configuration_and_environment">CONFIGURATION AND ENVIRONMENT</a></li>
+	<ul>
+
+		<li><a href="#configuration_file">Configuration File</a></li>
+		<li><a href="#find_ltr_path_environment">FIND_LTR_PATH Environment</a></li>
+	</ul>
+
+	<li><a href="#dependencies">DEPENDENCIES</a></li>
+	<ul>
+
+		<li><a href="#required_software">Required Software</a></li>
+	</ul>
+
+	<li><a href="#bugs_and_limitations">BUGS AND LIMITATIONS</a></li>
+	<li><a href="#license">LICENSE</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#history">HISTORY</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>batch_findltr.pl - Run the find_ltr.pl program in batch mode.</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>This documentation refers to program version $Rev: 314 $</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>
+</p>
+<h2><a name="usage">Usage</a></h2>
+<pre>
+    batch_findltr.pl -i InFile -o OutFile -c Config.cfg [--gff]</pre>
+<p>
+</p>
+<h2><a name="required_arguments">Required Arguments</a></h2>
+<pre>
+    --indir         # Path to the input directory of fasta files
+    --outdir        # Path to the base output directory
+    --config        # Config file containg batch_findltr.pl paramaters
+  
+=head1 DESCRIPTION</pre>
+<p>Runs the program find_ltr.pl in batch mode. This makes use of a modified
+version of the find_ltr.pl program that takes changes to the LTR finding
+parameters at the command line.</p>
+<p>
+</p>
+<hr />
+<h1><a name="required_arguments">REQUIRED ARGUMENTS</a></h1>
+<dl>
+<dt><strong><a name="item_%2di%2c%2d%2dindir">-i,--indir</a></strong><br />
+</dt>
+<dd>
+Path of the input directory. This is the directory that contains all
+of the fasta files to anlayze. The fasta files should all end with
+the <em>fasta</em> extension to recognized. 
+
+</dd>
+<dd>
+<pre>
+
+=item -o,--outdir</pre>
+</dd>
+<dd>
+<p>Path of the output directory. This is the base directory that will 
+hold all of the batch_findltr.pl output</p>
+</dd>
+<p></p>
+<dt><strong><a name="item_%2dc%2c_%2d%2dconfig">-c, --config</a></strong><br />
+</dt>
+<dd>
+Path of the config file that contains the model options for running
+find_ltr. This config file is a white space delimited text file that 
+should be in the following format.
+</dd>
+<dd>
+<pre>
+  #---------------------------------------------------------------+
+  #1   2     3     4      5     6     7      8     9   10         |
+  #---------------------------------------------------------------+
+  Def  40  1100  16000    40   100   1000   500  700   0.0000000001
+  Alt  40  1100  1800     40   100   1000   500  400   0.00001</pre>
+</dd>
+<dd>
+<p>More information about this file is available under configuration and 
+environment heading below.</p>
+</dd>
+<p></p></dl>
+<p>
+</p>
+<hr />
+<h1><a name="options">OPTIONS</a></h1>
+<dl>
+<dt><strong><a name="item_%2d%2dfl%2dpath">--fl-path</a></strong><br />
+</dt>
+<dd>
+Location of the find_ltr.pl program. This option can also be set in the
+users envrionment. See Configuration and Environment below.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2dq%2c%2d%2dquiet">-q,--quiet</a></strong><br />
+</dt>
+<dd>
+Run the program with minimal output.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2dv%2c_%2d%2dverbose">-v, --verbose</a></strong><br />
+</dt>
+<dd>
+Run the program in verbose mode.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dgff">--gff</a></strong><br />
+</dt>
+<dd>
+Produce gff formatted output of the results.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dtest">--test</a></strong><br />
+</dt>
+<dd>
+Run the program in test mode. The find_ltr.pl program will not be run, but
+the location of source files, binaries, will be checked and the 
+outupt directories will be created.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dusage">--usage</a></strong><br />
+</dt>
+<dd>
+Short overview of how to use program from command line.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dhelp">--help</a></strong><br />
+</dt>
+<dd>
+Show program usage with summary of options.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dversion">--version</a></strong><br />
+</dt>
+<dd>
+Show program version.
+</dd>
+<p></p>
+<dt><strong><a name="item_%2d%2dman">--man</a></strong><br />
+</dt>
+<dd>
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+</dd>
+<p></p></dl>
+<pre>
+
+=head1 DIAGNOSTICS</pre>
+<p>Error messages generated by this program and possible solutions are listed
+below.</p>
+<dl>
+<dt><strong><a name="item_error%3a_no_fasta_files_were_found_in_the_input_di">ERROR: No fasta files were found in the input directory</a></strong><br />
+</dt>
+<dd>
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+</dd>
+<p></p>
+<dt><strong><a name="item_error%3a_could_not_create_the_output_directory">ERROR: Could not create the output directory</a></strong><br />
+</dt>
+<dd>
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+</dd>
+<p></p></dl>
+<p>
+</p>
+<hr />
+<h1><a name="configuration_and_environment">CONFIGURATION AND ENVIRONMENT</a></h1>
+<p>
+</p>
+<h2><a name="configuration_file">Configuration File</a></h2>
+<p>The configuration file in batch_findltr.pl specifies the options for
+running the find_ltr.pl program. This is a white space delimited text
+file. All lines starting with the # symbol will be treated as comments.
+An example of a config file is below:</p>
+<pre>
+  #---------------------------------------------------------------+
+  #1   2     3     4      5     6     7      8     9   10         |
+  #---------------------------------------------------------------+
+  Def  40  1100  16000    40   100   1000   500  700   0.0000000001
+  Alt  40  1100  1800     40   100   1000   500  400   0.00001</pre>
+<p>These 10 columns represents the following information:</p>
+<dl>
+<dt><strong><a name="item_col_1%2e">Col 1.</a></strong><br />
+</dt>
+<dd>
+Base_name for the parameter set. This set name will be used to
+name the output file, and will be added to the output of
+the gff output file. <strong>DO NOT INCLUDE SPACES IN NAMES</strong>
+</dd>
+<p></p>
+<dt><strong><a name="item_col_2%2e">Col 2.</a></strong><br />
+</dt>
+<dd>
+Minimum Length MEM
+</dd>
+<p></p>
+<dt><strong><a name="item_col_3%2e">Col 3.</a></strong><br />
+</dt>
+<dd>
+Mimimum distance between MEMs
+</dd>
+<p></p>
+<dt><strong><a name="item_col_4%2e">Col 4.</a></strong><br />
+</dt>
+<dd>
+Maximum distance between MEMs
+</dd>
+<p></p>
+<dt><strong><a name="item_col_5%2e">Col 5.</a></strong><br />
+</dt>
+<dd>
+Maximu gap between MEMs
+</dd>
+<p></p>
+<dt><strong><a name="item_col_6%2e">Col 6.</a></strong><br />
+</dt>
+<dd>
+Minimum length of the LTR
+</dd>
+<p></p>
+<dt><strong><a name="item_col_7%2e">Col 7.</a></strong><br />
+</dt>
+<dd>
+Maximum length of the LTR
+</dd>
+<p></p>
+<dt><strong><a name="item_col_8%2e">Col 8.</a></strong><br />
+</dt>
+<dd>
+Range Bin
+</dd>
+<p></p>
+<dt><strong><a name="item_col_9%2e">Col 9.</a></strong><br />
+</dt>
+<dd>
+Minimum length of ORF
+</dd>
+<p></p>
+<dt><strong><a name="item_col_10%2e">Col 10.</a></strong><br />
+</dt>
+<dd>
+Mac E value of HMM Hit
+</dd>
+<p></p></dl>
+<p>
+</p>
+<h2><a name="find_ltr_path_environment">FIND_LTR_PATH Environment</a></h2>
+<p>As an alternative to specifying the full path of the find_ltr program
+with the --fl-path option,
+the path of the find_ltr program can be specified in the users environment.
+For example in bash shell, add the following line to your .bashrc</p>
+<pre>
+  export FIND_LTR_PATH='/usr/local/genome/find_ltr.pl'</pre>
+<p>assuming that the find_ltr.pl program is in the /usr/local/genome/
+directory.</p>
+<p>
+</p>
+<hr />
+<h1><a name="dependencies">DEPENDENCIES</a></h1>
+<p>
+</p>
+<h2><a name="required_software">Required Software</a></h2>
+<ul>
+<li><strong><a name="item_find_ltr%2epl%3e">find_ltr.pl&gt;</a></strong><br />
+</li>
+A modified version of the find_ltr.pl program is required.
+<p></p></ul>
+<pre>
+
+=head2 Required Perl Modules</pre>
+<ul>
+<li><strong><a name="item_file%3a%3acopy">File::Copy</a></strong><br />
+</li>
+This module is required to copy the BLAST results.
+<p></p>
+<li><strong><a name="item_getopt%3a%3along">Getopt::Long</a></strong><br />
+</li>
+This module is required to accept options at the command line.
+<p></p></ul>
+<p>
+</p>
+<hr />
+<h1><a name="bugs_and_limitations">BUGS AND LIMITATIONS</a></h1>
+<pre>
+
+=head2 Bugs</pre>
+<ul>
+<li><strong><a name="item_no_bugs_currently_known">No bugs currently known</a></strong><br />
+</li>
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: <a href="http://sourceforge.net/tracker/?group_id=204962">http://sourceforge.net/tracker/?group_id=204962</a>
+<p></p></ul>
+<pre>
+
+=head2 Limitations</pre>
+<ul>
+<li><strong><a name="item_modified_version_of_findltr_required">Modified version of findltr required</a></strong><br />
+</li>
+The batch_finltr.pl program requies a modified version of the batch_ltr.pl
+program that accepts parameters from the command line.
+<p></p>
+<li><strong><a name="item_config_file_must_use_unix_format_line_endings">Config file must use UNIX format line endings</a></strong><br />
+</li>
+The config file must have UNIX formatted line endings. Because of
+this any config files that have been edited in programs such as
+MS Word must be converted to a UNIX compatible text format before
+being used with batch_blast.
+<p></p></ul>
+<pre>
+
+=head1 SEE ALSO</pre>
+<p>The batch_blast.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( <a href="http://dawgpaws.sourceforge.net/">http://dawgpaws.sourceforge.net/</a> )
+or the Sourceforge project page 
+( <a href="http://sourceforge.net/projects/dawgpaws">http://sourceforge.net/projects/dawgpaws</a> ) 
+for additional information about this package.</p>
+<p>
+</p>
+<hr />
+<h1><a name="license">LICENSE</a></h1>
+<p>GNU GENERAL PUBLIC LICENSE, VERSION 3</p>
+<p><a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>James C. Estill &lt;JamesEstill at gmail.com&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="history">HISTORY</a></h1>
+<p>STARTED: 09/13/2007
+
+</p>
+<p>UPDATED: 12/10/2007
+
+</p>
+<p>VERSION: $Rev: 314 $
+
+</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;batch_findltr.pl</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
