@@ -29,7 +29,6 @@
 #-----------------------------------------------------------+
 
 package DAWGPAWS;
-print "\n";
 
 #-----------------------------+
 # INCLUDES                    |
@@ -37,6 +36,12 @@ print "\n";
 use strict;
 use File::Copy;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -162,23 +167,23 @@ my $bac_parent_dir = $outdir;
 
 my ( @rep_libs );
 
-
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
     system ("perldoc $0");
     exit($ok ? 0 : 2);
-}
-
-if ($show_help || (!$ok) ) {
-    print_help("full");
 }
 
 if ($show_version) {
@@ -187,6 +192,9 @@ if ($show_version) {
     exit;
 }
 
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 # Show full help when required options
 # are not present
 if ( (!$indir) || (!$outdir) || (!$config_file) ) {
@@ -197,7 +205,7 @@ if ( (!$indir) || (!$outdir) || (!$config_file) ) {
 	if !$outdir;
     print "ERROR: A config file was not specified with the -c flag\n"
 	if !$config_file;
-    print_help("full");
+    print_help ("usage", $0 );
 }
 
 #-----------------------------+
@@ -740,50 +748,66 @@ sub apollo_convert {
 }
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
     
-    my $usage = "USAGE:\n".
-	"  batch_mask.pl -i DirToProcess -o OutDir";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"  --config       # Path to database list config file\n".
-	"\n".
-	"ADDITIONAL OPTIONS:\n".
-	"  --rm-path      # Full path to repeatmasker binary\n".
-	"  --engine       # The repeatmasker engine to use:\n".
-	"                 # [crossmatch|wublast|decypher]\n".
-	"                 # default is to use crossmatch\n".
-	"  --num-proc     # Number of processors to use for RepeatMasker\n".
-	"                 # default is one.\n".
-	"  --apollo       # Convert output to game.xml using apollo\n".
-	"                 # default is not to use apollo\n".
-	"  --quiet        # Run program with minimal output\n".
-	"  --test         # Run the program in test mode\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"\n".
-	"ADDITIONAL INFORMATION\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n";
-
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
 sub rmout_to_gff {
@@ -902,7 +926,7 @@ sub rmout_to_gff {
 
 =head1 NAME
 
-batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_mask.pl - Run RepeatMasker and parse results to a GFF format file. 
 
 =head1 VERSION
 
@@ -910,8 +934,15 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
- USAGE:
+=head2 Usage
+
     batch_mask.pl -i DirToProcess -o OutDir -c ConfigFile
+
+=head2 Required Arguments
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
+    -c, --config   # Path to the config file
 
 =head1 DESCRIPTION
 
@@ -921,9 +952,7 @@ then converts the repeat masker *.out file into the
 GFF format and then to the game XML format for
 visualization by the Apollo genome anotation program.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 Required Arguments
 
 =over 2
 
@@ -942,7 +971,7 @@ fasta files to use as masking databases.
 
 =back
 
-=head2 Additional Options
+=head1 OPTIONS
 
 =over 2
 
@@ -978,12 +1007,6 @@ Run the program with minimal output.
 
 Run the program without doing the system commands.
 
-=back
-
-=head2 Additional Program Information
-
-=over 2
-
 =item --usage
 
 Short overview of how to use program from command line.
@@ -1005,16 +1028,35 @@ POD documentation for the program.
 
 =head1 DIAGNOSTICS
 
-The error messages that can be generated will be listed here.
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: No fasta files were found in the input directory
+
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
+
+=head2 Configuration File
 
 The major configuration file for this program is the list of
 datbases indicated by the -c flag.
 
-=head2 Databases Config File
-
-This file is a tab delimited text file. Line beginning with # are ignored.
+This file is a tab delimited text file. 
+Lines beginning with # are ignored.
 
 B<EXAMPLE>
 
@@ -1047,15 +1089,15 @@ The path to the fasta format file containing the repeats.
 
 =over
 
-=item *
+=item * RepeatMasker
 
-RepeatMasker
+The RepeatMasker program can be download at:
 (http://www.repeatmasker.org/)
 
-=item *
+=item * Apollo Genome Annotation Curation Tool
 
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
+The Apollo Genome Annotation Curation tool can be downloaded at
+http://www.fruitfly.org/annot/apollo/ .
 
 =back
 
@@ -1063,33 +1105,26 @@ http://www.fruitfly.org/annot/apollo/
 
 =over
 
-=item *
+=item * File::Copy
 
-File::Copy
+This module is required to copy the BLAST results.
 
-=item *
+=item * Getopt::Long
 
-Getopt::Long
+This module is required to accept options at the command line.
 
 =back
 
 =head1 BUGS AND LIMITATIONS
 
-=head2 TO DO
+=head2 Bugs
 
 =over 2
 
-=item *
+=item * No bugs currently known 
 
-Make the results compatable for an upload to a chado
-database.
-
-=item *
-
-Make it a variable to possible to put the gff output (1) all in positive 
-strand, (2) all in negative strand, (3) alignment to positive or
-negative strand, (4) cumulative in both positive and negative strand.
-Current behavior is to do number 1 above.
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
@@ -1097,17 +1132,32 @@ Current behavior is to do number 1 above.
 
 =over
 
-=item *
+=item * Limited RepeatMasker version testing
 
 This program has been tested with RepeatMasker v  3.1.6
 
+=item * No Env Options
+
+Currently this program does not make use of variables in the user
+environment. However, it would be useful to define program paths
+and some common options in the environment.
+
 =back
+
+=head1 SEE ALSO
+
+The batch_mask.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html   
 
 =head1 AUTHOR
 
@@ -1117,7 +1167,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 09/11/2007
+UPDATED: 12/10/2007
 
 VERSION: $Rev$
 
@@ -1262,3 +1312,8 @@ VERSION: $Rev$
 # 09/11/2007
 # - Getting rid of LOG, all printing to STDERR
 # - Dropped attempts to move *.tbl file.
+#
+# 12/10/2007
+# - Changed print_help to a subfunction that extracts
+#   help and usage message from the POD documentation
+# - Updated POD documentation
