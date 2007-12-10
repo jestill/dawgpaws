@@ -589,7 +589,7 @@ This documentation refers to program version $Rev$
     --indir         # Path to the input directory of fasta files
     --outdir        # Path to the base output directory
     --config        # Config file containg batch_findltr.pl paramaters
-  
+
 =head1 DESCRIPTION
 
 Runs the program find_ltr.pl in batch mode. This makes use of a modified
@@ -605,7 +605,7 @@ parameters at the command line.
 Path of the input directory. This is the directory that contains all
 of the fasta files to anlayze. The fasta files should all end with
 the I<fasta> extension to recognized. 
- 
+
 =item -o,--outdir
 
 Path of the output directory. This is the base directory that will 
@@ -673,7 +673,6 @@ Show the full program manual. This uses the perldoc command to print the
 POD documentation for the program.
 
 =back
-
 
 =head1 DIAGNOSTICS
 
@@ -784,7 +783,6 @@ A modified version of the find_ltr.pl program is required.
 
 =back
 
-
 =head2 Required Perl Modules
 
 =over
@@ -801,7 +799,6 @@ This module is required to accept options at the command line.
 
 =head1 BUGS AND LIMITATIONS
 
-
 =head2 Bugs
 
 =over 2
@@ -812,7 +809,6 @@ If you find a bug with this software, file a bug report on the DAWG-PAWS
 Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
-
 
 =head2 Limitations
 
@@ -831,7 +827,6 @@ MS Word must be converted to a UNIX compatible text format before
 being used with batch_blast.
 
 =back
-
 
 =head1 SEE ALSO
 

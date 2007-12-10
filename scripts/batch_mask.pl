@@ -952,7 +952,7 @@ then converts the repeat masker *.out file into the
 GFF format and then to the game XML format for
 visualization by the Apollo genome anotation program.
 
-=head1 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
