@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 07/31/2007                                       |
-# UPDATED: 07/31/2007                                       |
+# UPDATED: 12/11/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the genscan gene prediction program in batch mode.   |
@@ -20,166 +20,34 @@
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-batch_genscan.pl - Run genscan and parse results to a gff format file. 
-
-=head1 VERSION
-
-This documentation refers to batch_mask version 1.0
-
-=head1 SYNOPSIS
-
- Usage:
- batch_genscan.pl -i DirToProcess -o OutDir
-
-=head1 DESCRIPTION
-
-Run the genscan gene prediction program in batch mode.
-This will run genscan as well as convert the output to gff format.
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--indir
-
-Path of the directory containing the sequences to process.
-
-=item -o,--outdir
-
-Path of the directory to place the program output.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --genscan-path
-
-The full path to the genscan binary.
-
-=item --lib-path
-
-The full path to the library file.
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=item --test
-
-Run the program without doing the system commands.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The error messages that can be generated will be listed here.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-=head2 Required Software
-
-=over
-
-=item *
-
-Genscan
-
-=back
-
-=head2 Required Perl Modules
-
-=over
-
-=item *
-
-File::Copy
-
-=item *
-
-Getopt::Long
-
-=back
-
-=head1 BUGS AND LIMITATIONS
-
-=head2 TO DO
-
-=over 2
-
-=item *
-
-Make the results compatable for an upload to a chado
-database.
-
-=back
-
-=head2 Limitations
-
-=over
-
-=item *
-
-Currently no known limitations.
-
-=back
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
-print "\n";
-
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
+use strict;
 use File::Copy;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "1.0";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
+
+#-----------------------------+
+# VARS USING ENV              |
+#-----------------------------+
+# If not provided here, use the default assumtion that
+# the file location are in the user's path and will
+# use Maize as the default library.
+my $genscan_path = $ENV{DP_GENSCAN_BIN} ||
+    "genscan";
+my $lib_path = $ENV{DP_GENSCAN_LIB} ||
+    "Maize.smat";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -192,9 +60,6 @@ my $msg;                       # Message printed to the log file
 my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
-my $genscan_path = "genscan";  # Full path to the repeatmasker binary
-                               # Default is to assume it is in user's path
-my $lib_path = "/usr/local/genome/lib/genscan/Maize.smat";
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -240,10 +105,16 @@ my $file_num = 0;
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
@@ -251,22 +122,24 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
 if ($show_version) {
     print "\nbatch_mask.pl:\n".
-	"Version: $ver\n\n";
+	"Version: $VERSION\n\n";
     exit;
 }
 
-# Show full help when required options
-# are not present
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) ) {
-    print_help("full");
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
+    print_help ("usage", $0 );
 }
-
 
 #-----------------------------+
 # OPEN THE LOG FILE           |
@@ -281,7 +154,6 @@ if ($logfile) {
     print LOG "  JOB: $time_now\n";
     print LOG "==================================\n";
 }
-
 
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
@@ -338,8 +210,7 @@ unless (-e $outdir) {
 # RepLibs ARRAY               |
 #-----------------------------+
 
-for my $ind_file (@fasta_files)
-{
+for my $ind_file (@fasta_files) {
     
     $proc_num++;
     $file_num++;
@@ -497,6 +368,76 @@ sub genscan_2_gff
 
 
 sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+
+1;
+__END__
+
+
+# The deprecated print_help subfunction
+
+sub print_help {
 
     # Print requested help or exit.
     # Options are to just print the full 
@@ -533,11 +474,188 @@ sub print_help {
     exit;
 }
 
+=head1 NAME
+
+batch_genscan.pl - Run genscan and parse results to a gff format file. 
+
+=head1 VERSION
+
+This documentation refers to batch_genscan.pl version $Rev$
+
+=head1 SYNOPSIS
+
+=head2 Usage
+
+    batch_genscan.pl -i DirToProcess -o OutDir
+
+=head2 Required Variables
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
+
+=head1 DESCRIPTION
+
+Run the GENSCAN gene prediction program in batch mode.
+This will run genscan as well as convert the output to gff format.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--indir
+
+Path of the directory containing the sequences to process.
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --genscan-path
+
+The full path to the genscan binary.
+
+=item --lib-path
+
+The full path to the library file.
+
+=item --logfile
+
+Path to a file that will be used to log program status.
+If the file already exists, additional information will be concatenated
+to the existing file.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --test
+
+Run the program without doing the system commands.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The error messages that can be generated will be listed here.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+=head 2 User Environment
+
+The following environment variables may be used to designate the full
+path to the GENSCAN binary and the default library path to use.
+
+=over 
+
+=item DP_GENSCAN_BIN
+
+The path to the genscan binary file.
+
+=item DP_GENSCAN_LIB
+
+The path to the default library to use for gene predictions using genscan.
+
+=back
+
+The following example shows the lines that would need to be added to your
+.bashrc file in the bash shell to specify the location of the genscan
+binary and the Maize library file in your home directory.
+
+    export DP_GENSCAN_BIN='/home/yourname/apps/genscan/genscan'
+    export DP_GENSCAN_LIB='/home/yourname/apps/genscan/Maize.smat'
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over
+
+=item * GENSCAN
+
+This program obviously requires the GENSCAN gene model prediction program.
+Information for downloading the GENSCAN program is available from:
+http://genes.mit.edu/GENSCANinfo.html
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Limitations
+
+=over
+
+=item * Config file must use UNIX format line endings
+
+The config file must have UNIX formatted line endings. Because of
+this any config files that have been edited in programs such as
+MS Word must be converted to a UNIX compatible text format before
+being used with batch_blast.
+
+=back
+
+=head1 SEE ALSO
+
+The batch_genscan.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html  
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
 =head1 HISTORY
 
 STARTED: 07/31/2007
 
 UPDATED: 07/31/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -546,5 +664,14 @@ UPDATED: 07/31/2007
 #-------------------------------------------------------+
 #
 # 07/31/2007
-# - Program started
+# - Program started and bulk of functions added
 # 
+# 12/11/2007
+# - Added SVN tracking of Rev
+# - Moved POD documentation to the end of the file
+# - Added use strict
+# - Added print_help subfunction that extracts help
+#   and usage statements from the POD documentation
+# - Update POD documentation
+# - Changed the path to the genscan binary and the default
+#   libary to variables set in the user environment
