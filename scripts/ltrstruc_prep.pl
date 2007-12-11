@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/24/2007                                       |
-# UPDATED: 09/24/2007                                       |
+# UPDATED: 12/11/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files with UNIX line endings  |
@@ -34,6 +34,12 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -76,12 +82,14 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -93,6 +101,20 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
+if ( (!$indir) || (!$outdir) ) {
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
+    print_help ("usage", $0 );
 }
 
 #-----------------------------------------------------------+
@@ -188,6 +210,69 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
 sub unix2dos {
     
     # Path of the file in UNIX Format
@@ -219,6 +304,10 @@ sub unix2dos {
 
 }
 
+
+1;
+__END__
+
 sub print_help {
 
     # Print requested help or exit.
@@ -249,30 +338,32 @@ sub print_help {
     exit;
 }
 
-
 =head1 NAME
 
 ltrstruc_prep.pl - Prepare files needed to do a run in LTR_STRUC
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
+=head2 Usage
+
     ltrstruc_prep.pl -i InDir -o OutDir
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+=head2 Required Arguments
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
 
 =head1 DESCRIPTION
 
-This is what the program does
+Given a directory of fasta files with UNIX line endings
+ltrstruc_prep.pl will create DOS formated files with the txt
+extension. This will also create the flist.txt file.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head 2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -286,9 +377,7 @@ Path of the output file.
 
 =back
 
-=head1 Additional Options
-
-=over
+=head1 OPTIONS
 
 =over 2
 
@@ -331,17 +420,63 @@ or properties that can be set.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+=head2 Required Software
+
+=over
+
+=item * LTR_Struc
+
+This program is designed to create files required for the LTR_Struc
+program. This program is available for download from:
+http://www.genetics.uga.edu/retrolab/data/LTR_Struc.html
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+There are currently no known major limitations to using this program.
+
+=head1 SEE ALSO
+
+The ltrstruc_prep.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html  
 
 =head1 AUTHOR
 
@@ -360,4 +495,13 @@ VERSION: $Rev$
 #-----------------------------------------------------------+
 # HISTORY                                                   |
 #-----------------------------------------------------------+
+# 9/24/2007
+# - Main program body written
 #
+# 12/11/2007
+# - Added SVN Rev tracking
+# - Updated POD documentation
+# - Changed print_help subfunction to a subfunction that
+#   extracts the help and usage statement from the POD
+#   documentation
+# - Added check for required arguments
