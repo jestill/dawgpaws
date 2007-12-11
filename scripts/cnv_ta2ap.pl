@@ -811,15 +811,13 @@ cnv_ta2ap.pl - Convert TriAnnot GFF3 files to Apollo format
 =head1 SYNOPSIS
 
 =head2 Usage
-    
+
     cnv_ta2ap.pl -i InFastaFile -g GffDir -o OutputDir
 
 =head2 Required Arguments
 
-    -i, --infile   # Directory of fasta files to process
     -g, --gffdir   # Directory containing TriAnnot gff files
     -o, --outdir   # Path to the base output directory
-    --catout       # Path to the output file for concatenated output
 
 =head1 DESCRIPTION
 
@@ -828,20 +826,29 @@ xml format for use in the Apollo Genome Annotation
 Curation program. This is for use with output from the
 TriAnnot pipeline.
 
-=head1 ARGUMENTS
+=head1 REQUIRED ARGUMENTS
 
 =over
 
-=item -g
+=item -g,--gffdir
 
-gff data directory
+This is the directory that contains the gff output from the TriAnnot
+program that you want to convert.
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
 
 =back
-
 
 =head1 OPTIONS
 
 =over 2
+
+=item --catout
+
+Optional path to a single gff output file that will contain all
+of the converted files concatenated into a single gff file.
 
 =item -i,--infile
 
