@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# PAWS: ApConvert.pl                                        |
+# cnv_ta2ap.pl - Convert TriAnnot GFF3 to GFF output        |
 #                                                           |
 #-----------------------------------------------------------+ 
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # STARTED: 02/09/2007                                       |
-# UPDATED: 04/12/2007                                       |
+# UPDATED: 12/11/2007                                       |
 # DESCRIPTION:                                              |
 #  Converts gff data tracks from gff format to the game     |
 #  xml format for use in the Apollo Genome Annotation       |
@@ -30,50 +30,25 @@
 # [ ] Grep the GFF directory to load the array of GFF files
 #     into the Files2Convert array
 # [ ] DON'T HARD CODE APOLLO PATH USE ENV VAR
-=head1 NAME
-
-app_gffcon.pl - Convert TriAnnot gff files to Apollo format
-
-=head1 SYNOPSIS
-
-  Usage: ApConvert.pl -i InFastaFile -g GffDir -o OutputDir.
-         Dir string should include / at the end
-         ApConvert.pl -h to print full help statement.
-
-=head1 DESCRIPTION
-
-Converts gff data tracks from gff format to the game
-xml format for use in the Apollo Genome Annotation
-Curation program. This is for use with output from the
-TriAnnot pipeline.
-
-=head1 ARGUMENTS
-
-=over
-
-=item -i
-
-input file path
-
-=item -g
-
-gff data directory
-
-=back
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
 
 package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Getopt::Std; 
+use strict;
+use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+
+#-----------------------------+
+# PROGRAM VARIABLES           |
+#-----------------------------+
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # SET VARIABLE SCOPE          |
@@ -83,63 +58,95 @@ my $InputRoot;                 # Base directory that contains all the GFF files
 my $OutputRoot;                # Output directory
 my $CatOut;                    # Concatenated output of all gff files,
                                #  not required
-my %Options;                   # Options hash to hold command line options
-my $ShowHelp;                  # Boolean to print full help statement
+#my %Options;                   # Options hash to hold command line options
 my $Valid = '0';               # Boolean [0,1] : A valid gff file was 
                                # found for conversion
 
-#-----------------------------+
-# GET OPTIONS FROM THE        |
-# COMMAND LINE                |
-#-----------------------------+
-my $Usage = "ApConvert.pl -i InFastaFile -g GffDir -o OutputDir\n".
-    "Dir string should include / at the end\n".
-    "ApConvert.pl -h to print full help statement.\n";
 
-getopts('i:g:o:O:h', \%Options);
+# BOOLEANS
+my $show_help = 0;             # Show program help
+my $show_version = 0;          # Show program version
+my $show_man = 0;              # Show program manual page using peldoc
+my $show_usage = 0;            # Show program usage command             
+my $quiet = 0;                 # Boolean for reduced output to STOUT
+my $test = 0;                  # Run the program in test mode
+my $verbose = 0;               # Run the program in verbose mode
+my $create_game = 0;           # Create game.xml output file
 
-$ShowHelp = $Options{h};
+# Command vars with default values
+my $ap_path = "apollo";        # Apollo binary, assumes this is in the
+                               # user's Path
+
 #-----------------------------+
-# PRINT HELP IF REQUESTED     |
+# COMMAND LINE OPTIONS        |
 #-----------------------------+
-if ($ShowHelp)
-{
-    &PrintHelp;
-    exit;
+my $ok = GetOptions(
+		    # Required Arguments
+                    "g|gffdir=s"   => \$InputRoot,
+		    "o|outdir=s"   => \$OutputRoot,
+		    "catout=s"     => \$CatOut,
+		    # Optional strings
+		    "ap-path=s"    => \$ap_path,
+		    "i|infile=s"   => \$InFastaFile,
+		    # Booleans
+		    "game"         => \$create_game,
+		    "verbose"      => \$verbose,
+		    "test"         => \$test,
+		    "usage"        => \$show_usage,
+		    "version"      => \$show_version,
+		    "man"          => \$show_man,
+		    "h|help"       => \$show_help,
+		    "q|quiet"      => \$quiet,);
+
+print STDERR "The ApConvert pogram has started.\n" if $verbose;
+
+#-----------------------------+
+# SHOW REQUESTED HELP         |
+#-----------------------------+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-$InFastaFile = $Options{i} ||
-    die "ERROR. $Usage\n"; 
-$InputRoot = $Options{g} ||
-    die "ERROR. $Usage\n";
-$OutputRoot = $Options{o} ||
-    die "ERROR. $Usage\n";
-$CatOut = $Options{O};
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
-print "The ApConvert pogram has started.\n";
+if ($show_man) {
+    # User perldoc to generate the man documentation.
+    system ("perldoc $0");
+    exit($ok ? 0 : 2);
+}
+
+if ($show_version) {
+    print "\nbatch_mask.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
+}
 
 #-----------------------------+ 
 # CHECK FOR EXISTENCE OF      |
 # INPUT FILES AND OUTPUT DIR  |
 #-----------------------------+
-# Input FASTA file
-unless (-e $InFastaFile)
-{
-    print "The fasta file does not exist\n:".$InFastaFile."\n";
-    exit;
+# Check for  input FASTA file if it is passed at the 
+# command line
+if ($InFastaFile) { 
+    unless (-e $InFastaFile) {
+	print "The fasta file does not exist\n:".$InFastaFile."\n";
+	exit;
+    }
 }
 
 # Input GFF directory
-unless (-e $InputRoot)
-{
+unless (-e $InputRoot) {
     print "The input directory can not be found at:\n";
     print "$InputRoot\n";
     exit;
 }
 
 # MAKE OUTPUT DIR IF IT DOES NOT EXIST
-unless (-e $OutputRoot)
-{
+unless (-e $OutputRoot) {
     mkdir $OutputRoot, 0777;
 }
 
@@ -163,7 +170,7 @@ if ($CatOut)
 my $NumFiles = $#Files2Convert;
 
 # Remove gff from Files2Convert
-for ($i=0; $i<=$NumFiles; $i++)
+for (my $i=0; $i<=$NumFiles; $i++)
 {
     if ($Files2Convert[$i] =~ /(.*)\.gff/)
     {
@@ -176,7 +183,7 @@ foreach my $FileRoot (@Files2Convert)
 {   
 
     my $TriGffPath = $InputRoot.$FileRoot.".gff";      # TriAnnot Gff
-    my $ApGffPath = $InputRoot.$FileRoot.".ap.gff";     # Apollo Gff
+    my $ApGffPath = $InputRoot.$FileRoot.".ap.gff";    # Apollo Gff
     my $OutPath = $OutputRoot.$FileRoot.".game.xml";   # Game XML output 
 
     # SHOW PROGRAM STATUS
@@ -199,9 +206,7 @@ foreach my $FileRoot (@Files2Convert)
 	#---------------+
 	# FGENESH       |
 	#---------------+
-	if ($FileRoot =~ "2fGh")
-	{
-
+	if ($FileRoot =~ "2fGh") {
 	    &ModFGENESH ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -210,8 +215,7 @@ foreach my $FileRoot (@Files2Convert)
 	# GeneMark.hmm  |
 	# Ta Matrix     |
 	#---------------+
-	elsif ($FileRoot =~ "2gmTa")
-	{
+	elsif ($FileRoot =~ "2gmTa") {
 	    &ModGenMark ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -220,9 +224,7 @@ foreach my $FileRoot (@Files2Convert)
 	# GeneMark.hmm  |
 	# Os Matrix     |
 	#---------------+
-	elsif ($FileRoot =~ "2gmOs")
-	{
-
+	elsif ($FileRoot =~ "2gmOs") {
 	    &ModGenMark ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -231,8 +233,7 @@ foreach my $FileRoot (@Files2Convert)
 	# GeneMark.hmm  |
 	# Hv Matrix     |
 	#---------------+
-	elsif ($FileRoot =~ "2gmHv")
-	{
+	elsif ($FileRoot =~ "2gmHv") {
 	    &ModGenMark ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -241,8 +242,7 @@ foreach my $FileRoot (@Files2Convert)
 	# GeneMark.hmm  |
 	# Zm Matrix     |
 	#---------------+
-	elsif ($FileRoot =~ "2gmZm")
-	{
+	elsif ($FileRoot =~ "2gmZm") {
 	    &ModGenMark ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -250,18 +250,15 @@ foreach my $FileRoot (@Files2Convert)
 	#---------------+
 	# GeneId        |
 	#---------------+
-	elsif ($FileRoot =~ "2gID")
-	{
+	elsif ($FileRoot =~ "2gID") {
 	    &ModGeneId ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
 	
-
 	#---------------+
 	# Eugene Os     |
 	#---------------+
-	elsif ($FileRoot =~ "2eugOs")
-	{
+	elsif ($FileRoot =~ "2eugOs") {
 	    &ModEugene ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
 	}
@@ -270,14 +267,15 @@ foreach my $FileRoot (@Files2Convert)
 	# TRF           |
 	#---------------+
 	# Tandem Repeat Finder
-	elsif ($FileRoot =~ "1trf")
-	{
+	elsif ($FileRoot =~ "1trf") {
 	    &ModTRF ( $TriGffPath, $ApGffPath );
 	    $Valid = '1';
+	}
+
 	#---------------+
 	# UNSUPPORTED   |
 	#---------------+
-	} else {
+	else {
 	    $Valid = '0';
 	    print "\a\nERROR\n";
 	    print "The file $FileRoot is not currently supported.\n";
@@ -290,11 +288,13 @@ foreach my $FileRoot (@Files2Convert)
 	#-----------------------------+
 	# Will comment this out while I am working
 	# on the FGENESH and GenMark conversion subfunctions
-	if ($Valid == '1')
-	{
-#	    # Convert GFF file to game format
-#	    &ApolloConvert ($ApGffPath, "gff", $OutPath, 
-#			    "game", $InFastaFile, "NULL");
+	if ($Valid == '1') {
+
+	    # Convert GFF file to game format
+	    if ($create_game) {
+		&ApolloConvert ($ApGffPath, "gff", $OutPath, 
+				"game", $InFastaFile, "NULL", $ap_path);
+	    }
 	    
 	    # Add apollo formatted GFF output to concatenated
             # GFF output file
@@ -309,31 +309,29 @@ foreach my $FileRoot (@Files2Convert)
 	    } # End of if CatOut
 	} # End of if Valid is true
 
-    } else {
+    }
+    else {
 	print "\a\aERROR: The input Gff file does not exist at:".
 	    "\n$TriGffPath\n";
     } # End of if input file exists
 
 } # End of for each file in Files2Convert
 
-
 #-----------------------------+
 # CONVERT CONCATENATED GFF    |
 # FILE TO THE APOLLO FORMAT   |
-#-----------------------------+\
-if ($CatOut)
-{
-    print "Converting the concatenated GFF file\n";
-    close CATOUT;
-
-    my $CatGameOut = $CatOut.".game.xml";
-
-    &ApolloConvert ($CatOut, "gff", $CatGameOut, 
-		    "game", $InFastaFile, "NULL");
+#-----------------------------+
+if ($CatOut) {    
+    if ($create_game) {
+	print "Converting the concatenated GFF file\n";
+	close CATOUT;
+	
+	my $CatGameOut = $CatOut.".game.xml";
+	
+	&ApolloConvert ($CatOut, "gff", $CatGameOut, 
+			"game", $InFastaFile, "NULL", $ap_path);
+    }
 }
-# Add bioperl dependent code here to concatenate the game xml files
-# to a single XML file name for the root name in the fasta file or
-# a root name given by the user.
 
 exit;
 
@@ -341,8 +339,7 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
-sub ApolloConvert
-{
+sub ApolloConvert {
 #-----------------------------+
 # CONVERT AMONG FILE FORMATS  |
 # USING THE APOLLO PROGRAM    |
@@ -373,13 +370,13 @@ sub ApolloConvert
                                # When not required this can be passed as na
     my $DbPass = $_[5];        # Database password for logging on to the 
                                # chado database for reading or writing.
-    my ( $ApPath, $ApCmd );
+    my $ApPath = $_[6];        # Path to the Apollo binary
+    my ( $ApCmd );
 
 
 # The following path is for the jlb10 machine
 #    $ApPath = "/home/jestill/Apps/Apollo/Apollo";
-    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
-
+#    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
 #    $ApPath = "/Applications/Apollo/bin/apollo";
 
     # Set the base command line. More may need to be added for different
@@ -411,8 +408,7 @@ sub ApolloConvert
 }
 
 
-sub ModFGENESH
-{
+sub ModFGENESH {
 #-----------------------------+
 # MODIFY THE FGENESH GFF FILE |
 # TO WORK WITH APOLLO         |
@@ -425,7 +421,7 @@ sub ModFGENESH
     my $LineCount = 0;  # LineCount used for debu
     
     open (IN, "<$InFile") ||
-	die "Can not open infile:\n$Infile\n";
+	die "Can not open infile:\n$InFile\n";
     open (OUT, ">$OutFile") ||
 	die "Can not open outfile:\n$OutFile\n";
     
@@ -469,8 +465,7 @@ sub ModFGENESH
 
 
 
-sub ModGenMark
-{
+sub ModGenMark {
 #-----------------------------+
 # MODIFY THE FGENESH GFF FILE |
 # TO WORK WITH APOLLO         |
@@ -483,7 +478,7 @@ sub ModGenMark
     my $LineCount = 0;  # LineCount used for debu
     
     open (IN, "<$InFile") ||
-	die "Can not open infile:\n$Infile\n";
+	die "Can not open infile:\n$InFile\n";
     open (OUT, ">$OutFile") ||
 	die "Can not open outfile:\n$OutFile\n";
     
@@ -525,8 +520,7 @@ sub ModGenMark
 
 }
 
-sub ModEugene
-{
+sub ModEugene {
 #-----------------------------+
 # MODIFY THE EUGENE GFF FILE  |
 # TO WORK WITH APOLLO         |
@@ -539,7 +533,7 @@ sub ModEugene
     my $LineCount = 0;  # LineCount used for debu
     
     open (IN, "<$InFile") ||
-	die "Can not open infile:\n$Infile\n";
+	die "Can not open infile:\n$InFile\n";
     open (OUT, ">$OutFile") ||
 	die "Can not open outfile:\n$OutFile\n";
     
@@ -581,8 +575,7 @@ sub ModEugene
 
 }
 
-sub ModGeneId
-{
+sub ModGeneId {
 #-----------------------------+
 # MODIFY THE FGENESH GFF FILE |
 # TO WORK WITH APOLLO         |
@@ -595,7 +588,7 @@ sub ModGeneId
     my $LineCount = 0;  # LineCount used for debu
     
     open (IN, "<$InFile") ||
-	die "Can not open infile:\n$Infile\n";
+	die "Can not open infile:\n$InFile\n";
     open (OUT, ">$OutFile") ||
 	die "Can not open outfile:\n$OutFile\n";
     
@@ -639,8 +632,7 @@ sub ModGeneId
 
 
 
-sub ModTRF
-{
+sub ModTRF {
 #-----------------------------+
 # MODIFY THE TRF GFF FILE     |
 # TO WORK WITH APOLLO         |
@@ -654,7 +646,7 @@ sub ModTRF
     my $LineCount = 0;  # LineCount used for debug
     
     open (IN, "<$InFile") ||
-	die "Can not open infile:\n$Infile\n";
+	die "Can not open infile:\n$InFile\n";
     open (OUT, ">$OutFile") ||
 	die "Can not open outfile:\n$OutFile\n";
     
@@ -702,8 +694,77 @@ sub ModTRF
 
 
 
-sub PrintHelp 
-{
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+
+1;
+__END__
+
+
+# THE FOLLOWING IS DEPRECATED
+
+sub PrintHelp  {
 #-----------------------------+
 # PRINT HELP STATEMENT        |
 #-----------------------------+
@@ -743,11 +804,218 @@ sub PrintHelp
     print $FullUsage;
 }
 
+=head1 NAME
+
+cnv_ta2ap.pl - Convert TriAnnot GFF3 files to Apollo format
+
+=head1 SYNOPSIS
+
+=head2 Usage
+    
+    cnv_ta2ap.pl -i InFastaFile -g GffDir -o OutputDir
+
+=head2 Required Arguments
+
+    -i, --infile   # Directory of fasta files to process
+    -g, --gffdir   # Directory containing TriAnnot gff files
+    -o, --outdir   # Path to the base output directory
+    --catout       # Path to the output file for concatenated output
+
+=head1 DESCRIPTION
+
+Converts gff data tracks from gff format to the game
+xml format for use in the Apollo Genome Annotation
+Curation program. This is for use with output from the
+TriAnnot pipeline.
+
+=head1 ARGUMENTS
+
+=over
+
+=item -g
+
+gff data directory
+
+=back
+
+
+=head1 OPTIONS
+
+=over 2
+
+=item -i,--infile
+
+Input FASTA file. The input fasta file will be used as the base file
+to map gff sequence features onto when converting from gff to
+game.xml output.
+
+=item --ap-path
+
+Full path to the binary file for the Apollo Genome Annotation
+Curation program.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item --verbose
+
+Run the program with maximum output.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The program cnv_ta2ap.pl does not currently use an external configuration
+file or make use of variables set the user's environment.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over
+
+=item * Apollo Genome Annotation Tool
+
+To convert output from gff output to the game.xml file format you
+will need to have a version of Apollo Genome Annotation program
+on your local machine AND have access to the Apollo GUI. Apollo 
+can be downloaded at:
+http://www.fruitfly.org/annot/apollo/
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Limited support for TriAnnot output
+
+Conversion subfunctions are specific to the data type
+being converted. Since the DAWG-PAWS process makes limited use of
+the TriAnnot output, support is limited to the following
+output files.
+
+=over
+
+=item 1trf 
+
+Tandem Repeat Finder
+
+=item 2eugOs 
+
+Eugene - Oryza sativa.
+
+=item 2fGh 
+
+Fgenesh - Gene Model Prediction
+
+=item 2gID 
+
+GeneID - Gene Model Prediction.
+
+=item 2gmHv 
+
+GeneMark Hordeum vulgare
+
+=item 2gmOs 
+
+GeneMark Oryza sativa.
+
+=item 2gmTa 
+
+GeneMark Triticum aestevum.
+
+=item 2gmZm 
+
+GeneMark Zea mays
+
+=back
+
+=back
+
+=head1 SEE ALSO
+
+The batch_blast.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
 =head1 HISTORY
 
 STARTED: 02/09/2007
 
-UPDATED: 06/22/2007
+UPDATED: 12/11/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -791,3 +1059,18 @@ UPDATED: 06/22/2007
 #
 # 06/22/2007
 # - Adding POD documentation and cleaning up code
+#
+# 12/11/2007
+# - Moved POD documentation to the end of the script
+# - Updated POD documentatin
+# - Added print_help subfunction
+# - Deprecated PrintHelp subfunction
+# - Added SVN Rev tracking
+# - Converted options vars to long format
+# - Added use strict and cleaned up problems
+# - Commented out all refernces to the ApolloConvert
+#   subfunction.
+# - The fasta file is only used for conversion to game.xml
+# - Added the create_game boolean
+# - Added option to provide the path to apollo at the command line
+# - Wow I hope nothing broke
