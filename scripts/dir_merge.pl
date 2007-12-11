@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/27/2007                                       |
-# UPDATED: 07/27/2007                                       |
+# UPDATED: 12/11/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Merge a two directories containing subdirs with the same |
@@ -24,99 +24,6 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-
-=head1 NAME
-
-dir_merge.pl - Merge directories
-
-=head1 VERSION
-
-This documentation refers to program version 0.1
-
-=head1 SYNOPSIS
-
- Usage:
-  dir_merge.pl -i 'dir01,dir02' -o new_dir
-
-=head1 DESCRIPTION
-
-This is what the program does
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--indir
-
-The directories to merge.
-
-=item -o,--outdir
-
-The directory the merged dirs will be moved to.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-Other modules or software that the program is dependent on.
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
 package DAWGPAWS;
 
 #-----------------------------+
@@ -125,11 +32,17 @@ package DAWGPAWS;
 use strict;
 use Getopt::Long;
 use File::Copy;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "0.1";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -153,7 +66,7 @@ my $verbose = 0;
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions("i|indir=s"   => \$indir_list,
+my $ok = GetOptions("i|indirs=s"  => \$indir_list,
                     "o|outdir=s"  => \$outdir,
 		    # Booleans
 		    "overwrite"   => \$do_overwrite,
@@ -161,23 +74,26 @@ my $ok = GetOptions("i|indir=s"   => \$indir_list,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,
-		    "$verbose"    => \$verbose,
+		    "verbose"     => \$verbose,
 		    "q|quiet"     => \$quiet,);
 
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $ver\n\n";
+    print "\n$0:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -187,12 +103,17 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 # Exit if indir_list and outdir not specified at cmdline
 if ( (!$indir_list) || (!$outdir) ) {
     print "\a";
-    print "ERROR: An input list of dirs and and output dir is required.\n";
-    print "For help use:\n$0 --help\n";
-    exit;
+    print STDERR "ERROR: An input list of dirs must be ".
+	" specified at the command line.\n" if (!$indir_list);
+    print STDERR "ERROR: An base output directory must be specified".
+	" at the command line.\n" if (!$outdir);
+    print_help ("usage", $0 );
 }
 
 #-----------------------------------------------------------+
@@ -265,36 +186,67 @@ exit;
 #-----------------------------------------------------------+
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"dir_merge.pl -i DirsToMerge -o OutDir";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directories to merge\n".
-	"                 # Dirs separated by comma\n".
-	"  --outdir       # Path to the output directory\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub merge {
 # SUBFUCNTION SRC:
@@ -420,13 +372,196 @@ sub getdir {
     return @entries;
 }
 
+1;
+__END__
+
+# Deprecated print_help subfunction
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"dir_merge.pl -i DirsToMerge -o OutDir";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --indir        # Path to the directories to merge\n".
+	"                 # Dirs separated by comma\n".
+	"  --outdir       # Path to the output directory\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
+=head1 NAME
+
+dir_merge.pl - Merge directories
+
+=head1 VERSION
+
+This documentation refers to program version 0.1
+
+=head1 SYNOPSIS
+
+=head2 Usage
+
+  dir_merge.pl -i 'dir01,dir02' -o new_dir
+
+=head2 Required Arguments
+
+    -i, --indirs   # List of directories to merge
+    -o, --outdir   # Path to the base output directory
+
+=head1 DESCRIPTION
+
+Given a set of directories, this will merge them into a single output
+directory. The output directory could be a new location, or merge into
+the parent directory.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--indirs
+
+The directories to merge.
+
+=item -o,--outdir
+
+The directory the merged dirs will be moved to.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --overwrite
+
+Overwrite any existing file. This option should scare the living
+hell out of you. Only use it if you are certain you will not be overwriting
+anything that you do not want to lose. Use this option at your own risk.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This program does not currently require an external configuration
+file or make use of variables set in the user's environment.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+The dir_merge.pl program does not rely on external software.
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over 2
+
+=item * Limited testing
+
+This program has only been tested using the Linux operating system
+I have no idea what this would do in windows. If you try this in widows 
+and it works, drop me an email E<lt>JamesEstill at gmail.comE<gt>.
+
+=back
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html   
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
 =head1 HISTORY
 
 STARTED: 07/27/2007
 
-UPDATED: 07/27/2007
+UPDATED: 12/11/2007
 
-VERSION: $Id:$
+VERSION: $Rev$
 
 =cut
 
@@ -437,3 +572,9 @@ VERSION: $Id:$
 # 07/27/2007
 # - Program started
 # - Added getdir from external source
+# 12/11/2007
+# - Added SVN tracking of Id and Rev
+# - Moved POD documentation to the end of the program
+# - Update POD documentation
+# - Added print_help subfunction that extracts help and
+#   usage information from the POD documentation
