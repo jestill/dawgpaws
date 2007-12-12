@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/25/2007                                       |
-# UPDATED: 09/28/2007                                       |
+# UPDATED: 12/12/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert *rpt.txt output files from LTR_STRUC to          |
@@ -30,6 +30,12 @@ package DAWGPAWS;
 use strict;
 use File::Copy;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -55,7 +61,6 @@ my $show_version = 0;
 my $do_copy = 0;
 my $do_seq_data = 0;          # Create files in outdir with sequence data
 
-#
 my $name_root;
 
 #-----------------------------+
@@ -79,12 +84,14 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -98,13 +105,15 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-# THROW ERROR IF REQRUIED VARIABLES NOT SPECIFIED
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) || (!$repdir) ) {
     print "ERROR: Input directory must be specified\n" if !$indir;
     print "ERROR: Output directory must be specified\n" if !$outdir;
     print "ERROR: Reports directory must be specified\n" if !$repdir;
     print "\n";
-    print_help("full");
+    print_help ("usage", $0 );
 }
 
 #-----------------------------------------------------------+
@@ -311,36 +320,6 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
 
 
 sub ltrstruc2gff {
@@ -961,6 +940,105 @@ sub ltrstruc2gff {
 
 }
 
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+
+1;
+__END__
+
+# Old print_help
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"MyProg.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input file\n".
+	"  --outfile      # Path to the output file\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
+
 =head1 NAME
 
 cnv_ltrstruc2gff.pl - Convert LTR_STRUC report output files to gff
@@ -1056,13 +1134,31 @@ Other modules or software that the program is dependent on.
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head1 SEE ALSO
+
+The cnv_ltrstruc2gff.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html
 
 =head1 AUTHOR
 
@@ -1100,3 +1196,7 @@ VERSION: $Rev$
 #    - 3' LTR
 #    - PBS
 #    - PPT
+# 12/12/2007
+# - Changed print_help subfunction to extract help and 
+#   usage messages from the POD documentation
+# - Updated POD documentation
