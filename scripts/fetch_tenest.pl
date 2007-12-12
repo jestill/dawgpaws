@@ -1172,10 +1172,6 @@ http://www.gnu.org/licenses/gpl.html
 
 James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
 =head1 HISTORY
 
 STARTED: 08/29/2007
@@ -1199,3 +1195,4 @@ VERSION: $Rev$
 #   usage statements from the POD documentation
 # - Updated POD documentation
 # - Changed --infile to --config
+# - Removed redundant Author field in POD
