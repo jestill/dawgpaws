@@ -76,12 +76,14 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-#if ($show_usage) {
-#    print_help("");
-#}
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
+}
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -99,9 +101,10 @@ if ($show_man) {
 if ( (!$infile) || (!$outdir) || (!$index) ) {
 
     print "\a";
-    print "ERROR: Input file path required" if !$infile;
-    print "ERROR: Output directory required" if !$outdir;
-    print "ERROR: Index file path required" if !$index;
+    print "\n";
+    print "ERROR: Input file path required\n" if (!$infile);
+    print "ERROR: Output directory required\n" if (!$outdir);
+    print "ERROR: Index file path required\n" if (!$index);
     print_help("");
 
 }
@@ -119,35 +122,67 @@ exit;
 #-----------------------------------------------------------+
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub seq_kmer_count {
 
@@ -322,29 +357,72 @@ sub seq_kmer_count {
 
 }
 
+1;
+__END__
+
+# OLD print_help subfunction
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"MyProg.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input file\n".
+	"  --outfile      # Path to the output file\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
 =head1 NAME
 
 seq_oligocount.pl - Count oligos from an input sequence
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    Name.pl -i InFile -o OutFile
+=head2 Usage
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    seq_oligocount.pl -i InFile -o OutDir -db index.fasta
+                      -n SeqName -k 20
+
+=head2 Required Argumenta
+
+    -i,--infile   # Path to the input fasta file
+    -d,--db       # Path to the mkvtree index file
+    -o,--outdir   # Path to the base output directory
+    -n,--name     # Name to assign to the sequence file
+    -k,--kmer     # Oligomer query length
 
 =head1 DESCRIPTION
 
-This is what the program does
+The seq_oligocount program will take a query sequence, break it
+into subsequences of size k and query it against an persistent index
+created by the mkvtree program. It produces a GFF output file describing
+the number of copies of every oligomer in the query sequence in the 
+subject index database.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head 2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -352,17 +430,27 @@ This is what the program does
 
 Path of the input file.
 
-=item -o,--outfile
+=item -o,--outdir
 
 Path of the output file.
 
+=item -n,--name
+
+Name to assign to the sequence file
+
+=item -d,--db
+
+Path to the fasta file that was indexed with the mkvtree program.
+
 =back
 
-=head1 Additional Options
-
-=over
+=head1 OPTIONS
 
 =over 2
+
+=item -k,--kmer
+
+Length of the kmer to index. The default value of this variable is 20.
 
 =item --usage
 
@@ -389,36 +477,95 @@ Run the program with minimal output.
 
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+An external configuration file is not required for this program, and
+it does not make use of any variables set in the users environment.
 
 =head1 DEPENDENCIES
 
-=head2 Perl Modules
+=head2 Required Software
 
-This program requires the following Perl modules
+=over 2
 
-B<Bio:SeqIO>
+=item Vmatch
 
-=head2 Software
+This program requires the Vmatch package of programs.
+http://www.vmatch.de . This software is availabe at no cost for
+noncommercial academic use. See program web page for details.
 
-B<vmatch>
+=back
 
-This program requires the vmatch series of programs.
-H<http://www.vmatch.de>
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=item * Bio:SeqIO
+
+The Bio:SeqIO module is a component of the BioPerl package
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Limit to query sequence file
+
+Since this program will generate a large file of your original sequence
+broken into oligomers, you are somewhat limited to the size of query
+sequence that is feasible to use this program with. 
+
+=item * Output limited to GFF file
+
+The output for this program is currently limited to GFF file of 
+points with the copy number of each oligomer designeated.
+
+=back
+
+=head1 SEE ALSO
+
+The seq_oligocount.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
@@ -432,9 +579,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 10/11/2007
 
-UPDATED:
+UPDATED: 12/12/2007
 
 VERSION: $Rev$
 
@@ -444,3 +591,12 @@ VERSION: $Rev$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 10/11/07 and 10/12/07
+# -bulk of program written
+# -inital seq_kmer_count subfunction added
+#
+# 12/12/2007
+# - Added SVN tracking of Rev to propset 
+# - Updated POD documentation
+# - Added the print_help subfunction that extracts
+#   usage and help message from the POD documentation
