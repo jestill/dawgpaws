@@ -1047,7 +1047,7 @@ cnv_ltrstruc2gff.pl - Convert LTR_STRUC report output files to gff
 This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
-    
+
 =head2 Usage
 
     cnv_ltrstruc2gff.pl -i InDir -o OutDir -r LStrucOut
