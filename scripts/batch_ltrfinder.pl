@@ -8,12 +8,12 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/03/2007                                       |
-# UPDATED: 10/03/2007                                       |
+# UPDATED: 12/12/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Run the ltr_finder program in batch mode.                |
+#  Run the LTR_FINDE program in batch mode.                 |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev                :$                           |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -32,6 +32,12 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -68,10 +74,15 @@ my $gff_dir;
 my $ls_out;
 my $fl_gff_outpath;
 
- # Some options that would be useful to make ENV options
-my $trna_db = $ENV{TRNA_DB};
-my $prosite_dir = $ENV{PROSITE_DIR};
-my $lf_path = $ENV{LTR_FINDER};
+# OPTIONS THAT CAN BE SET IN USER ENV
+# If variable not defined in the ENV then
+# assume it is in the user's path
+my $trna_db = $ENV{TRNA_DB} || 
+    "Os-tRNAs.fa";
+my $prosite_dir = $ENV{PROSITE_DIR} ||
+    "ps_scan";
+my $lf_path = $ENV{LTR_FINDER} ||
+    "ltr_finder";
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -96,12 +107,14 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -115,14 +128,19 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-# Throw error if required options not paseed
-# Throw error if required arguments not present
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) || (!$config_file) ) {
     print "\a";
-    print STDERR "ERROR: An input directory must be specified" if !$indir;
-    print STDERR "ERROR: An output directory must be specified" if !$outdir;
-    print STDERR "ERROR: A config file must be specified" if !$config_file;
-    print_help("full");
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory must be specified". 
+	" at the command line.\n" if (!$indir);
+    print STDERR "ERROR: An output directory must be specified". 
+	" at the command line.\n" if (!$outdir);
+    print STDERR "ERROR: A config file must be specified". 
+	" at the command line.\n" if (!$config_file);
+    print_help ("usage", $0 );
     exit;
 }
 
@@ -172,6 +190,8 @@ while (<CONFIG>) {
 	
 	# Can have just a name for default
 	# or can have two columns with additional parameter options
+	# I will currently stick with the two column config file
+	# since there are so many options availabe with LTR_FINDER
 	if ($num_in_line < 3) { 
 	    $lf_params[$i][0] = $in_line[0] || "NULL";  # Name
 	    $lf_params[$i][1] = $in_line[1] || "";      # Suffix
@@ -337,35 +357,67 @@ exit;
 #-----------------------------------------------------------+
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub ltrfinder2gff {
     
@@ -1188,47 +1240,107 @@ sub ltrfinder2gff {
 } # End of ltrfinder2gff subfunction
 
 
+1;
+__END__
+
+# Old print_help subfunction
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"MyProg.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input file\n".
+	"  --outfile      # Path to the output file\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
+
 =head1 NAME
 
 batch_ltrfinder.pl - Run the LTRFinder program in batch mode
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    Name.pl -i InFile -o OutFile
+=head2 Usage
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    batch_ltrfinder.pl -i InDir -o OutDir -c ConfigFile
+
+=head2 Required Arguments
+
+    -i,--indir    # Directory of fasta files to process
+    -o,--outdir   # Path to the base output directory
+    -c,--config   # Path to the config file
 
 =head1 DESCRIPTION
 
-This is what the program does
+This program will run the LTR_FINDER program for a set of fasta files.
+You can set multiple parameter sets using a config file.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head 2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path of the directory containing the sequences to process.
 
-=item -o,--outfile
+=item -o,--outdir
 
-Path of the output file.
+Path of the directory to place the program output.
+
+=item -c,--config
+
+Path to the batch_ltrfinder config file. This is a tab delimited text file 
+made up of two columns. The first column indicates the name assigned to
+the parameter set, while the second column contains the flags that
+will be passed to the LTR_FINDER program.
 
 =back
 
-=head1 Additional Options
-
-=over
+=head1 OPTIONS
 
 =over 2
+
+=item --ltr-finder
+
+Path to the LTR_FINDER binary.
+
+=item -s,--trna-db
+
+Path to the tRNA database used by LTR_FINDER.
+This file is part of the LTR_FINDER download.
+
+=item -a,--prosite
+
+Path to the prosite directory for use by LTR_FINDER.
+
+=item -g,gff
+
+Convert the outout to gff format.
 
 =item --usage
 
@@ -1247,6 +1359,10 @@ Show program version.
 Show the full program manual. This uses the perldoc command to print the 
 POD documentation for the program.
 
+=item --verbose
+
+Run the program in verbose mode.
+
 =item -q,--quiet
 
 Run the program with minimal output.
@@ -1263,23 +1379,136 @@ list exit status associated with each error
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+=head2 Configuration File
+
+The location of the configuration file is indicated by the --config option
+at the command line.
+This is a tab delimited text file allowing you to run the LTR_FINDER
+program with multiple parameter sets for each query sequence file.
+This config file is a two column file. Lines beginning with the # symbol
+are ignored and provide a way to add comments to your config file. This config
+file is expected to have UNIX format line endings. You should therefore
+avoid creating config files using Windows based programs such as MS Word.
+
+=over 2
+
+=item Col 1. Parameter set name
+
+This is the name assigned to the parameter set defined on the current
+line. This name must not have any spaces. This name will be appended to
+the output gff file.
+
+=item Col 2. LTR_FINDER Options
+
+A string of command line options to send to the LTR finder program. For
+a full set of possible variables, see the LTR_FINDER User Manual 
+http://tlife.fudan.edu.cn/ltr_finder/help/single.html
+
+=back
+
+Example config file:
+
+   # Simple batch_ltrfinder config file
+   #
+   def
+   p_30	-p 30
+   p_10	-p 10
+   # END
+
+=head2 User Environment
+
+This program makes use of the following variables defined in the
+user's environment.
+
+=over 2
+
+=item TRNA_DB
+
+This is the path to TRNA_DB used by LTR_FINDER.
+
+=item PROSITE_DIR
+
+This is the path to the directory of Prosite models use by LTR_FINDER.
+
+=item LTR_FINDER
+
+This is the path to the LTR_FINDER binary.
+
+=back
+
+Example environment variables set in the bash shell:
+
+   export TRNA_DB='/home/yourname/apps/LTR_Finder/tRNAdb/Os-tRNAs.fa'
+   export PROSITE_DIR='/home/yourname/Apps/LTR_Finder/ps_scan'
+   export LTR_FINDER='ltr_finder'
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+=head2 Required Software
+
+=over
+
+=item * LTR_FINDER
+
+The LTR_FINDER program can be obtained as a Linux binary by contacting
+the author: xuzh <at> fudan.edu.cn
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 SEE ALSO
+
+The batch_ltrfinder.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Config file must use UNIX format line endings
+
+The config file must have UNIX formatted line endings. Because of
+this any config files that have been edited in programs such as
+MS Word must be converted to a UNIX compatible text format before
+being used with batch_blast.
+
+=back
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html
 
 =head1 AUTHOR
 
@@ -1289,7 +1518,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/02/2007
 
-UPDATED: 10/02/2007
+UPDATED: 12/12/2007
 
 VERSION: $Rev$
 
@@ -1303,3 +1532,14 @@ VERSION: $Rev$
 # - Started program from general template
 # - Added the ltrfinder2gff subfunction from the 
 #   cnv_ltrfinder2gff program.
+#
+# 12/12/2007
+# - Added SVN Rev to propset
+# - Updated POD documentation
+# - Updated print_help to subfunction that extracts
+#   usage and help statements from POD documentation
+# - Added an example config file to the config dir
+# - Added some default locations of vars outside of base
+#   base ENV vars. These assume that that the relevant
+#   files have default names and are in the user's path.
+#   
