@@ -69,9 +69,7 @@ Element Computational Results</a></li>
     <li><a href="#ltr_struc">LTR_Struc</a></li>
     <li><a href="#ltr_finder">LTR_FINDER</a></li>
     <li><a href="#find_ltr">find_ltr</a></li>
-    <li><a href="#ltr_seq">ltr_seq</a><br>
-    </li>
-    <li>More</li>
+    <li><a href="#ltr_seq">ltr_seq</a></li>
     <li><a href="#te_nest">TE Nest</a></li>
     <li><a href="#findmite">FINDMITE</a></li>
     <li><a href="#oligo_count">Oligo Counts</a></li>
@@ -382,8 +380,9 @@ necessary to also make a hard masked copy of the fasta file. </p>
 </h1>
 DAWG-PAWS can currently only annotate a few structural features.
 Structural features are defined here as features of the sequence such
-as gaps, gc content, etc. that are not directly related to gene
-annotation or transposable element annotation.<br>
+as gaps, gc content, etc. that are not directly related to the&nbsp;
+annotation of biological sequence features such as genes or
+transposable elements.<br>
 <h3>1. Annotate the gaps in the assembly</h3>
 <p>The following will find gaps in your fasta files.<br>
 </p>
@@ -703,18 +702,30 @@ sequence, and it convers output to the GFF file format.<br>
 <h1><a name="find_ltr"></a>3. Run the find_ltr program</h1>
 Required Programs:<br>
 <ul>
-  <li>find_ltr.pl : this is the latest incarnation of the ltr_par
-program<br>
-A binary of this program is available upon contacuting the program</li>
-  <li>This<br>
+  <li>find_ltr.pl : This is a component of the LTRDeNovo packge<br>
+This is available at : <a
+ href="http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz">http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz</a><br>
+  </li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_findltr.pl">batch_findltr.pl</a><br>
   </li>
 </ul>
-The current license for the find_ltr program prevents modification of
-the source code. This unfortunately includes changing paramaters that
-are important to using this program for LTR discovery. I will post code
-for using the find_ltr program if the program authors modify their
-software to allow a more flexible use of program parameters. mrho&nbsp;
-cs.indiana.edu<br>
+It is unclear if the current license for the find_ltr program allows
+modification of the source code.&nbsp; If the license prevents
+modification of the program source, this would unfortunately include
+modifying paramaters that are important to using this program for LTR
+discovery. I have modified the program code to accept these parameter
+changes at the command line, and the batch_findltr.pl program depends
+on these source code modifications. An example of using the find_ltr
+program in batch mode is illustrated below:<br>
+<pre class="prettyprint"><span class="pln">&nbsp;</span><span
+ class="pun"> &gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>  &gt;batch_findltr.pl -i wheat_analysis/masked_soft -o wheat_analysis<br>                    -c config/batch_findltr.jcfg<br></span></pre>
+The above example will produce a GFF file for each parameter set in the
+batch_findltr.jcfg file for each fasta input sequence recognized in the
+masked_soft input directory.<br>
 <br>
 <h1><a name="ltr_seq"></a>4. Run the ltr_seq program</h1>
 Required Programs:<br>
@@ -744,6 +755,7 @@ This will produce a file name HEX0014K09_ltrseq.gff that contains all
 of the output from the LTR_seq program that was determined to be an LTR
 Retrotransposon. The current version of the LTR_seq program appears to
 produce duplicate predictions.<br>
+<br>
 <h1><a name="te_nest"></a>5. TE Nest analysis for LTR Retrotransposon
 Nesting<br>
 </h1>
@@ -781,8 +793,7 @@ download the results using the fetch_tenest.pl program.<br>
  class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
  class="pln">fetch_tenest.pl -c tenest_results.txt -o wheat_analysis/ --gff</span></pre>
 This will place the results in the wheat_analysis folder with a
-separate set of folders for query sequence defined in the config file.<br>
-  </li>
+separate set of folders for query sequence defined in the config file.</li>
 </ol>
 <h1><a name="findmite"></a>6. Run the FINDMITE Program</h1>
 Required Programs:<br>
@@ -867,13 +878,45 @@ placed in the directory: wheat_analysis/HEX0014K09/<br>
 The seq_oligocount.pl program will place the GFF formatted results in
 the GFF directory.<br>
 <br>
+<h1>8.HMMER - TE Models</h1>
+Required Programs:<br>
+<ul>
+  <li>hmmsearch : <a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a><br>
+  </li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_hmmer.pl">batch_hmmer.pl</a></li>
+  <li>Example Config file : <a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/config/batch_hmmer.jcfg">batch_hmmer.jcfg</a><br>
+  </li>
+</ul>
+It is possible to use profile hidden Markov models of known
+transposable elements to find the location of TEs in your query
+sequence. This approach was used in part to identify MITES and MULEs in
+the Rice genome. You can produce your own Profile HMMs using multiple
+alignments of sequences of your choice, or you can test this approach
+using HMMs developed for rice.<br>
+<br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>  &gt;batch_hmmer.pl </span><span
+ class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                  -c config/batch_hmmer.jcfg --gff</span>
+</pre>
+<br>
+<br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="apollo_preparation"></a> Preparing Computational Results
 for Apollo<br>
 </h1>
-<h2>1. Audit your computational results</h2>
-<p>The audit program will move gff files to the gff dir and will alert
-you to any expected files that could not be found. </p>
+<h2>1. Audit the computational results</h2>
+<p>The audit program will move gff files to the gff dir if needed and
+will alert
+you to any expected files that could not be found. Currently this
+program only audits a subset of the expected results from DAWG-PAWS
+with a focus on gene annotation output. This program will probably end
+up getting deprecated, but I will leave it here for now.<br>
+</p>
 <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
  class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
  class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
@@ -925,6 +968,8 @@ you want to convert in the @root_names array. </p>
  class="pln">batch_convert</span><span class="pun">.</span><span
  class="pln">pl</span></pre>
 <hr style="width: 100%; height: 2px;">
+<h1><br>
+</h1>
 <h1><a name="human_curation"></a>Human Curation of Computational Results<br>
 </h1>
 Basic information on using Apollo for human curation of computational
@@ -936,7 +981,9 @@ results will go here.<br>
 </h1>
 There are scripts available for quality control and feature comparison.<br>
 <br>
-Venn Diagram<br>
+Venn Diagram of sequence features<br>
+<br>
+Predict Function of Human Curated Gene Models<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="additional_information"></a>IV. ADDITIONAL INFORMATION</h1>
@@ -1236,7 +1283,7 @@ program use in the genome annotation process.<br>
   <dd>Run genscan in batch mode and parse results to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/batch_hardmask.html">batch_hardmask.pl</a></dt>
   <dd>Hardmask a directory of softmasked fasta files</dd>
-  <dt>batch_hmmer.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/batch_hmmer.html">batch_hmmer.pl</a></dt>
   <dd>Run the HMMER program in batch mode</dd>
   <dt style="font-weight: bold;"><a href="man/batch_ltrfinder.html">batch_ltrfinder.pl</a></dt>
   <dd>Run the LTRFinder program in batch mode</dd>
@@ -1247,7 +1294,7 @@ development</span><br>
   </dd>
   <dt style="font-weight: bold;"><a href="man/batch_mask.html">batch_mask.pl</a></dt>
   <dd>Run RepeatMasker and parse results to a GFF format file</dd>
-  <dt>batch_seq_summary.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/batch_seq_summary.html">batch_seq_summary.pl</a></dt>
   <dd>Print summary info for a directory of sequence files</dd>
   <dt>clust_write_shell.pl</dt>
   <dd>Write shell scripts for the Platform LSF
