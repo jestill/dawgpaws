@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/03/2007                                       |
-# UPDATED: 09/03/2007                                       |
+# UPDATED: 12/13/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts LTR_seq output to gff file format.              |
@@ -20,108 +20,6 @@
 #-----------------------------------------------------------+
 # TODO: Extract only the unique LTR Predictions 
 
-=head1 NAME
-
-cnv_ltrseq2gff.pl - Convert LTR_seq output to gff format.
-
-=head1 VERSION
-
-This documentation refers to program version $Rev$
-
-=head1 SYNOPSIS
-
- Usage:
-  Name.pl -i InFile -o OutFile
-
-=head1 DESCRIPTION
-
-Converts program output from LTR_seq to 
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -i,--infile
-
-Path of the input file.
-
-=item -o,--outfile
-
-Path of the output file.
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-B<LTR_seq Program:>
-
-This program requires output from LTR_seq. LTR_seq is available upon email
-request from the author, Ananth Kalyanaraman: 
-http://www.eecs.wsu.edu/~ananth/contact.htm.
-
-Also see the original publication for the LTR_par program :
-
-I<A. Kalyanaraman, S. Aluru. 2006. Efficient algorithms and software for 
-detection of full-length LTR retrotransposons. Journal of 
-Bioinformatics and Computational Biology (JBCB), 4(2):197-216.>
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
 package DAWGPAWS;
 
 #-----------------------------+
@@ -129,6 +27,12 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -162,7 +66,7 @@ my $ok = GetOptions(# Required options
                     "o|outfile=s"   => \$outfile,
 		    "s|seqname=s"   => \$inseqname,
 		    # Additional Optons
-		    "f|fastafile=s" => \$infasta,
+		    #"f|fastafile=s" => \$infasta,
 		    "append"        => \$do_gff_append,
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
@@ -175,12 +79,14 @@ my $ok = GetOptions(# Required options
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -192,6 +98,21 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
+if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input file was not specified at the".
+	" command line\n" if (!$infile);
+    print STDERR "ERROR: An output file path was no specified at the".
+	" command line\n" if (!$outfile);
+    print STDERR "ERROR: A sequence name was not specified at the".
+	" command line\n" if (!$inseqname);
+    print_help ("usage", $0 );
 }
 
 #-----------------------------------------------------------+ 
@@ -212,33 +133,66 @@ exit;
 #-----------------------------------------------------------+
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
 sub ltrseq2gff {
@@ -285,15 +239,15 @@ sub ltrseq2gff {
     # OPEN FILES                  |
     #-----------------------------+
     open (INFILE, "<$ltrseq_in") ||
-	die "Can not open input file:\n$ltrseq_in\n";
+	die "ERROR: Can not open input file:\n$ltrseq_in\n";
 
     if ($append_gff) {
 	open (GFFOUT, ">>$gff_out") ||
-	    die "Could not open output file for appending\n$gff_out\n";
+	    die "ERROR: Can not open output file for appending\n$gff_out\n";
     }
     else {
 	open (GFFOUT, ">$gff_out") ||
-	    die "Could not open output file for output\n$gff_out\n";
+	    die "ERROR: Can not open output file for output\n$gff_out\n";
     } # End of if append_gff
 
     #-----------------------------+
@@ -316,7 +270,6 @@ sub ltrseq2gff {
 
 	    #print "Report Line: $num_in parts\n";
 	    #print "\t$_\n";
-
 
 	    if ($num_in == 15) {
 		#print "\tREJECTED\n";
@@ -432,11 +385,233 @@ sub ltrseq2gff {
 
 }
 
+
+1;
+__END__
+
+# Deprecated print_help
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"MyProg.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input file\n".
+	"  --outfile      # Path to the output file\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
+
+
+
+=head1 NAME
+
+cnv_ltrseq2gff.pl - Convert LTR_seq output to GFF format.
+
+=head1 VERSION
+
+This documentation refers to program version $Rev$
+
+=head1 SYNOPSIS
+
+=head2 Usage
+
+    cnv_ltrseq2gff.pl -i InFile -o OutFile -s SeqName
+
+=head2 Required Arguments
+
+    -i,--infile   # Directory of fasta files to process
+    -o,--outfile  # Path to the output file
+    -s,--seqname  # ID of the sequence record analyzed
+
+=head1 DESCRIPTION
+
+Converts program output from LTR_seq LTR prediction program to GFF format.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -i,--infile
+
+Path of the input file which is the prediction results from LTR_seq.
+
+=item -o,--outfile
+
+Path of the output file which will be the GFF output from cnv_ltrseq2gff.pl.
+
+=item -s,--seqname
+
+The sequence ID of the query sequence that was analyzed. This will be
+used to write to the first column of the GFF output file.
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --append
+
+Append the GFF results to an existing GFF file. The path to the existing
+GFF file is indicated by the --outfile option.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -v,--verbose
+
+Run the program in verbose mode.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: Can not open input file
+
+The path to the input file you provided by the --infile option
+may be incorrect, or you do not have permission to read the file
+that exists at that location.
+
+=item ERROR: Can not open output file
+
+The directory that you specified at the --outfile option may not
+exist, or you may not have permission to write files in that 
+directory.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The cnv_ltrseq2gff.pl program does not required an external configuration
+file or make use of variables defined in the user's environment.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over
+
+=item * LTR_seq Program
+
+This program requires output from LTR_seq. LTR_seq is available upon email
+request from the author, Ananth Kalyanaraman: 
+http://www.eecs.wsu.edu/~ananth/contact.htm.
+
+Also see the original publication for the LTR_par program :
+
+I<A. Kalyanaraman, S. Aluru. 2006. Efficient algorithms and software for 
+detection of full-length LTR retrotransposons. Journal of 
+Bioinformatics and Computational Biology (JBCB), 4(2):197-216.>
+
+=back
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Single Record FASTA Files
+
+This program is currently limited to analyzing results from FASTA files
+that contain a single record.
+
+=back 
+
+=head1 SEE ALSO
+
+The batch_blast.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+
 =head1 HISTORY
 
 STARTED: 09/03/2007
 
-UPDATED: 09/03/2007
+UPDATED: 12/13/2007
 
 VERSION: $Rev$
 
@@ -447,3 +622,10 @@ VERSION: $Rev$
 #-----------------------------------------------------------+
 #
 # 09/03/2007
+# - Main body of program written
+#
+# 12/13/2007
+# - Moved POD documentation to the end of the program
+# - Updated POD documentation
+# - Added print_help subfunction that extracts help
+#   and usage messages from the POD documentation
