@@ -123,18 +123,6 @@ if ( (!$indir) || (!$outdir) || (!$parfile) ) {
     print_help ("usage", $0 );
 }
 
-# THROW ERROR WHEN REQUIRED INFORMATION NOT PROVIDED
-if ( (!$indir) || (!$outdir) || (!$parfile) ) {
-    print "\a";
-    print "ERROR: An input direcotry was not indicated with -i\n" 
-	if !$indir;
-    print "ERROR: An output directory was not indicate with -o\n" 
-	if !$outdir;
-    print "ERROR: A paramters file was not indiated with -p\n"
-	if !$parfile;
-    print_help("full");
-}
-
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
