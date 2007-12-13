@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Dec. 7, 2007<br>
+Dec. 13, 2007<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -65,9 +65,17 @@ Feature Annotation</a></li>
 Annotation Computational Results</a></li>
   <li><a style="font-weight: bold;" href="#te_annotation">Transpoasable
 Element Computational Results</a></li>
-  <ol>
-    <li>LTR_Struc</li>
-    <li>LTR_FINDER<br>
+  <ol style="list-style-type: lower-alpha;">
+    <li><a href="#ltr_struc">LTR_Struc</a></li>
+    <li><a href="#ltr_finder">LTR_FINDER</a></li>
+    <li><a href="#find_ltr">find_ltr</a></li>
+    <li><a href="#ltr_seq">ltr_seq</a><br>
+    </li>
+    <li>More</li>
+    <li><a href="#te_nest">TE Nest</a></li>
+    <li><a href="#findmite">FINDMITE</a></li>
+    <li><a href="#oligo_count">Oligo Counts</a></li>
+    <li>HMMER - TE Models<br>
     </li>
   </ol>
   <li><a style="font-weight: bold;" href="#apollo_preparation">Preparing
@@ -237,24 +245,27 @@ Putting the above set of environment options together in a single file
 gives the following. In the bash shell you can copy and paste the
 following to your .bashrc file. You will of course need to modify the
 directory paths to the true locations of the software on your machine.<br>
+<big><big><span style="font-weight: bold;"></span></big></big><br>
 <pre class="prettyprint"><span class="str"><span
  style="color: rgb(255, 0, 0);">#-----------------------------+</span></span><br><span
  class="str"><span style="color: rgb(255, 0, 0);"># SOFTWARE                    |<br></span></span><span
  class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br><br># DAWG-PAWS SCRIPTS <br></span></span><span
- class="str">export PATH=$PATH:/home/yourname/code/dawgpaws/scripts</span><br><br><span
- style="color: rgb(255, 0, 0);"># FIND_LTR</span><br>export PATH=$PATH:/home/yourname/apps/LTRDeNovo/LTR/tool<br>export FIND_LTR_ROOT='/home/yourname/apps/LTRDeNovo/LTR/tool/'<span
+ class="str">export PATH=$PATH:$HOME/code/dawgpaws/scripts</span><br><br><span
+ style="color: rgb(255, 0, 0);"># FIND_LTR</span><br>export PATH=$PATH:$HOME/apps/LTRDeNovo/LTR/tool<br>export FIND_LTR_ROOT='/home/yourname/apps/LTRDeNovo/LTR/tool/'<span
  class="str"><span style="color: rgb(255, 0, 0);"><br><br># LTR_FINDER</span></span><br><span
- class="str">export TRNA_DB='/home/yourname/apps/LTR_FINDER.'<br>export PROSITE_DIR='/home/yourname/'</span>
-<span class="str"><span style="color: rgb(255, 0, 0);"><br>#-----------------------------+</span></span><br><span
- class="str"><span style="color: rgb(255, 0, 0);"># DAWG-PAWS                   |<br></span></span><span
+ class="str">export TRNA_DB='$HOME/apps/LTR_FINDER.'<br>export PROSITE_DIR='$HOME/apps/LTR_FINDER/ps_scan/'<br><br></span><span
+ class="str"><span style="color: rgb(255, 0, 0);"># LTR_seq</span></span><br><span
+ class="str">export PATH=$PATH:$HOME/apps/ltr_seq</span><br>&nbsp;<span
+ class="str"><span style="color: rgb(255, 0, 0);"><br>#-----------------------------+</span></span><br><span
+ class="str"><span style="color: rgb(255, 0, 0);"># DAWG-PAWS VARS              |<br></span></span><span
  class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br># The following variables are used directly by DAWG-PAWS scripts<br><br></span></span><span
  class="str"><span style="color: rgb(255, 0, 0);"></span></span><span
  style="color: rgb(255, 0, 0);"># LTR_Finder path</span><br><span
- class="str">export LTR_FINDER='/home/yourname/apps/ltr_finder/ltr_finder'</span>
+ class="str">export LTR_FINDER='$HOME/apps/ltr_finder/ltr_finder'</span>
 <br><span class="str"><span style="color: rgb(255, 0, 0);"># GENSCAN <br></span></span><span
- class="str">export DP_GENSCAN_BIN='/home/yourname/apps/genscan/genscan'</span><br>export DP_GENSCAN_LIB='/home/yourname/apps/genscan/Maize.smat'<br><br><span
- class="str"><span style="color: rgb(255, 0, 0);"># GeneMark</span>                                <br>export GM_BIN_DIR='/home/yourname/apps/GenMark/genemark_hmm_euk.linux/'<br>export GM_LIB_DIR='/home/yourname/apps/GenMark/genemark_hmm_euk.linux/'<br><br><span
- style="color: rgb(255, 0, 0);"># VennMaster</span><br>export VMASTER_DIR='/home/jestill/Apps/VennMaster/VennMaster-0.36.0/'<br>export VMASTER_JAVA_BIN='/usr/java/jre1.6.0/bin/java'<br></span></pre>
+ class="str">export DP_GENSCAN_BIN='$HOME/apps/genscan/genscan'</span><br>export DP_GENSCAN_LIB='$HOME/apps/genscan/Maize.smat'<br><br><span
+ class="str"><span style="color: rgb(255, 0, 0);"># GeneMark</span>                                <br>export GM_BIN_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'<br>export GM_LIB_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'<br><br><span
+ style="color: rgb(255, 0, 0);"># VennMaster</span><br>export VMASTER_DIR='/$HOME/apps/VennMaster/VennMaster-0.36.0/'<br>export VMASTER_JAVA_BIN='/usr/java/jre1.6.0/bin/java'<br></span></pre>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="annotation_process"></a>II. ANNOTATION PROCESS</h1>
@@ -263,9 +274,11 @@ a process then a pipeline. There is not a single place where you drop
 in a sequence, push a button and get a fully annotated genome as
 output. The series of scripts that comprise DAWG-PAWS are designed to
 be robust across operating systems, and are expected to be usable in an
-a la carte fashion. The following outline of an annotation process
-indicates the use of DAWG-PAWS programs, but a subset of these programs
-could be chosen for use in producing copmutational results for genome
+<span style="font-style: italic;">a la carte </span>fashion. The
+following outline of an annotation process
+indicates the use of the full suite DAWG-PAWS programs; however, a
+subset of these programs
+could be chosen for use in producing computational results for genome
 annotation.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
@@ -567,8 +580,9 @@ steps can generally be done in any order, and you may choose to not
 include some of these programs in your analysis pipeline.<br>
 <h2><br>
 </h2>
-<h2>1. LTR_Struc Program for LTR Retrotransposon Prediction<br>
-</h2>
+<h1><a name="ltr_struc"></a>1. LTR_Struc Program for LTR
+Retrotransposon Prediction<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>LTR_Struc : <a
@@ -582,7 +596,6 @@ Required Programs:<br>
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_ltrstruc2gff.pl">cnv_ltrstruc2gff.pl<br>
     </a></li>
 </ul>
-<br>
 The LTR_Struc program has not been optimized for use in a
 high-throughput fashion, it has a executable binary that is only
 available for the Windows platform, and it does not provide output in a
@@ -646,8 +659,9 @@ the query sequence.<br>
 </ol>
 <h2><br>
 </h2>
-<h2>2. LTR_FINDER Program for LTR Structure Prediction<br>
-</h2>
+<h1><a name="ltr_finder"></a>2. LTR_FINDER Program for LTR Structure
+Prediction<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>LTR_FINDER</li>
@@ -686,31 +700,117 @@ sequence, and it convers output to the GFF file format.<br>
  class="pln">wheat_annotation<br>  &gt;batch_ltrfinder.pl -i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_ltrfinder.jcfg<br></span></pre>
 <h2><br>
 </h2>
-<h2>3. Run the find_ltr program<br>
-</h2>
-This is how<br>
-<h2>4. Run the ltr_seq program</h2>
-This is how<br>
-<h2>5. Run the TE Nest analysis program</h2>
+<h1><a name="find_ltr"></a>3. Run the find_ltr program</h1>
+Required Programs:<br>
+<ul>
+  <li>find_ltr.pl : this is the latest incarnation of the ltr_par
+program<br>
+A binary of this program is available upon contacuting the program</li>
+  <li>This<br>
+  </li>
+</ul>
+The current license for the find_ltr program prevents modification of
+the source code. This unfortunately includes changing paramaters that
+are important to using this program for LTR discovery. I will post code
+for using the find_ltr program if the program authors modify their
+software to allow a more flexible use of program parameters. mrho&nbsp;
+cs.indiana.edu<br>
+<br>
+<h1><a name="ltr_seq"></a>4. Run the ltr_seq program</h1>
+Required Programs:<br>
+<ul>
+  <li>ltr_seq : this is the latest incarnation of the ltr_par program<br>
+A binary of this program is available upon contacuting the program
+author:<br>
+    <a href="http://www.eecs.wsu.edu/%7Eananth/contact.htm">http://www.eecs.wsu.edu/~ananth/contact.htm</a><br>
+  </li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_ltrseq2gff.pl">cnv_ltrseq2gff.pl</a><br>
+  </li>
+</ul>
+Running ltr_seq in batch mode is currently not supported. You must do
+an individual run of ltr_seq manually and then convert the output to
+gff using the <a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_ltrseq2gff.pl">cnv_ltrseq2gff.pl</a>
+program.<br>
+<br>
+<pre class="prettyprint"><span class="pln">&nbsp;</span><span
+ class="pun"> &gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation/wheat_analysis/HEX0014K09<br>  &gt;mkdir ltr_seq<br>  &gt;RUN LTR_SEQ PROGRAM<br>&nbsp; </span><span
+ class="pun">&gt;</span><span class="pln">cnv_ltrseq2gff.pl -i ltr_seq/ltr_seq_out.txt -o gff/HEX0014K09_ltrseq.gff<br>                     -s HEX0014K09<br></span></pre>
+This will produce a file name HEX0014K09_ltrseq.gff that contains all
+of the output from the LTR_seq program that was determined to be an LTR
+Retrotransposon. The current version of the LTR_seq program appears to
+produce duplicate predictions.<br>
+<h1><a name="te_nest"></a>5. TE Nest analysis for LTR Retrotransposon
+Nesting<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>TE Nest : <a
- href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">http://www.public.iastate.edu/~imagefpc/Subpages/software.html</a><br>
-The TE Nest program is currently available on the web from PlantGDB<br>
-    <a href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a><br>
-  </li>
-  <li><a
- href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/seq_oligocount.pl"><br>
-    </a></li>
+ href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">http://www.public.iastate.edu/~imagefpc/Subpages/software.html</a></li>
+  <ul>
+    <li>The TE Nest program is currently available on the web from
+PlantGDB:<br>
+      <a href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a></li>
+  </ul>
+  <li><a href="man/fetch_tenest.html">fetch_tenest.pl</a></li>
 </ul>
+The TE Nest program will use a homology based search approach to
+identify nested elements in your query sequence. The fetch_tenest.pl
+program can be used to bulk download results from the TE Nest web
+server and convert results from the TE Nest text format to the GFF
+format.<br>
+<ol>
+  <li>Submit your sequence jobs to the TE Nest web server <a
+ href="http://www.plantgdb.org/PlantGDB-cgi/TE_nest/cgi/displayTE.pl">http://www.plantgdb.org/PlantGDB-cgi/TE_nest/cgi/displayTE.pl</a></li>
+  <li>Record the job id that is returned for your sequence file by
+adding a row to your config file that indicates (1) The name of your
+query sequence as used in the rest of your analysis, (2) the job id
+that TE Nest assigned to your submision. An example config file is
+available from the DAWG-PAWS SVN site.<br>
+  </li>
+  <li>When all of you jobs have completed on the TE Nest web server,
+download the results using the fetch_tenest.pl program.<br>
+    <pre class="prettyprint"><span class="pln">&nbsp;</span><span
+ class="pun"> &gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">fetch_tenest.pl -c tenest_results.txt -o wheat_analysis/ --gff</span></pre>
+This will place the results in the wheat_analysis folder with a
+separate set of folders for query sequence defined in the config file.<br>
+  </li>
+</ol>
+<h1><a name="findmite"></a>6. Run the FINDMITE Program</h1>
+Required Programs:<br>
+<ul>
+  <li>FINDMITE : <a href="http://jaketu.biochem.vt.edu/dl_software.htm"
+ rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_findmite.pl">batch_findmite.pl</a></li>
+</ul>
+The batch_findmite program will do a FINDMITE analysis for each
+parameter
+set in your configuration file for each query sequence in your input
+directory. The results from FINDMITE have a VERY high false positive
+rate so you will need to further evaluate your results to find the true
+MITEs
+in your query sequence.<br>
 <br>
-<br>
-<h2>6. Run the FindMite Program</h2>
-This is how<br>
-<br>
-This is more<br>
-<br>
-<h2>7. Oligomer Count Masking</h2>
+To run the batch_findmite.pl program you would do the following:<br>
+<pre>  <span class="pun">&gt;</span><span class="pln">cd </span><span
+ class="pun">/</span><span class="pln">home</span><span class="pun">/</span><span
+ class="pln">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+ class="pun">/</span><span class="pln">wheat_annotation</span>  <br>  &gt;batch_findminte.pl <span
+ class="pln">-i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_findmit.jcfg --gff<br></span></pre>
+The FINDMITE results will be place in the findmite directory while the
+results converted to the GFF format would be placed in the GFF
+directory.<br>
+<h1><a name="oligo_count"></a>7. Oligomer Counts<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>Vmatch : <a href="http://www.vmatch.de/">http://www.vmatch.de/<br>
@@ -728,10 +828,17 @@ manual</a><br>
     </a></li>
 </ul>
 The seq_oligocount.pl program is at an early stage of development. It
-currently breaks your query sequence into segments of length. It would
-make sense to allow for binning these results over windows of size k,
-but that is currently not implemented.<br>
-<br>
+currently breaks the query sequence into oligomers of length k, it then
+uses the vmatch program to query these kmers against a index database
+to determine oligo copy number depth in the index database. This index
+database could be an index of the raw shotgun reads, an index of the
+assembled reads, or a database index of an external dataset. The result
+produced by seq_oligocount.pl is a GFF format file that gives the
+oligomer copy number of every segment of length k in the query
+sequence. It would
+make sense to allow for binning these results over some window,
+but that is currently not implemented. The process for using this
+program is outlined below.<br>
 <ol>
   <li>Create a persistent index of your database with the mkvtree
 program. The example below shows how to index the file named
@@ -757,7 +864,8 @@ placed in the directory: wheat_analysis/HEX0014K09/<br>
   </li>
 </ol>
 <br>
-The seq_oligocount.pl program <br>
+The seq_oligocount.pl program will place the GFF formatted results in
+the GFF directory.<br>
 <br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="apollo_preparation"></a> Preparing Computational Results
@@ -1117,23 +1225,26 @@ program use in the genome annotation process.<br>
   <dd>Annotate gaps in a fasta file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_findltr.html">batch_findltr.pl</a></dt>
   <dd>Run the find_ltr.pl program in batch mode</dd>
-  <dt>batch_findmite.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/batch_findmite.html">batch_findmite.pl</a></dt>
   <dd>Run the findmite program in batch mode</dd>
   <dt>batch_game2gff.pl</dt>
   <dd>Convert game.xml annotations to GFF format<br>
   </dd>
   <dt>batch_genmark.pl</dt>
-  <dd>&nbsp;Run GenMark.hmm and parse results to a GFF format file</dd>
+  <dd>Run GenMark.hmm and parse results to a GFF format file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_genscan.html">batch_genscan.pl</a></dt>
   <dd>Run genscan in batch mode and parse results to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/batch_hardmask.html">batch_hardmask.pl</a></dt>
-  <dd>&nbsp;Hardmask a directory of softmasked fasta files</dd>
+  <dd>Hardmask a directory of softmasked fasta files</dd>
   <dt>batch_hmmer.pl</dt>
   <dd>Run the HMMER program in batch mode</dd>
   <dt style="font-weight: bold;"><a href="man/batch_ltrfinder.html">batch_ltrfinder.pl</a></dt>
   <dd>Run the LTRFinder program in batch mode</dd>
   <dt>batch_ltrseq.pl</dt>
-  <dd>Run the LTR_seq program in batch mode</dd>
+  <dd>Run the LTR_seq program in batch mode<br>
+    <span style="font-style: italic;">This program is currently in
+development</span><br>
+  </dd>
   <dt style="font-weight: bold;"><a href="man/batch_mask.html">batch_mask.pl</a></dt>
   <dd>Run RepeatMasker and parse results to a GFF format file</dd>
   <dt>batch_seq_summary.pl</dt>
@@ -1153,8 +1264,8 @@ queuing system</dd>
   <dd>Convert a GFF file to the game.xml format.</dd>
   <dt>cnv_ltrfinder2gff.pl</dt>
   <dd>Convert a single output file from ltrfinder to GFF format</dd>
-  <dt>cnv_ltrseq2gff.pl</dt>
-  <dd>Convert a single output file from LTR_seq to GFF formmat</dd>
+  <dt style="font-weight: bold;"><a href="man/cnv_ltrseq2gff.html">cnv_ltrseq2gff.pl</a></dt>
+  <dd>Convert a single output file from LTR_seq to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_ltrstruc2gff.html">cnv_ltrsruc2gff.pl</a></dt>
   <dd>Convert output from LTR_struc to GFF format<br>
   </dd>
@@ -1174,7 +1285,7 @@ format</dd>
   <dd>Change fasta headers to shorter names</dd>
   <dt>fasta_trep_shorten.pl</dt>
   <dd>Change fasta headers in a TREP fasta file to shorter names</dd>
-  <dt>fetch_tenest.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/fetch_tenest.html">fetch_tenest.pl</a></dt>
   <dd>Download a set of results from the TE Nest web server&nbsp;</dd>
   <dt style="font-weight: bold;"><a href="man/ltrstruc_prep.html">ltrstruc_prep.pl</a></dt>
   <dd>Create the files needed to run the LTR_struc program</dd>
