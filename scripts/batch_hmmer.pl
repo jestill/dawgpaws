@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/17/2007                                       |
-# UPDATED: 09/19/2007                                       |
+# UPDATED: 12/13/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run hmmer against repeat hmmer models in batch mode,     |
@@ -21,16 +21,6 @@
 #  http://www.gnu.org/licenses/gpl.html                     |
 #                                                           |
 #-----------------------------------------------------------+
-#
-# TO DO:
-# CONFIG FILE CAN INCLUDE
-#   Name for the paramter set
-#   Folder containing the models for this set 
-#     ie Mites, Mules, LTRS, etc.
-#   -A Limit to n best domains
-#   -E Evalue cutoff
-#   -T T bit threshold
-#   -Z # seqs for E-Value calc
 
 package DAWGPAWS;
 
@@ -42,6 +32,12 @@ use Getopt::Long;
 use Bio::Tools::HMMER::Results;# Bioperl HMMER results parser
 use Text::Wrap;                # Allows word wrapping and hanging indents
                                # for more readable output for long strings.
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -94,12 +90,14 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_version) {
@@ -113,16 +111,20 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-# Throw error if required arguments not present
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) || (!$config_file) ) {
     print "\a";
-    print STDERR "ERROR: An input directory must be specified" if !$indir;
-    print STDERR "ERROR: An output directory must be specified" if !$outdir;
-    print STDERR "ERROR: A config file must be specified" if !$config_file;
-    print_help("full");
+    print STDERR "ERROR: An input directory must be specified\n" 
+	if (!$indir);
+    print STDERR "ERROR: An output directory must be specified\n" 
+	if (!$outdir);
+    print STDERR "ERROR: A config file must be specified\n" 
+	if (!$config_file);
+    print_help ("usage", $0 );
     exit;
 }
-
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
@@ -319,35 +321,67 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
 sub run_hmmer {
@@ -626,10 +660,44 @@ sub hmmer2gff {
 
 } # END OF THE CONVERT TO GFF SUBFUNCTION
 
+1;
+__END__
+
+# Deprecated print_help function
+
+sub print_help {
+
+    # Print requested help or exit.
+    # Options are to just print the full 
+    my ($opt) = @_;
+
+    my $usage = "USAGE:\n". 
+	"MyProg.pl -i InFile -o OutFile";
+    my $args = "REQUIRED ARGUMENTS:\n".
+	"  --infile       # Path to the input file\n".
+	"  --outfile      # Path to the output file\n".
+	"\n".
+	"OPTIONS::\n".
+	"  --version      # Show the program version\n".     
+	"  --usage        # Show program usage\n".
+	"  --help         # Show this help message\n".
+	"  --man          # Open full program manual\n".
+	"  --quiet        # Run program with minimal output\n";
+	
+    if ($opt =~ "full") {
+	print "\n$usage\n\n";
+	print "$args\n\n";
+    }
+    else {
+	print "\n$usage\n\n";
+    }
+    
+    exit;
+}
 
 =head1 NAME
 
-batch_hmmer.pl - Run hmmer in batch mode
+batch_hmmer.pl - Run hmmsearch in batch mode
 
 =head1 VERSION
 
@@ -637,19 +705,24 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    batch_rephmmer.pl -i InDir -o OutDir
+=head2 Usage
+
+    batch_hmmer.pl -i InDir -o OutDir -c Config.cfg [--gff]
+
+=head2 Required Arguments
 
     --indir         # Path to the input dir containing fasta files
     --outdir        # Path to the base output directory
+    --config        # Configuration file for running hmmer
+    --gff           # Path to gff output file
 
 =head1 DESCRIPTION
 
-Given a config file describing sets of 
+Given a config file this will run the hmmsearch program for each parameter
+set in the configuration file for each fasta sequence file in the input
+directory. This will also convert the results to GFF format if requested.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head 2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -662,21 +735,31 @@ the
 
 Path of the base output directory.
 
+=item -c,--config
+
+Path of the configuration file specifying the parameters used to run
+the hmmer program. This config file includes (1) the name of the
+parameter set, (2) the directory of the hmm models, and (3)
+command line arguments for hmmsearch.
+
 =back
 
-=head2 Additional Options
+=head1 OPTIONS
 
 =over
+
+=item --gff
+
+Produce a GFF output file for each of the query sequence for each
+of the parameter sets in the input file.
 
 =item -q,--quiet
 
 Run the program with minimal output.
 
-=back
+=item --verbose
 
-=head2 Additional Information
-
-=over 2
+Run the program in verbose mode.
 
 =item --version
 
@@ -699,43 +782,214 @@ POD documentation for the program.
 
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: No fasta files were found in the input directory
+
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+=head2 Configuration File
+
+The location of the configuration file is indicated by the --config
+option at the command line. This is a tab delimited text file. 
+The columns of data represent  the following information
+
+=over 2
+
+=item col 1.
+
+Name of the parameter set
+
+=item col 2. Dir of the hmmer models
+
+All hmm profile models in this directory will be searched using the
+hmmer arguments in col 3.
+
+=item col 3.Arguments for hmmer
+
+The arguments for hmmer should be separate by spaces and can include the 
+following arguments:
+
+=over 2
+
+=item -A <n>
+
+sets alignment output limit to <n> best domain alignments
+
+=item -E <x>
+
+sets E value cutoff (globE) to <= x
+
+=item -T <x>
+
+sets T bit threshold (globT) to >= x
+
+=item -Z <n>
+
+sets Z (# seqs) for E-value calculation
+
+=item --compat
+
+make best effort to use last version's output style
+
+=item --cpu <n>
+
+run <n> threads in parallel (if threaded)
+
+=item --cut_ga
+
+use Pfam GA gathering threshold cutoffs
+
+=item --cut_nc
+
+use Pfam NC noise threshold cutoffs
+
+=item --cut_tc 
+
+use Pfam TC trusted threshold cutoffs
+
+=item --domE <x>
+
+sets domain Eval cutoff (2nd threshold) to <= x
+
+=item --domT <x>
+
+sets domain T bit thresh (2nd threshold) to >= x
+
+=item --forward
+
+use the full Forward() algorithm instead of Viterbi
+
+=item --informat <s>
+
+sequence file is in format <s>
+
+=item --null2
+
+turn OFF the post hoc second null model
+
+=item --pvm
+
+run on a Parallel Virtual Machine (PVM)
+
+=item --xnu
+
+turn ON XNU filtering of target protein sequences
+
+=back
+
+=back
+
+An example that will do hmmsearch for four directories of hmm models
+using an evalue threshold of 0.00001 follows:
+
+    rice_mite  /$HOME/HMMData/db/hmm/rice_mite_models/	-E 0.00001
+    rice_mule  /$HOME/HMMData/db/hmm/rice_mule_models/	-E 0.00001
+    tpase      /$HOME/HMMData/db/hmm/tpase_models/	-E 0.00001
+    pfam       /$HOME/HMMData/db/hmm/pfam/              -E 0.00001
 
 =head1 DEPENDENCIES
 
-The following software are Perl modules are required for the 
-batch_hmmer.pl program to work properly.
-
 =head2 Required Software
 
-B<HMMER>
+=over 2
 
-The hmmer program is required: http://hmmer.janelia.org/.
+=item * HMMER
+
+The hmmer program is required: http://hmmer.janelia.org/. Specifically
+this program requires the hmmsearch program.
+
+=back
 
 =head2 Required Perl Modules
 
-The following Perl modules are required for this program to function
-properly.
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=item * Text::Wrap
+
+This module allows for word wrapping and hanging indents of printed
+text. This allows for a more readable output for long strings
+
+=item * Bio::Tools::HMMER::Results
+
+This module is part of the BioPerl package. This allows for
+parsing of the the output from the hmmsearch program.
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Must created profile hmms external
+
+The DAWG-PAWS package currently does not include programs for 
+creating hmm profile models. These must be created externally using
+the hmmer package of programs.
+
+=item * Config file must use UNIX format line endings
+
+The config file must have UNIX formatted line endings. Because of
+this any config files that have been edited in programs such as
+MS Word must be converted to a UNIX compatible text format before
+being used with batch_blast.
+
+=back
+
+=head1 SEE ALSO
+
+The batch_blast.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
-GNU GENERAL PUBLIC LICENSE, Version 3
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
 http://www.gnu.org/licenses/gpl.html
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
@@ -745,7 +999,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/17/2007
 
-UPDATED: 09/18/2007
+UPDATED: 12/13/2007
 
 VERSION: $Rev$
 
@@ -758,6 +1012,10 @@ VERSION: $Rev$
 # 09/17/2007
 # - Program started
 # - Basic boilerplate stuff laid out
+# - Main body of program written with subfunctions included
+#   from existing code.
 # 
-# 10/03/2007
-# -
+# 12/13/2007
+# - Updated POD documentation
+# - Added print_help subfunction that extracts help and usage
+#   messages from the POD documentation
