@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 11/09/2007                                       |
-# UPDATED: 11/09/2007                                       |
+# UPDATED: 12/14/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the genmark gene prediction program in batch mode.   |
@@ -27,6 +27,12 @@
 use File::Copy;
 use Getopt::Long;
 use Bio::Tools::Genemark; 
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -70,22 +76,22 @@ my $num_proc = 1;              # Number of processes
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required
-		    "i|indir=s"     => \$indir,
-                    "o|outdir=s"    => \$outdir,
-		    "c|config=s"    => \$file_config,
+		    "i|indir=s"      => \$indir,
+                    "o|outdir=s"     => \$outdir,
+		    #"c|config=s"     => \$file_config,
 		    # Optional strings
-		    "genmark-dir=s" => \$genmark_dir,
-		    "lib-dir=s"     => \$lib_dir,
-		    "logfile=s"     => \$logfile,
+		    "genemark-dir=s" => \$genmark_dir,
+		    "lib-dir=s"      => \$lib_dir,
+		    #"logfile=s"      => \$logfile,
 		    # Booleans
-		    "apollo"        => \$apollo,
-		    "verbose"       => \$verbose,
-		    "test"          => \$test,
-		    "usage"         => \$show_usage,
-		    "version"       => \$show_version,
-		    "man"           => \$show_man,
-		    "h|help"        => \$show_help,
-		    "q|quiet"       => \$quiet,);
+		    #"apollo"         => \$apollo,
+		    "verbose"        => \$verbose,
+		    "test"           => \$test,
+		    "usage"          => \$show_usage,
+		    "version"        => \$show_version,
+		    "man"            => \$show_man,
+		    "h|help"         => \$show_help,
+		    "q|quiet"        => \$quiet,);
 
 my $proc_num = 0;
 
@@ -97,19 +103,20 @@ my $file_num = 0;
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
     system ("perldoc $0");
     exit($ok ? 0 : 2);
-}
-
-if ($show_help || (!$ok) ) {
-    print_help("full");
 }
 
 if ($show_version) {
@@ -118,10 +125,16 @@ if ($show_version) {
     exit;
 }
 
-# Show full help when required options
-# are not present
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) ) {
     print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: An input directory was not specified at the".
+	" command line\n" if (!$indir);
+    print STDERR "ERROR: An output directory was specified at the".
+	" command line\n" if (!$outdir);
     print_help("full");
 }
 
@@ -386,6 +399,73 @@ sub genemark_to_gff {
 }
 
 sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+1;
+__END__
+
+# Deprecated print_help subfunction
+sub print_help {
 
     # Print requested help or exit.
     # Options are to just print the full 
@@ -429,17 +509,25 @@ batch_genmark.pl - Run GenMark.hmm and parse results to a gff format file.
 
 =head1 VERSION
 
-This documentation refers to batch_mask version 1.0
+This documentation refers to batch_genemark.pl version $Rev$
 
 =head1 SYNOPSIS
 
- Usage:
- batch_genscan.pl -i DirToProcess -o OutDir
+=head2 Usage
+
+    batch_genscan.pl -i DirToProcess -o OutDir
+
+=head2 Required Arguments
+
+    -i, --indir    # Directory of fasta files to process
+    -o, --outdir   # Path to the base output directory
+    -c, --config   # Path to the config file
 
 =head1 DESCRIPTION
 
-Run the genscan gene prediction program in batch mode.
-This will run genscan as well as convert the output to gff format.
+Run the GeneMarkHMM gene prediction program in batch mode.
+Runs genmark as well as converts output to gff format.
+Requires a config file to specify libraries to use.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -453,25 +541,27 @@ Path of the directory containing the sequences to process.
 
 Path of the directory to place the program output.
 
+=item -c, --config
+
+Currently this program does NOT make use of a configuration file. This will
+be a fairly easy thing to add, and is on my TODO List.
+
 =back
 
 =head1 OPTIONS
 
 =over 2
 
-=item --genscan-path
+=item --genemark-dir
 
-The full path to the genscan binary.
+Directory that contains the GeneMark.hmm binaries. This can also be set
+with the environment variable GM_BIN_DIR.
 
-=item --lib-path
+=item --lib-dir
 
-The full path to the library file.
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
+The full path to the directory that contains the model libraries
+for GeneMarkHMM. This can also be set with the environment varaible
+GM_LIB_DIR.
 
 =item --usage
 
@@ -502,13 +592,56 @@ Run the program without doing the system commands.
 
 =head1 DIAGNOSTICS
 
-The error messages that can be generated will be listed here.
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: No fasta files were found in the input directory
+
+The input directory does not contain fasta files in the expected format.
+This could happen because you gave an incorrect path or because your sequence 
+files do not have the expected *.fasta extension in the file name.
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+=head2 Configuration File
+
+The batch_genemark.pl program does not currently make use of a configuration
+file. 
+
+=head2 User Environment
+
+This program makes use of the following variables defined in the
+user's environment.
+
+=over 2
+
+=item GM_BIN_DIR
+
+Directory that contains the GeneMark.hmm binaries.
+
+=item GM_LIB_DIR
+
+The full path to the directory that contains the model libraries
+for GeneMarkHMM.
+
+=back
+
+The following example illustrates the ENV options set in the bash
+shell.
+
+    export GM_BIN_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'
+    export GM_LIB_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'
 
 =head1 DEPENDENCIES
 
@@ -516,9 +649,11 @@ or properties that can be set.
 
 =over
 
-=item *
+=item * GeneMark.HMM
 
-Genscan
+The GeneMark.HMM program is available for non-commercial Academic use
+for a limited time by applying for a license at:
+The http://opal.biology.gatech/edu/GeneMark
 
 =back
 
@@ -526,26 +661,31 @@ Genscan
 
 =over
 
-=item *
+=item * File::Copy
 
-File::Copy
+This module is required to copy the output results.
 
-=item *
+=item * Getopt::Long
 
-Getopt::Long
+This module is required to accept options at the command line.
+
+=item * Bio::Tools::Genemark
+
+This module is required to parse the results from the Genemark program
+The module is part of the BioPerl package http://www.bioperl.org.
 
 =back
 
 =head1 BUGS AND LIMITATIONS
 
-=head2 TO DO
+=head2 Bugs
 
 =over 2
 
-=item *
+=item * No bugs currently known 
 
-Make the results compatable for an upload to a chado
-database.
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
@@ -553,17 +693,31 @@ database.
 
 =over
 
-=item *
+=item * Limited gene model supported
 
-Currently no known limitations.
+This program is currently limited to using the gene models that are
+relevant to wheat annotation (Rice|Maize|Wheat|Barley). I will be adding
+a config file option that will allow multiple gene models to be used.
 
 =back
 
+=head1 SEE ALSO
+
+The batch_genemark.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE, VERSION 3
 
-http://www.gnu.org/licenses/lgpl.html
+http://www.gnu.org/licenses/gpl.html
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
@@ -573,7 +727,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/09/2007
 
-UPDATED: 11/09/2007
+UPDATED: 12/14/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -585,3 +741,10 @@ UPDATED: 11/09/2007
 # - Program started to run GenMark.hmm.euk in batch mode
 #   on the local machine.
 # 
+# 12/14/2007
+# - Updated POD documentation
+# - Added SVN tracking of Rev for versioning
+# - Added print_help subfunction that extracts help 
+#   and usage messages from the command line.
+# - Added a better developed check for required 
+#   arguments
