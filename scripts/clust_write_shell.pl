@@ -8,12 +8,12 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/26/2007                                       |
-# UPDATED: 07/26/2007                                       |
+# UPDATED: 12/17/2007                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given information from the command line, write the shell |
-#  scripts required to run jobs on the rcluster.            |
-#                                                           |
+#  scripts required to run jobs on cluster environments     |
+#  using the LSF queuing system.                            |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -21,170 +21,23 @@
 #                                                           |
 #-----------------------------------------------------------+
 
-=head1 NAME
-
-clust_write_shell.pl - Write shell scripts for the r cluster
-
-=head1 VERSION
-
-This documentation refers to fasta_dirsplit version 1.0
-
-=head1 SYNOPSIS
-
- Usage:
- clust_write_shell.pl -p program -o outdir -b job -n 16
-  -p   # program to write the shell script for
-  -o   # output dirctory to 
-  -b   # base name for the shell scripts to write
-  -n   # number of shell scripts to write
-       # this will also be used to reference dirs
-
-=head1 DESCRIPTION
-
-Spilts a directory containing multiple fasta files into n directories.
-
-=head1 REQUIRED ARGUMENTS
-
-=over 2
-
-=item -o,--outdir
-
-Path of the directory to place the program output.
-
-=item -n,--num-dir
-
-Number of dirs to split the parent dir into.
-
-=item -b, --base-name
-
-Name to use a base name for creating the subdirectory
-
-=item 
-
-=back
-
-=head1 OPTIONS
-
-=over 2
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=item --test
-
-Run the program without doing the system commands.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The error messages that can be generated will be listed here.
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-=head2 Required Software
-
-=over
-
-=item *
-
-RepeatMasker
-(http://www.repeatmasker.org/)
-
-=item *
-
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
-
-=back
-
-=head2 Required Perl Modules
-
-=over
-
-=item *
-
-Getopt::Long
-
-=back
-
-=head1 BUGS AND LIMITATIONS
-
-=head2 TO DO
-
-=over 2
-
-
-=item *
-
-No current items on the to do list.
-
-=back
-
-=head2 Limitations
-
-=over
-
-=item *
-
-No known majors limitations at this time.
-
-=back
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
-
-print "\n";
-
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
 use File::Copy;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $ver = "1.0";
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
+
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -236,10 +89,15 @@ my $ok = GetOptions(
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
@@ -247,20 +105,28 @@ if ($show_man) {
     exit($ok ? 0 : 2);
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
 if ($show_version) {
     print "\nbatch_mask.pl:\n".
-	"Version: $ver\n\n";
+	"Version: $VERSION\n\n";
     exit;
 }
 
-# Show full help when required options
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 # are not present
 if ( (!$outdir) || (!$prog_name) || (!$num_dir) || (!$base_name) ) {
-    print_help("full");
+    print "\a";
+    print STDERR "\n";
+    print STDERR "ERROR: The base name of the directories was not".
+	" specified at the command line" if (!$base_name);
+    print STDERR "ERROR: The number of directories was not specified".
+	" at the command line" if (!$num_dir);
+    print STDERR "ERROR: A program name was not specified at the".
+	" command line\n" if (!$prog_name);
+    print STDERR "ERROR: An output directory was not specified at the".
+	" command line\n" if (!$outdir);
+    print_help ("usage", $0 );
 }
 
 
@@ -335,53 +201,256 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
     
-    my $usage = "USAGE:\n".
-	" fasta_dirsplit.pl -i DirToProcess -o OutDir -b BaseName".
-	" -n NumDirs\n";
-
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"\n".
-	"OPTIONS:\n".
-	"  --mask         # Character to mask with [N|n|X|x]\n".
-	"                 # default is N\n".
-	"  --ext          # Extension to add to new files.\n".
-	"                 # default is .hard.fasta.\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --test         # Run the program in test mode\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
+
+1;
+__END__
+
+=head1 NAME
+
+clust_write_shell.pl - Write shell scripts for the r cluster
+
+=head1 VERSION
+
+This documentation refers to fasta_dirsplit version $Rev$
+
+=head1 SYNOPSIS
+
+=head2 Usage
+
+    clust_write_shell.pl -p program -o outdir -b job -n 16
+
+=head2 Required Variables
+
+    -p   # program to write the shell script for
+    -o   # output dirctory to 
+    -b   # base name for the shell scripts to write
+    -n   # number of shell scripts to write
+         # this will also be used to reference dirs
+
+=head1 DESCRIPTION
+
+Given information from the command line, write the shell
+scripts required to run jobs on cluster environments
+using the LSF queuing system.
+
+=head1 REQUIRED ARGUMENTS
+
+=over 2
+
+=item -p,--program
+
+Program to write shell scripts for
+
+=item -o,--outdir
+
+Path of the directory to place the program output.
+
+=item -n,--num-dir
+
+Number of dirs to split the parent dir into.
+
+=item -b, --base-name
+
+Name to use a base name for creating the subdirectory
+
+=item 
+
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item --logfile
+
+Path to a file that will be used to log program status.
+If the file already exists, additional information will be concatenated
+to the existing file.
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=item --test
+
+Run the program without doing the system commands.
+
+=item --verbose
+
+Run the program in verbose mode.
+
+=back
+
+=head1 DIAGNOSTICS
+
+Error messages generated by this program and possible solutions are listed
+below.
+
+=over 2
+
+=item ERROR: Could not create the output directory
+
+The output directory could not be created at the path you specified. 
+This could be do to the fact that the directory that you are trying
+to place your base directory in does not exist, or because you do not
+have write permission to the directory you want to place your file in.
+
+=back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This program does not currently rely on an external configuration file
+or variables set in the user's environment.
+
+=head1 DEPENDENCIES
+
+This program does not require external software, but the following
+Perl modules are required.
+
+=head2 Required Perl Modules
+
+=over
+
+=item * File::Copy
+
+This module is required to copy the BLAST results.
+
+=item * Getopt::Long
+
+This module is required to accept options at the command line.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Limited to cluster scripting for the LSF queueing system.
+
+=back
+
+=head1 SEE ALSO
+
+The clust_write_shell.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
+=head1 LICENSE
+
+GNU GENERAL PUBLIC LICENSE, VERSION 3
+
+http://www.gnu.org/licenses/gpl.html
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 07/26/2007
 
-UPDATED: 07/26/2007
+UPDATED: 12/17/2007
+
+VERSION: $Rev$
 
 =cut
 
@@ -393,3 +462,13 @@ UPDATED: 07/26/2007
 # - Program started
 # - Basic outline with help, usage and man working
 # - Reads dir of fasta files and moves names to array
+#
+# 12/17/2007
+# - Moved POD documentation to the end
+# - Added SVN tracking of $Rev
+# - Added print_help subfunction that extracts help
+#   from the POD documentation
+# - Changed program version to SVN $Rev ID
+# - Changed $ver to $VERSION
+# - Added more informative ERROR messages when the 
+#   required arguments are not present
