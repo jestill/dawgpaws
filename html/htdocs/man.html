@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Dec. 13, 2007<br>
+Dec. 18, 2007<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -34,47 +34,82 @@ Dec. 13, 2007<br>
   </tbody>
 </table>
 <hr>
-<h1><span style="color: rgb(255, 0, 0);">THIS DOCUMENT IS UNDER CURRENT
-DEVELOPMENT</span></h1>
-<h1><br>
-TABLE OF CONTENTS<br>
+<h1><span style="color: rgb(255, 0, 0);">!! THIS DOCUMENT IS UNDER
+CURRENT
+DEVELOPMENT !!<br>
+</span></h1>
+<h4>This program manual and the scripts that make up the DAWG-PAWS
+package are under current development. Everything is subject to change
+without notice at this point. This software comes as is, without any
+expressed or implied warranty. Use at your own risk.<br>
+</h4>
+<h1>TABLE OF CONTENTS<br>
 </h1>
-<h2 style="margin-left: 40px;"><a style="font-weight: bold;"
- href="#getting_started">I. GETTING STARTED<br>
+<h2><a style="font-weight: bold;" href="#getting_started">I. GETTING
+STARTED<br>
 </a></h2>
-<div style="margin-left: 80px;">
-<ol>
+<div style="margin-left: 40px;">
+<ol style="list-style-type: upper-alpha;">
   <li><a style="font-weight: bold;" href="#dawg_paws_installation">Install
 DAWG-PAWS</a></li>
   <li><a href="#install_additional_software"><span
- style="font-weight: bold;">Install Additional Required Software</span></a></li>
+ style="font-weight: bold;">Install Required Software</span></a></li>
   <li><a href="#define_env_vars"><span style="font-weight: bold;">Define
 Environment Variables</span></a></li>
 </ol>
 </div>
-<h2 style="margin-left: 40px;"><a href="#annotation_process">II.
+<h2><a href="#annotation_process">II.
 ANNOTATION PROCESS</a><br>
 </h2>
-<div style="margin-left: 80px;">
-<ol>
+<div style="margin-left: 40px;">
+<ol style="list-style-type: upper-alpha;">
   <li><a style="font-weight: bold;" href="#sequence_preparation">Prepare
 Sequence Files for Annotation</a></li>
+  <ol>
+    <li><a href="#prep_split_multifasta">Split FASTA Files with
+multiple records</a><br>
+    </li>
+    <li><a href="#prep_fasta_shorten">Shorten FASTA file names</a></li>
+    <li><a href="#prep_soft_mask">Softmask Sequence files</a></li>
+    <li><a href="#prep_hard_mask">Hardmask Sequence files</a><br>
+    </li>
+  </ol>
   <li><a style="font-weight: bold;" href="#structural_features">Structural
 Feature Annotation</a></li>
+  <ol>
+    <li><a href="#run_struc_annotate_gaps">Annotate Gaps in the Assembly</a><br>
+    </li>
+  </ol>
   <li><a style="font-weight: bold;" href="#gene_annotation">Gene
 Annotation Computational Results</a></li>
-  <li><a style="font-weight: bold;" href="#te_annotation">Transpoasable
+  <ol start="0">
+    <li><a href="#run_triannot">TriAnnot Gene Prediction</a><br>
+Includes Eugene,FGeneSH, GeneID, GeneMarkHMM<br>
+    </li>
+    <li><a href="#run_genscan">GENSCAN</a><br>
+    </li>
+    <li><a href="#run_genemark">GeneMark.hmm</a></li>
+    <li><a href="#run_eugene">Eugene</a></li>
+    <li><a href="#run_geneid">GeneID</a><br>
+    </li>
+    <li><a href="#run_fgenesh">FGenesh</a></li>
+    <li><a href="#run_ncbi_blast">NCBI-BLAST</a><br>
+    </li>
+  </ol>
+  <li><a style="font-weight: bold;" href="#te_annotation">Transposable
 Element Computational Results</a></li>
-  <ol style="list-style-type: lower-alpha;">
+  <ol>
+    <li><a href="#run_te_repeatmasker">RepeatMasker</a><br>
+    </li>
     <li><a href="#ltr_struc">LTR_Struc</a></li>
     <li><a href="#ltr_finder">LTR_FINDER</a></li>
     <li><a href="#find_ltr">find_ltr</a></li>
     <li><a href="#ltr_seq">ltr_seq</a></li>
     <li><a href="#te_nest">TE Nest</a></li>
     <li><a href="#findmite">FINDMITE</a></li>
-    <li><a href="#oligo_count">Oligo Counts</a></li>
-    <li>HMMER - TE Models<br>
-    </li>
+    <li><a href="#oligo_count">Oligomer Counts</a></li>
+    <li><a href="#hmmer_TE">HMMER - TE Models</a></li>
+    <li><a href="#te_tandem_repeats_finder">Tandem Repeats Finder</a></li>
   </ol>
   <li><a style="font-weight: bold;" href="#apollo_preparation">Preparing
 Computational Results for Apollo</a></li>
@@ -82,13 +117,18 @@ Computational Results for Apollo</a></li>
 Curation of Computational Results</a></li>
   <li><a style="font-weight: bold;" href="#curation_quality_control">Curation
 Quality Contro</a><a style="font-weight: bold;"
- href="#curation_quality_control">l</a><span style="font-weight: bold;"><br>
-    </span></li>
+ href="#curation_quality_control">l</a></li>
+  <ol>
+    <li>Convert game.xml annotations to GFF<br>
+    </li>
+    <li>Venn Diagrams of Annotated Sequence Features</li>
+    <li>Gene Model HMMAlignments of predicted genes<br>
+    </li>
+  </ol>
 </ol>
 </div>
-<h3 style="margin-left: 40px;"><a href="#additional_information">III.
+<h3><a href="#additional_information">III.
 ADDITIONAL INFORMATION</a></h3>
-<div style="margin-left: 40px;">
 <div style="margin-left: 40px;">
 <ol>
   <li><a style="font-weight: bold;" href="#apollo_data_tiers">Apollo
@@ -99,8 +139,8 @@ Results Directory Structure</a></li>
 </div>
 <h3><a style="font-weight: bold;" href="#manfiles">IV. MANUAL FILES FOR
 INDIVUDAL PROGRAMS</a></h3>
-</div>
-<br>
+<h3><a href="#literature_cited">V. LITERATURE CITED</a><br>
+</h3>
 <br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="getting_started"></a>I. GETTING STARTED<br>
@@ -111,26 +151,30 @@ The steps involved in preparing to do genome annotation with the
 DAWG-PAWS package is described in detail below.<br>
 <br>
 This user documentation will generally assume that you are running
-DAWG-PAWS on a unix or linux machine and operating from the bash shell.
+DAWG-PAWS on a Unix or Linux machine and that you are operating from
+the <a href="http://www.gnu.org/software/bash/">bash shell</a>.
 Anywhere where I have written <big><code>yourname</code></big> below,
-simply substitute your username.<br>
+simply substitute your user name.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="dawg_paws_installation"></a>Install DAWG-PAWS</h1>
-Currently the best way to download the DAWG-PAWS program is to "check
-out" the SVN code from the code repository on SourceForge. This will
-require that you have the svn client program installed which can be
+Currently the best way to download the DAWG-PAWS program is to
+anonymously check
+out the SVN code from the code repository on SourceForge. This will
+require that you have the SVN client program installed which can be
 downloaded from <a
  href="http://subversion.tigris.org/project_packages.html">http://subversion.tigris.org/project_packages.html</a>.
 Once you have the SVN client program installed, navigate to the
-location where you want to place the dawgpaws program and checkout the
+location where you want to place the DAWG-PAWS program and check out
+the
 code. This is illustrated by the following commands:<br>
-<pre class="prettyprint"><span class="str">  &gt;mkdir /home/yourname/code<br>  &gt;cd /home/yourname/code/<br>  &gt;svn co https://dawgpaws.svn.sourceforge.net/svnroot/dawgpaws/trunk dawgpaws </span><span
+<pre class="prettyprint"><span class="str">  &gt;mkdir /home/yourname/apps<br>  &gt;cd /home/yourname/apps/<br>  &gt;svn co https://dawgpaws.svn.sourceforge.net/svnroot/dawgpaws/trunk dawgpaws </span><span
  class="typ"></span><span class="pun"></span><span class="pln"></span><span
  class="pun"></span><span class="pln"></span><span class="pun"></span><span
  class="pln"></span><span class="pun"></span></pre>
-This will download all of the scripts, program documentation in html
-format, and emacs modes. These will be placed in the following
+The above command will download all the working copies of the scripts,
+program manuals, and emacs modes from the SourceForge reposity. These
+will be placed in the following
 directory structure:<br>
 <ul>
   <li style="font-weight: bold;"><span style="font-weight: normal;"><span
@@ -140,11 +184,11 @@ first time<br>
     </span></li>
   <ul>
     <li><span style="font-weight: bold;">apollo</span><br>
-      <span style="font-style: italic;">Thetiers and type file for
+      <span style="font-style: italic;">The tiers and type file for
 using the apollo program are installed here</span><br>
     </li>
     <li><span style="font-weight: bold;">docs</span><br>
-      <span style="font-style: italic;">Additinal documentation for
+      <span style="font-style: italic;">Additional documentation for
 using the DAWG-PAWS program and the full text of the GNU GPL license.</span><br>
     </li>
     <li><span style="font-weight: bold;">emacs_modes</span><br>
@@ -175,19 +219,22 @@ backbone of DAWG-PAWS are stored in this directory</span><br>
 The svn co command will check out the version of DAWG-PAWS that is the
 most up to date at the time of your initial download. To update to the
 most recent version of DAWG-PAWS at any time in the future you will
-just need to run the svn update command from within the dawgpaws
+need to run the svn update command from within the dawgpaws
 directory:<br>
-<pre class="prettyprint"><span class="str">  &gt;cd /home/yourname/code/dawgpaws<br>  &gt;svn update </span></pre>
+<pre class="prettyprint"><span class="str">  &gt;cd /home/yourname/apps/dawgpaws<br>  &gt;svn update </span></pre>
 This will update to the most current version of DAWG-PAWS.<br>
 <h3>Symbolic Link to the Perl Binary</h3>
-All of the DAWG-PAWS commands should be able to run at the command line
-without needing to type perl before the program name. To make this
+In Linux and the Mac OS X environment, it is possible to run all of the
+DAWG-PAWS programs without needing to type <big><code>perl</code></big>
+before the
+program name. To make this
 possible, all of the DAWG-PAWS programs assume that your local
-installation of perl is at /usr/bin/perl. You can see this by opening
+installation of perl is at <big><code>/usr/bin/perl</code></big>. You
+can see this by opening
 up a DAWG-PAWS program in a text editor. You will see that <big><code>#!/usr/bin/perl
 -w</code> </big>is the first line in the program.<br>
 <br>
-If your local copy of perl is not at the <big><code>/usr/bin/perl</code></big>
+If your local copy of the perl binary is not at the <big><code>/usr/bin/perl</code></big>
 location, you can make a symbolic link using the ln command. In
 general, the ln command is used as <br>
 <pre class="prettyprint"><span class="str">  &gt;ln existing_file new_name<br></span></pre>
@@ -200,27 +247,231 @@ shows to to make a shortcut when your local installation of perl is at
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="install_additional_software"></a>Install Additional
 Required Software</h1>
-<br>
-A List of required software and where to obtain it will go here.<br>
-<br>
+The DAWG-PAWS suite of programs are scripts that provide for high
+throughput execution of existing genome annotation software. The
+following represents an alphabetical list of software and web services
+that may be used by DAWG-PAWS. This list provides a link to the source
+files for installation of the software or links to the web services.
+The Operating Systems that the software can be executed on is also
+listed as well as references to the peer reviewed publications
+describing
+the software. Don't think that you have
+to install all of these programs to get any use out of the DAWG-PAWS
+package. This is just the complete list of programs that DAWG-PAWS can
+use.<br>
+<ul>
+  <li><span style="font-weight: bold;">BLAST (NCBI-BLAST)</span> <br>
+  </li>
+  <ul>
+    <li>Source <a
+ href="http://www.ncbi.nlm.nih.gov/blast/download.shtml">http://www.ncbi.nlm.nih.gov/blast/download.shtml</a></li>
+    <li>OS: Win32, Win64, Linux32, Linux64, Mac OSX, Solaris32,
+Solaris64<br>
+    </li>
+    <li>Ref: Altschul, S. F., T. L. Madden, et al. (1997). Nucleic
+Acids Res 25(17): 3389-402.</li>
+  </ul>
+  <li><span style="font-weight: bold;">Cross_Match</span><span
+ style="font-style: italic;"><br>
+Cross_match is part of the Phrap package and is used by RepeatMasker.
+It is a general purpose application for comparing any two DNA sequence
+sets.</span></li>
+  <ul>
+    <li>Source: <a href="http://www.phrap.org/">http://www.phrap.org/</a><br>
+    </li>
+  </ul>
+  <li><span style="font-weight: bold;">Eugene<br>
+    </span><i>An
+open gene finder for eukaryotic organisms. Compared to most existing
+gene finders, EuGène is characterized by its ability to simply
+integrate arbitrary sources of information in its prediction process.</i></li>
+  <ul>
+    <li>Source:<a
+ href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"
+ rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a>
+    </li>
+    <li>Ref: Schiex, T., A. Moisan, et al. (2001). Computational
+Biology. 111-125.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">find_ltr <span
+ style="font-style: italic; font-weight: normal;"><br>
+The find_ltr program is a de novo LTR Retrotransposon discovery tool</span><br>
+  </li>
+  <ul>
+    <li>Source:<a
+ href="http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz">http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz</a></li>
+    <li>Ref:
+Rho, M., J. H. Choi, et al. (2007). BMC Genomics 8: 90.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">FINDMITE<span
+ style="font-weight: normal;"></span><i style="font-weight: normal;"><br>
+Identifies putative MITES based on
+structural criteria.</i></li>
+  <ul>
+    <li>Source:<a href="http://jaketu.biochem.vt.edu/dl_software.htm"
+ rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a> </li>
+    <li>OS: Redhat Linux<br>
+    </li>
+    <li>Ref: Tu, Z. (2001). Proc Natl Acad Sci U S A 98(4): 1699-704.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">FGENESH<span
+ style="font-weight: normal;"></span><br>
+  </li>
+  <ul>
+    <li>Source:<a href="http://www.softberry.com/berry.phtml"
+ rel="nofollow">http://www.softberry.com/berry.phtml</a></li>
+  </ul>
+  <li style="font-weight: bold;">GeneID<span
+ style="font-weight: normal;"></span><br>
+  </li>
+  <ul>
+    <li>Source:<a href="http://www1.imim.es/software/geneid/index.html"
+ rel="nofollow">http://www1.imim.es/software/geneid/index.html</a></li>
+    <li>Ref: Parra, G., E. Blanco, et al. (2000). Genome Res 10(4):
+511-5.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">GeneMarkHMM</li>
+  <ul>
+    <li>Source:<a href="http://opal.biology.gatech.edu/GeneMark/"
+ rel="nofollow">http://opal.biology.gatech.edu/GeneMark/</a></li>
+    <li>Ref: Lukashin, A. V. and M. Borodovsky (1998). Nucleic Acids
+Res 26(4): 1107-15.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">GENSCAN</li>
+  <ul>
+    <li>Source:<a href="http://genes.mit.edu/GENSCANinfo.html"
+ rel="nofollow">http://genes.mit.edu/GENSCANinfo.html</a></li>
+    <li>Ref: Burge, C. and S. Karlin (1997). J Mol Biol 268(1): 78-94.<br>
+    </li>
+  </ul>
+  <li><span style="font-weight: bold;">HMMER</span><br>
+  </li>
+  <ul>
+    <li>Source:<a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a></li>
+    <li>OS: Linux32,Linux64,Mac OS X</li>
+  </ul>
+  <li><span style="font-weight: bold;">LTR_FINDER</span> <br>
+  </li>
+  <ul>
+    <li>Source :A Linux Binary is available upon contacting the
+authors : xuzh &lt;at&gt; fudan.edu.cn</li>
+    <li>Web Query:<a href="http://tlife.fudan.edu.cn/ltr_finder/">http://tlife.fudan.edu.cn/ltr_finder/</a></li>
+    <li>Ref:
+Xu, Z. and H. Wang (2007). Nucleic Acids Res
+35(Web Server issue): W265-8.</li>
+  </ul>
+  <li><span style="font-weight: bold;">LTR_Seq</span> - <i>Identifies
+LTR retrotransposons
+based on structural criteria</i></li>
+  <ul>
+    <li>Source:<a href="http://www.eecs.wsu.edu/%7Eananth/software.htm"
+ rel="nofollow">http://www.eecs.wsu.edu/~ananth/software.htm</a></li>
+    <li>Ref: Kalyanaraman, A. and S. Aluru (2006).&nbsp; J Bioinform
+Comput Biol 4(2): 197-216.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">LTR_Struc</li>
+  <ul>
+    <li>Source:<a
+ href="http://www.genetics.uga.edu/retrolab/data/LTR_Struc.html">http://www.genetics.uga.edu/retrolab/data/LTR_Struc.html</a></li>
+    <li>OS: Win32<br>
+    </li>
+    <li>Ref: McCarthy, E. M. and J. F. McDonald (2003). Bioinformatics
+19(3): 362-7.</li>
+  </ul>
+  <li style="font-weight: bold;">RepeatMasker<span
+ style="font-weight: normal;"></span><i style="font-weight: normal;"><br>
+RepeatMasker is a program
+that screens DNA sequences for interspersed repeats and low complexity
+DNA sequences</i></li>
+  <ul>
+    <li>Source:<a href="http://www.repeatmasker.org/" rel="nofollow">http://www.repeatmasker.org/</a></li>
+  </ul>
+  <li style="font-weight: bold;">Tandem Repeats Finder<span
+ style="font-weight: normal;"> <br>
+    </span><font style="font-weight: normal; font-style: italic;"
+ size="-1">Locates and displays tandem repeats in DNA sequences.</font></li>
+  <ul>
+    <li>Source:<a href="http://tandem.bu.edu/trf/trf.html"
+ rel="nofollow">http://tandem.bu.edu/trf/trf.download.html</a></li>
+    <li>OS: Win32, Linux32, Linux64, Mac OSX, Solaris<br>
+    </li>
+    <li>Ref: Benson, G. (1999). Nucleic Acids Res 27(2): 573-80.<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">TE Nest <span
+ style="font-weight: normal;"><br>
+    </span><i style="font-weight: normal;">TE
+nest is an annotation and visualization tool for the identification
+transposable elements. TE nest is unique in that it reconstructs
+transposable elements separated by nesting of subsequent insertions.</i></li>
+  <ul>
+    <li>Web Query:<a
+ href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html" rel="nofollow">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a></li>
+    <li>Ref: Kronmiller, B. A. and R. P. Wise (2007). Plant Physiol. in
+press<br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">TriAnnot <span
+ style="font-weight: normal;"><span style="font-style: italic;"><br>
+The purpose the TriAnnot web server is to provide a web based automated
+annotation system for wheat similar to existing resources for rice.</span></span><br>
+  </li>
+  <ul>
+    <li>Web Query:<a
+ href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php">http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php</a><br>
+    </li>
+  </ul>
+  <li style="font-weight: bold;">Vmatch<span
+ style="font-style: italic; font-weight: normal;"><br>
+A tool for efficiently
+solving large scale sequence matching tasks using a persistent index. </span><i
+ style="font-style: italic; font-weight: normal;">Vmatch</i><span
+ style="font-style: italic; font-weight: normal;"> subsumes the
+software Reputer (Kurtz et al 2001).</span> </li>
+  <ul>
+    <li>Source:<a href="http://www.vmatch.de/">http://www.vmatch.de/</a></li>
+    <li>OS: Linux32, Linux64, Mac OSX, Solaris32, Solaris64</li>
+  </ul>
+  <li><span style="font-weight: bold;">WUBLAST</span><span
+ style="font-style: italic;"><br>
+WUBLAST is an implementation of the BLAST program similar to that
+provided by NCBI but quite different in its implementation and
+resulting analyses.</span><br>
+  </li>
+  <ul>
+    <li>Source:<a href="http://blast.wustl.edu/licensing/">http://blast.wustl.edu/licensing/</a></li>
+    <li>OS: Linux32, Linux64, Mac OSX, Solaris32, Solaris64</li>
+  </ul>
+</ul>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="define_env_vars"></a>Define Environmental Variables</h1>
+<h1><a name="define_env_vars"></a>Define Environment Variables</h1>
 <br>
-In the unix-like operating systems including Unix, Linux, and Mac OSX,
-you can define variables in your comand line environment. This will
-allow you to use a program at the command line with referring to its
+In the Unix-like operating systems including Unix, Linux, and Mac OS X,
+you can define variables in your command line environment. These
+variables change the way you interact with the command line, and can be
+used to simplify command tasks. Modifying the environment will
+allow you to use a program at the command line without referring to its
 full path, and can simplify using DAWG-PAWS scripts by letting you
-define variables in your environement instead of defining them at the
+define common variables in your environment instead of defining them at
+the
 command line every time you use a program. The following information
-shows you how to define commonly used environment variables that are
-used by the DAWG-PAWS suite of programs.<br>
+shows you how to define environment variables for use by the DAWG-PAWS
+suite of programs. For more information on the shell and user
+environment in Linux you can refer to <a
+ href="http://www.comptechdoc.org/os/linux/usersguide/linux_ugenvironment.html">http://www.comptechdoc.org/os/linux/usersguide/linux_ugenvironment.html</a><br>
 <h4>Add the DAWG-PAWS code directory</h4>
 Adding the DAWG-PAWS code directory to your path will allow you type in
 the DAWG-PAWS commands without needing to type the entire path to the
-DAWG-PAWS program. For example, you will be able to type <big><code>batch_blast.pl</code></big>
-to launch the batch_blat program instead of needing to type <big><code>/home/yourname/code/dawgpaws/scripts/batch_blast.pl</code></big>.
+DAWG-PAWS program. For example, you will be able to just type <big><code>batch_blast.pl</code></big>
+to launch the batch_blast program.pl instead of needing to type <big><code>/home/yourname/code/dawgpaws/scripts/batch_blast.pl</code></big>.
 In the bash shell you would add the following line to your user profile.<br>
-<pre class="prettyprint"><span class="str">  export PATH=$PATH:/home/yourname/code/dawgpaws/scripts</span></pre>
+<pre class="prettyprint"><span class="str">  export PATH=$PATH:$HOME/apps/dawgpaws/scripts</span></pre>
 <h4>Define paths to required software</h4>
 Many of the DAWG-PAWS command line programs use external software that
 may be stored at different locations in different user environments.
@@ -271,7 +522,8 @@ Despite the name, the use of DAWG-PAWS for annotation is really more of
 a process then a pipeline. There is not a single place where you drop
 in a sequence, push a button and get a fully annotated genome as
 output. The series of scripts that comprise DAWG-PAWS are designed to
-be robust across operating systems, and are expected to be usable in an
+be robust across operating systems as much as possible, and are
+expected to be usable in an
 <span style="font-style: italic;">a la carte </span>fashion. The
 following outline of an annotation process
 indicates the use of the full suite DAWG-PAWS programs; however, a
@@ -279,14 +531,19 @@ subset of these programs
 could be chosen for use in producing computational results for genome
 annotation.<br>
 <br>
+The process described below assumes that you will be curating the
+computational evidences using the Apollo Genome Annotation Curation
+tool. I assume that you are using the game.xml file format as the
+working copy of you annotation.<br>
+<br>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="sequence_preparation"></a>Preparing Sequence Files for
+<h1><a name="sequence_preparation"></a>A. Preparing Sequence Files for
 Annotation<br>
 </h1>
 The following is
 an overview of the process used to annotate sequences with the
 DAWG-PAWS set of programs. This assumes that you are running the
-analysis on a linux machine, and that you are storing your annotation
+analysis on a Linux machine, and that you are storing your annotation
 computational results in the directory
 <pre class="prettyprint"><span class="str">  /home/</span><span
  class="typ">yourname</span><span class="pun">/</span><span class="pln">projects</span><span
@@ -300,7 +557,15 @@ structure indicated in the <a href="man.html#directory_structure">DAWG-PAWS
 Directory Structure</a> below. </p>
 <p>In all of the following command examples, the &gt; character
 represents the command line prompt. </p>
-<h3>1. Rename FASTA files to a short unique name</h3>
+<h1><a name="prep_split_multifasta"></a>1. Split MutliFASTA Files</h1>
+The entire DAWG-PAWS process assumes that each FASTA file contains a
+single record. If your query sequence file contains multiple fasta
+files, you will first need to split the fasta file into individual
+records.<br>
+<h3><br>
+</h3>
+<h1><a name="prep_fasta_shorten"></a>2. Rename FASTA files to a short
+unique name</h1>
 <p>Because
 many of the programs that are used in the DAWG-PAWS process have limits
 on the size of FASTA headers, it may be necessary to first shorten the
@@ -334,8 +599,9 @@ will rename all of the fasta files in the fasta_orig directory and will
 place the results in the fasta_short directory. The -l option of 10
 will shorten the names to 10 characters, and the --uppercase flag will
 convert all lowercase base calls to uppercase. </p>
-<h3>2. Soft mask the renamed files using RepeatMasker and the TREP
-database</h3>
+<h1><a name="prep_soft_mask"></a>3. Soft mask the renamed files using
+RepeatMasker and the TREP
+database</h1>
 <p>For the wheat BACs, the <a
  href="http://wheat.pw.usda.gov/ITMI/Repeats/flatfile.nr" rel="nofollow">nonredundant
 TREP database</a> is used. </p>
@@ -364,26 +630,36 @@ will place the results in the wheat_analysis directory. </p>
 file. The --engine wublast option will use the wublast engine for
 masking the sequences. The default behavior is to mask with crossmatch.
 </p>
-<h3>3. Hard mask the softmasked files generated above</h3>
+<h1><a name="prep_hard_mask"></a>4. Hard mask the softmasked files
+generated above</h1>
 <p>Many
 of the gene prediction programs are not soft-masked "aware" so it is
-necessary to also make a hard masked copy of the fasta file. </p>
-<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
- class="pun">&gt;</span><span class="pln">batch_hardmask</span><span
- class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
- class="pln">i soft_masked</span><span class="pun">/</span><span
- class="pln"> </span><span class="pun">-</span><span class="pln">o hard_masked</span><span
- class="pun">/</span></pre>
+necessary to also make a hard masked copy of the fasta file. This will
+replace the lowercase letters with an N or X character. The example
+below shows masking the fasta files in the soft_masker directory with
+an uppercase N and placing the output in the hard_masked directory.<br>
+</p>
+<pre class="prettyprint"><span class="pln"> </span><span class="pun"> &gt;</span><span
+ class="pln">cd </span><span class="pun">/</span><span class="pln">home</span><span
+ class="pun">/</span><span class="pln">YourName</span><span class="pun">/</span><span
+ class="pln">projects</span><span class="pun">/</span><span class="pln">wheat_annotation</span><span
+ class="pun">/</span><span class="pln">wheat_analysis</span><span
+ class="pln"> &nbsp;</span><span class="pun"><br>  &gt;</span><span
+ class="pln">batch_hardmask</span><span class="pun">.</span><span
+ class="pln">pl </span><span class="pun">-</span><span class="pln">i soft_masked</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o hard_masked</span><span class="pun">/ -m N</span></pre>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="structural_features"></a>Structural Feature Annotation<br>
+<h1><a name="structural_features"></a>B. Structural Feature Annotation<br>
 </h1>
 DAWG-PAWS can currently only annotate a few structural features.
 Structural features are defined here as features of the sequence such
 as gaps, gc content, etc. that are not directly related to the&nbsp;
 annotation of biological sequence features such as genes or
 transposable elements.<br>
-<h3>1. Annotate the gaps in the assembly</h3>
+<h1><a name="run_struc_annotate_gaps"></a>1. Annotate the gaps in the
+assembly</h1>
 <p>The following will find gaps in your fasta files.<br>
 </p>
 <pre class="prettyprint"><span class="pln">&nbsp; </span><span
@@ -403,22 +679,26 @@ it does work. Results will be placed in gff format in the gff directory
 as well as in game.xml format in the game directory.<br>
 <br>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="gene_annotation"></a>Generating Gene Annotation
+<h1><a name="gene_annotation"></a>C. Generating Gene Annotation
 Computational Results</h1>
 The information below assumes that you have properly prepared the
 sequence files for annotation <a href="#sequence_preparation">as
 described above</a>.<br>
-<h3>1. Run the <a
+<h1><a name="run_triannot"></a>0. Run the <a
  href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php"
- rel="nofollow">TriAnnot</a> gene annotation processes.</h3>
-<p>This step. makes use of the <a
+ rel="nofollow">TriAnnot</a> gene annotation processes.</h1>
+<p>This step makes use of the <a
  href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php"
  rel="nofollow">TriAnnot</a>
-webserver. This will use the hard masked file generated above. These
+webserver. This will use the hard masked file generated above to create
+gene model predictions. These
 will need to be processed one at a time using the TriAnnot web
 interface. The files will use the <a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/config/step.xml"
- rel="nofollow">step.xml</a> file </p>
+ rel="nofollow">step.xml</a> file available at the DAWG-PAWS SVN
+server. Supporte fo TriAnnot wil be deprecated as I add the ability to
+run these programs locally from the command line. <br>
+</p>
 <ol>
   <li>Submit jobs to the TriAnnot website. You will receive an email
 when the process is completed. </li>
@@ -462,7 +742,23 @@ to a manageable Apollo output </li>
  class="pln"> </span><span class="pun">-</span><span class="pln">o ta</span><span
  class="pun">/</span></pre>
 </ol>
-<h3>2. Run GENSCAN gene prediction program</h3>
+<br>
+<h1><a name="run_genscan"></a>1. GENSCAN gene prediction program</h1>
+Required Programs:<br>
+<ul>
+  <li>GENSCAN : <a href="http://genes.mit.edu/GENSCANinfo.html"
+ rel="nofollow">http://genes.mit.edu/GENSCANinfo.html</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_genscan.pl">batch_genscan.pl</a><br>
+  </li>
+</ul>
+The GENSCAN program is not part of the TriAnnot web sevice, thus the
+GENSCAN program must be run on your local machine. It is also possible
+to run the GENSCAN program on a web server such as <a
+ href="http://genes.mit.edu/GENSCAN.html">http://genes.mit.edu/GENSCAN.html</a>.
+If you do Genscan
+on a remote web server, you may be able to convert the results to GFF
+format using the program cnv_genscan2gff.pl.<br>
 <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
  class="pun">&gt;</span><span class="pln">batch_genscan</span><span
  class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
@@ -470,8 +766,68 @@ to a manageable Apollo output </li>
  class="pln">hard_masked</span><span class="pun">/</span><span
  class="pln"> </span><span class="pun">-</span><span class="pln">o wheat_analysis</span><span
  class="pun">/</span></pre>
-<h3>3. Run the BLAST processes</h3>
-<p>This will use the soft masked files generated above. </p>
+<h3><br>
+</h3>
+<h1><a name="run_genemark"></a>1. GenMarkHMM<br>
+</h1>
+Required Programs:<br>
+<ul>
+  <li>GeneMarkHMM : <a href="http://opal.biology.gatech.edu/GeneMark/"
+ rel="nofollow">http://opal.biology.gatech.edu/GeneMark/</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_genemark.pl">batch_genemark.pl</a><br>
+  </li>
+</ul>
+The GeneMarkHMM program can also be run as part of the TriAnnot set of
+programs. The batch_genemark.pl program allows you to run GeneMark
+locally. This is useful for folks who want to use a HMM training set
+that is not available in TriAnnot.<br>
+<br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">batch_genemark</span><span
+ class="pun">.</span><span class="pln">pl </span><span class="pun">-</span><span
+ class="pln">i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">hard_masked</span><span class="pun">/</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">o wheat_analysis/</span><span
+ class="pun"></span></pre>
+<h3><br>
+</h3>
+<h1><a name="run_fgenesh"></a>3. FGeneSH</h1>
+Required Programs:<br>
+<ul>
+  <li>FGeneSH : <a href="http://www.softberry.com/berry.phtml"
+ rel="nofollow">http://www.softberry.com/berry.phtml</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_fgenesh2gff.pl?revision=309">cnv_fgenesh2gff.pl</a></li>
+</ul>
+The FGeneSH program can be run in a limited form on the Softberry web
+site. Since a license for this program is so expensive to rent, I have
+not had access to the code to write a script for running this program
+in batch mode. An alternative to running this program on the softberry
+web server is to use the TriAnnot web service.<br>
+<h1><a name="run_geneid"></a>4. GeneID<br>
+</h1>
+This program is currently not supported in batch mode.<br>
+<h1><a name="run_eugene"></a>5. Eugene<br>
+</h1>
+This program is currently not supported in batch mode.<br>
+<h1><a name="run_ncbi_blast"></a>6. NCBI-BLAST processes</h1>
+<p>Homology searches with NCBI-BLAST will use the soft masked files
+generated above.<br>
+</p>
+<p>First, you will need to prepare sequence files to serve as databases
+for BLAST queries. This will use the formatdb command. The DAWG-PAWS
+program uses the name that BLAST assigns to your database, so you
+should indicate the database name and ID when formatting the database.
+You should choose a shortened form of the database name with no spaces.
+The following shows how to format the fasta file
+my_database_of_repeats.fasta using the small name repdb as the database
+name.<br>
+</p>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;formatdb -i my_database_of_repeats.fasta -p F -n repdb -t repdb</span><span
+ class="pln"></span></pre>
+<p> </p>
 <p>For a small number of blast jobs, you can run the BLAST jobs on your
 machine using the batch_blast.pl program with the <a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/config/batch_blast_full.jcfg"
@@ -545,7 +901,7 @@ shell script to execute this blast on the cluster. </li>
  class="pun">/</span><span class="pln">wheat_out </span><span
  class="pun">-</span><span class="pln">o wheat_analysis</span></pre>
 </ol>
-<h3>4. Convert BLAST output to gff format</h3>
+<p style="font-weight: bold;">Convert BLAST Results to GFF</p>
 <p>All
 of the BLAST results for the query sequence will be added to a single
 gff output file named root_name_all_blast.gff. Where root_name is the
@@ -571,15 +927,25 @@ the blast output from </p>
  class="pln"> </span></pre>
 <br>
 <hr><br>
-<h1><a name="te_annotation"></a>Transposable Element Annotation Process</h1>
+<h1><a name="te_annotation"></a>D. Transposable Element Annotation
+Process</h1>
 The information below assumes that you have properly prepared the
 sequence files for annotation <a href="man.html#sequence_preparation">as
 described above</a>. The following transposable element annotation
 steps can generally be done in any order, and you may choose to not
 include some of these programs in your analysis pipeline.<br>
-<h2><br>
+<h1><a name="run_te_repeatmasker"></a>1. RepeatMask Sequences<br>
+</h1>
+Required Programs:<br>
+<ul>
+  <li>RepeatMasker : <a href="http://www.repeatmasker.org/"
+ rel="nofollow">http://www.repeatmasker.org/</a></li>
+</ul>
+The process for running RepeatMasker to identify known Transposable
+Elements is described above.<br>
+<h2>
 </h2>
-<h1><a name="ltr_struc"></a>1. LTR_Struc Program for LTR
+<h1><a name="ltr_struc"></a>2. LTR_Struc Program for LTR
 Retrotransposon Prediction<br>
 </h1>
 Required Programs:<br>
@@ -658,7 +1024,7 @@ the query sequence.<br>
 </ol>
 <h2><br>
 </h2>
-<h1><a name="ltr_finder"></a>2. LTR_FINDER Program for LTR Structure
+<h1><a name="ltr_finder"></a>3. LTR_FINDER Program for LTR Structure
 Prediction<br>
 </h1>
 Required Programs:<br>
@@ -688,10 +1054,10 @@ fasta files analyzed with the LTR_FINDER web page.<br>
 <br>
 The LTR_FINDER program has been designed with high throughput use in
 mind, it provides rich output for the location and biology of the LTR
-Retrotransposons that it predicts, and it allows for fine scale control
-of program parameters. The batch_ltrfinder.pl program simply allows an
+retrotransposons that it predicts, and it allows for fine scale control
+of search parameters. The batch_ltrfinder.pl program provides an
 interface to run LTR_FINDER for multiple parameter sets for each query
-sequence, and it convers output to the GFF file format.<br>
+sequence, and it converts output to the GFF file format.<br>
 <pre class="prettyprint"><span class="pln">&nbsp;</span><span
  class="pun"> &gt;</span><span class="pln">cd </span><span class="pun">/</span><span
  class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
@@ -699,7 +1065,7 @@ sequence, and it convers output to the GFF file format.<br>
  class="pln">wheat_annotation<br>  &gt;batch_ltrfinder.pl -i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_ltrfinder.jcfg<br></span></pre>
 <h2><br>
 </h2>
-<h1><a name="find_ltr"></a>3. Run the find_ltr program</h1>
+<h1><a name="find_ltr"></a>4. Run the find_ltr program</h1>
 Required Programs:<br>
 <ul>
   <li>find_ltr.pl : This is a component of the LTRDeNovo packge<br>
@@ -727,11 +1093,11 @@ The above example will produce a GFF file for each parameter set in the
 batch_findltr.jcfg file for each fasta input sequence recognized in the
 masked_soft input directory.<br>
 <br>
-<h1><a name="ltr_seq"></a>4. Run the ltr_seq program</h1>
+<h1><a name="ltr_seq"></a>5. Run the ltr_seq program</h1>
 Required Programs:<br>
 <ul>
   <li>ltr_seq : this is the latest incarnation of the ltr_par program<br>
-A binary of this program is available upon contacuting the program
+A binary of this program is available upon contacting the program
 author:<br>
     <a href="http://www.eecs.wsu.edu/%7Eananth/contact.htm">http://www.eecs.wsu.edu/~ananth/contact.htm</a><br>
   </li>
@@ -756,7 +1122,7 @@ of the output from the LTR_seq program that was determined to be an LTR
 Retrotransposon. The current version of the LTR_seq program appears to
 produce duplicate predictions.<br>
 <br>
-<h1><a name="te_nest"></a>5. TE Nest analysis for LTR Retrotransposon
+<h1><a name="te_nest"></a>6. TE Nest analysis for LTR Retrotransposon
 Nesting<br>
 </h1>
 Required Programs:<br>
@@ -770,6 +1136,12 @@ PlantGDB:<br>
   </ul>
   <li><a href="man/fetch_tenest.html">fetch_tenest.pl</a></li>
 </ul>
+Currently the TE Nest program is provided as a <a
+ href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">web
+page based service</a> from the Plant GDB web server. The Perl code
+will be made available at some future date. Currently DAWG PAWS relies
+on the web based service for TE Nest Results.<br>
+<br>
 The TE Nest program will use a homology based search approach to
 identify nested elements in your query sequence. The fetch_tenest.pl
 program can be used to bulk download results from the TE Nest web
@@ -795,7 +1167,10 @@ download the results using the fetch_tenest.pl program.<br>
 This will place the results in the wheat_analysis folder with a
 separate set of folders for query sequence defined in the config file.</li>
 </ol>
-<h1><a name="findmite"></a>6. Run the FINDMITE Program</h1>
+<h1><br>
+</h1>
+<h1><a name="findmite"></a>7. FINDMITE for MITE Discovery<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>FINDMITE : <a href="http://jaketu.biochem.vt.edu/dl_software.htm"
@@ -816,11 +1191,11 @@ To run the batch_findmite.pl program you would do the following:<br>
  class="pun">/</span><span class="pln">home</span><span class="pun">/</span><span
  class="pln">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
  class="pun">/</span><span class="pln">wheat_annotation</span>  <br>  &gt;batch_findminte.pl <span
- class="pln">-i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_findmit.jcfg --gff<br></span></pre>
+ class="pln">-i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_findmite.jcfg --gff<br></span></pre>
 The FINDMITE results will be place in the findmite directory while the
 results converted to the GFF format would be placed in the GFF
 directory.<br>
-<h1><a name="oligo_count"></a>7. Oligomer Counts<br>
+<h1><a name="oligo_count"></a>8. Oligomer Counts<br>
 </h1>
 Required Programs:<br>
 <ul>
@@ -838,13 +1213,15 @@ manual</a><br>
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/seq_oligocount.pl">seq_oligocount.pl<br>
     </a></li>
 </ul>
-The seq_oligocount.pl program is at an early stage of development. It
+The <big><code>seq_oligocount.pl</code></big> program is at an early
+stage of development. It
 currently breaks the query sequence into oligomers of length k, it then
 uses the vmatch program to query these kmers against a index database
 to determine oligo copy number depth in the index database. This index
 database could be an index of the raw shotgun reads, an index of the
 assembled reads, or a database index of an external dataset. The result
-produced by seq_oligocount.pl is a GFF format file that gives the
+produced by <big><code>seq_oligocount.pl </code></big>is a GFF format
+file that gives the
 oligomer copy number of every segment of length k in the query
 sequence. It would
 make sense to allow for binning these results over some window,
@@ -878,7 +1255,7 @@ placed in the directory: wheat_analysis/HEX0014K09/<br>
 The seq_oligocount.pl program will place the GFF formatted results in
 the GFF directory.<br>
 <br>
-<h1>8.HMMER - TE Models</h1>
+<h1><a name="hmmer_TE"></a>9.HMMER - TE Models</h1>
 Required Programs:<br>
 <ul>
   <li>hmmsearch : <a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a><br>
@@ -891,8 +1268,10 @@ Required Programs:<br>
 </ul>
 It is possible to use profile hidden Markov models of known
 transposable elements to find the location of TEs in your query
-sequence. This approach was used in part to identify MITES and MULEs in
-the Rice genome. You can produce your own Profile HMMs using multiple
+sequence. This approach was used in to identify MITES and MULEs in
+the Rice genome (Juretic et al. 2004). You can produce your own Profile
+HMMs
+using multiple
 alignments of sequences of your choice, or you can test this approach
 using HMMs developed for rice.<br>
 <br>
@@ -903,10 +1282,15 @@ using HMMs developed for rice.<br>
  class="pln">wheat_annotation<br>  &gt;batch_hmmer.pl </span><span
  class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                  -c config/batch_hmmer.jcfg --gff</span>
 </pre>
-<br>
+<h1><a name="te_tandem_repeats_finder"></a>10. Tandem Repeats Finder<br>
+</h1>
+The Tandem Repeats Finder program can currently be run within the
+TriAnnot web service. I may add the ability to run it in batch in the
+future.<br>
 <br>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="apollo_preparation"></a> Preparing Computational Results
+<h1><a name="apollo_preparation"></a> E. Preparing Computational
+Results
 for Apollo<br>
 </h1>
 <h2>1. Audit the computational results</h2>
@@ -970,7 +1354,8 @@ you want to convert in the @root_names array. </p>
 <hr style="width: 100%; height: 2px;">
 <h1><br>
 </h1>
-<h1><a name="human_curation"></a>Human Curation of Computational Results<br>
+<h1><a name="human_curation"></a>F. Human Curation of Computational
+Results<br>
 </h1>
 Basic information on using Apollo for human curation of computational
 results will go here.<br>
@@ -980,6 +1365,8 @@ results will go here.<br>
 <h1><a name="curation_quality_control"></a>Curation Quality Control<br>
 </h1>
 There are scripts available for quality control and feature comparison.<br>
+<br>
+Convert game.xml annotations to GFF format.<br>
 <br>
 Venn Diagram of sequence features<br>
 <br>
@@ -992,226 +1379,15 @@ The following information is provided for additional reference.<br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="apollo_data_tiers"></a>Apollo Data Tiers</h1>
 The GFF files produced by the computational results above are intended
-to be visualized using the Apollo Genome Annotation Curation Tool. The
+to be visualized using the Apollo Genome Annotation Curation Tool. A
+tiers file has been created <br>
+<br>
+The
 list below was copied from the old wiki page. This should be updated to
 HTML tables. <br>
 <br>
-A pdf file of the default images you will see in the i<br>
+The DAWG-PAWS Tiers file<br>
 <br>
-<h2>General Structural Features</h2>
-<ul>
-  <li><strong>Gaps</strong> - <i>These are gaps in the assembled
-sequence</i> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findgaps.pl"
- rel="nofollow">batch_findgaps.pl</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findgaps.pl"
- rel="nofollow">batch_findgaps.pl</a> </li>
-    </ul>
-    <li>Tiers </li>
-    <ul>
-      <li>Comp Gap </li>
-    </ul>
-  </ul>
-</ul>
-<h2>Gene Annotation Results</h2>
-<p>The following Gene Annotation tiers are available. </p>
-<h3>De Novo Gene Annotation</h3>
-<p>The following de Novo gene annotation tiers are used: </p>
-<ul>
-  <li><strong>EuGene</strong> - <i>an
-open gene finder for eukaryotic organisms. Compared to most existing
-gene finders, EuGène is characterized by its ability to simply
-integrate arbitrary sources of information in its prediction process.</i>
-  </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a
- href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"
- rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a>
-      </li>
-    </ul>
-  </ul>
-  <li><strong>GeneMark.HMM</strong> - <i>Uses HMM to identify genes</i>
-  </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://opal.biology.gatech.edu/GeneMark/"
- rel="nofollow">http://opal.biology.gatech.edu/GeneMark/</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
- rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
-    </ul>
-  </ul>
-  <li><strong>FGeneSH</strong> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://www.softberry.com/berry.phtml" rel="nofollow">http://www.softberry.com/berry.phtml</a>
-      </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
- rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
-    </ul>
-  </ul>
-  <li><strong>GeneID</strong> - </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://www1.imim.es/software/geneid/index.html"
- rel="nofollow">http://www1.imim.es/software/geneid/index.html</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
- rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
-    </ul>
-  </ul>
-  <li><strong>GENSCAN</strong> - </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://genes.mit.edu/GENSCANinfo.html" rel="nofollow">http://genes.mit.edu/GENSCANinfo.html</a>
-      </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_genscan.pl"
- rel="nofollow">batch_genscan.pl</a> </li>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/run_genscan.pl"
- rel="nofollow">run_genscan.pl</a> </li>
-    </ul>
-  </ul>
-</ul>
-<h3>Homology Based Gene Annotation</h3>
-<p>Homology
-based annotation tiers are currently limited to NCBI BLAST results.
-These are broken down by the type of BLAST program used to generate
-results. </p>
-<ul>
-  <li><strong>BLASTn</strong> - </li>
-  <li><strong>BLASTx</strong> - </li>
-  <li><strong>tBLASTx</strong> - </li>
-</ul>
-<h2>TE Annotation Results</h2>
-<h3>De Novo TE Annotation</h3>
-<p>The following de novo annotation tiers are available for TE
-annotation. </p>
-<ul>
-  <li><strong>FINDMITE</strong>- <i>Identifies putative MITES based on
-structural criteria.</i> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://jaketu.biochem.vt.edu/dl_software.htm"
- rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_findmite2gff.pl"
- rel="nofollow">cnv_findmite2gff.pl</a> </li>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_findmite.pl"
- rel="nofollow">batch_findmite.pl</a> </li>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/findmite_params.jcfg"
- rel="nofollow">findmite_params.jcfg</a> - Example configuration file. </li>
-    </ul>
-  </ul>
-  <li><strong>LTR_seq</strong> - <i>Identifies LTR retrotransposons
-based on structural criteria</i> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://www.eecs.wsu.edu/%7Eananth/software.htm"
- rel="nofollow">http://www.eecs.wsu.edu/~ananth/software.htm</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_ltrseq2gff.pl"
- rel="nofollow">cnv_ltrseq2gff.pl</a> </li>
-    </ul>
-  </ul>
-  <li><strong>TRF</strong> - <i>Tandem Repeats Finder</i> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://tandem.bu.edu/trf/trf.html" rel="nofollow">http://tandem.bu.edu/trf/trf.html</a>
-      </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_cnv_ta2ap.pl"
- rel="nofollow">batch_cnv_ta2ap.pl</a> </li>
-    </ul>
-  </ul>
-</ul>
-<h3>Homology Based TE Annotation</h3>
-<ul>
-  <li><strong>RepeatMasker</strong> - <i>RepeatMasker is a program
-that screens DNA sequences for interspersed repeats and low complexity
-DNA sequences</i> </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://www.repeatmasker.org/" rel="nofollow">http://www.repeatmasker.org/</a>
-      </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_mask.pl"
- rel="nofollow">batch_mask.pl</a> </li>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/batch_hardmask.pl"
- rel="nofollow">batch_hardmask.pl </a> </li>
-    </ul>
-  </ul>
-</ul>
-<ul>
-  <li><strong>TE-NEST</strong> - <i>TE
-nest is an annotation and visualization tool for the identification
-transposable elements. TE nest is unique in that it reconstructs
-transposable elements separated by nesting of subsequent insertions.</i>
-  </li>
-  <ul>
-    <li>Program source </li>
-    <ul>
-      <li><a href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html"
- rel="nofollow">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a> </li>
-    </ul>
-    <li>Scripts </li>
-    <ul>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/cnv_tenest2gff.pl"
- rel="nofollow">cnv_tenest2gff.pl</a> </li>
-      <li><a
- href="http://dawg-paws.googlecode.com/svn/trunk/scripts/fetch_tenest.pl"
- rel="nofollow">fetch_tenest.pl</a> </li>
-    </ul>
-  </ul>
-</ul>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="directory_structure"></a>Computational Results Directory
 Structure</h1>
@@ -1254,7 +1430,8 @@ program.</i> </li>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="manfiles"></a>Manual Files for Individual Programs<br>
 </h1>
-Links to the manual files for the various programs are listed below in
+Links to the program manuals for the indvidual scripts are listed below
+in
 alphabetical
 order. These are essentialy extensive help files for each command line
 program use in the genome annotation process.<br>
@@ -1265,22 +1442,21 @@ program use in the genome annotation process.<br>
   <dd>Convert blast output to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/batch_cnv_ta2ap.html">batch_cnv_ta2ap.pl</a></dt>
   <dd>Convert TriAnnotation to Apollo GFF</dd>
-  <dt>batch_convert.pl</dt>
-  <dd>Convert GFF files to the game.xml format<br>
-  </dd>
   <dt style="font-weight: bold;"><a href="man/batch_findgaps.html">batch_findgaps.pl</a></dt>
   <dd>Annotate gaps in a fasta file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_findltr.html">batch_findltr.pl</a></dt>
   <dd>Run the find_ltr.pl program in batch mode</dd>
   <dt style="font-weight: bold;"><a href="man/batch_findmite.html">batch_findmite.pl</a></dt>
   <dd>Run the findmite program in batch mode</dd>
-  <dt>batch_game2gff.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/batch_game2gff.html">batch_game2gff.pl</a></dt>
   <dd>Convert game.xml annotations to GFF format<br>
   </dd>
-  <dt>batch_genmark.pl</dt>
-  <dd>Run GenMark.hmm and parse results to a GFF format file</dd>
+  <dt style="font-weight: bold;"><a href="man/batch_genemark.html">batch_genemark.pl</a></dt>
+  <dd>Run GeneMark.hmm and parse results to a GFF format file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_genscan.html">batch_genscan.pl</a></dt>
   <dd>Run genscan in batch mode and parse results to GFF format</dd>
+  <dt style="font-weight: bold;">batch_gff2game.pl</dt>
+  <dd>Convert GFF files to the game.xml format</dd>
   <dt style="font-weight: bold;"><a href="man/batch_hardmask.html">batch_hardmask.pl</a></dt>
   <dd>Hardmask a directory of softmasked fasta files</dd>
   <dt style="font-weight: bold;"><a href="man/batch_hmmer.html">batch_hmmer.pl</a></dt>
@@ -1296,7 +1472,7 @@ development</span><br>
   <dd>Run RepeatMasker and parse results to a GFF format file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_seq_summary.html">batch_seq_summary.pl</a></dt>
   <dd>Print summary info for a directory of sequence files</dd>
-  <dt>clust_write_shell.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/clust_write_shell.html">clust_write_shell.pl</a></dt>
   <dd>Write shell scripts for the Platform LSF
 queuing system</dd>
   <dt>cnv_fgenesh2gff.pl</dt>
@@ -1347,9 +1523,82 @@ using SFTP</dd>
   <dd>Count oligo redundancy for a input sequence<br>
   </dd>
   <dt>vennseq.pl</dt>
-  <dd>Create Venn Diagrams of sequence features<br>
-  </dd>
+  <dd>Create Venn Diagrams of sequence features<span
+ style="font-weight: bold;"></span></dd>
+  <dt><br>
+  </dt>
 </dl>
+<hr style="width: 100%; height: 2px;">
+<h1><br>
+</h1>
+<h1><a name="literature_cited"></a>LITERATURE CITED<br>
+</h1>
+Achaz, G., F. Boyer, et al. (2007). "Repseek, a tool to retrieve
+approximate repeats from large DNA sequences." Bioinformatics 23(1):
+119-21.<br>
+<br>
+Altschul, S. F., T. L. Madden, et al. (1997). "Gapped BLAST and
+PSI-BLAST: a new generation of protein database search programs."
+Nucleic Acids Res 25(17): 3389-402.<br>
+<br>
+Benson, G. (1999). "Tandem repeats finder: a program to analyze DNA
+sequences." Nucleic Acids Res 27(2): 573-80.<br>
+<br>
+Burge, C. and S. Karlin (1997). "Prediction of complete gene structures
+in human genomic DNA." J Mol Biol 268(1): 78-94.<br>
+<br>
+Edgar, R. C. and E. W. Myers (2005). "PILER: identification and
+classification of genomic repeats." Bioinformatics 21 Suppl 1: i152-8.<br>
+<br>
+Juretic, N., T. E. Bureau, et al. (2004). "Transposable element
+annotation of the rice genome." Bioinformatics 20(2): 155-160.<br>
+<br>
+Kalyanaraman, A. and S. Aluru (2006). "Efficient algorithms and
+software for detection of full-length LTR retrotransposons." J
+Bioinform Comput Biol 4(2): 197-216.<br>
+<br>
+Kent, W. J. (2002). "BLAT--the BLAST-like alignment tool." Genome Res
+12(4): 656-64.<br>
+<br>
+Kurtz, S. (2004). Vmatch. <a href="http://www.vmatch.de/">http://www.vmatch.de/</a><br>
+<br>
+Kronmiller, B. A. and R. P. Wise (2007). "TE nest: Automated
+chronological annotation and visualization of nested plant transposable
+elements." Plant Physiol.<br>
+<br>
+McCarthy, E. M. and J. F. McDonald (2003). "LTR_STRUC: a novel search
+and identification program for LTR retrotransposons." Bioinformatics
+19(3): 362-7.<br>
+<br>
+Parra, G., E. Blanco, et al. (2000). "GeneID in Drosophila." Genome Res
+10(4): 511-5.<br>
+<br>
+Quesneville, H., C. M. Bergman, et al. (2005). "Combined evidence
+annotation of transposable elements in genome sequences." PLoS Comput
+Biol 1(2): 166-75.<br>
+<br>
+Kurtz, S., J. V. Choudhuri, et al. (2001). "REPuter: the manifold
+applications of repeat analysis on a genomic scale." Nucleic Acids Res
+29(22): 4633-42.<br>
+<br>
+Rho, M., J. H. Choi, et al. (2007). "De novo identification of LTR
+retrotransposons in eukaryotic genomes." BMC Genomics 8: 90.<br>
+<br>
+Schiex, T., A. Moisan, et al. (2001). EuGene: An Eucaryotic Gene Finder
+that combines several sources of evidence. . Computational Biology. O.
+Gascuel and M.-F. Sagot: 111-125.<br>
+<br>
+Tu, Z. (2001). "Eight novel families of miniature inverted repeat
+transposable elements in the African malaria mosquito, Anopheles
+gambiae." Proc Natl Acad Sci U S A 98(4): 1699-704.<br>
+<br>
+Wicker, T., F. Sabot, et al. (2007). "A unified classification system
+for eukaryotic transposable elements." Nat Rev Genet 8(12): 973-82.<br>
+<br>
+Xu, Z. and H. Wang (2007). "LTR_FINDER: an efficient tool for the
+prediction of full-length LTR retrotransposons." Nucleic Acids Res
+35(Web Server issue): W265-8.<br>
+<br>
 <hr>
 <table style="border-collapse: collapse;" id="AutoNumber2" border="0"
  bordercolor="#111111" cellpadding="0" cellspacing="0" width="100%">
@@ -1357,7 +1606,7 @@ using SFTP</dd>
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Dec 5, 2007</i></td>
+Last Updated: Dec 17, 2007</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
