@@ -54,10 +54,13 @@ STARTED<br>
 DAWG-PAWS</a></li>
   <li><a href="#install_additional_software"><span
  style="font-weight: bold;">Install Required Software</span></a></li>
-  <li><span style="font-weight: bold;">Install Required Perl Modules<br>
-    </span></li>
+  <li><a href="#install_perl_modules"><span style="font-weight: bold;">Install
+Required Perl Modules</span></a></li>
   <li><a href="#define_env_vars"><span style="font-weight: bold;">Define
 Environment Variables</span></a></li>
+  <li><span style="font-weight: bold;"><a href="#install_test">Test
+Installation</a><br>
+    </span></li>
 </ol>
 </div>
 <h2><a href="#annotation_process">II.
@@ -175,7 +178,7 @@ code. This is illustrated by the following commands:<br>
  class="pun"></span><span class="pln"></span><span class="pun"></span><span
  class="pln"></span><span class="pun"></span></pre>
 The above command will download all the working copies of the scripts,
-program manuals, and emacs modes from the SourceForge reposity. These
+program manuals, and emacs modes from the SourceForge repository. These
 will be placed in the following
 directory structure:<br>
 <ul>
@@ -214,8 +217,17 @@ dawgpaws web are here</span><br>
     </ul>
     <li><span style="font-weight: bold;">scripts</span><br>
       <span style="font-style: italic;">The scripts that are the
-backbone of DAWG-PAWS are stored in this directory</span><br>
-    </li>
+backbone of DAWG-PAWS are stored in this directory</span></li>
+    <li><span style="font-weight: bold;">t</span><span
+ style="font-style: italic;"><span style="font-style: italic;"><br>
+      </span>Test files for checking if DAWG-PAWS is ready to go<br>
+      </span></li>
+    <ul>
+      <li><span style="font-weight: bold;">data</span><span
+ style="font-style: italic;"><br>
+Data files that will be used by the test scripts.<br>
+        </span></li>
+    </ul>
   </ul>
 </ul>
 The svn co command will check out the version of DAWG-PAWS that is the
@@ -262,12 +274,23 @@ to install all of these programs to get any use out of the DAWG-PAWS
 package. This is just the complete list of programs that DAWG-PAWS can
 use.<br>
 <ul>
+  <li style="font-weight: bold;">Apollo : Genome Annotation Curation
+Tool<br>
+  </li>
+  <ul>
+    <li>Source: <a href="http://www.fruitfly.org/annot/apollo/">http://www.fruitfly.org/annot/apollo/</a><br>
+    </li>
+    <li>OS: Win32, Linux32, Mac OS X</li>
+    <li>Ref: Lewis, S. E., S. M. Searle, et al. (2002). Genome Biol
+3(12): RESEARCH0082.<br>
+    </li>
+  </ul>
   <li><span style="font-weight: bold;">BLAST (NCBI-BLAST)</span> <br>
   </li>
   <ul>
     <li>Source <a
  href="http://www.ncbi.nlm.nih.gov/blast/download.shtml">http://www.ncbi.nlm.nih.gov/blast/download.shtml</a></li>
-    <li>OS: Win32, Win64, Linux32, Linux64, Mac OSX, Solaris32,
+    <li>OS: Win32, Win64, Linux32, Linux64, Mac OS X, Solaris32,
 Solaris64<br>
     </li>
     <li>Ref: Altschul, S. F., T. L. Madden, et al. (1997). Nucleic
@@ -439,12 +462,14 @@ software Reputer (Kurtz et al 2001).</span> </li>
   <ul>
     <li>Source:<a href="http://www.vmatch.de/">http://www.vmatch.de/</a></li>
     <li>OS: Linux32, Linux64, Mac OSX, Solaris32, Solaris64</li>
+    <li>Program Manual : <a
+ href="http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf">http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf</a><br>
+    </li>
   </ul>
   <li><span style="font-weight: bold;">WUBLAST</span><span
  style="font-style: italic;"><br>
-WUBLAST is an implementation of the BLAST program similar to that
-provided by NCBI but quite different in its implementation and
-resulting analyses.</span><br>
+WUBLAST is a Local Alignment program similar to NCBI-BLAST but it quite
+different in its implementation , speed and results.</span><br>
   </li>
   <ul>
     <li>Source:<a href="http://blast.wustl.edu/licensing/">http://blast.wustl.edu/licensing/</a></li>
@@ -455,9 +480,18 @@ resulting analyses.</span><br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="install_perl_modules"></a>Install Required Perl Modules<br>
 </h1>
-The following Perl modules are required<br>
-<br>
-<br>
+The following Perl modules are required:<br>
+<ul>
+  <li><span style="font-weight: bold;">BioPerl</span><span
+ style="font-style: italic;"><br>
+BioPerl is used on a few scripts. </span><br>
+  </li>
+  <ul>
+    <li>Source: <a
+ href="http://www.bioperl.org/wiki/Installing_BioPerl">http://www.bioperl.org/wiki/Installing_BioPerl</a><br>
+    </li>
+  </ul>
+</ul>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="define_env_vars"></a>Define Environment Variables</h1>
 <br>
@@ -524,6 +558,13 @@ directory paths to the true locations of the software on your machine.<br>
  class="str">export DP_GENSCAN_BIN='$HOME/apps/genscan/genscan'</span><br>export DP_GENSCAN_LIB='$HOME/apps/genscan/Maize.smat'<br><br><span
  class="str"><span style="color: rgb(255, 0, 0);"># GeneMark</span>                                <br>export GM_BIN_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'<br>export GM_LIB_DIR='$HOME/apps/GenMark/genemark_hmm_euk.linux/'<br><br><span
  style="color: rgb(255, 0, 0);"># VennMaster</span><br>export VMASTER_DIR='/$HOME/apps/VennMaster/VennMaster-0.36.0/'<br>export VMASTER_JAVA_BIN='/usr/java/jre1.6.0/bin/java'<br></span></pre>
+<br>
+<hr style="width: 100%; height: 2px;"><br>
+<h1><a name="install_test"></a>Test Your Installation of DAWG-PAWS<br>
+</h1>
+<br>
+I am currently writing test scripts to test your DAWG::PAWS
+installation.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="annotation_process"></a>II. ANNOTATION PROCESS</h1>
@@ -1574,6 +1615,9 @@ Kurtz, S. (2004). Vmatch. <a href="http://www.vmatch.de/">http://www.vmatch.de/<
 Kronmiller, B. A. and R. P. Wise (2007). "TE nest: Automated
 chronological annotation and visualization of nested plant transposable
 elements." Plant Physiol.<br>
+<br>
+Lewis, S. E., S. M. Searle, et al. (2002). "Apollo: a sequence
+annotation editor." Genome Biol 3(12): RESEARCH0082.<br>
 <br>
 McCarthy, E. M. and J. F. McDonald (2003). "LTR_STRUC: a novel search
 and identification program for LTR retrotransposons." Bioinformatics
