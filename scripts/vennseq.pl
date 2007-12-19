@@ -1067,6 +1067,8 @@ Started: 03/06/2007
 
 Updated: 05/21/2007
 
+Version: $Rev$
+
 =cut
 
 #-----------------------------------------------------------+
@@ -1112,7 +1114,9 @@ Updated: 05/21/2007
 # 11/11/2007
 # - Reworking code to accept gff format
 # - Changing options to the long option format
-
+#
+# 12/17/2007
+# - Updated POD documentation slightly
 
 # - TEST CMD IS:
 #   ./vennseq.pl -i /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.fasta.masked -o /home/jestill/projects/wheat_annotation/VennTest/TestOutTwo.txt -d /home/jestill/projects/wheat_annotation/VennTest/ -f tab -s /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.test.svg
