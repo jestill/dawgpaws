@@ -21,7 +21,8 @@
 #                                                           |
 #-----------------------------------------------------------+
 #
-# WARNING: THIS SOFTWARE IS CURRENTLY NOT A FUNCTIONAL 
+# WARNING: THIS SOFTWARE IS CURRENTLY NOT FUNCTIONAL
+#          IT IS REALLY AN EXPERIMENT IN INSANITY
 #
 # TODO: REGEXP Test to see if multiple windows are open that could
 #       take the focus HEX---

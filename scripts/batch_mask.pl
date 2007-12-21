@@ -1159,6 +1159,9 @@ GNU GENERAL PUBLIC LICENSE, VERSION 3
 
 http://www.gnu.org/licenses/gpl.html   
 
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
 =head1 AUTHOR
 
 James C. Estill E<lt>JamesEstill at gmail.comE<gt>
