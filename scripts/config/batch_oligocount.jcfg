@@ -1,0 +1,9 @@
+# Batch oligo count
+# Tab delimited text file
+# Col 1. length of oligomer,k
+# Col 2. index name (database for counts)
+# Col 3. 
+20	HEXAll.tfa
+20	tagi_10
+20	tata_2
+# End
