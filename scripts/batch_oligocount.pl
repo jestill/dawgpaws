@@ -1,14 +1,14 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# seq_oligocount.pl - Count oligos of size k
+# batch_oligocount.pl - Batch count oligomers               |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 10/11/2007
-# UPDATED: 10/12/2007
+# STARTED: 10/11/2007                                       |
+# UPDATED: 01/02/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
@@ -16,7 +16,7 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION: $Rev: 348 $                                            |
+# VERSION: $Rev: 348 $                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -32,6 +32,12 @@ package DAWGPAWS;
 use Bio::SeqIO;                # Seq IO used to to work with the input file
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -46,8 +52,11 @@ my $outdir;                    # Base directory for output
 my $indexdir;                  # Directory containing the index files
 my $file_config;               # Path to the configuration file
 my $index;                     # Path to the sequence index file
-#my $kmer_len = 20;             # Oligomer length, default is 20
-#my $seq_name;                  # Sequence name used in the output
+#my $kmer_len = 20;            # Oligomer length, default is 20
+#my $seq_name;                 # Sequence name used in the output
+my $name_root;
+my $file_num;
+my $infile;
 
 # Booleans
 my $quiet = 0;
@@ -66,7 +75,6 @@ my @params;                    # Parameters array for running oligocounts
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
-		    #"i|infile=s"  => \$infile,
 		    "i|indir=s"   => \$indir,
 		    "d|db=s"      => \$indexdir,
                     "o|outdir=s"  => \$outdir,
@@ -183,7 +191,7 @@ open (CONFIG, $file_config) ||
     die "Can't open the config file:\n$file_config";
 open (CONFIG, $file_config) ||
     die "Can't open the config file:\n$file_config";
-$i = 0;
+my $i = 0;
 my $line_num = 0;
 while (<CONFIG>) {
     $line_num ++;
@@ -194,8 +202,8 @@ while (<CONFIG>) {
 	
 	if ($count_tmp == 2) {
 	 
-	    $params[$i][0] = $tmpary[0];
-	    $params[$i][0] = $tmpary[0];
+	    $params[$i][0] = $tmpary[0];  # Kmer length
+	    $params[$i][0] = $tmpary[0];  # Database index
 	    $i++;
 	    
 	}
@@ -205,7 +213,7 @@ while (<CONFIG>) {
 	}
 	
     }
-}
+} # End of while CONFIG
 close CONFIG;
 
 # Number of parameter sets specified in the config file
@@ -242,7 +250,8 @@ for my $ind_file (@fasta_files) {
     else {
 	$name_root = $ind_file;
     }
-    
+ 
+# The following commented out   
     #-----------------------------+
     # Create parent dir if it     |
     # does not already exist      |
@@ -266,8 +275,7 @@ for my $ind_file (@fasta_files) {
     }
 
     #-----------------------------+
-    # Create the dir to hold all  |
-    # the oligocount outupt       |
+    # Create the GFF dir          |
     #-----------------------------+
     my  $dir_gff = $dir_parent."gff/";
     unless (-e $dir_gff ) {
@@ -275,18 +283,29 @@ for my $ind_file (@fasta_files) {
 	mkdir $dir_gff ||
 	    die "Could not create the output directory:\n$dir_gff";
     }
-
-
+    
+    #-----------------------------+
+    # CREATE VMATCH OUT DIR       |
+    #-----------------------------+
+    my $vmatch_out_dir = $dir_parent."vmatch/";
+    unless (-e $vmatch_out_dir) {
+	print "creating dir: $vmatch_out_dir\n" if $verbose;
+	mkdir $vmatch_out_dir ||
+	    die "Could not create the vmatch output dir:\nmatch_out_dir\n";
+    }
+    
     for ($i=0; $i<$num_par_sets; $i++) {
 
 	my $kmer_len = $params[$i][0];
-	my $db_name  = $params[$i][0];
-	
+	my $db_name = $params[$i][1];
+	my $index = $params[$i][2];
+       
 	#-----------------------------+
 	# RUN KMER COUNT FOR INFILE   |
 	#-----------------------------+
-	seq_kmer_count ($infile,$dir_parent,$index, $kmer_len, $name_root,
-			$do_gff);
+	# Need to add db_name to the following
+	seq_kmer_count ($infile, $dir_parent, $index, $kmer_len, $name_root,
+			$do_gff, $db_name);
 
     }
 
@@ -364,7 +383,7 @@ sub print_help {
 sub seq_kmer_count {
 
     my ($fasta_in, $outdir, $vmatch_index, $k, $seq_name,
-	$do_gff) = @_;
+	$do_gff, $db_name) = @_;
     
     # Array of threshold values
     #my @thresh = ("200");
@@ -377,12 +396,14 @@ sub seq_kmer_count {
     my $inseq = Bio::SeqIO->new( -file => "<$fasta_in",
 				 -format => 'fasta');
 
-    
     #-----------------------------+
-    # CREATE OUTPUT DIR IF NEEDED |
+    # SET DIR PATHS               |
     #-----------------------------+
-    
-
+    # These will need to already exist
+    my $dir_parent = $outdir.$name_root."/";
+    my $vmatch_out_dir = $dir_parent."vmatch/";
+    my $gff_out_dir = $dir_parent."gff/";
+    my $dir_oligocount = $dir_parent."oligocount/";
 
     # Counts of the number of occurences of each oligo
     my @counts = ();    
@@ -396,11 +417,19 @@ sub seq_kmer_count {
     #-----------------------------+
     # FILE PATHS                  |
     #-----------------------------+
-    # These will need to be modified later to more useful names
-    my $temp_fasta = $outdir."split_seq_".$k."_mer.fasta";
-    my $vmatch_out = $outdir."vmatch_out.txt";
-    my $gff_count_out = $outdir."vmatch_out.gff";
-    my $ocount_out = $outdir."fast_count.txt";
+    # Fasta file split into kmers
+    my $temp_fasta = $dir_oligocount.
+	"split_seq_".$k."mer.fasta";
+    # Vector of ocounts similar to
+    # score data
+    my $ocount_out = $dir_oligocount.
+	$seq_name."_".$k."mer_".$db_name."fast_count.txt";
+    # Raw vmatch output
+    my $vmatch_out = $vmatch_out_dir.
+	$seq_name."_".$k."mer_".$db_name.".txt";
+    # GFF Count output
+    my $gff_count_out = $gff_out_dir.
+	$seq_name."_".$k."mer_".$db_name.".gff";
 
     #-----------------------------+
     # WRITE FIRST LINE OF OCOUNT  |
@@ -538,7 +567,6 @@ sub seq_kmer_count {
 		print OCOUNT " ";
 	    }
 	    
-	    
 
 	    #-----------------------------+
 	    # GFF PIP OUTPUT FILE         |
@@ -628,20 +656,21 @@ This documentation refers to program version $Rev: 348 $
 
 =head2 Usage
 
-    seq_oligocount.pl -i InFile -o OutDir -db index.fasta
+    seq_oligocount.pl -i InDir -o BaseOutDir -c ConfigFile -db index.fasta
                       -n SeqName -k 20
 
-=head2 Required Argumenta
+=head2 Required Arguments
 
-    -i,--infile   # Path to the input fasta file
+    -i,--indir    # Directory containing the query fasta files
     -d,--db       # Path to the mkvtree index file
     -o,--outdir   # Path to the base output directory
-    -n,--name     # Name to assign to the sequence file
-    -k,--kmer     # Oligomer query length
+    -c,--config   # Path to the configuration file
 
 =head1 DESCRIPTION
 
-The seq_oligocount program will take a query sequence, break it
+The batch_oligocount program will run oligomer counts for a set of query 
+sequences in the fasta format. For each query sequence, the program 
+will break it
 into subsequences of size k and query it against an persistent index
 created by the mkvtree program. It produces a GFF output file describing
 the number of copies of every oligomer in the query sequence in the 
@@ -733,8 +762,34 @@ have write permission to the directory you want to place your file in.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-An external configuration file is not required for this program, and
-it does not make use of any variables set in the users environment.
+=head2 Configuration File
+
+The format of the configuration file is under current development. Currently
+the config file is a tab delimited text file with two colums indicating
+the oligomer length and the path to the index database.
+
+=over 2
+
+=item Col 1.
+
+The length of the oligomer. The length of the oligomer is used as a 
+paramter k in the kmer counting, and will be used to name the output file.
+
+=item Col 2.
+
+The short name of the database serving as the query. This name will be used
+to name the output file.
+
+=item Col 3.
+
+The path to the index database.
+
+=back
+
+=head2 Environment
+
+The program currently does not make use of variables defined in the user
+environment.
 
 =head1 DEPENDENCIES
 
