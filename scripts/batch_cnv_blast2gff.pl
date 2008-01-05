@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 12/04/2007                                       |
+# UPDATED: 01/04/2008                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 # Convert blast output to a Apollo compatible gff file.     |
@@ -204,13 +204,14 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     # GET BASE FILE NAME          |
     #-----------------------------+
+    # Working on gettin this fixed
     if ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
 	$name_root = "$1";
     }
-    if ($ind_file =~ m/(.*)\.masked\.fa$/ ) {	    
+    elsif ($ind_file =~ m/(.*)\.masked\.fa$/ ) {	    
 	$name_root = "$1";
     }
     elsif ($ind_file =~ m/(.*)\.fa$/ ) {	    
@@ -666,7 +667,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/06/2007
 
-UPDATED: 08/06/2007
+UPDATED: 01/04/2008
 
 VERSION: $Rev$
 
@@ -693,3 +694,6 @@ VERSION: $Rev$
 #   takes type of help to print and POD source as 
 #   variables.
 # - Added 
+#
+# 01/04/2008
+# - Fixed stupid typo where I had if instead of elseif
