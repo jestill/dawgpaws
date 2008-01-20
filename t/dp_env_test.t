@@ -40,7 +40,7 @@ ok ( $ENV{FIND_LTR_PATH},
 # APOLLO                      |
 #-----------------------------+
 ok ( $ENV{DP_APOLLO_BIN}, 
-     "FIND LTR PATH Defined" );
+     "Apollo Binary Path Defined" );
 
 #-----------------------------+
 # GENEMARK                    |
