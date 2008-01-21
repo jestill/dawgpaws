@@ -8,12 +8,12 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/03/2007                                       |
-# UPDATED: 12/12/2007                                       |
+# UPDATED: 01/21/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Run the LTR_FINDE program in batch mode.                 |
+#  Run the LTR_FINDER program in batch mode.                |
 #                                                           |
-# VERSION: $Rev                :$                           |
+# VERSION: $Rev$                                            |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -51,6 +51,9 @@ my $indir;                     # Input dir of fasta files
 my $outdir;                    # Base output dir 
 my $config_file;               # Configuration file
 
+# GLOBAL SEQUENCE STRING
+my $qry_seq;                   # The full query sequence object
+
 # LTR Finder Parameters
 my @lf_params = ();            # 2d Array to hold the find_ltr parameters 
 
@@ -62,6 +65,7 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 my $do_gff_convert = 0;
+my $do_feat_seq = 0;           # Extract feature sequence data
 
 # Counters/Index Vals
 my $i = 0;                     # Array index val
@@ -95,6 +99,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "ltr-finder=s" => \$lf_path,     # LTR Finder Path
 		    "s|trna-db=s"  => \$trna_db,     # s as per program
 		    "a|prosite=s"  => \$prosite_dir, # a as per program
+		    "f|feat-seq"   => \$do_feat_seq, 
 		    "g|gff"        => \$do_gff_convert,
 		    "q|quiet"      => \$quiet,
 		    "verbose"      => \$verbose,
@@ -145,8 +150,17 @@ if ( (!$indir) || (!$outdir) || (!$config_file) ) {
 }
 
 #-----------------------------------------------------------+
+# IF SEQ FEATURE STRINGS REQUESTED LOAD REQUIRED MODULES    |
+#-----------------------------------------------------------+
+if ($do_feat_seq) {
+    use Bio::Location::Simple;    # Used to get revcom of substrings
+    use Bio::Seq;                 # Fetch seq and do substrings
+}
+
+#-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         | 
 #-----------------------------------------------------------+
+
 
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
@@ -195,14 +209,6 @@ while (<CONFIG>) {
 	if ($num_in_line < 3) { 
 	    $lf_params[$i][0] = $in_line[0] || "NULL";  # Name
 	    $lf_params[$i][1] = $in_line[1] || "";      # Suffix
-#	    $lf_params[$i][2] = $in_line[2] || "NULL";  # MIN-MEM-DIST
-#	    $lf_params[$i][3] = $in_line[3] || "NULL";  # MAX-MEM-DIST
-#	    $lf_params[$i][4] = $in_line[4] || "NULL";  # MAX-MEM-GAP
-#	    $lf_params[$i][5] = $in_line[5] || "NULL";  # MIN-LEN-LTR 
-#	    $lf_params[$i][6] = $in_line[6] || "NULL";  # MAX-LEN-LTR
-#	    $lf_params[$i][7] = $in_line[7] || "NULL";  # RANGE-BIN 
-#	    $lf_params[$i][8] = $in_line[8] || "NULL";  # MIN LEN ORF
-#	    $lf_params[$i][9] = $in_line[9] || "NULL";  # MAX E Value HMM
 	    $i++;
 	} # End of if $num_in_line is 10
 	else {
@@ -246,11 +252,6 @@ if ($num_files == 0) {
 my $num_proc_total = $num_files * $num_par_sets;
 
 print STDERR "$num_proc_total find_ltr runs to process\n" if $verbose;
-
-
-
-
-
 
 for my $ind_file (@fasta_files) {
 
@@ -298,9 +299,42 @@ for my $ind_file (@fasta_files) {
 	$gff_dir = $name_root_dir."gff/";
 	unless (-e $gff_dir) {
 	    mkdir $gff_dir ||
-		die "Could not create genscan out dir:\n$gff_dir\n";
+		die "Could not create gff out dir:\n$gff_dir\n";
 	}
     }
+
+    #-----------------------------------------------------------+
+    # LOAD SEQUENCE TO STRING IF WE WANT TO EXTRACT FEATURES    |
+    #-----------------------------------------------------------+
+    # This will also do the test to make sure that this is a fasta file
+    # with a single record
+
+
+
+#/////////////////////
+#    if ($do_feat_seq) {
+#	
+#	# Load the sequence string to the 
+#	# READ IN THE FASTA FILE AND LOAD THE RESULTS TO A SEQ OBJ
+#	# This allows me to use the seq object functions from BioPerl
+#	# Like substring and reverse complement
+#	my $lf_qryseqpath = $indir.$ind_file;
+#	open (QRYSEQ,"<$lf_qryseqpath") ||
+#	    die "Can not open inseq $lf_qryseqpath";
+#
+#
+#    }
+#\\\\\\\\\\\\\\\\\\\
+
+
+#	# NOTE
+#	# If I load this as a sequence object can do
+#	use Bio::Location::Simple;
+#	my $location = Bio::Location::Simple->new(-start  => $start,
+#						  -end   => $end,
+#						  -strand => "-1");
+#        # assume we already have a sequence object
+#	my $rev_comp_substr = $seq_obj->subseq($location);
 
 
     #-----------------------------------------------------------+
@@ -337,7 +371,7 @@ for my $ind_file (@fasta_files) {
 	#-----------------------------+
 	# CONVERT OUTPUT TO GFF       |
 	#-----------------------------+
-	if ( (-e $lf_out) && ($do_gff_convert)) {
+	if ( (-e $lf_out) && ($do_gff_convert) ) {
 	    ltrfinder2gff ( $name_root, $lf_out, $lf_gff_outpath, 
 			    0, $lf_gff_suffix);
 	}
@@ -603,7 +637,6 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".              # Strand
 		    ".\t".                       # Frame
 		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-		print STDOUT $gff_str_out;
 		print GFFOUT $gff_str_out;
 		
 
@@ -617,7 +650,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".             # Strand
 			".\t".                      # Frame
 			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		}
 
@@ -633,7 +665,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".             # Strand
 			".\t".                      # Frame
 			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		}
 
@@ -648,11 +679,9 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 print STDOUT $gff_str_out;
 		 print GFFOUT $gff_str_out;
 
 		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 		    "$gff_src\t".               # Source
 		    "three_prime_LTR\t".        # Data type
 		    "$lf_3ltr_start\t".         # Start
@@ -661,14 +690,12 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 print STDOUT $gff_str_out;
 		 print GFFOUT $gff_str_out;
 
 		if ($has_tsr) {
 		    
 		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".              # Source
+			"$gff_src\t".                # Source
 			"target_site_duplication\t". # Data type
 			"$lf_5tsr_start\t".          # Start
 			"$lf_5tsr_end\t".            # End
@@ -676,7 +703,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;	    
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -688,7 +714,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		}
@@ -708,7 +733,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    #/////////
@@ -723,7 +747,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		} # End of has in_core
@@ -743,7 +766,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -755,7 +777,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		} # End of has_in_cterm
@@ -774,7 +795,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -786,7 +806,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		}
@@ -805,7 +824,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -817,7 +835,6 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		} # End of has_reverse_transcriptase
@@ -873,6 +890,7 @@ sub ltrfinder2gff {
 	    $has_in_core = $9;
 	    $has_in_cterm = $10;
 	    $has_rh = $11;
+
 	}
 	
 	# 5' LTR
@@ -1013,7 +1031,6 @@ sub ltrfinder2gff {
 	"$lf_strand\t".              # Strand
 	".\t".                       # Frame
 	"ltr_finder_$lf_ltr_id\n";   # Retro ID
-    print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     
@@ -1027,14 +1044,12 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
     
     if ($has_ppt) {
 	$gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".    # Seq ID
 	    "$gff_src\t".               # Source
 	    "RR_tract\t".               # Data type
 	    "$lf_ppt_start\t".          # Start
@@ -1043,13 +1058,11 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
     
     $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 	"$gff_src\t".               # Source
 	"five_prime_LTR\t".         # Data type
 	"$lf_5ltr_start\t".         # Start
@@ -1058,13 +1071,11 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
 
     # Getting an error beow
     $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 	"$gff_src\t".               # Source
 	"three_prime_LTR\t".        # Data type
 	"$lf_3ltr_start\t".         # Start
@@ -1073,7 +1084,6 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     if ($has_tsr) {
@@ -1088,7 +1098,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;	    
 	
 	$gff_str_out = "$lf_seq_id\t".   # Seq ID
@@ -1100,7 +1109,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -1120,7 +1128,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	#/////////
@@ -1135,7 +1142,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has in_core
@@ -1155,7 +1161,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -1167,7 +1172,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_in_cterm
@@ -1186,7 +1190,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -1198,7 +1201,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -1217,7 +1219,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -1229,7 +1230,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_reverse_transcriptase
@@ -1341,6 +1341,33 @@ Path to the prosite directory for use by LTR_FINDER.
 =item -g,gff
 
 Convert the outout to gff format.
+
+=item -f,--feat-seq
+
+Extract sequence string of features. These will be extracted as separate fasta
+files for each sequence feature class. These fasta files will be stored in the
+ltr_finder directory. Using rootname as the name of the contig and ltrid
+as the number assigned by LTR_Finder, the fasta files that are created are:
+
+=over
+
+=item rootname_ltrid_ltr5.fasta
+
+The sequence of the five prime LTR. This is not extracted from the alignment
+returned by LTR_Finder, but is extracted from the original sequence using
+the coordinates returned by LTR finder.
+
+=item rootname_ltr3.fasta
+
+The squence of the three primer LTR. This is also extracted from the 
+original sequence using the coordinates returned by LTR finder.
+
+=item rootname_ltr
+
+=back
+
+The name of the individual LTR retrotransposon identified will be 
+consistant across these fasta files. Not all 
 
 =item --usage
 
@@ -1543,3 +1570,8 @@ VERSION: $Rev$
 #   base ENV vars. These assume that that the relevant
 #   files have default names and are in the user's path.
 #   
+# 01/20/2008
+# - Removed STDOUT print of gff strings
+# - Adding fasta output of sequence features
+#   This uses the -f,--feat-seq command line options
+
