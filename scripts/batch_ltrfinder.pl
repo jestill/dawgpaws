@@ -13,7 +13,7 @@
 # DESCRIPTION:                                              |
 #  Run the LTR_FINDER program in batch mode.                |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -51,7 +51,8 @@ my $indir;                     # Input dir of fasta files
 my $outdir;                    # Base output dir 
 my $config_file;               # Configuration file
 
-# GLOBAL SEQUENCE STRING
+# GLOBAL SEQUENCE STRING OBJECTS
+my $seq_in;                    # Full fasta file input object
 my $qry_seq;                   # The full query sequence object
 
 # LTR Finder Parameters
@@ -152,15 +153,18 @@ if ( (!$indir) || (!$outdir) || (!$config_file) ) {
 #-----------------------------------------------------------+
 # IF SEQ FEATURE STRINGS REQUESTED LOAD REQUIRED MODULES    |
 #-----------------------------------------------------------+
+# This will only attempt to use these objects when they are needed for parsing
+# sequence strings.
 if ($do_feat_seq) {
     use Bio::Location::Simple;    # Used to get revcom of substrings
     use Bio::Seq;                 # Fetch seq and do substrings
+    use Bio::SeqIO;               # Seq IO
+    use Bio::Location::Simple;    # Used to get reverse complement when needed
 }
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         | 
 #-----------------------------------------------------------+
-
 
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
@@ -226,7 +230,7 @@ my $num_par_sets = $i;
 
 if ($num_par_sets == 0) {
     print "\a";
-    print "ERROR: No parameter sets were found in the config file:\n".
+    print STDERR "ERROR: No parameter sets were found in the config file:\n".
 	"$config_file\n";
     exit;
 }
@@ -251,7 +255,7 @@ if ($num_files == 0) {
 
 my $num_proc_total = $num_files * $num_par_sets;
 
-print STDERR "$num_proc_total find_ltr runs to process\n" if $verbose;
+print STDERR "$num_proc_total find_ltr runs to process\n\n" if $verbose;
 
 for my $ind_file (@fasta_files) {
 
@@ -306,36 +310,24 @@ for my $ind_file (@fasta_files) {
     #-----------------------------------------------------------+
     # LOAD SEQUENCE TO STRING IF WE WANT TO EXTRACT FEATURES    |
     #-----------------------------------------------------------+
-    # This will also do the test to make sure that this is a fasta file
-    # with a single record
+    # TODO: This should also do the test to make sure that this is a fasta file
+    #       with a single record
+    if ($do_feat_seq) {
 
+	my $lf_qryseqpath = $indir.$ind_file;
 
+	$seq_in = Bio::SeqIO->new ( '-format' => 'fasta',
+				    '-file' => "<$lf_qryseqpath") 
+	    || die "Can not open sequence file $lf_qryseqpath";
+	
+	# THE FOLLOWING ERROR CHECK WOULD BE HELPFUL
+	# If number of seqs in object is one move forward
+	# otherwise throw error.
+	# Try using next_seq outside of a while statement
+	# This appears to work.
+	$qry_seq = $seq_in->next_seq();
 
-#/////////////////////
-#    if ($do_feat_seq) {
-#	
-#	# Load the sequence string to the 
-#	# READ IN THE FASTA FILE AND LOAD THE RESULTS TO A SEQ OBJ
-#	# This allows me to use the seq object functions from BioPerl
-#	# Like substring and reverse complement
-#	my $lf_qryseqpath = $indir.$ind_file;
-#	open (QRYSEQ,"<$lf_qryseqpath") ||
-#	    die "Can not open inseq $lf_qryseqpath";
-#
-#
-#    }
-#\\\\\\\\\\\\\\\\\\\
-
-
-#	# NOTE
-#	# If I load this as a sequence object can do
-#	use Bio::Location::Simple;
-#	my $location = Bio::Location::Simple->new(-start  => $start,
-#						  -end   => $end,
-#						  -strand => "-1");
-#        # assume we already have a sequence object
-#	my $rev_comp_substr = $seq_obj->subseq($location);
-
+    }
 
     #-----------------------------------------------------------+
     # RUN LTR_FINDER FOR EACH SET OF PARAM VALS IN CONFIG FILE |
@@ -348,9 +340,9 @@ for my $ind_file (@fasta_files) {
 	my $lf_gff_suffix = $lf_params[$i][0]; # Name of the parameter set
 	my $lf_cmd_suffix = $lf_params[$i][1]; # Name of the parameter set
 
-	print STDERR "#\n#------------------------------------\n" if $verbose;
-	print STDERR "#Processing: $name_root $lf_gff_suffix\n" if $verbose;
-	print STDERR "#------------------------------------\n" if $verbose;
+	print STDERR "\n#------------------------------------\n" if $verbose;
+	print STDERR "# Processing: $name_root $lf_gff_suffix\n" if $verbose;
+	print STDERR "#------------------------------------\n\n" if $verbose;
 
 	# lf_out is path of the ltrfinder output file
 	my $lf_inseqpath = $indir.$ind_file;
@@ -364,7 +356,7 @@ for my $ind_file (@fasta_files) {
 	    " $lf_cmd_suffix".
 	    " > $lf_out";
 
-	print STDERR "#\tCMD:$lf_cmd\n" if $verbose;
+	print STDERR "\tCMD:$lf_cmd\n" if $verbose;
 
 	system ($lf_cmd);
 
@@ -373,11 +365,14 @@ for my $ind_file (@fasta_files) {
 	#-----------------------------+
 	if ( (-e $lf_out) && ($do_gff_convert) ) {
 	    ltrfinder2gff ( $name_root, $lf_out, $lf_gff_outpath, 
-			    0, $lf_gff_suffix);
+			    0, $lf_gff_suffix, $do_feat_seq,$ltrfinder_dir);
 	}
 
-    }
 
+	# Check the global aspect of the seq record
+	print STDERR "SEQ LEN: ".$qry_seq->length()."\n" if $verbose;
+
+    }
 
 
 } # End of for each individual fasta file
@@ -395,7 +390,7 @@ sub print_help {
     # help_msg is the type of help msg to use (ie. help vs. usage)
     
     print "\n";
-    
+
     #-----------------------------+
     # PIPE WITHIN PERL            |
     #-----------------------------+
@@ -457,10 +452,10 @@ sub ltrfinder2gff {
     
     # seq_id could be extracted from the ltrfinder result
     # but passing it to the subfunction directly allows for cases
-    # where the id assigned by ltr_struc differs from the way
+    # where the id assigned by ltrfinder differs from the way
     # the user is referring to the assembly
-    # MAY WANT TO ALLOW FOR USING THE $ls_seq_id
-    my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
+    my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix,
+	$do_feat_seq,$ltrfinder_dir) = @_;
     
     # The gff src id
     my $gff_src = "ltr_finder:".$gff_suffix;
@@ -590,6 +585,11 @@ sub ltrfinder2gff {
 	    die "ERROR: Can not open gff outfile:\n $gffout\n";
     }
 
+    # Test of squence in the subfunction
+    if ($do_feat_seq) {
+	print "SEQ NAME: ".$qry_seq->primary_id()."\n" if $verbose;
+    }
+
     #-----------------------------+
     # OPEN INPUT FILE             |
     #-----------------------------+
@@ -637,40 +637,146 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".              # Strand
 		    ".\t".                       # Frame
 		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-		print GFFOUT $gff_str_out;
-		
+		 print GFFOUT $gff_str_out;
 
-		if ($has_pbs) {
-		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
-			"$gff_src\t".               # Source
-			"primer_binding_site\t".    # Data type
-			"$lf_pbs_start\t" .         # Start
-			"$lf_pbs_end\t".            # End
-			"$lf_score\t".              # Score
-			"$lf_strand\t".             # Strand
-			".\t".                      # Frame
-			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print GFFOUT $gff_str_out;
-		}
+		 # Extract sequence
+		 if ($do_feat_seq) {
+		     my $feat_strand;
+		     my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			 $lf_ltr_id."_LTR_retrotransposon"; 
+		     my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+		     
+		     print ">$seq_header\n";
 
-		
-		if ($has_ppt) {
-		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
+		     if ($lf_strand =~ "-") {
+			 $feat_strand="-1";
+		     }
+		     else {
+			 $feat_strand="1";
+		     }
+		     
+		     my $loc = Bio::Location::Simple->new(-start  => $lf_span_start,
+							  -end    => $lf_span_end,
+							  -strand => $feat_strand);
+		     # Sequene of the feature
+		     my $feat_seq = $qry_seq->subseq($loc);
+
+		     open (SEQOUT,">$out_seq_path") ||
+			 die "Can not open output sequence path:$out_seq_path\n";
+		     print SEQOUT ">$seq_header\n";
+		     print SEQOUT "$feat_seq\n";
+		     close SEQOUT;
+		 }
+		 # END EXTRACT SEQUENCE
+
+#	# NOTE
+#	# If I load this as a sequence object can do
+#	use Bio::Location::Simple;
+#	my $location = Bio::Location::Simple->new(-start  => $start,
+#						  -end   => $end,
+#						  -strand => "-1");
+#        # assume we already have a sequence object
+#	my $rev_comp_substr = $seq_obj->subseq($location);		
+		 
+		 #
+		 # PRIMER BINDING SITE
+		 #
+		 
+		 if ($has_pbs) {
+		     $gff_str_out = "$lf_seq_id\t".  # Seq ID
+			 "$gff_src\t".               # Source
+			 "primer_binding_site\t".    # Data type
+			 "$lf_pbs_start\t" .         # Start
+			 "$lf_pbs_end\t".            # End
+			 "$lf_score\t".              # Score
+			 "$lf_strand\t".             # Strand
+			 ".\t".                      # Frame
+			 "ltr_finder_$lf_ltr_id\n";  # Retro ID
+		     print GFFOUT $gff_str_out;
+		     
+		     # Extract sequence
+		     if ($do_feat_seq) {
+			 my $feat_strand;
+			 my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			     $lf_ltr_id."_primer_binding_site"; 
+			 my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+			 
+			 print ">$seq_header\n";
+			 
+			 if ($lf_strand =~ "-") {
+			     $feat_strand="-1";
+			 }
+			 else {
+			     $feat_strand="1";
+			 }
+			 
+			 my $loc = Bio::Location::Simple->new(-start  => $lf_pbs_start,
+							      -end    => $lf_pbs_end,
+							      -strand => $feat_strand);
+			 # Sequene of the feature
+			 my $feat_seq = $qry_seq->subseq($loc);
+			 
+			 open (SEQOUT,">$out_seq_path") ||
+			     die "Can not open output sequence path:$out_seq_path\n";
+			 print SEQOUT ">$seq_header\n";
+			 print SEQOUT "$feat_seq\n";
+			 close SEQOUT;
+		     }
+		     # END EXTRACT SEQUENCE
+		 }
+		 
+		 #
+		 # POLYPURINE TRACT
+		 #
+		 if ($has_ppt) {
+		     $gff_str_out = "$lf_seq_id\t".  # Seq ID
 #		    print STDOUT "$lf_seq_id\t".    # Seq ID
-			"$gff_src\t".               # Source
-			"RR_tract\t".               # Data type
-			"$lf_ppt_start\t".          # Start
-			"$lf_ppt_end\t".            # End
-			"$lf_score\t".              # Score
-			"$lf_strand\t".             # Strand
-			".\t".                      # Frame
-			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print GFFOUT $gff_str_out;
-		}
-
+			 "$gff_src\t".               # Source
+			 "RR_tract\t".               # Data type
+			 "$lf_ppt_start\t".          # Start
+			 "$lf_ppt_end\t".            # End
+			 "$lf_score\t".              # Score
+			 "$lf_strand\t".             # Strand
+			 ".\t".                      # Frame
+			 "ltr_finder_$lf_ltr_id\n";  # Retro ID
+		     print GFFOUT $gff_str_out;
+		     
+		     # Extract sequence
+		     if ($do_feat_seq) {
+			 my $feat_strand;
+			 my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			     $lf_ltr_id."_RR_tract"; 
+			 my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+			 
+			 print ">$seq_header\n";
+			 
+			 if ($lf_strand =~ "-") {
+			     $feat_strand="-1";
+			 }
+			 else {
+			     $feat_strand="1";
+			 }
+			 
+			 my $loc = Bio::Location::Simple->new(-start  => $lf_ppt_start,
+							      -end    => $lf_ppt_end,
+							      -strand => $feat_strand);
+			 # Sequene of the feature
+			 my $feat_seq = $qry_seq->subseq($loc);
+			 
+			 open (SEQOUT,">$out_seq_path") ||
+			     die "Can not open output sequence path:$out_seq_path\n";
+			 print SEQOUT ">$seq_header\n";
+			 print SEQOUT "$feat_seq\n";
+			 close SEQOUT;
+		     }
+		     # END EXTRACT SEQUENCE
+		 }
+		 
 		
+		 #-----------------------------------------------
+		 # 5' LTR
+		 #-----------------------------------------------
 		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 		    "$gff_src\t".               # Source
 		    "five_prime_LTR\t".         # Data type
 		    "$lf_5ltr_start\t".         # Start
@@ -681,6 +787,39 @@ sub ltrfinder2gff {
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
 		 print GFFOUT $gff_str_out;
 
+		 # Extract sequence
+		 if ($do_feat_seq) {
+		     my $feat_strand;
+		     my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			 $lf_ltr_id."_five_prime_LTR"; 
+		     my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+		     
+		     print ">$seq_header\n";
+
+		     if ($lf_strand =~ "-") {
+			 $feat_strand="-1";
+		     }
+		     else {
+			 $feat_strand="1";
+		     }
+		     
+		     my $loc = Bio::Location::Simple->new(-start  => $lf_5ltr_start,
+							  -end    => $lf_5ltr_end,
+							  -strand => $feat_strand);
+		     # Sequene of the feature
+		     my $feat_seq = $qry_seq->subseq($loc);
+
+		     open (SEQOUT,">$out_seq_path") ||
+			 die "Can not open output sequence path:$out_seq_path\n";
+		     print SEQOUT ">$seq_header\n";
+		     print SEQOUT "$feat_seq\n";
+		     close SEQOUT;
+		 }
+		 # END EXTRACT SEQUENCE
+
+		 #-----------------------------------------------
+		 # 3' LTR
+		 #-----------------------------------------------
 		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
 		    "$gff_src\t".               # Source
 		    "three_prime_LTR\t".        # Data type
@@ -691,6 +830,38 @@ sub ltrfinder2gff {
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
 		 print GFFOUT $gff_str_out;
+
+		 # Extract sequence
+		 if ($do_feat_seq) {
+		     my $feat_strand;
+		     my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			 $lf_ltr_id."_three_prime_LTR"; 
+		     my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+		     
+		     print ">$seq_header\n";
+
+		     if ($lf_strand =~ "-") {
+			 $feat_strand="-1";
+		     }
+		     else {
+			 $feat_strand="1";
+		     }
+		     
+		     my $loc = Bio::Location::Simple->new(-start  => $lf_3ltr_start,
+							  -end    => $lf_3ltr_end,
+							  -strand => $feat_strand);
+		     # Sequene of the feature
+		     my $feat_seq = $qry_seq->subseq($loc);
+
+		     open (SEQOUT,">$out_seq_path") ||
+			 die "Can not open output sequence path:$out_seq_path\n";
+		     print SEQOUT ">$seq_header\n";
+		     print SEQOUT "$feat_seq\n";
+		     close SEQOUT;
+		 }
+		 # END EXTRACT SEQUENCE
+
+
 
 		if ($has_tsr) {
 		    
@@ -716,8 +887,38 @@ sub ltrfinder2gff {
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
 		    print GFFOUT $gff_str_out;
 		    
-		}
 
+		    # Extract sequence
+		    if ($do_feat_seq) {
+			my $feat_strand;
+			my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			    $lf_ltr_id."_target_site_duplication"; 
+			my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+			
+			print ">$seq_header\n";
+			
+			if ($lf_strand =~ "-") {
+			    $feat_strand="-1";
+			}
+			else {
+			    $feat_strand="1";
+			}
+			
+			my $loc = Bio::Location::Simple->new(-start  => $lf_5tsr_start,
+							     -end    => $lf_5tsr_end,
+							     -strand => $feat_strand);
+			# Sequene of the feature
+			my $feat_seq = $qry_seq->subseq($loc);
+			
+			open (SEQOUT,">$out_seq_path") ||
+			    die "Can not open output sequence path:$out_seq_path\n";
+			print SEQOUT ">$seq_header\n";
+			print SEQOUT "$feat_seq\n";
+			close SEQOUT;
+		    }
+		    # END EXTRACT SEQUENCE
+		}
+		 
 
 		# Integrase Core
 		if ($has_in_core) {
@@ -749,6 +950,38 @@ sub ltrfinder2gff {
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
 		    print GFFOUT $gff_str_out;
 		    
+		    		 # Extract sequence
+		 if ($do_feat_seq) {
+		     my $feat_strand;
+		     my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			 $lf_ltr_id."_in_core_orf"; 
+		     my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+		     
+		     print ">$seq_header\n";
+
+		     if ($lf_strand =~ "-") {
+			 $feat_strand="-1";
+		     }
+		     else {
+			 $feat_strand="1";
+		     }
+		     
+		     my $loc = Bio::Location::Simple->new(-start  => 
+							  $lf_in_core_orf_start,
+							  -end    => 
+							  $lf_in_core_orf_end,
+							  -strand => $feat_strand);
+		     # Sequene of the feature
+		     my $feat_seq = $qry_seq->subseq($loc);
+
+		     open (SEQOUT,">$out_seq_path") ||
+			 die "Can not open output sequence path:$out_seq_path\n";
+		     print SEQOUT ">$seq_header\n";
+		     print SEQOUT "$feat_seq\n";
+		     close SEQOUT;
+		 }
+		 # END EXTRACT SEQUENCE
+
 		} # End of has in_core
 
 
@@ -808,8 +1041,38 @@ sub ltrfinder2gff {
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
 		    print GFFOUT $gff_str_out;
 		    
+		    # Extract sequence
+		    if ($do_feat_seq) {
+			my $feat_strand;
+			my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			    $lf_ltr_id."_rnaseh_orf"; 
+			my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+			
+			print ">$seq_header\n";
+			
+			if ($lf_strand =~ "-") {
+			    $feat_strand="-1";
+			}
+			else {
+			    $feat_strand="1";
+			}
+			
+			my $loc = Bio::Location::Simple->new(-start  => $lf_rh_orf_start,
+							     -end    => $lf_rh_orf_end,
+							     -strand => $feat_strand);
+			# Sequene of the feature
+			my $feat_seq = $qry_seq->subseq($loc);
+			
+			open (SEQOUT,">$out_seq_path") ||
+			    die "Can not open output sequence path:$out_seq_path\n";
+			print SEQOUT ">$seq_header\n";
+			print SEQOUT "$feat_seq\n";
+			close SEQOUT;
+		    }
+		    # END EXTRACT SEQUENCE
+		    
 		}
-
+		 
 		if ($has_rt) {
 
 		    #/////////
@@ -836,6 +1099,37 @@ sub ltrfinder2gff {
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
 		    print GFFOUT $gff_str_out;
+
+		 # Extract sequence
+		 if ($do_feat_seq) {
+		     my $feat_strand;
+		     my $seq_header = $seq_id."_LTRFinder_".$gff_suffix.
+			 $lf_ltr_id."_rt_orf"; 
+		     my $out_seq_path = $ltrfinder_dir.$seq_header.".fasta";
+		     
+		     print ">$seq_header\n";
+
+		     if ($lf_strand =~ "-") {
+			 $feat_strand="-1";
+		     }
+		     else {
+			 $feat_strand="1";
+		     }
+		     
+		     my $loc = Bio::Location::Simple->new(-start  => $lf_rt_orf_start,
+							  -end    => $lf_rt_orf_end,
+							  -strand => $feat_strand);
+		     # Sequene of the feature
+		     my $feat_seq = $qry_seq->subseq($loc);
+
+		     open (SEQOUT,">$out_seq_path") ||
+			 die "Can not open output sequence path:$out_seq_path\n";
+		     print SEQOUT ">$seq_header\n";
+		     print SEQOUT "$feat_seq\n";
+		     close SEQOUT;
+		 }
+		 # END EXTRACT SEQUENCE
+
 
 		} # End of has_reverse_transcriptase
 
