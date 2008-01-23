@@ -455,7 +455,7 @@ sub ltrfinder2gff {
     # where the id assigned by ltrfinder differs from the way
     # the user is referring to the assembly
     my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix,
-	$do_feat_seq,$ltrfinder_dir) = @_;
+	$do_feat_seq, $ltrfinder_dir) = @_;
     
     # The gff src id
     my $gff_src = "ltr_finder:".$gff_suffix;
@@ -478,7 +478,8 @@ sub ltrfinder2gff {
     my $lf_version;               # Version of LTR finder being parsed
     my $lf_trna_db;               # tRNA database used
     
-    my $lf_strand;                # Strand of the LTR
+    # LTR Retrotransposon Strand
+    my $lf_strand;                # Strand of the LTR Retro
     my $lf_span_start;            # Location start
     my $lf_span_end;              # Location end
     my $lf_length;                # Length
@@ -598,7 +599,9 @@ sub ltrfinder2gff {
 
     while (<INFILE>) {
 	chomp;
-        #    print $_."\n";
+	# The following can be used to print LTR Finder output as
+	# it is parsed
+        #    print STDERR $_."\n";
 	
 	
 	# CHECK BOOLEANS
@@ -617,9 +620,11 @@ sub ltrfinder2gff {
 	# IN NEW REC, GET ID
 	elsif (m/^\[(.*)\]/) {
 
-	    #-----------------------------+
-	    # PRINT STORED GFF OUTPUT     |
-	    #-----------------------------+
+
+
+	    #-----------------------------------------------------------+
+	    # PRINT STORED GFF OUTPUT                                   |
+	    #-----------------------------------------------------------+
 	    unless ($1 == 1 ) {
 
 		# Two alternatives here
@@ -655,9 +660,12 @@ sub ltrfinder2gff {
 			 $feat_strand="1";
 		     }
 		     
-		     my $loc = Bio::Location::Simple->new(-start  => $lf_span_start,
-							  -end    => $lf_span_end,
-							  -strand => $feat_strand);
+		     my $loc = Bio::Location::Simple->new(-start  => 
+							  $lf_span_start,
+							  -end    => 
+							  $lf_span_end,
+							  -strand => 
+							  $feat_strand);
 		     # Sequene of the feature
 		     my $feat_seq = $qry_seq->subseq($loc);
 
@@ -669,15 +677,6 @@ sub ltrfinder2gff {
 		 }
 		 # END EXTRACT SEQUENCE
 
-#	# NOTE
-#	# If I load this as a sequence object can do
-#	use Bio::Location::Simple;
-#	my $location = Bio::Location::Simple->new(-start  => $start,
-#						  -end   => $end,
-#						  -strand => "-1");
-#        # assume we already have a sequence object
-#	my $rev_comp_substr = $seq_obj->subseq($location);		
-		 
 		 #
 		 # PRIMER BINDING SITE
 		 #
@@ -803,9 +802,12 @@ sub ltrfinder2gff {
 			 $feat_strand="1";
 		     }
 		     
-		     my $loc = Bio::Location::Simple->new(-start  => $lf_5ltr_start,
-							  -end    => $lf_5ltr_end,
-							  -strand => $feat_strand);
+		     my $loc = Bio::Location::Simple->new(-start  => 
+							  $lf_5ltr_start,
+							  -end    => 
+							  $lf_5ltr_end,
+							  -strand => 
+							  $feat_strand);
 		     # Sequene of the feature
 		     my $feat_seq = $qry_seq->subseq($loc);
 
@@ -847,9 +849,12 @@ sub ltrfinder2gff {
 			 $feat_strand="1";
 		     }
 		     
-		     my $loc = Bio::Location::Simple->new(-start  => $lf_3ltr_start,
-							  -end    => $lf_3ltr_end,
-							  -strand => $feat_strand);
+		     my $loc = Bio::Location::Simple->new(-start  => 
+							  $lf_3ltr_start,
+							  -end    => 
+							  $lf_3ltr_end,
+							  -strand => 
+							  $feat_strand);
 		     # Sequene of the feature
 		     my $feat_seq = $qry_seq->subseq($loc);
 
@@ -904,9 +909,12 @@ sub ltrfinder2gff {
 			    $feat_strand="1";
 			}
 			
-			my $loc = Bio::Location::Simple->new(-start  => $lf_5tsr_start,
-							     -end    => $lf_5tsr_end,
-							     -strand => $feat_strand);
+			my $loc = Bio::Location::Simple->new(-start  => 
+							     $lf_5tsr_start,
+							     -end    => 
+							     $lf_5tsr_end,
+							     -strand => 
+							     $feat_strand);
 			# Sequene of the feature
 			my $feat_seq = $qry_seq->subseq($loc);
 			
@@ -1057,14 +1065,17 @@ sub ltrfinder2gff {
 			    $feat_strand="1";
 			}
 			
-			my $loc = Bio::Location::Simple->new(-start  => $lf_rh_orf_start,
-							     -end    => $lf_rh_orf_end,
-							     -strand => $feat_strand);
+			my $loc = Bio::Location::Simple->new(-start  => 
+							     $lf_rh_orf_start,
+							     -end    => 
+							     $lf_rh_orf_end,
+							     -strand => 
+							     $feat_strand);
 			# Sequene of the feature
 			my $feat_seq = $qry_seq->subseq($loc);
 			
 			open (SEQOUT,">$out_seq_path") ||
-			    die "Can not open output sequence path:$out_seq_path\n";
+			    die "Can not open output seq file:$out_seq_path\n";
 			print SEQOUT ">$seq_header\n";
 			print SEQOUT "$feat_seq\n";
 			close SEQOUT;
@@ -1116,9 +1127,12 @@ sub ltrfinder2gff {
 			 $feat_strand="1";
 		     }
 		     
-		     my $loc = Bio::Location::Simple->new(-start  => $lf_rt_orf_start,
-							  -end    => $lf_rt_orf_end,
-							  -strand => $feat_strand);
+		     my $loc = Bio::Location::Simple->new(-start  => 
+							  $lf_rt_orf_start,
+							  -end    => 
+							  $lf_rt_orf_end,
+							  -strand => 
+							  $feat_strand);
 		     # Sequene of the feature
 		     my $feat_seq = $qry_seq->subseq($loc);
 
@@ -1140,14 +1154,15 @@ sub ltrfinder2gff {
 	    # RESET VARS TO NULL          |
 	    #-----------------------------+
 	    # May not need to reset vars since existence of the vars
-	    # is designated by the do_* variables.
-	    
+	    # is designated by the $do_* variables.
+	    # These vars are extracted from the LTR Finder output
+
 	    #-----------------------------+
 	    # LOAD ID VAR                 |
 	    #-----------------------------+
 	    $lf_ltr_id = $1;
 
-	}
+	} # END OF PRINT STORED VARS
 	
 	# SEQ ID AND LENGTH
 	elsif (m/>Sequence: (.*) Len:(.*)/){
@@ -1206,7 +1221,7 @@ sub ltrfinder2gff {
 	    $lf_5tsr_start = $1;
 	    $lf_5tsr_end = $2;
 	    $lf_3tsr_start = $3;
-	    $lf_3tsr_end = $4;
+                   	    $lf_3tsr_end = $4;
 	    $lf_tsr_string = $5;
 	}
 	
@@ -1311,6 +1326,12 @@ sub ltrfinder2gff {
     
     close INFILE;
     
+
+    #//////////////////////////////
+    # BEGIN OF PRINT LAST RECORD
+    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
     #-----------------------------+
     # PRINT LAST GFFOUT           |
     #-----------------------------+
@@ -1530,6 +1551,13 @@ sub ltrfinder2gff {
     
     
     close GFFOUT;
+    
+    #////////////////////////////////
+    # END OF PRINT LAST RECORD
+    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+
 
 } # End of ltrfinder2gff subfunction
 
@@ -1839,7 +1867,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/02/2007
 
-UPDATED: 12/12/2007
+UPDATED: 01/22/2008
 
 VERSION: $Rev$
 
@@ -1868,4 +1896,19 @@ VERSION: $Rev$
 # - Removed STDOUT print of gff strings
 # - Adding fasta output of sequence features
 #   This uses the -f,--feat-seq command line options
-
+#
+# 01/22/2008
+# - Working version of extract sequence features added.
+#   Does not work for the last predicted LTR retro in the
+#   LTR Finder output, but will produce sequence for the
+#   following features
+#    ----------------------------------------------------
+#    FEATURE                     SONG NAME
+#    ----------------------------------------------------
+#    LTR Retrotransposon span  .LTR_retrotransposon
+#    Five Prime LTR ............five_prime_LTR
+#    Three Prime LTR ...........three_prime_LTR
+#    Target Site Duplication....target_site_duplication
+#    Polypurine Tract ..........RR_tract
+#    Primer Binding Site .......primer_binding_site
+#    Integrase Core ORF ........in_core_orf
