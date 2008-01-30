@@ -362,6 +362,8 @@ for my $ind_file (@fasta_files) {
 	    "_ltr_finder.txt";
 	my $lf_gff_outpath = $gff_dir.$name_root."_".$lf_gff_suffix.
 	    "_ltr_finder.gff";
+	my $lf_summary_outpath = $gff_dir.$name_root."_".$lf_gff_suffix.
+	    "_lf_summary";
 	my $lf_cmd = "$lf_path $lf_inseqpath".
 	    " -s $trna_db".
 	    " -a $prosite_dir". 
@@ -377,12 +379,13 @@ for my $ind_file (@fasta_files) {
 	#-----------------------------+
 	if ( (-e $lf_out) && ($do_gff_convert) ) {
 	    ltrfinder2gff ( $name_root, $lf_out, $lf_gff_outpath, 
-			    0, $lf_gff_suffix, $do_feat_seq,$ltrfinder_dir);
+			    0, $lf_gff_suffix, $do_feat_seq,$ltrfinder_dir,
+			    $lf_summary_outpath);
 	}
 
 
 	# Check the global aspect of the seq record
-	print STDERR "SEQ LEN: ".$qry_seq->length()."\n" if $verbose;
+	#print STDERR "SEQ LEN: ".$qry_seq->length()."\n" if $verbose;
 
     }
 
@@ -466,8 +469,14 @@ sub ltrfinder2gff {
     # but passing it to the subfunction directly allows for cases
     # where the id assigned by ltrfinder differs from the way
     # the user is referring to the assembly
+
+    # The gff outfile path is passed to the function
     my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix,
-	$do_feat_seq, $ltrfinder_dir) = @_;
+	$do_feat_seq, $ltrfinder_dir,$sumout_root) = @_;
+    
+    # FILE PATHS
+    my $sumout_file = $sumout_root."_short.txt";
+    my $sumout_seq_file = $sumout_root."_seq.txt";
     
     # The gff src id
     my $gff_src = "ltr_finder:".$gff_suffix;
@@ -587,6 +596,14 @@ sub ltrfinder2gff {
     my $lf_rt_orf_start;
     my $lf_rt_orf_end;
     
+    #-----------------------------+
+    # OPEN SUMMARY OUTFILE        |
+    #-----------------------------+
+    open (SUMOUT, ">$sumout_file" ) ||
+	die "ERROR: Can not open summary outfile:n\ $sumout_file\n";
+
+    open (SUMSEQ, ">$sumout_seq_file" ) ||
+	die "ERROR Can not open summary seq outfile:\n $sumout_seq_file\n";
 
     #-----------------------------+
     # OPEN GFF OUTFILE            |
@@ -644,16 +661,52 @@ sub ltrfinder2gff {
 	    
 	    
 	    #-----------------------------------------------------------+
-	    # PRINT STORED GFF OUTPUT                                   |
+	    # PRINT STORED GFF OUTPUT AND SUMMARY OUT                   |
 	    #-----------------------------------------------------------+
 	    unless ($1 == 1 ) {
+
+
+		#-----------------------------+
+		# SUMMARY OUTPUT              |
+		#-----------------------------+
+		print SUMOUT $seq_id."_LTRFinder_".$gff_suffix.$lf_ltr_id."\t".
+		    $lf_span_start."\t".     # 2
+		    $lf_span_end."\t".       # 3
+		    $lf_length."\t".         # 4
+		    $lf_score."\t".          # 5
+		    # LTR INFO
+		    $lf_ltr_similarity."\t". # 6
+		    $lf_5ltr_len."\t".
+		    $lf_3ltr_len."\t".
+		    $lf_sharp_5."\t".        #
+		    $lf_sharp_3."\t".        #
+		    # BOOLEANS
+		    $has_5ltr_tg."\t".       # 7
+		    $has_5ltr_ca."\t".       # 8
+		    $has_3ltr_tg."\t".       # 9
+		    $has_3ltr_ca."\t".       # 10
+		    $has_tsr."\t".           # 11
+		    $has_pbs."\t".           # 12
+		    $has_ppt."\t".           # 13
+		    $has_rt."\t".            # 14
+		    $has_in_core."\t".       # 15
+		    $has_in_cterm."\t".      # 16
+		    $has_rh.
+		    "\n";                    # Last tab 
+		    
+		
+		print SUMSEQ $seq_id."_LTRFinder_".$gff_suffix.$lf_ltr_id."\t";
 
 		# Two alternatives here
 		# keep appending to gff_lout or LTR Retro object 
 		# variable and then print set
 		# or print line at a time .. currently printing 
 		# a line at a time. JCE 10/02/2007
-		
+		# Advantage to this approach is that it is not memory
+		# limited. Extracted LTR sequences for entire chromosomes
+		# could run into mememory limites using an object
+		# oriented approach.
+
 		#-----------------------------+
 		# FULL SPAN OF LTR RETRO      |
 		#-----------------------------+
@@ -699,6 +752,8 @@ sub ltrfinder2gff {
 		    print SEQOUT ">$seq_header\n";
 		    print SEQOUT "$feat_seq\n";
 		    close SEQOUT;
+
+		    #print SUMSEQ "$feat_seq\t";
 		}
 		# END EXTRACT SEQUENCE
 		
@@ -842,6 +897,9 @@ sub ltrfinder2gff {
 		    print SEQOUT ">$seq_header\n";
 		    print SEQOUT "$feat_seq\n";
 		    close SEQOUT;
+
+		    # PRINT TO SUMMARY SEQUENCE FILE
+		    print SUMSEQ "$feat_seq\t";
 		}
 		# END EXTRACT SEQUENCE
 		
@@ -887,6 +945,10 @@ sub ltrfinder2gff {
 		     print SEQOUT ">$seq_header\n";
 		     print SEQOUT "$feat_seq\n";
 		     close SEQOUT;
+
+		     
+		     # PRINT TO SUMMARY SEQUENCE FILE
+		     print SUMSEQ "$feat_seq\t";
 		 }
 		# END EXTRACT SEQUENCE
 		
@@ -1192,6 +1254,12 @@ sub ltrfinder2gff {
 
 		} # End of has_reverse_transcriptase
 
+
+
+		# PRINT LINE ENDING TO SUMMARY OUTFILE
+		# AND CLOSE THE FILE
+		#print SUMOUT "\n";
+		print SUMSEQ "\n";
 	    } # END OF PRINT OUTPUT
 
 
@@ -1929,8 +1997,8 @@ sub ltrfinder2gff {
     # END OF PRINT LAST RECORD
     #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     
-    
-    
+    close (SUMOUT);
+    close (SUMSEQ);
     
 } # End of ltrfinder2gff subfunction
 
@@ -2240,7 +2308,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/02/2007
 
-UPDATED: 01/22/2008
+UPDATED: 01/30/2008
 
 VERSION: $Rev$
 
@@ -2307,3 +2375,11 @@ VERSION: $Rev$
 #    - process number of total number of processes
 #    - sequence number of total number of sequences
 #    - parameter set number of total number of par sets
+#
+# 01/30/2008
+# - Extracting additional data from LTR_Finder output
+#    - lf_summary_path
+#    - This is in the form of a tab deliminted text file that can
+#      be parse into a database
+#    - This will be created by default
+#  
