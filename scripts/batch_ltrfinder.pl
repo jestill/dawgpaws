@@ -8,10 +8,12 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/03/2007                                       |
-# UPDATED: 01/25/2008                                       |
+# UPDATED: 01/30/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Run the LTR_FINDER program in batch mode.                |
+#  Run the LTR_FINDER program in batch mode and extract     |
+#  output to gff files, summary text files, fasta files and |
+#  a tab delimited summary sequence file.                   |
 #                                                           |
 # VERSION: $Rev$                                      |
 #                                                           |
@@ -676,23 +678,23 @@ sub ltrfinder2gff {
 		    $lf_score."\t".          # 5
 		    # LTR INFO
 		    $lf_ltr_similarity."\t". # 6
-		    $lf_5ltr_len."\t".
-		    $lf_3ltr_len."\t".
-		    $lf_sharp_5."\t".        #
-		    $lf_sharp_3."\t".        #
+		    $lf_5ltr_len."\t".       # 7
+		    $lf_3ltr_len."\t".       # 8
+		    $lf_sharp_5."\t".        # 9
+		    $lf_sharp_3."\t".        # 10
 		    # BOOLEANS
-		    $has_5ltr_tg."\t".       # 7
-		    $has_5ltr_ca."\t".       # 8
-		    $has_3ltr_tg."\t".       # 9
-		    $has_3ltr_ca."\t".       # 10
-		    $has_tsr."\t".           # 11
-		    $has_pbs."\t".           # 12
-		    $has_ppt."\t".           # 13
-		    $has_rt."\t".            # 14
-		    $has_in_core."\t".       # 15
-		    $has_in_cterm."\t".      # 16
-		    $has_rh.
-		    "\n";                    # Last tab 
+		    $has_5ltr_tg."\t".       # 11
+		    $has_5ltr_ca."\t".       # 12
+		    $has_3ltr_tg."\t".       # 13
+		    $has_3ltr_ca."\t".       # 14
+		    $has_tsr."\t".           # 15
+		    $has_pbs."\t".           # 16
+		    $has_ppt."\t".           # 17
+		    $has_rt."\t".            # 18
+		    $has_in_core."\t".       # 19
+		    $has_in_cterm."\t".      # 20
+		    $has_rh.                 # 21
+		    "\n";                    # NEWLINE
 		    
 		
 		print SUMSEQ $seq_id."_LTRFinder_".$gff_suffix.$lf_ltr_id."\t";
@@ -753,7 +755,7 @@ sub ltrfinder2gff {
 		    print SEQOUT "$feat_seq\n";
 		    close SEQOUT;
 
-		    #print SUMSEQ "$feat_seq\t";
+		    print SUMSEQ "$feat_seq\t";
 		}
 		# END EXTRACT SEQUENCE
 		
@@ -802,8 +804,18 @@ sub ltrfinder2gff {
 			print SEQOUT ">$seq_header\n";
 			print SEQOUT "$feat_seq\n";
 			close SEQOUT;
+			
+			print SUMSEQ "$feat_seq\t"; 
+			
 		    }
 		    # END EXTRACT SEQUENCE
+		} #
+		else {
+		    # Case where we want to extract seq features but
+		    # PBS is not present
+		    if ($do_feat_seq) {
+			print SUMSEQ ".\t"; 
+		    }
 		}
 		
 		#-----------------------------+
@@ -852,6 +864,13 @@ sub ltrfinder2gff {
 			close SEQOUT;
 		    }
 		    # END EXTRACT SEQUENCE
+		}
+		else {
+		    # Case where we want to extract seq features but
+		    # PPT is not present
+		    if ($do_feat_seq) {
+			print SUMSEQ ".\t"; 
+		    }
 		}
 		 
 		
@@ -1011,7 +1030,15 @@ sub ltrfinder2gff {
 		     }
 		     # END EXTRACT SEQUENCE
 		 }
-		 
+		else {
+		    # Case where we want to extract seq features but
+		    # PPT is not present
+		    if ($do_feat_seq) {
+			print SUMSEQ ".\t"; 
+		    }
+		}
+		    
+		    
 
 		#-----------------------------+
 		# INTEGRASE                   |
@@ -1082,6 +1109,15 @@ sub ltrfinder2gff {
 			}
 			# END EXTRACT SEQUENCE
 		    }
+		    else {
+			# Case where we want to extract seq features but
+			# PPT is not present
+			if ($do_feat_seq) {
+			    print SUMSEQ ".\t"; 
+			}
+		    }
+		   
+
 		    
 		} # End of has in_core
 		
@@ -1185,6 +1221,14 @@ sub ltrfinder2gff {
 			# END EXTRACT SEQUENCE
 		    }
 		}
+		else {
+		    # Case where we want to extract seq features but
+		    # PPT is not present
+		    if ($do_feat_seq) {
+			print SUMSEQ ".\t"; 
+		    }
+		}
+		   
 		
 		
 		#-----------------------------+
@@ -1253,7 +1297,14 @@ sub ltrfinder2gff {
 		    } # End has ORF
 
 		} # End of has_reverse_transcriptase
-
+		else {
+		    # Case where we want to extract seq features but
+		    # PPT is not present
+		    if ($do_feat_seq) {
+			print SUMSEQ ".\t"; 
+		    }
+		}
+		   
 
 
 		# PRINT LINE ENDING TO SUMMARY OUTFILE
@@ -2007,6 +2058,7 @@ sub ltrfinder2gff {
 __END__
 
 # Old print_help subfunction
+
 sub print_help {
 
     # Print requested help or exit.
