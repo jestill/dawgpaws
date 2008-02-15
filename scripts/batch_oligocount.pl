@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/11/2007                                       |
-# UPDATED: 01/02/2008                                       |
+# UPDATED: 02/15/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
@@ -56,7 +56,7 @@ my $index;                     # Path to the sequence index file
 #my $seq_name;                 # Sequence name used in the output
 my $name_root;
 my $file_num;
-my $infile;
+#my $infile;
 
 # Booleans
 my $quiet = 0;
@@ -76,7 +76,7 @@ my @params;                    # Parameters array for running oligocounts
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"   => \$indir,
-		    "d|db=s"      => \$indexdir,
+#		    "d|db=s"      => \$indexdir,
                     "o|outdir=s"  => \$outdir,
 		    "c|config=s"  => \$file_config,
 		    # ADDITIONAL OPTIONS
@@ -116,13 +116,13 @@ if ($show_man) {
 }
 
 # Throw error if required options not present
-if ( (!$indir) || (!$outdir) || (!$indexdir) ) {
+if ( (!$indir) || (!$outdir) || (!$file_config) ) {
 
     print "\a";
     print "\n";
     print "ERROR: Input file path required\n" if (!$indir);
     print "ERROR: Output directory required\n" if (!$outdir);
-    print "ERROR: Index dir path required\n" if (!$indexdir);
+    print "ERROR: Config file path required\n" if (!$file_config);
     print_help("");
 
 }
@@ -142,9 +142,9 @@ unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
-unless ($indexdir =~ /\/$/ ) {
-    $outdir = $indexdir."/";
-}
+#unless ($indexdir =~ /\/$/ ) {
+#    $outdir = $indexdir."/";
+#}
 
 #-----------------------------+
 # Get the FASTA files from the|
@@ -178,7 +178,7 @@ print STDERR "NUMBER OF FILES TO PROCESS: $num_files\n" if $verbose;
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
 unless (-e $outdir) {
-    print "Creating output dir ...\n" unless $quiet;
+    print "Creating output dir ...\n" if $verbose;
     mkdir $outdir ||
 	die "ERROR: Could not create the output directory:\n$outdir";
 }
@@ -200,16 +200,19 @@ while (<CONFIG>) {
 	my @tmpary = split (/\t/);
 	my $count_tmp = @tmpary;
 	
-	if ($count_tmp == 2) {
+	# If the parameter line has the expected number of parameters
+	
+	if ($count_tmp == 3) {
 	 
-	    $params[$i][0] = $tmpary[0];  # Kmer length
-	    $params[$i][0] = $tmpary[0];  # Database index
 	    $i++;
+	    $params[$i][0] = $tmpary[0];  # Kmer length
+	    $params[$i][1] = $tmpary[1];  # Database Name
+	    $params[$i][2] = $tmpary[2];  # Full Database Path
 	    
 	}
 	else {
-	    print "ERROR: Config file line number $line_num\n";
-	    print "       Only $line_num variables were found\n" 
+	    print STDERR "ERROR: Config file line number $line_num\n";
+	    print STDERR "       Only $line_num variables were found\n"; 
 	}
 	
     }
@@ -221,15 +224,18 @@ my $num_par_sets = $i;
 
 my $num_proc_total = $num_files * $num_par_sets;
 
-print STDERR "$num_proc_total find_ltr runs to process\n";
+print STDERR "$num_proc_total oligocount runs to process\n" if $verbose;
 
 #-----------------------------+
 # OLIGO COUNT FOR EACH FILE   |
 # FOR EACH CONFIG SET         |
 #-----------------------------+ 
+my $proc_num = 0;
 for my $ind_file (@fasta_files) {
     
     $file_num++;
+
+    my $infile = $indir.$ind_file;
 
     #-----------------------------+
     # Get the root name of the    |
@@ -251,7 +257,6 @@ for my $ind_file (@fasta_files) {
 	$name_root = $ind_file;
     }
  
-# The following commented out   
     #-----------------------------+
     # Create parent dir if it     |
     # does not already exist      |
@@ -260,7 +265,7 @@ for my $ind_file (@fasta_files) {
     unless (-e $dir_parent) {
 	print "creating dir: $dir_parent\n";
 	mkdir $dir_parent ||
-	    die "Could not creat the output dir:\n$dir_parent\n";
+	    die "Could not create the output dir:\n$dir_parent\n";
     }
 
     #-----------------------------+
@@ -293,18 +298,32 @@ for my $ind_file (@fasta_files) {
 	mkdir $vmatch_out_dir ||
 	    die "Could not create the vmatch output dir:\nmatch_out_dir\n";
     }
-    
-    for ($i=0; $i<$num_par_sets; $i++) {
 
-	my $kmer_len = $params[$i][0];
-	my $db_name = $params[$i][1];
-	my $index = $params[$i][2];
+    my $max_i = $num_par_sets+1;
+
+    for (my $i=1; $i<$max_i; $i++) {
+
+	$proc_num++;
+	
+	print STDERR "===============================================\n";
+	print STDERR " Process $proc_num of $num_proc_total\n";
+	print STDERR "===============================================\n";
+
+	# LOAD VARS FROM THE PARAMS ARRAY
+	my $kmer_len = $params[$i][0] 
+	    || die "Error in paramter array line $i\n";
+	my $db_name = $params[$i][1] 
+	    || die "Error in parameter array line $i\n";
+	my $index = $params[$i][2] 
+	    || die "Error in paramter array line $i\n";
        
 	#-----------------------------+
 	# RUN KMER COUNT FOR INFILE   |
 	#-----------------------------+
 	# Need to add db_name to the following
-	seq_kmer_count ($infile, $dir_parent, $index, $kmer_len, $name_root,
+	#seq_kmer_count ($infile, $dir_parent, $index, $kmer_len, $name_root,
+	#		$do_gff, $db_name);
+	seq_kmer_count ($infile, $outdir, $index, $kmer_len, $name_root,
 			$do_gff, $db_name);
 
     }
@@ -394,7 +413,8 @@ sub seq_kmer_count {
     # TODO:
     # Add option to do something here when infile not encountered
     my $inseq = Bio::SeqIO->new( -file => "<$fasta_in",
-				 -format => 'fasta');
+				 -format => 'fasta')
+	|| die "Can not open seq input file $fasta_in\n";
 
     #-----------------------------+
     # SET DIR PATHS               |
@@ -417,6 +437,9 @@ sub seq_kmer_count {
     #-----------------------------+
     # FILE PATHS                  |
     #-----------------------------+
+    # Something is unitilized here
+    #print "TEST: $db_name\n";
+
     # Fasta file split into kmers
     my $temp_fasta = $dir_oligocount.
 	"split_seq_".$k."mer.fasta";
@@ -427,15 +450,18 @@ sub seq_kmer_count {
     # Raw vmatch output
     my $vmatch_out = $vmatch_out_dir.
 	$seq_name."_".$k."mer_".$db_name.".txt";
+    
     # GFF Count output
+    #$dir_gff = $dir_parent."gff/";
     my $gff_count_out = $gff_out_dir.
 	$seq_name."_".$k."mer_".$db_name.".gff";
 
+    
     #-----------------------------+
     # WRITE FIRST LINE OF OCOUNT  |
     # FILE                        |
     #-----------------------------+
-    open (OCOUNT,">$gff_count_out") ||
+    open (OCOUNT,">$ocount_out") ||
 	die "Can not open oligo count file for output:\n$ocount_out\n";
     print OCOUNT ">".$seq_name."_".$k."mer\n";
     my $ocount_col = 1;             # Set ocount col to one
@@ -577,13 +603,13 @@ sub seq_kmer_count {
 	    if ($do_gff) {
 		print GFFCOUNT "$seq_name\t".  # Ref sequence
 		    "vmatch\t".                # Source
-		    "wheat_count\t".           # Type
+		    "o_count\t".               # Type
 		    "$start_pos\t".            # Start
 		    "$end_pos\t".              # End
 		    $counts[$i]."\t".          # Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Phase
-		    "Vmatch ".$k."mer\n";    # Group
+		    "Vmatch ".$k."mer\n";      # Group
 	    }
 
 	    
@@ -594,8 +620,8 @@ sub seq_kmer_count {
 	    # PRINT OUT SEQS EXCEEDING THRESHOLD VALUES TO STDOUT
 	    if ($counts[$i] > $thresh) {
 		my $thresh_seq = $seq->subseq($start_pos, $end_pos);
-		print STDOUT "$start_pos\t".$counts[$i]."\t".
-		    "$thresh_seq\n";
+		#print STDOUT "$start_pos\t".$counts[$i]."\t".
+		#   "$thresh_seq\n";
 	    }
 
 	}
@@ -682,44 +708,53 @@ The variables I am considering incorporating
                  # Currently using a single value, default is 50
                  # Currently just determins if this value is printed
                  # to STDOUT
-    --center     # Location to center point value of summary info as
-                 # a point, 
-                 #  start of oligomer
-                 #  center of oligomer
-                 #  end of oligomer
-                 # [left|right|center]
+    --center     # Location to center a point value of summary info as
+                 #  - start of oligomer
+                 #  - center of oligomer
+                 #  - end of oligomer
+                 #  - [left|right|center]
     --gff        # BOOLEAN. Don't always create a gff output
+                 # Alternative output could be vector.
 
 
 =head1 REQUIRED ARGUMENTS
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path of the input directory containing the sequence files to process.
 
 =item -o,--outdir
 
-Path of the output file.
+Path of the base output directory.
 
-=item -n,--name
+=item -c,--config
 
-Name to assign to the sequence file
+Path to the configuration file. This should be in the format of a three
+column tab delimited text file. Where:
 
-=item -d,--db
+=over 2
 
-Path to the fasta file that was indexed with the mkvtree program.
+=item column 1 [integer]
+
+Length of the kmer to generate.
+
+=item column 2 [string]
+
+Name to use for the database name.
+
+=item column 3 [string]
+
+Path to the index database to use.
+
+=back
 
 =back
 
 =head1 OPTIONS
 
 =over 2
-
-=item -k,--kmer
-
-Length of the kmer to index. The default value of this variable is 20.
 
 =item --usage
 
@@ -876,7 +911,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 12/21/2007
 
-UPDATED: 12/21/2007
+UPDATED: 02/15/2008
 
 VERSION: $Rev$
 
@@ -895,3 +930,17 @@ VERSION: $Rev$
 #    --outdir     # Path to base outdir
 #    --indexdir   # Path to dir with index databases
 # - Now use a config file to set k, etc
+#
+# 02/15/2008
+# - Debugged the batch_oligocount program 
+# - Fixed the use of the configuration file
+# - Added additional documentation
+#
+#-----------------------------------------------------------+
+# TO DO:
+#-----------------------------------------------------------+
+# - Currently the oligo fasta file is created for every single
+#   set of seqs from the input file. This is time consuming
+#   and should be avoided but this works for now.
+# - Add array of threshhold values to the configuration file
+#   This would be a fourth column list of comma delimited integers
