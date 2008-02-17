@@ -22,7 +22,7 @@
 #                                                           |
 # USAGE:                                                    |
 #  gff_seg.pl -i infile.gff -s outfile.gff - p parseout.gff |
-#             -t [integer]
+#             -t [integer] --min [int] --max [int]          |
 #                                                           |
 # VERSION: $Rev$                                            |
 #                                                           |
@@ -54,6 +54,8 @@ my $thresh;                   # Threshold value for parsing, segmenting
 my $outfile_seg;              # Path to the segmentation output file
 my $outfile_parse;            # Path to the parsed output file
 #my $outdir;                  # Base outdir for storing output when $thresh is an array
+my $min_len;                  # Minimum segment length to report
+my $max_len;                  # Maximum segment length to report
 
 # Booleans
 my $quiet = 0;
@@ -89,6 +91,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "p|parse-out=s" => \$outfile_parse,
 		    "t|thresh=s"    => \$thresh,
 		    # ADDITIONAL OPTIONS
+		    "min-len=s"     => \$min_len,
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -217,9 +220,20 @@ while (<GFFIN>) {
 		    $in_strand."\t".
 		    $in_frame."\t".
 		    $in_attribute."\n";
+		my $seg_len = $seg_end - $seg_start;
 
-		print SEGOUT "$gff_out_str" if ($outfile_seg);
-		print STDOUT "$gff_out_str" unless ($quiet);
+		# If the min length value has been set
+		if ( ($min_len) ) {
+		    if ( $seg_len >= $min_len ) {
+			print SEGOUT "$gff_out_str" if ($outfile_seg);
+			print STDOUT "$gff_out_str" unless ($quiet);
+		    }
+		}
+		else {
+		    print SEGOUT "$gff_out_str" if ($outfile_seg);
+		    print STDOUT "$gff_out_str" unless ($quiet);
+		}
+
 	    }
 	    # reset in_seg to false
 	    $in_seg=0;
@@ -227,8 +241,6 @@ while (<GFFIN>) {
 
     } # End if num_cols = 9
 } # End of while GFFIN
-
-
 
 close (SEGOUT) if ($outfile_seg);
 close (PAROUT) if ($outfile_parse);
@@ -407,3 +419,5 @@ VERSION: $Rev$
 # - Two output files will be created:
 #     - parse_out - All features exceeding the threshold value
 #     - seg_out - All segments exceeding the threshold value
+# - Added the min-len variable to set the minimum length of
+#   a segment to report
