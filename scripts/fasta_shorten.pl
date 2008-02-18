@@ -12,10 +12,13 @@
 #                                                           |
 # DESCRIPTION:                                              |
 #   Change headers in a fasta file to give shorter names    |
-#   Can shorten header to a 
+#   Can shorten header to a set length, or by a delimiting  |
+#   character. The output file may also be rename to the    |
+#   shorter name, and an lowercase residues can be          |
+#   converted to uppercase.                                 |
 #                                                           |
 # USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
+#  fasta_shorten -i indir/ -o outdir/                       |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
