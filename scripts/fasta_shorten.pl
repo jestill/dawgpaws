@@ -8,10 +8,11 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/17/2007                                       |
-# UPDATED: 12/10/2007                                       |
+# UPDATED: 02/18/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #   Change headers in a fasta file to give shorter names    |
+#   Can shorten header to a 
 #                                                           |
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
@@ -29,6 +30,7 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+use File::Copy;
 # The following needed for printing help
 use Pod::Select;               # Print subsections of POD documentation
 use Pod::Text;                 # Print POD doc as formatted text file
@@ -51,7 +53,12 @@ my $head_new;                  # New, shorter header
 my $test_len;                  # Test length of the header
 my $cur_len;                   # Current length of the header
 
+my $delim_char;
+my $delim_pos=1;               # By default the delim position is first postion
+
 # Booleans
+my $verbose=0;
+my $rename=0;
 my $help = 0;
 my $quiet = 0;
 my $show_help = 0;
@@ -66,18 +73,22 @@ my $uppercase = 0;            # Convert sequence strigs to uppercase
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required options
-		    "i|indir=s"   => \$indir,
-                    "o|oudir=s"   => \$outdir,
+		    "i|indir=s"      => \$indir,
+                    "o|oudir=s"      => \$outdir,
 		    # Additional options
-		    "l|length=s"  =>, \$new_len,
+		    "l|length=s"     => \$new_len,
+		    "d|delim-char=s" => \$delim_char,
+		    "p|delim-pos=s"  => \$delim_pos,
 		    # Booleans
-		    "uppercase"   => \$uppercase,
-		    "usage"       => \$show_usage,
-		    "version"     => \$show_version,
-		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,
-		    "test"        => \$test,
-		    "q|quiet"     => \$quiet,);
+		    "verbose"        => \$verbose,
+		    "rename"         => \$rename,
+		    "uppercase"      => \$uppercase,
+		    "usage"          => \$show_usage,
+		    "version"        => \$show_version,
+		    "man"            => \$show_man,
+		    "h|help"         => \$show_help,
+		    "test"           => \$test,
+		    "q|quiet"        => \$quiet,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -119,7 +130,9 @@ if ( (!$indir) || (!$outdir) ) {
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
-print "\n" unless $quiet;
+
+# Convert position as passed at command line to array position
+$delim_pos = $delim_pos - 1;
 
 # The test length is the length of the header plus one
 #$test_len = $new_len + 1;
@@ -149,12 +162,17 @@ opendir( DIR, $indir ) ||
 my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 
+my $num_fasta_files = @fasta_files;
+if ($num_fasta_files == 0) {
+    die "ERROR: No fasta files were found in the input directory.\n";
+}
+
 #-----------------------------+
 # CREATE THE OUT DIR          |
 # IF IT DOES NOT EXIST        |
 #-----------------------------+
-print "Creating output dir ...\n" unless $quiet;
 unless (-e $outdir) {
+    print STDERR "Creating output dir ...\n" if $verbose;
     mkdir $outdir ||
 	die "Could not create the output directory:\n$outdir";
 }
@@ -177,33 +195,79 @@ for my $ind_file (@fasta_files) {
     while (<IN>) {
 	
 	chomp;
-	# If the first characeter is a >
+
+	# If the first characeter is a > we are in the fasta header
 	if (/^\>/) {
-	    #-----------------------------+
-	    # FASTA HEADER PROCESSING     |
-	    #-----------------------------+
+
+	    #-----------------------------------------------------------+
+	    # FASTA HEADER PROCESSING                                   |
+	    #-----------------------------------------------------------+
 	    
-	    print " processing $_\n";
+	    print "Processing $_\n" if $verbose;
+	    
+	    if ( ( $delim_char)  ) {
+		#-----------------------------+
+		# DELIMITED BY CHARACTER      |
+		#-----------------------------+
+		# This allows for a few contingencies if things in the
+		# header line are strange. ie. The character is not present
 
-	    #$cur_len = length($_);
-	    $cur_len = int(length($_));
+		# Remove the leading >
+		s/^\>//;
 
-	    print "\tLEN: $cur_len\n";
-	    if ( $cur_len > $test_len ) {
-		# If the fasta header is longer then the desired length then
-		# create a shortened header print to the outfile
-		# We will start at 1 instead of zero to ignore
-		# the > character
-		$head_new = substr ( $_, 1, $new_len );
-		print "\tNEW: >$head_new\n" unless $quiet;
+		my @hp; # Header parts
+
+		#-----------------------------+
+		# SPLIT HEADER BY DELIMITER   |
+		#-----------------------------+
+		if ( $delim_char =~ "pipe") {
+		    @hp = split ( /\|/ , $_ );
+		}
+		elsif ( $delim_char =~ "comma" ) {
+		    @hp = split ( /\,/ , $_ );
+		}
+		elsif ( $delim_char =~ "space" ) {
+		    @hp = split ( /s+/ , $_ );
+		}
+		elsif ( $delim_char =~ "tab" ) {
+		    @hp = splilt ( /\t/ , $_ );
+		} else {
+		    my $die_msg = "An appropriate delimit character".
+			"must be passed to use the delimit option.\n";
+		    die "die_msg\n";
+		}
+
+		# PRINT OUTPUT
+		$head_new = $hp[$delim_pos];
 		print OUT ">$head_new\n";
-	    } 
-	    else {
-		print OUT "$_\n";
-		# print the header to the outfile unchanged
-		
-	    } # End of if header is too long
 
+	    }
+	    else {
+
+		#-----------------------------+
+		# LENGTH THRESHOLD            |
+		#-----------------------------+
+		# Using a length criteria is the default when a delim
+		# character is not defined at the command line
+		$cur_len = int(length($_));
+		
+		print STDERR "\tLEN: $cur_len\n" if $verbose;
+		if ( $cur_len > $test_len ) {
+		    # If the fasta header is longer then the desired length 
+                    # then create a shortened header print to the outfile
+		    # We will start at 1 instead of zero to ignore
+		    # the > character
+		    $head_new = substr ( $_, 1, $new_len );
+		    print STDERR "\tNEW: >$head_new\n" if $verbose;
+		    print OUT ">$head_new\n";
+		} 
+		else {
+		    print OUT "$_\n";
+		    # print the header to the outfile unchanged
+		    
+		} # End of if header is too long
+
+	    } # End of chose between delim and length
 	}
 	
 	else {
@@ -231,6 +295,22 @@ for my $ind_file (@fasta_files) {
 
 
     } # End of while IN
+
+
+    close (IN);
+    close (OUT);
+ 
+
+    # This rename by move could really wreak havoc
+    # There are definitely better ways to do this, but this
+    # should work for now. This will rewrite any existing file
+    # that has the same name at the new location. Therefore
+    # if fasta headers are not unique you will loose data.
+    if ( ($rename) ) {
+	my $new_outfile = $outdir.$head_new.".fasta";
+	move ($outfile,$new_outfile) ||
+	    die "Count not move:\n$outfile to\n$new_outfile";
+    }
 
 } # End of for each file in the directory
 
@@ -355,6 +435,39 @@ Path of the directory to place the program output.
 New length. The fasta header will be shortened to this length.
 Default length is 20.
 
+=item -d,--delim-char
+
+The delimiting character to use. Note that since PERL regular expressions
+can not use variables, I must limit this to a list of valid characters.
+Valid choices are:
+
+=over
+
+=item pipe [-d pipe]
+
+The pipe character '|' as used by NCBI.
+
+=item comma [-d comma]
+
+A comma ',' is used to delimit the header line.
+
+=item space [-d space]
+
+To delimit by any whitespace type in the word space.
+
+=item tab [-d tab]
+
+To delimit by the tab character, type tab in the command line.
+
+=back
+
+=item -p,--delim-pos
+
+The position in the delimited set to use. Be default this will
+be the fist position in the split array. If delim-pos is greater 
+then the number of split characters, the first position will be used
+and a message sent to STDERR.
+
 =item --usage
 
 Short overview of how to use program from command line.
@@ -469,7 +582,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/17/2007
 
-UPDATED: 12/10/2007
+UPDATED: 02/18/2008
 
 VERSION: $Rev$
 
@@ -488,3 +601,14 @@ VERSION: $Rev$
 # - Added new help subfunction that extracts help and usage
 #   text from POD documentation
 # - Added check for required arguments
+#
+# 02/18/2008
+# - Adding varialbles
+#    - delim-char - Delimiting character    
+#    - delim-pos  - Char position to select from delimited set
+#                   This starts at zero
+#    - rename     - Rename the output fasta file to the new
+#                   shortened name. Otherwise the original
+#                   file name is kept.
+# - The delim option has only been fully tested on pipe delim data
+# - Added the dependency on the File::Copy module to rename output file
