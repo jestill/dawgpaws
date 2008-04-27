@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/17/2007                                       |
-# UPDATED: 02/18/2008                                       |
+# UPDATED: 04/26/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #   Change headers in a fasta file to give shorter names    |
@@ -25,15 +25,18 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+#
+# TO DO:
+# Write a general read fasta file from dir for DAWGPAWS
 
 package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use strict;
-use Getopt::Long;
-use File::Copy;
+use strict;                    # Play by the rules
+use Getopt::Long;              # Get options from the command line
+use File::Copy;                # Copy files in OS independent manner
 # The following needed for printing help
 use Pod::Select;               # Print subsections of POD documentation
 use Pod::Text;                 # Print POD doc as formatted text file
@@ -44,6 +47,7 @@ use File::Spec;                # Convert a relative path to an abosolute path
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
+# Extract program version form the SVN Revision number
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
@@ -55,8 +59,8 @@ my $new_len = 20;              # New length of the header
 my $head_new;                  # New, shorter header
 my $test_len;                  # Test length of the header
 my $cur_len;                   # Current length of the header
-
-my $delim_char;
+my $outfile;                   # Set scope for outfile
+my $delim_char;                # Character used to delimit header
 my $delim_pos=1;               # By default the delim position is first postion
 
 # Booleans
@@ -160,12 +164,25 @@ unless ($outdir =~ /\/$/ ) {
 # directory provided by the   |
 # var $indir                  |
 #-----------------------------+
+my @fasta_files;
 opendir( DIR, $indir ) || 
     die "Can't open directory:\n$indir"; 
-my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+# Old fasta file aray
+# my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+@fasta_files = grep /\.fasta$|\.fa$|\.tfa$|\.fsa$|\.fna$|\.faa$|\.frn$|\.ffn$/, readdir DIR ;
+
+# If none of exptected fasta file extensions found in the input dir, load all 
+# files in the input directory and assume that they are fasta files
+my $num_fasta_files;
+$num_fasta_files = @fasta_files;
+if ($num_fasta_files == 0) {
+    @fasta_files = grep !/^\.\.?$/, readdir DIR ;
+}
+
 closedir( DIR );
 
-my $num_fasta_files = @fasta_files;
+# Throw error if no files are found in the directory
+$num_fasta_files = @fasta_files;
 if ($num_fasta_files == 0) {
     die "ERROR: No fasta files were found in the input directory.\n";
 }
@@ -186,14 +203,18 @@ unless (-e $outdir) {
 #-----------------------------+
 for my $ind_file (@fasta_files) {
 
+    # The fasta file name is not changed, it is just moved to a 
+    # new directory
     my $infile = $indir.$ind_file;
-    my $outfile = $outdir.$ind_file;
 
     open (IN, $infile) ||
 	die "Can not open infile:\n$infile\n";
-    
-    open (OUT, ">".$outfile) ||
-	die "Can not open outfile:\n$outfile\n";
+        
+    unless ($rename) {
+	my $outfile = $outdir.$ind_file;    
+	open (OUT, ">".$outfile) ||
+	    die "Can not open outfile:\n$outfile\n";
+    }
 
     while (<IN>) {
 	
@@ -234,15 +255,26 @@ for my $ind_file (@fasta_files) {
 		}
 		elsif ( $delim_char =~ "tab" ) {
 		    @hp = splilt ( /\t/ , $_ );
-		} else {
+		} 
+		else {
 		    my $die_msg = "An appropriate delimit character".
 			"must be passed to use the delimit option.\n";
-		    die "die_msg\n";
+		    die "$die_msg\n";
 		}
 
 		# PRINT OUTPUT
+		# This is where the opening of a new outfile for
+		# renmae would need to go
 		$head_new = $hp[$delim_pos];
-		print OUT ">$head_new\n";
+
+		if ($rename) {
+		    my $outfile = $outdir.$head_new.".fasta";    
+		    open (OUT, ">".$outfile) ||
+			die "Can not open outfile:\n$outfile\n";
+		}
+		
+		print OUT ">$head_new\n" || 
+		    die "Can not print to output file handle\n";
 
 	    }
 	    else {
@@ -554,11 +586,16 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =over
 
-=item * Shorter names limited to a length variable
+=item * Renaming outfile limited to single record fasta files
 
-There is currently no feature to support any sort of shorted names
-based on a delimiting character. You are therefore limited to setting
-a length for making the fasta file shorter.
+Multiple record fasta files may be reanamed to multiple files or 
+throw an error.
+
+=item * No additional known limitations
+
+If you find limitations to your use of this software please email the
+author with information regarding your operating system and what
+limitations you are experiencing with your use of the software.
 
 =back
 
@@ -585,7 +622,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/17/2007
 
-UPDATED: 02/18/2008
+UPDATED: 04/26/2008
 
 VERSION: $Rev$
 
@@ -615,3 +652,23 @@ VERSION: $Rev$
 #                   file name is kept.
 # - The delim option has only been fully tested on pipe delim data
 # - Added the dependency on the File::Copy module to rename output file
+#
+# 04/26/2008
+# - Added comments to code
+# - Minor updates to POD documentation
+# - Added code to implement the rename option. 
+#    - The new output file will be placed in the output directory
+#      and will have the same name as the new header.
+#    - Default option is not to rename the file
+#    - This option will only be stable with single record fasta
+#      files, otherwise it will attempt to open a new output file
+#      for each fasta record in the file
+# - Adding options for fasta file extensions that are 
+#   recognized. These are used to load the @fasta_files array:
+#    - Added *.tfa, *.fsa as commonly used extensions
+#    - Added NCBI extensions:
+#       -fna - whole genomic DNA sequences
+#       -faa - protein coding sequences (CDS)
+#       -ffn - untranslated nucleotide sequences
+#       -frn - nucleotide sequences of RNA related features
+# - Adding default mode to use all the files in the directory
