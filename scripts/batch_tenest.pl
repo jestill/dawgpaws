@@ -24,6 +24,7 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+# NOTE: TENEST Assumes that directories do not end with /
 
 package DAWGPAWS;
 
@@ -59,9 +60,10 @@ my $show_man = 0;
 my $show_version = 0;
 
 # TE NEST VARIABLES WITH DEFAULT VALUES
-my $organism_db = 'maize';
-my $wublast_dir = '/usr/local/genome/wu_blast/';
-my $te_db_dir = '$HOME/apps/tenest';
+my $organism_db = "maize";
+my $wublast_dir = "/usr/local/genome/wu_blast/";
+my $home_dir = $ENV{'HOME'};
+my $te_db_dir = "$home_dir/apps/te_nest";
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -72,7 +74,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    # ADDITIONAL OPTIONS
 		    "org=s"        => \$organism_db,
 		    "blast-dir=s"  => \$wublast_dir,
-		    "tenest-dir"   => \$te_db_dir,
+		    "tenest-dir=s" => \$te_db_dir,
 		    "q|quiet"      => \$quiet,
 		    "verbose"      => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -81,21 +83,21 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "man"          => \$show_man,
 		    "h|help"       => \$show_help,);
 
-#-----------------------------+                                                 
-# SHOW REQUESTED HELP         |                                                 
-#-----------------------------+                                                 
+#-----------------------------+
+# SHOW REQUESTED HELP         |
+#-----------------------------+
 if ( ($show_usage) ) {
-#    print_help ("usage", File::Spec->rel2abs($0) );                            
+#    print_help ("usage", File::Spec->rel2abs($0) );
     print_help ("usage", $0 );
 }
 
 if ( ($show_help) || (!$ok) ) {
-#    print_help ("help",  File::Spec->rel2abs($0) );                            
+#    print_help ("help",  File::Spec->rel2abs($0) );
     print_help ("help",  $0 );
 }
 
 if ($show_man) {
-    # User perldoc to generate the man documentation.                           
+    # User perldoc to generate the man documentation.
     system ("perldoc $0");
     exit($ok ? 0 : 2);
 }
@@ -107,9 +109,9 @@ if ($show_version) {
 }
 
 
-#-----------------------------+                                                 
-# CHECK REQUIRED ARGS         |                                                 
-#-----------------------------+                                                 
+#-----------------------------+
+# CHECK REQUIRED ARGS         |
+#-----------------------------+
 if ( (!$indir) || (!$outdir) ) {
     print "\a";
     print STDERR "\n";
@@ -120,12 +122,14 @@ if ( (!$indir) || (!$outdir) ) {
     print_help("full");
 }
 
-#-----------------------------+                                                 
-# CHECK FOR SLASH IN DIR      |                                                 
-# VARIABLES                   |                                                 
-#-----------------------------+                                                 
-# If the indir does not end in a slash then append one                          
-# TO DO: Allow for backslash                                                    
+
+
+#-----------------------------+
+# CHECK FOR SLASH IN DIR      |
+# VARIABLES                   |
+#-----------------------------+
+# If the indir does not end in a slash then append one
+# TO DO: Allow for backslash
 unless ($indir =~ /\/$/ ) {
     $indir = $indir."/";
 }
@@ -134,22 +138,33 @@ unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
+#unless ($te_db_dir =~ /\/$/ ) {
+#    $te_db_dir = $te_db_dir."/";
+#}
 
-#-----------------------------+                                                 
-# Get the FASTA files from the|                                                 
-# directory provided by the   |                                                 
-# var $indir                  |                                                 
-#-----------------------------+                                                 
+#-----------------------------+
+# CHECK FOR REQUIRED PROGRAMS |
+#-----------------------------+
+unless (-e $te_db_dir."/TEnest.pl") {
+    die "TENest.pl does not exist at:\n$te_db_dir\n"
+}
+
+
+#-----------------------------+
+# Get the FASTA files from the|
+# directory provided by the   |
+# var $indir                  |
+#-----------------------------+
 opendir( DIR, $indir ) ||
     die "Can't open directory:\n$indir";
 my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 my $num_files = @fasta_files;
 
-#-----------------------------+                                                 
-# SHOW ERROR IF NO FILES      |                                                 
-# WERE FOUND IN THE INPUT DIR |                                                 
-#-----------------------------+                                                 
+#-----------------------------+
+# SHOW ERROR IF NO FILES      |
+# WERE FOUND IN THE INPUT DIR |
+#-----------------------------+
 if ($num_files == 0) {
     print STDERR "\a";
     print STDERR "\nERROR: No fasta files were found in the input directory\n".
@@ -158,10 +173,10 @@ if ($num_files == 0) {
     exit;
 }
 
-#-----------------------------+                                                 
-# CREATE THE OUT DIR          |                                                 
-# IF IT DOES NOT EXIST        |                                                 
-#-----------------------------+                                                 
+#-----------------------------+
+# CREATE THE OUT DIR          |
+# IF IT DOES NOT EXIST        |
+#-----------------------------+
 unless (-e $outdir) {
     print STDERR "Creating output dir ...\n" unless $quiet;
     mkdir $outdir ||
@@ -182,27 +197,26 @@ for my $ind_file (@fasta_files)
 
     $proc_num++;
     $file_num++;
-    #if ($file_num == $file_num_max){exit;}                                     
 
-    #-----------------------------+                                             
-    # GET THE ROOT NAME OF THE    |                                             
-    # FASTA FILE                  |                                             
-    #-----------------------------+                                             
+    #-----------------------------+
+    # GET THE ROOT NAME OF THE    |
+    # FASTA FILE                  |
+    #-----------------------------+
     if ($ind_file =~ m/(.*)\.hard\.fasta$/) {
-        # file ends in .hard.fasta                                              
-        # This is hard masked fasta files                                       
+        # file ends in .hard.fasta
+        # This is hard masked fasta files
         $name_root = "$1";
     }
     elsif ($ind_file =~ m/(.*)\.masked\.fasta$/) {
-        # file ends in .masked.fasta                                            
+        # file ends in .masked.fasta
         $name_root = "$1";
     }
     elsif ($ind_file =~ m/(.*)\.fasta$/ ) {
-        # file ends in .fasta                                                   
+        # file ends in .fasta
         $name_root = "$1";
     }
     elsif ($ind_file =~ m/(.*)\.fa$/ ) {
-        # file ends in .fa                                                      
+        # file ends in .fa
         $name_root = "$1";
     }
     else {
@@ -210,31 +224,31 @@ for my $ind_file (@fasta_files)
     }
 
 
-    #-----------------------------+                                             
-    # CREATE ROOT NAME DIR        |                                             
-    #-----------------------------+                                             
+    #-----------------------------+
+    # CREATE ROOT NAME DIR        |
+    #-----------------------------+
     my $name_root_dir = $outdir.$name_root;
     unless (-e $name_root_dir) {
         mkdir $name_root_dir ||
             die "Could not create dir:\n$name_root_dir\n"
 	}
 
-    #-----------------------------+                                             
-    # CREATE TENEST OUTDIR       |                                             
-    #-----------------------------+                                             
-    # Dir to hold gene prediction output from local software                    
-    my $tenest_out_dir = $outdir.$name_root."/tenest/";
+    #-----------------------------+
+    # CREATE TENEST OUTDIR        |
+    #-----------------------------+
+    # Dir to hold gene prediction output from local software
+    my $tenest_out_dir = $outdir.$name_root."/tenest";
     unless (-e $tenest_out_dir) {
         mkdir $tenest_out_dir ||
             die "Could not create tenest out dir:\n$tenest_out_dir\n";
     }
 
-    #-----------------------------+                                             
-    # CREATE GFF OUTDIR           |                                             
-    #-----------------------------+                                             
-    # Dir to hold gene prediction output from local software                    
+    #-----------------------------+
+    # CREATE GFF OUTDIR           |
+    #-----------------------------+
+    # Dir to hold gene prediction output from local software
     my $gff_out_dir = $outdir.$name_root."/gff/";
-    #print STDERR "$gff_out_dir\n";                                             
+    #print STDERR "$gff_out_dir\n";
     unless (-e $gff_out_dir) {
         mkdir $gff_out_dir ||
             die "Could not create gff out dir:\n$gff_out_dir\n";
@@ -245,20 +259,24 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
 
     # TE NEST COMMAND
-    my $te_nest_cmd = "TEnest.pl ".$indir.$ind_file.
-	" --output ".$tenest_out_dir.
-	" --org ".$organism_db.
-	" --blast ".$wublast_dir.
-	" --current ".$te_db_dir;
+    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".$indir.$ind_file.
+	" --output ".$tenest_out_dir;
+
+# Trying usage as program OPTIONS INFILE
+#    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".
+#	" --output ".$tenest_out_dir.
+#	$indir.$ind_file;
+#	" --org ".$organism_db;
+#	" --blast ".$wublast_dir.
+#	" --current ".$te_db_dir;
 
     print STDERR "CMD: $te_nest_cmd\n" if $verbose;
+    print STDERR "\n" if $verbose;
 	
     # RUN THE TE NEST COMMAND
-    #system ($te_nest_cmd);
+    system ($te_nest_cmd);
     
 }
-
-
 
 exit;
 
