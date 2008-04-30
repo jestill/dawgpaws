@@ -177,6 +177,7 @@ print FEATSUM "#seq_id\t".  # 1
     "env_s\tenv_e\t".      # 36Envelope
     "flank_5_seq\t".       # 38 5' Flanking Sequence
     "flank_3_seq\t".       # 39 3' Flanking Sequence
+    "strand".              # 40 Strand as reported from ltr_struc
     "\n";        
 
 #-----------------------------+
@@ -208,16 +209,16 @@ for my $ind_report (@report_files) {
  
     print STDERR "\tReport: $ind_report\n" if $verbose;
     $ind_report_num++;
+    print STDERR "\tNum $ind_report_num of $num_report_files";
     
     my $seq_id = $ind_report;
     my $gff_out_path = $gff_outfile;
     my $report_file_path = $repdir.$ind_report;
 
     if ($ind_report_num == 1) {
-	# If first record start new gff file
-
-# 04/14/2008
-# Changed the following to append to existing gff file
+    # Generall if first record start new gff file
+    # 04/14/2008
+    # Changed the following to append to existing gff file
 	ltrstruc2ann ( $seq_id, $report_file_path,
 		       1, $ind_report_num, 
 		       $do_seq_data, $gff_out_path);
@@ -719,6 +720,9 @@ sub ltrstruc2ann {
     # PRINT FLANKING SEQUENCES
     print FEATSUM "$ls_5flank_seq\t";
     print FEATSUM "$ls_3flank_seq\t";
+
+    # PRINT ORIENTATION FROM LTR STRUC
+    print FEATSUM "$ls_orientation";
     #my $ls_5flank_seq;   # 5' Flanking sequence
     #my $ls_3flank_seq;   # 3' Flanking sequence
 
@@ -1319,3 +1323,6 @@ v#   and do annotation of the LTR retromodels in external process
 #   This currently includes 39 feature elements
 # 04/17/2008
 # - Added e-value as an option
+# 04/30/2008
+# - Added the orientation to the feature summary file
+#   This uses the orientation as reported by ltr_struc
