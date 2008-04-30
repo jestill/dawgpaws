@@ -209,7 +209,8 @@ for my $ind_report (@report_files) {
  
     print STDERR "\tReport: $ind_report\n" if $verbose;
     $ind_report_num++;
-    print STDERR "\tNum $ind_report_num of $num_report_files";
+    print STDERR "\tProcessing report $ind_report_num".
+	" of $num_report_files\n" unless $quiet;
     
     my $seq_id = $ind_report;
     my $gff_out_path = $gff_outfile;
