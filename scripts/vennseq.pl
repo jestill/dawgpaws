@@ -39,6 +39,8 @@
 #        be passed as a variable from the command line.
 
 # TEST CMD: vennseq.pl -i HEX3045G05_TREP9.masked.fasta -o test_out_txt.txt -s test_out_svg.svg -d work_gff -f gff
+#
+# This is a test of svn 
 
 package DAWGPAWS::VennSeq;
 
