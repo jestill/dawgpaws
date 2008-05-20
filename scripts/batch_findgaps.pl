@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/01/2007                                       |
-# UPDATED: 12/06/2007                                       |
+# UPDATED: 05/20/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files, this will find gaps    |
@@ -21,7 +21,7 @@
 #                                                           |
 #-----------------------------------------------------------+
 #
-# TO DO: Appears to have error in delineating stop of the gap
+# TO DO: Must find a way to speed this up
 #
 
 #-----------------------------+
@@ -214,18 +214,16 @@ unless (-e $outdir) {
 # CHECK FOR GAPS FOR EACH     |
 # SEQUENCE                    |
 #-----------------------------+
-for my $ind_file (@fasta_files)
-{
-    
+for my $ind_file (@fasta_files) {
+
     $file_num++;
     
     # Temp exit for debug
     #if ($file_num == $file_num_max) {exit;}
 
-
-    print "==============================\n" if $verbose;
-    print "  $file_num of $num_files\n" if $verbose;
-    print "==============================\n" if $verbose;
+    print STDERR "========================================\n" if $verbose;
+    print STDERR "  Processing file $file_num of $num_files\n" if $verbose;
+    print STDERR "========================================\n" if $verbose;
 
     #-----------------------------+
     # GET THE ROOT NAME OF THE    |
@@ -300,24 +298,29 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     # CHECK FOR GAPS IN THE OBJ   |
     #-----------------------------+
+    my $time_start_seq = time;
     while (my $seq = $inseq->next_seq()) {
-	print "yup\n";
-	#my $seq_string = $seq->seq();
+
 	my $seq_len = $seq->length();
-	#print "$seq_string\n";
-	print "FULL SEQ LEN:\t$seq_len\n\n";
+
+	print STDERR "FULL SEQ LEN:\t$seq_len\n\n" if $verbose;
 
 	# Increment across the seq string and see if this is 
 	# the gap 
 	for (my $i = 1; $i<$seq_len; $i++) {
+
 	    my $seq_char = $seq->subseq($i,$i);
+	    
+	    # Show the seq residue being evaluated
+	    # This is superverbose and should not be used except
+	    # when working with the code
+	    # print STDERR "\t $i\t$seq_char\n" if $verbose;
 	    
 	    #-----------------------------+
 	    # DETERMINE IF THIS IS AS GAP |
 	    # CHARACTER                   |
 	    #-----------------------------+
 	    if ( ($seq_char =~ $gap_char) || ($seq_char =~ "N") ) {
-		#print "$i: $seq_char\n";
 		$is_gap = 1;
 	    }
 	    else {
@@ -331,20 +334,28 @@ for my $ind_file (@fasta_files)
 	    if ( ($is_gap) & (!$prev_gap) ) {
 		# START OF A GAP
 		$gap_start = $i;
+
+		print STDERR "Gap start .. $i\n" if $verbose;
+
 	    } 
 	    elsif ( (!$is_gap) & ($prev_gap) ) {
+		# If we are not in a gap, but previously were
 		# End of a gap
 		$gap_end = $i;
 		$gap_len = $gap_end - $gap_start;
-		print "START:\t$gap_start\t";
-		print "END:\t$gap_end\n";
-		print "\tLEN: $gap_len\n";
+		print STDERR "\tSTART:\t$gap_start\n" if $verbose;
+		print STDERR "\tEND:\t$gap_end\n" if $verbose;
+		print STDERR "\tLEN:\t$gap_len\n" if $verbose;
 		# If gap length is equal to or more then minimum 
 		# write to gff file
 		# This is labeled as gap
 		if ($gap_len >= $min_gap_len) {
-		    print "\tBig Enough\n";
 		    
+		    my $time_end_gap = time;
+		    my $total_time = $time_end_gap - $time_start_seq;
+		    print STDERR "\tGap is Big Enough\n" if $verbose;
+		    print STDERR "\tTime: $total_time\n" if $verbose;
+
 		    print GFFOUT 
 			"$name_root\t".  # SeqName
 			"gap\t".         # Source
@@ -357,12 +368,11 @@ for my $ind_file (@fasta_files)
 			"gap\n";         # Attribute
 
 		}
-
-	    } else {
+	    }
+	    else {
 		# Continuation of gap
 	    }
 	    
-
 	    # Set the prev_gap for next round
 	    if ($is_gap) {
 		$prev_gap = 1;
@@ -685,7 +695,7 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 Due to the way that regular expressions are coded in PERL, the characters
 that can be used to indicate gaps must be hard coded. The characters that are
-currently hard coded for recognition by batch_findgaps are n,N,x, and X. If 
+currently hard coded for recognition by batch_findgaps are n, N, x, and X. If 
 there are additional characters you would like to add as a recognized
 gap character, file a Feature Request on the DAWG-PAWS poject page on
 Sourceforge ( http://sourceforge.net/tracker/?group_id=204962&atid=991722 ).
@@ -701,7 +711,7 @@ For examples must have names like my_seq.fasta or my_seq.fa.
 
 =head1 SEE ALSO
 
-The batch_blast.pl program is part of the DAWG-PAWS package of genome
+The batch_findgaps.pl program is part of the DAWG-PAWS package of genome
 annotation programs. See the DAWG-PAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
@@ -722,7 +732,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/01/2007
 
-UPDATED: 12/06/2007
+UPDATED: 05/20/2008
 
 VERSION: $Rev$
 
@@ -739,4 +749,13 @@ VERSION: $Rev$
 # 12/06/2007
 # - Moved POD documentation to the end of the file
 # - Added info to POD documentation
-# - 
+# 
+# 05/20/2008
+# - Added some optional output for the verbose mode
+# - Removed commented out code no longer needed
+# - The current implementation is too slow for anything
+#   larger then a BAC sized contig
+#     - Using seq->subseq
+#     - For a contig of size 7,822,695 this would 
+#       take about 1,431 hours to run
+#      --may be quicker to just load seq string to an array and pop
