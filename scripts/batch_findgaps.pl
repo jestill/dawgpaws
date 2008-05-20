@@ -129,7 +129,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\nbatch_findaps.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
