@@ -59,6 +59,7 @@ my $outfile;
 my $gff_outfile;
 my $repdir;
 my $fs_outfile;               # Feature summary outfile
+my $outdir;
 
 # Booleans
 my $quiet = 0;
@@ -82,6 +83,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "f|feat-sum=s"  => \$fs_outfile,
 		    "r|results=s"   => \$repdir,
 		    # ADDITIONAL OPTIONS
+		    "outdir=s"      => \$outdir,
 		    "e|e-val=s"     => \$e_val,
 		    "c|copy"        => \$do_copy,
 		    "q|quiet"       => \$quiet,
@@ -868,72 +870,75 @@ sub ltrstruc2ann {
 
 
 
+    # 05/16/2008 - Added the following back into the code
+    
+
     #-----------------------------+
     # PRINT SEQ DATA              |
     #-----------------------------+
-#    if ($print_seq_data) {
-#	
-#	# This uses the global $outdir variable
-#
-#	#-----------------------------+
-#	# 5' LTR                      |
-#	#-----------------------------+
-#	my $ltr5_seq_path = $outdir."ltr5_ltr_struc.fasta";
-#	open (LTR5OUT, ">>$ltr5_seq_path") ||
-#	    die "Can not open 5\'LTR sequence output file:\n$ltr5_seq_path\n";
-#	print LTR5OUT ">".$name_root."_".$gff_result_id.
-#	    "|five_prime_ltr\n";
-#	print LTR5OUT "$ls_5ltr_seq\n";
-#	close (LTR5OUT);
-#	
-#	#-----------------------------+
-#	# 3' LTR                      |
-#	#-----------------------------+
-#	my $ltr3_seq_path = $outdir."ltr3_ltr_struc.fasta";
-#	open (LTR3OUT, ">>$ltr3_seq_path") ||
-#	    die "Can not open 3\'LTR sequence output file:\n$ltr3_seq_path\n";
-#	print LTR3OUT ">".$name_root."_".$gff_result_id.
-#	    "|three_prime_ltr\n";
-#	print LTR3OUT "$ls_3ltr_seq\n";
-#	close (LTR3OUT);
-#
-#	#-----------------------------+
-#	# PBS                         |
-#	#-----------------------------+
-#	my $pbs_seq_path = $outdir."pbs_ltr_struc.fasta";
-#	open (PBSOUT, ">>$pbs_seq_path") ||
-#	    die "Can not open PBS sequence output file:\n$pbs_seq_path\n";
-#	print PBSOUT ">".$name_root."_".$gff_result_id.
-#	    "|primer_binding_site\n";
-#	print PBSOUT "$ls_pbs_seq\n";
-#	close (PBSOUT);
-#
-#	#-----------------------------+
-#	# PPT                         |
-#	#-----------------------------+
-#	my $ppt_seq_path = $outdir."ppt_ltr_struc.fasta";
-#	open (PBSOUT, ">>$ppt_seq_path") ||
-#	    die "Can not open PPT sequence output file:\n$ppt_seq_path\n";
-#	print PBSOUT ">".$name_root."_".$gff_result_id.
-#	    "|RR_tract\n";
-#	print PBSOUT "$ls_pbs_seq\n";
-#	close (PBSOUT);
-#	
-#	#-----------------------------+
-#	# FULL RETRO MODEL            |
-#	#-----------------------------+ 
-#	# NOTE THIS INCLUDES NESTED LTR RETROS
-#	# LTR_retrotransposon
-#	my $ltr_seq_out = $outdir."full_ltr_retro.fasta";
-#	open (LTROUT, ">>$ltr_seq_out") ||
-#	    die "Can not open full ltr retro sequence outfile\n";
-#	print LTROUT ">".$name_root."_".$gff_result_id.
-#	    "|LTR_retrotransposon\n";
-#	print LTROUT "$ls_full_retro_seq\n";
-#	close (LTROUT);
-#	    
-#
-#    }
+    if ($print_seq_data) {
+	
+	# This uses the global $outdir variable
+
+	#-----------------------------+
+	# 5' LTR                      |
+	#-----------------------------+
+	my $ltr5_seq_path = $outdir."ltr5_ltr_struc.fasta";
+	open (LTR5OUT, ">>$ltr5_seq_path") ||
+	    die "Can not open 5\'LTR sequence output file:\n$ltr5_seq_path\n";
+	print LTR5OUT ">".$name_root."_".$gff_result_id.
+	    "|five_prime_ltr\n";
+	print LTR5OUT "$ls_5ltr_seq\n";
+	close (LTR5OUT);
+	
+	#-----------------------------+
+	# 3' LTR                      |
+	#-----------------------------+
+	my $ltr3_seq_path = $outdir."ltr3_ltr_struc.fasta";
+	open (LTR3OUT, ">>$ltr3_seq_path") ||
+	    die "Can not open 3\'LTR sequence output file:\n$ltr3_seq_path\n";
+	print LTR3OUT ">".$name_root."_".$gff_result_id.
+	    "|three_prime_ltr\n";
+	print LTR3OUT "$ls_3ltr_seq\n";
+	close (LTR3OUT);
+
+	#-----------------------------+
+	# PBS                         |
+	#-----------------------------+
+	my $pbs_seq_path = $outdir."pbs_ltr_struc.fasta";
+	open (PBSOUT, ">>$pbs_seq_path") ||
+	    die "Can not open PBS sequence output file:\n$pbs_seq_path\n";
+	print PBSOUT ">".$name_root."_".$gff_result_id.
+	    "|primer_binding_site\n";
+	print PBSOUT "$ls_pbs_seq\n";
+	close (PBSOUT);
+
+	#-----------------------------+
+	# PPT                         |
+	#-----------------------------+
+	my $ppt_seq_path = $outdir."ppt_ltr_struc.fasta";
+	open (PBSOUT, ">>$ppt_seq_path") ||
+	    die "Can not open PPT sequence output file:\n$ppt_seq_path\n";
+	print PBSOUT ">".$name_root."_".$gff_result_id.
+	    "|RR_tract\n";
+	print PBSOUT "$ls_pbs_seq\n";
+	close (PBSOUT);
+	
+	#-----------------------------+
+	# FULL RETRO MODEL            |
+	#-----------------------------+ 
+	# NOTE THIS INCLUDES NESTED LTR RETROS
+	# LTR_retrotransposon
+	my $ltr_seq_out = $outdir."full_ltr_retro.fasta";
+	open (LTROUT, ">>$ltr_seq_out") ||
+	    die "Can not open full ltr retro sequence outfile\n";
+	print LTROUT ">".$name_root."_".$gff_result_id.
+	    "|LTR_retrotransposon\n";
+	print LTROUT "$ls_full_retro_seq\n";
+	close (LTROUT);
+	    
+
+    }
 
     close (GFFOUT);
 
@@ -1327,3 +1332,6 @@ v#   and do annotation of the LTR retromodels in external process
 # 04/30/2008
 # - Added the orientation to the feature summary file
 #   This uses the orientation as reported by ltr_struc
+# 05/16/2008
+# - Added outdir back into code as the outdir option
+#   at the commadn nline

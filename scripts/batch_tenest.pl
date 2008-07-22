@@ -24,7 +24,11 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+# TODO: -Convert results to gff format
+#       -additional command line options for te_nest
+#
 # NOTE: TENEST Assumes that directories do not end with /
+# 
 
 package DAWGPAWS;
 
