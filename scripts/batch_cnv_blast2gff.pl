@@ -504,16 +504,13 @@ sub blast2gff {
 
 		# PRINT GFF TO STDERR IF IN VERBOSE MODE
 		if ($verbose) {
-		    print STDERR
-			"$seqname\t".                            # Seqname
-			"$blastprog:$dbname\t".                  # Source
-			"exon\t".                                # Feature type name
-			"$start\t".                              # Start
-			"$end\t".                                # End
-			$blast_hsp->score()."\t".                # Score
-			"$strand\t".                             # Strand
-			".\t".                                   # Frame
-			"$hitname\n";                            # Feature name
+		    print STDERR "\t   SEQ:\t$seqname\n";
+		    print STDERR "\t SOURC:\t$blastprog:$dbname\n";
+		    print STDERR "\t START:\t$start\n";
+		    print STDERR "\t   END:\t$end\n";
+		    print STDERR "\t SCORE:\t"$blast_hsp->score()."\n";
+		    print STDERR "\tSTRAND:\t$strand\n";
+		    print STDERR "\t   HIT:\t$hitname\n";
 		}
 
 	    } # End of while next hsp
