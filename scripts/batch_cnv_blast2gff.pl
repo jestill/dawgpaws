@@ -488,7 +488,9 @@ sub blast2gff {
 		# GET BLAST SCORE             |
 		#-----------------------------+
 		if ($bopt == 8 || $bopt == 9) {
-		    $blast_score = ".";
+		    #$blast_score = ".";
+		    # trying bits
+		    $blast_score = $blast_hsp->bits();
 		}
 		else {
 		    $blast_score = $blast_hsp->score();
