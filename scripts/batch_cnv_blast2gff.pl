@@ -288,7 +288,7 @@ for my $ind_file (@fasta_files)
 	    print "Converting: $ind_blast_file\n";
 
 	    blast2gff ( $blast_file_path, $out_gff_path, 
-			$do_append, $name_root, $blast_opt);
+			$do_append, $name_root, $blast_opt );
 	}
 
 	
@@ -393,7 +393,7 @@ sub blast2gff {
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
     # bopt    - The type of blast report to parse (0,8,9)
-    my ($blastin, $gffout, $append, $seqname, $bopt) = @_;
+    my ($blastin, $gffout, $append, $seqname, $bopt ) = @_;
     my $blastprog;        # Name of the blast program used (blastn, blastx)
     my $dbname;           # Name of the database blasted
     my $hitname;          # Name of the hit
@@ -402,6 +402,8 @@ sub blast2gff {
     my $strand;           # Strand of the hit
     my $blast_report;     # The handle for the blast report
     my $blast_score;      # The score for the blast hit
+
+    my $seq_name_len = length($seqname);
 
     #-----------------------------+
     # GET BLAST REPORT            |
@@ -443,6 +445,21 @@ sub blast2gff {
 
 	if ($bopt == 8 || $bopt == 9) { 
 	    $dbname = $blastin;
+
+	    # Since DAWG-PAWS uses a specific naming stragety, I will
+	    # try to extract the database name from the file name
+	    # Basic pattern is 'path_root/file name'_'database name'
+	    # can get the 
+	    if ($dbname =~ m/(.*)\/(.*)\.bln$/ ) {
+		$dbname = $2;
+		$dbname = substr($dbname, $seq_name_len+1 );
+
+	    }
+	    elsif ($dbname =~ m/(.*)\/(.*)\.blx$/ ) {
+		$dbname = $2;
+		$dbname = substr($dbname, $seq_name_len+1);
+	    }
+
 	}
 	else {
 	    $dbname = $blast_result->database_name();
@@ -508,8 +525,7 @@ sub blast2gff {
 		    "exon\t".                                # Feature type name
 		    "$start\t".                              # Start
 		    "$end\t".                                # End
-#		    $blast_hsp->score()."\t".                # Score
-		    $blast_score."\t".                # Score
+		    $blast_score."\t".                       # Score
 		    "$strand\t".                             # Strand
 		    ".\t".                                   # Frame
 		    "$hitname\n";                            # Feature name
@@ -521,7 +537,6 @@ sub blast2gff {
 		    print STDERR "\t SOURC:\t$blastprog:$dbname\n";
 		    print STDERR "\t START:\t$start\n";
 		    print STDERR "\t   END:\t$end\n";
-		    #print STDERR "\t SCORE:\t".$blast_hsp->score()."\n";
 		    print STDERR "\t SCORE:\t".$blast_score."\n";
 		    print STDERR "\tSTRAND:\t$strand\n";
 		    print STDERR "\t   HIT:\t$hitname\n";
