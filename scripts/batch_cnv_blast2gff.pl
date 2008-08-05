@@ -401,7 +401,7 @@ sub blast2gff {
     my $end;              # End of the feature
     my $strand;           # Strand of the hit
     my $blast_report;     # The handle for the blast report
-
+    my $blast_score;      # The score for the blast hit
 
     #-----------------------------+
     # GET BLAST REPORT            |
@@ -485,6 +485,16 @@ sub blast2gff {
 
 
 		#-----------------------------+
+		# GET BLAST SCORE             |
+		#-----------------------------+
+		if ($bopt == 8 || $bopt == 9) {
+		    $blast_score = ".";
+		}
+		else {
+		    $blast_score = $blast_hsp->score();
+		}
+
+		#-----------------------------+
 		# PRINT OUTPUT TO GFF FILE    |
 		# WITH BAC DATA               |
 		#-----------------------------+
@@ -496,7 +506,8 @@ sub blast2gff {
 		    "exon\t".                                # Feature type name
 		    "$start\t".                              # Start
 		    "$end\t".                                # End
-		    $blast_hsp->score()."\t".                # Score
+#		    $blast_hsp->score()."\t".                # Score
+		    $blast_score."\t".                # Score
 		    "$strand\t".                             # Strand
 		    ".\t".                                   # Frame
 		    "$hitname\n";                            # Feature name
@@ -508,7 +519,8 @@ sub blast2gff {
 		    print STDERR "\t SOURC:\t$blastprog:$dbname\n";
 		    print STDERR "\t START:\t$start\n";
 		    print STDERR "\t   END:\t$end\n";
-		    print STDERR "\t SCORE:\t".$blast_hsp->score()."\n";
+		    #print STDERR "\t SCORE:\t".$blast_hsp->score()."\n";
+		    print STDERR "\t SCORE:\t".$blast_score."\n";
 		    print STDERR "\tSTRAND:\t$strand\n";
 		    print STDERR "\t   HIT:\t$hitname\n";
 		}
