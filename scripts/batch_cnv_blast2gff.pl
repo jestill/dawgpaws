@@ -411,7 +411,7 @@ sub blast2gff {
 	# PARSE m8 or m9 ALIGNMENTS
 	$blast_report = new Bio::SearchIO ( '-format' => 'blasttable',
 					    '-file'   => $blastin)
-	    || die "Could not open BLAST input file:\n$infile.\n";
+	    || die "Could not open BLAST input file:\n$blastin.\n";
 	
     }
     else {
