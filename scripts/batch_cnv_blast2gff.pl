@@ -508,7 +508,7 @@ sub blast2gff {
 		    print STDERR "\t SOURC:\t$blastprog:$dbname\n";
 		    print STDERR "\t START:\t$start\n";
 		    print STDERR "\t   END:\t$end\n";
-		    print STDERR "\t SCORE:\t"$blast_hsp->score()."\n";
+		    print STDERR "\t SCORE:\t".$blast_hsp->score()."\n";
 		    print STDERR "\tSTRAND:\t$strand\n";
 		    print STDERR "\t   HIT:\t$hitname\n";
 		}
