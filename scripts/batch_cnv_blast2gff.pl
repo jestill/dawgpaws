@@ -491,7 +491,6 @@ sub blast2gff {
 		# Changing BLASTN to the Bac Name appears to allow 
 		# these to be drawn on different levels.
 		print GFFOUT 
-		    #$blast_hit->name()."\t".
 		    "$seqname\t".                            # Seqname
 		    "$blastprog:$dbname\t".                  # Source
 		    "exon\t".                                # Feature type name
@@ -501,6 +500,21 @@ sub blast2gff {
 		    "$strand\t".                             # Strand
 		    ".\t".                                   # Frame
 		    "$hitname\n";                            # Feature name
+
+
+		# PRINT GFF TO STDERR IF IN VERBOSE MODE
+		if ($verbose) {
+		    print STDERR
+			"$seqname\t".                            # Seqname
+			"$blastprog:$dbname\t".                  # Source
+			"exon\t".                                # Feature type name
+			"$start\t".                              # Start
+			"$end\t".                                # End
+			$blast_hsp->score()."\t".                # Score
+			"$strand\t".                             # Strand
+			".\t".                                   # Frame
+			"$hitname\n";                            # Feature name
+		}
 
 	    } # End of while next hsp
 	} # End of while next hit
