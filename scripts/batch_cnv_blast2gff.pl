@@ -52,7 +52,7 @@ my $out_gff_copy;
 my $msg;
 my $ind_blast_dir;
 my $blast_file_num;
-my $blast_op = 0;
+my $blast_opt = 0;
 
 # Booleans
 my $verbose = 0;
@@ -73,7 +73,6 @@ my @blast_files;
 my $file_num_max = 1;
 my $file_num = 0;
 #\\\\\\\\\\\\\\\\\\\\\\
-
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
