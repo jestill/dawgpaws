@@ -437,7 +437,10 @@ sub blast2gff {
     while (my $blast_result = $blast_report->next_result())
     {
 	$blastprog = $blast_result->algorithm;
-	$dbname = $blast_result->database_name();
+
+	# FOR m8 output the database name does not work
+	# so I will use the file name as given by blastin
+	$dbname = $blast_result->database_name() || $blastin;
 
     	while (my $blast_hit = $blast_result->next_hit())
 	{
