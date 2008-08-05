@@ -440,7 +440,13 @@ sub blast2gff {
 
 	# FOR m8 output the database name does not work
 	# so I will use the file name as given by blastin
-	$dbname = $blast_result->database_name() || $blastin;
+
+	if ($bopt == 8 || $bopt == 9) { 
+	    $dbname = $blastin;
+	}
+	else {
+	    $dbname = $blast_result->database_name();
+	}
 
     	while (my $blast_hit = $blast_result->next_hit())
 	{
