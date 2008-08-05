@@ -52,6 +52,7 @@ my $out_gff_copy;
 my $msg;
 my $ind_blast_dir;
 my $blast_file_num;
+my $blast_op = 0;
 
 # Booleans
 my $verbose = 0;
