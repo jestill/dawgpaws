@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 01/04/2008                                       |
+# UPDATED: 08/05/2008                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 # Convert blast output to a Apollo compatible gff file.     |
@@ -78,18 +78,19 @@ my $file_num = 0;
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED
-		    "i|indir=s"   => \$indir,
-                    "o|outdir=s"  => \$outdir,
+		    "i|indir=s"     => \$indir,
+                    "o|outdir=s"    => \$outdir,
+		    "b|blast-opt=s" => \$blast_opt,  # Has default
 		    # OPTIONS
-		    "logfile=s"   => \$logfile,
+		    "logfile=s"     => \$logfile,
 		    # BOOLEANS
-		    "verbose"     => \$verbose,
-		    "append"      => \$do_append,
-		    "usage"       => \$show_usage,
-		    "version"     => \$show_version,
-		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,
-		    "q|quiet"     => \$quiet,);
+		    "verbose"       => \$verbose,
+		    "append"        => \$do_append,
+		    "usage"         => \$show_usage,
+		    "version"       => \$show_version,
+		    "man"           => \$show_man,
+		    "h|help"        => \$show_help,
+		    "q|quiet"       => \$quiet,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -391,19 +392,38 @@ sub blast2gff {
     # blastin - path to the blast input file
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
-    my ($blastin, $gffout, $append, $seqname) = @_;
+    # bopt    - The type of blast report to parse (0,8,9)
+    my ($blastin, $gffout, $append, $seqname, $bopt) = @_;
     my $blastprog;        # Name of the blast program used (blastn, blastx)
     my $dbname;           # Name of the database blasted
     my $hitname;          # Name of the hit
     my $start;            # Start of the feature
     my $end;              # End of the feature
     my $strand;           # Strand of the hit
+    my $blast_report;     # The handle for the blast report
 
-    # Open the BLAST report object
-    my $blast_report = new Bio::SearchIO ( '-format' => 'blast',
-					   '-file'   => $blastin) 
-	|| die "Could not open BLAST input file:\n$blastin.\n";
-    
+
+    #-----------------------------+
+    # GET BLAST REPORT            |
+    #-----------------------------+
+    if ($bopt == 8 || $bopt == 9) {
+
+	# PARSE m8 or m9 ALIGNMENTS
+	$blast_report = new Bio::SearchIO ( '-format' => 'blasttable',
+					    '-file'   => $blastin)
+	    || die "Could not open BLAST input file:\n$infile.\n";
+	
+    }
+    else {
+
+	# PARSE DEFAULT ALIGNMNETS (m0)
+	$blast_report = new Bio::SearchIO ( '-format' => 'blast',
+					    '-file'   => $blastin) 
+	    || die "Could not open BLAST input file:\n$blastin.\n";
+	
+    }
+
+
     # Open file handle to the gff outfile    
     if ($append) {
 	open (GFFOUT, ">>$gffout") 
@@ -667,7 +687,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/06/2007
 
-UPDATED: 01/04/2008
+UPDATED: 08/05/2008
 
 VERSION: $Rev$
 
@@ -697,3 +717,22 @@ VERSION: $Rev$
 #
 # 01/04/2008
 # - Fixed stupid typo where I had if instead of elseif
+#
+# 08/05/2008
+# - Adding option to parse -m8 or -m9 BLAST output
+#   The will be implemented as the blast-option
+#   variable. The BLAST option will use the numbers 
+#   as indicated in BLAST
+#     0 = pairwise, 
+#     1 = query-anchored showing identities,
+#     2 = query-anchored no identities,
+#     3 = flat query-anchored, show identities,
+#     4 = flat query-anchored, no identities,
+#     5 = query-anchored no identities and blunt ends,
+#     6 = flat query-anchored, no identities and blunt ends,
+#     7 = XML Blast output,
+#     8 = tabular,
+#     9 tabular with comment lines
+#     10 ASN, text
+#     11 ASN, binary [Integer]
+#  Currently only 8,9 and 0 are implemented. 
