@@ -288,7 +288,7 @@ for my $ind_file (@fasta_files)
 	    print "Converting: $ind_blast_file\n";
 
 	    blast2gff ( $blast_file_path, $out_gff_path, 
-			$do_append, $name_root);
+			$do_append, $name_root, $blast_opt);
 	}
 
 	
