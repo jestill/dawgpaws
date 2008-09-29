@@ -1,14 +1,14 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_findgaps.pl - Annotate gaps in a fasta file         |
+# batch_findgaps.pl - Annotate gaps in dir of fasta files   |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/01/2007                                       |
-# UPDATED: 05/20/2008                                       |
+# UPDATED: 09/29/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files, this will find gaps    |
@@ -48,10 +48,14 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 
 # VARS WITH DEFAULT VALUES
+# The following to variables may be leftover cruft 09/29/2008
 my $out_ext = ".hard.fasta";  # Outfile extension
 my $mask_char = "N";          # Character to mask with
 
+my $ap_path = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
+
 # BOOLEANS
+my $do_apollo_game = 0;        # Convert the gff output to game file format
 my $show_help = 0;             # Show program help
 my $show_version = 0;          # Show program version
 my $show_man = 0;              # Show program manual page using peldoc
@@ -86,9 +90,11 @@ my $ok = GetOptions(
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
 		    "len"          => \$min_gap_len,
-		    "gapchar"      => \$gap_char,
+		    "gapchar=s"    => \$gap_char,
 		    "logfile=s"    => \$logfile,
+		    "ap-path=s"    => \$ap_path,
 		    # Booleans
+		    "game"         => \$do_apollo_game,
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -389,9 +395,12 @@ for my $ind_file (@fasta_files) {
     close GFFOUT;
 
     # TO DO: Convert the GFF output to Apollo game xml
-    if (-e $gff_out) {
-	apollo_convert($gff_out, "gff", $game_out, "game", 
-		       $fasta_file, "NULL");
+    # I don't know if this works yet 09/29/2008
+    if ($do_apollo_game) {
+	if (-e $gff_out) {
+	    apollo_convert($gff_out, "gff", $game_out, "game", 
+			   $fasta_file, "NULL");
+	}
     }
 
 } # End of for each file in the input folder
@@ -504,9 +513,10 @@ sub apollo_convert {
 
 # The following path is for the jlb10 machine
 #    $ApPath = "/home/jestill/Apps/Apollo/Apollo";
-    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
-
+#    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
 #    $ApPath = "/Applications/Apollo/bin/apollo";
+
+    $ApPath = $ap_path;
 
     # Set the base command line. More may need to be added for different
     # formats. For example, GFF in requires a sequence file and the CHADO
@@ -584,19 +594,31 @@ Path of the directory to place the program output.
 
 =over 2
 
-=item --m,mask
-
-Single letter to mask with. Valid options are: [ N | n | X | x ]
-
-=item --ext
-
-The new outfile extension to use. Default value is .hard.fasta
-
 =item --logfile
 
 Path to a file that will be used to log program status.
 If the file already exists, additional information will be concatenated
 to the existing file.
+
+=item --gapchar
+
+The character that is treated as the gap character. B
+By default this is N. This option takes a single character 
+as its argument.
+
+=item --len
+
+The minimum gap length. This option takes a integer as its option.
+
+=item --game
+
+Use this option to generate a game xml file of the output. This option
+requires that you have apollo on your local machine since the program
+uses apollo to translate from gff to game xml.
+
+=item --ap-path
+
+Specify the path to your local installation of apollo.
 
 =item --usage
 
@@ -653,7 +675,17 @@ this program.
 
 =head2 Required Software
 
-Additional software is not required to use this program.
+=over 2
+
+=item Apollo
+
+This program requires the Apollo Genome Annotation Curation tool to
+convert the gff output to the game.xml format. This can be obtained at
+http://apollo.berkeleybop.org/current/index.html. While Apollo is used to 
+convert to game.xml, the batch_findgaps.pl program can be used without
+apollo to generate gff foramt files.
+
+=back
 
 =head2 Required Perl Modules
 
@@ -732,7 +764,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/01/2007
 
-UPDATED: 05/20/2008
+UPDATED: 09/29/2008
 
 VERSION: $Rev$
 
@@ -759,3 +791,10 @@ VERSION: $Rev$
 #     - For a contig of size 7,822,695 this would 
 #       take about 1,431 hours to run
 #      --may be quicker to just load seq string to an array and pop
+#
+# 09/29/2008
+# - Made the conversion to game xml format with apollo a boolean
+# - Updated help information
+# - Added option to specify the Apollo path for convertion to
+#   game xml. This is a sloppy implementation and uses a global variable 
+#   in the subfunction.
