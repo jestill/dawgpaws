@@ -1,20 +1,26 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# Name.pl                                                   |
+# batch_bl2seq.pl - Batch bl2seq to compare assemblies      |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 00/00/2007                                       |
-# UPDATED: 00/00/2007                                       |
+# STARTED: 10/04/2008                                       |
+# UPDATED: 10/06/2008                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Short Program Description                                |
+#  Given a directory of fasta files, do an bl2seq for all   |
+#  unique pairs of sequences, report sequences above a      |
+#  threshold value as well list the similarities for all    |
+#  sequences in the input directory. This reports both      |
+#  the tiled bitscore as well as the ratio of the bitscore  |
+#  of the pair of sequences divided by smaller bitscore     |
+#  of either sequence blasted against itself.               |
 #                                                           |
 # USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
+#  batch_bl2seq.pl -i indir  -o summary_file.txt            |
 #                                                           |
 # VERSION: $Rev$                                            |
 #                                                           |
@@ -24,9 +30,12 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-
-# Note that the results of the of pairwise blast starts at 1
-# This leaves the [i,0] and [0,j] to serve as labels 
+# Notes:
+#  - the index for the matrix holding the results of the of 
+#    pairwise blast starts at 1. This leaves the [i,0] and 
+#    [0,j] to serve as labels.
+#  - This currently does the blast for softmasked sequences
+#    by default.
 
 package DAWGPAWS;
 
@@ -453,23 +462,33 @@ __END__
 
 =head1 NAME
 
-batch_bl2seq.pl - Run bl2seq for all fasta files
+batch_bl2seq.pl - Batch bl2seq to compare assemblies
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
   USAGE:
-    Name.pl -i InDir -o outfile
+    batch_bl2seq.pl -i InDir -o outfile
 
     --indir         # Dir containing the fasta files
-    --outfile       # Output files
+    --outfile       # Output reoport file file
 
 =head1 DESCRIPTION
 
-This is what the program does
+The purpose of this script is to try to find clones that are
+replicates of one another.
+Given a directory of fasta files, do an bl2seq for all
+unique pairs of sequences, report sequences above a
+threshold value as well list the similarities for all
+sequences in the input directory. This reports both
+the tiled bitscore as well as the ratio of the bitscore
+of the pair of sequences divided by smaller bitscore
+of either sequence blasted against itself. If an output
+file is not specified at the command line, the output will
+be printed to STDOUT.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -478,22 +497,34 @@ This is what the program does
 =item -i,--indir
 
 Path of the directory containing the sequences to process.
-
-=item -o,--outdir
-
-Path of the directory to place the program output.
-
-=item -c, --config
-
-Path to a config file. This is a tab delimited text file
-indicating the required information for each of the databases to blast
-against. Lines beginning with # are ignored.
+It is expected that these will be single fasta files that 
+represent ordered contig assemblies.
 
 =back
 
 =head1 OPTIONS
 
 =over 2
+
+=item -o,--outfile
+
+The report file that is generated. The first section of this 
+file reports the sequence pairs that are above the threshold value, the 
+remainder of this report will be all the remainder sequence pairs.
+
+=item --thresh
+
+This is the threshold ratio value to report at the header of the
+output file. This should be a value between zero and one. The default
+value is 0.80. Thus with the default value, all sequences which have 
+a bitscore ratio above 80% of the shorter of the two squences will be 
+reported.
+
+=item --clean
+
+Specifying clean at the command line will remove the bl2seq reports from
+the working directory. By default the bl2seq output files will be left
+in the directory.
 
 =item --usage
 
@@ -527,33 +558,6 @@ test for the existence of input files.
 
 =back
 
-=head1 Additional Options
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
 =head1 DIAGNOSTICS
 
 Error messages generated by this program and possible solutions are listed
@@ -567,56 +571,14 @@ The input directory does not contain fasta files in the expected format.
 This could happen because you gave an incorrect path or because your sequence 
 files do not have the expected *.fasta extension in the file name.
 
-=item ERROR: Could not create the output directory
-
-The output directory could not be created at the path you specified. 
-This could be do to the fact that the directory that you are trying
-to place your base directory in does not exist, or because you do not
-have write permission to the directory you want to place your file in.
-
 =back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
 =head2 Configuration File
 
-The location of the configuration file is indicated by the --config option
-at the command line.
-This is a tab delimited text file
-indicating required information for each of the databases to blast
-against. Lines beginning with # are ignored, and data are in six 
-columns as shown below:
-
-=over 2
-
-=item Col 1. Blast program to use [ tblastx | blastn | blastx ]
-
-The blastall program to use. DAWG-PAWS will support blastn,
-tblastx, and blastx format.
-
-=item Col 2. Extension to add to blast output file. (ie. bln )
-
-This is the suffix which will be added to the end of your blast
-output file. You can use this option to set different extensions
-for different types of blast. For example *.bln for blastn
-output and *.blx for blastx output.
-
-=back
-
-An example config file:
-
- #-----------------------------+
- # BLASTN: TIGR GIs            |
- #-----------------------------+
- blastn	bln	8	1e-5	TaGI_10	-a 2 -U
- blastn	bln	8	1e-5	AtGI_13	-a 2 -U
- blastn	bln	8	1e-5	ZmGI_17	-a 2 -U
- #-----------------------------+
- # TBLASTX: TIGR GIs           |
- #-----------------------------+
- tblastx	blx	8	1e-5	TaGI_10	-a 2 -U
- tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
- tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
+This program does not make use of a configuration file. All options
+are specified at the command line.
 
 =head2 Environment
 
@@ -628,13 +590,23 @@ This program does not make use of variables in the user environment.
 
 =over
 
-=item * Software Name
+=item * bl2seq
 
-Any required software will be listed here.
+The bl2seq command line program is part of the NCBI stand alone blast package. 
+If you typle bl2seq at the command line, you should see the options for running
+the bl2seq program. 
+The executables for stand alone blast are available at
+ftp://ftp.ncbi.nih.gov/blast/executables/LATEST
 
 =back
 
 =head2 Required Perl Modules
+
+=over BioPerl
+
+This program relies on the BioPerl package of programs. Information on
+downloading and installing bioperl is available at 
+http://www.bioperl.org/wiki/Getting_BioPerl.
 
 =over
 
@@ -663,9 +635,10 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =over
 
-=item * Known Limitation
+=item * Not tested on OS other then Linux.
 
-If this program has known limitations they will be listed here.
+Although this program should run on either Windows or Mac OSX, it has only
+been tested on the linux OS.
 
 =back
 
@@ -693,9 +666,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 10/04/2008
 
-UPDATED:
+UPDATED: 10/06/2008
 
 VERSION: $Rev$
 
@@ -705,3 +678,9 @@ VERSION: $Rev$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 10/04/2008
+#  - Program started
+#  - Wrote blseq2score subfunction
+#
+# 10/06/2008
+#  - Added POD documentation
