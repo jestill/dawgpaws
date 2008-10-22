@@ -23,6 +23,8 @@
 #                                                           |
 #-----------------------------------------------------------+
 
+$pad = 0;
+
 # TO DO
 # Modify this to use PERL switches
 
@@ -66,12 +68,20 @@ my $seq_in = Bio::SeqIO->new('-file' => "<$infile",
 #-----------------------+
 for ( $i = 1; $i<=$NumFiles; $i++ )
 {
+
+    my $num;
     print "Creating File $i \n";
     if ($i == 100) {exit;}
-    $num = sprintf("%3d", $i);  
-    # Pad number with zeros so that the total length
-    # of the string is 3 characaters (ie. 012)
-    $num=~ tr/ /0/;
+
+    if ($pad) {
+	$num = sprintf("%3d", $i);  
+	# Pad number with zeros so that the total length
+	# of the string is 3 characaters (ie. 012)
+	$num=~ tr/ /0/;
+    }
+    else {
+	$num = $i;
+    }
 
     $OutFilePath = $OutputDir.$outfile.$num.".fasta";
     $SeqsOut[$i] =  Bio::SeqIO->new('-file' => ">$OutFilePath",
@@ -101,11 +111,6 @@ print $OutputDir."\n";
 
 exit;
 
-
-#-----------------------------------------------------------+
-# SUBFUNCTIONS
-#-----------------------------------------------------------+
 #
-# 12/17/2007
-# - Existing program imported to the DAWG-PAWS package from
-#   the jperl set of programs
+# 07/14/2007
+# - Existing program moved to the jperl site
