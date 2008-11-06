@@ -262,15 +262,24 @@ for my $ind_file (@fasta_files)
     # RUN TE NEST                 |
     #-----------------------------+
 
+#    # The following does work
+#    # 11/06/2008
+#    # TE NEST COMMAND
+#    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".$indir.$ind_file.
+#	" --output ".$tenest_out_dir;
+
+    # The following does work
+    # 11/06/2008
     # TE NEST COMMAND
     my $te_nest_cmd = $te_db_dir."/TEnest.pl ".$indir.$ind_file.
+	" --org ".$organism_db.
 	" --output ".$tenest_out_dir;
-
+    
 # Trying usage as program OPTIONS INFILE
 #    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".
 #	" --output ".$tenest_out_dir.
-#	$indir.$ind_file;
-#	" --org ".$organism_db;
+#	$indir.$ind_file
+;#	" --org ".$organism_db;
 #	" --blast ".$wublast_dir.
 #	" --current ".$te_db_dir;
 
