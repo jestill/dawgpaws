@@ -438,7 +438,7 @@ the parent directory.
 
 =item -i,--indirs
 
-The directories to merge.
+The directories to merge. Multiple directories are separated by commas.
 
 =item -o,--outdir
 
@@ -578,3 +578,6 @@ VERSION: $Rev$
 # - Update POD documentation
 # - Added print_help subfunction that extracts help and
 #   usage information from the POD documentation
+#
+# 11/06/2008
+# - Added some info to the POD documentation
