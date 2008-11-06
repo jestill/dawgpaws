@@ -262,12 +262,6 @@ for my $ind_file (@fasta_files)
     # RUN TE NEST                 |
     #-----------------------------+
 
-#    # The following does work
-#    # 11/06/2008
-#    # TE NEST COMMAND
-#    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".$indir.$ind_file.
-#	" --output ".$tenest_out_dir;
-
     # The following does work
     # 11/06/2008
     # TE NEST COMMAND
@@ -287,7 +281,19 @@ for my $ind_file (@fasta_files)
     print STDERR "\n" if $verbose;
 	
     # RUN THE TE NEST COMMAND
-    system ($te_nest_cmd);
+    #system ($te_nest_cmd);
+
+    #-----------------------------+
+    # CONVERT THE OUTPUT TO       |
+    # GFF FORMAT                  |
+    #-----------------------------+
+    my $te_nest_result = $tenest_out_dir."/TE_DIR/".$name_root.".LTR";
+    my $gff_out_path =  $gff_out_dir.$name_root.".tenest.gff";
+    my $do_gff_append = 0;
+    my $gff_seqname = $name_root;
+    
+    tenest2gff ($te_nest_result, $gff_out_path, 
+		$do_gff_append, $gff_seqname);
     
 }
 
@@ -296,6 +302,562 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+
+sub tenest2gff {
+# CONVERT BLAST TO GFF 
+    
+    # seqname - ID to use in the seqname field
+    # tenestin - path to the blast input file
+    # gffout  - path to the gff output file
+    # append  - boolean append data to existing file at gff out
+    my ($tenestin, $gffout, $append, $seqname) = @_;
+    my $tename;           # Name of the hit
+    my $start;            # Start of the feature
+    my $end;              # End of the feature
+    my $strand;           # Strand of the hit
+
+    my $num_te_data;      # Length of the te data array
+
+    my $i;                # Array index val
+    my $j;                # Array index val
+
+    # Initialize counters
+    my $numfrag = 0;
+    my $numpair = 0;
+    my $numsolo = 0;
+    my $numnltr = 0;
+    my $pair_line = 0;
+
+    # BOOLEANS
+    my $in_frag = 0;
+    my $in_pair = 0;
+    my $in_solo = 0;
+    my $in_nltr = 0;
+
+    # SOLO VARS
+    # These need to be available outside of the
+    # initial observation
+    my $sol_entry;
+    my $sol_number;
+    my $sol_type;
+    my $sol_dir;
+    my $sol_nest_group;
+    my $sol_nest_order;
+    my $sol_nest_level;
+    
+    # PAIR VARS
+    my $pair_number;
+    my $pair_type;
+    my $pair_dir;
+    my $pair_bsr;
+    my $pair_nest_group;
+    my $pair_nest_order;
+    my $pair_nest_level;
+
+    # FRAG VARS
+    my $frag_number;
+    my $frag_type;
+    my $frag_dir;
+    my $frag_nest_group;
+    my $frag_nest_order;
+    my $frag_nest_level;
+
+    # NLTR VARS
+    my $nltr_number;
+    my $nltr_type;
+    my $nltr_dir;
+    my $nltr_nest_group;
+    my $nltr_nest_order;
+    my $nltr_nest_level;
+
+    # Open the BLAST report object
+    open (TENESTIN,"<$tenestin")
+	|| die "Could not open TE-NEST input file:\n$tenestin.\n";
+    
+    # Open file handle to the gff outfile    
+    if ($append) {
+	open (GFFOUT, ">>$gffout") 
+	    || die "Can not open file:\n $gffout\n";
+    }
+    else {
+	open (GFFOUT, ">$gffout") 
+	    || die "Can not open file:\n $gffout\n";
+    }
+    
+    
+    while (<TENESTIN>) {
+	chomp;                   # Remove line endings
+	my @te_data = split;   # Split by spaces
+	
+	# Four annotation types
+	#SOLO (solo LTRs), 
+	#PAIR (full LTR retrotransposons), 
+	#FRAG (fragmented TEs of all types), 
+	#NLTR (Full length non-LTR containing TEs)
+ 
+	# Temp show the line being processed
+	#print STDERR "$_\n";
+
+	#-----------------------------------------------------------+
+	# ADDITIONAL FEATURE DATA                                   |
+	#-----------------------------------------------------------+
+
+	#-----------------------------+
+	# ADDITIONAL SOLO DATA        |
+	#-----------------------------+
+	if ($in_solo) {
+      
+	    $in_solo = 0;
+	    $num_te_data = @te_data;
+
+	    if ($verbose) {
+		print STDERR $te_data[0]."\n";
+		print STDERR "\tNum in array:\t$num_te_data\n";
+	    }
+
+	    # i is used to index in the parent array
+	    # j is used to index the sol_coords array where
+	    # 1,2,3,4 is seq_start, seq_end, te_start, te_end
+	    #
+	    my @sol_coords = ();
+	    $j = 0;
+	    for ($i=1; $i<$num_te_data; $i++) {
+		$j++;
+		$sol_coords[$j] = $te_data[$i];
+
+		if ($verbose) {
+		    print STDERR "\t$i:\t".$te_data[$i]."\n";
+		}
+
+		if ($j == 4) {
+
+		    # Appending sol_num to sol type will give a
+		    # unique name for every occurrence in the gff file
+		    my $sol_name = "solo_".$sol_type."_".$sol_number;
+		    # Print output to gff file
+		    print GFFOUT 
+			"$seqname\t".                # Seqname
+			"tenest\t".                  # Source
+			"exon\t".                    # Feature type name
+			$sol_coords[1]."\t".         # Start
+			$sol_coords[2]."\t".         # End
+			".\t".                       # Score
+			# $sol_dir may give strand
+			".\t".                 # Strand
+			".\t".                       # Frame
+			"$sol_name\n";                # Feature name
+		    
+		    $j = 0;
+		    #$sol_coords=();
+
+		} # End of if $j==4
+	    } # End of for $i
+	} # End of if $in_solo
+
+	#-----------------------------+
+	# ADDITIONAL PAIR DATA        |
+	#-----------------------------+
+	elsif ($in_pair) {
+
+	    # IS BSR Substitution rate ?
+
+	    # Pair has three additional lines of info
+	    $pair_line++;
+
+	    # Get additional info
+	    
+	    #-----------------------------+
+	    # LEFT LTR                    |
+	    #-----------------------------+
+	    if ($te_data[1] =~ 'L') {
+		
+		$num_te_data = @te_data;
+
+		if ($verbose) {
+		    print STDERR $te_data[0]."\n";
+		    print STDERR "\tNum in array:\t$num_te_data\n";
+		}
+
+		my @l_pair_coords = ();
+		$j = 0;
+		for ($i=2; $i<$num_te_data; $i++) {
+		    $j++;
+		    $l_pair_coords[$j] = $te_data[$i];
+		    
+		    if ($verbose) {
+			print STDERR "\t$i:\t".$te_data[$i]."\n";
+		    }
+		    
+		    if ($j == 4) {
+			
+			my $l_start;
+			my $l_end;
+			
+			# Make start less then end
+			if ($l_pair_coords[1] < $l_pair_coords[2]) {
+			    $l_start = $l_pair_coords[1];
+			    $l_end = $l_pair_coords[2];
+			}
+			else {
+			    $l_start = $l_pair_coords[2];
+			    $l_end = $l_pair_coords[1];
+			}
+
+			# Appending sol_num to sol type will give a
+			# unique name for every occurrence in the gff file
+			my $pair_name = "pair_".$pair_type."_".$pair_number;
+			# Print output to gff file
+			print GFFOUT 
+			    "$seqname\t".                # Seqname
+			    "tenest\t".                  # Source
+			    "exon\t".                    # Feature type name
+			    "$l_start\t".                # Start
+			    "$l_end\t".                  # End
+			    ".\t".                       # Score
+			    # $pair_dir may give strand
+			    ".\t".                       # Strand
+			    ".\t".                       # Frame
+			    "$pair_name\n";              # Feature name
+			
+			$j = 0;
+			#$sol_coords=();
+			
+		    } # End of if $j==4
+		} # End of for $i
+		
+		
+	    }
+
+	    #-----------------------------+
+	    # RIGHT LTR                   |
+	    #-----------------------------+
+	    elsif ($te_data[1] =~ 'R') {
+
+
+		$num_te_data = @te_data;
+
+		if ($verbose) {
+		    print STDERR $te_data[0]."\n";
+		    print STDERR "\tNum in array:\t$num_te_data\n";
+		}		
+
+		my @r_pair_coords = ();
+		$j = 0;
+		for ($i=2; $i<$num_te_data; $i++) {
+		    $j++;
+		    $r_pair_coords[$j] = $te_data[$i];
+		    
+		    if ($verbose) {
+			print STDERR "\t$i:\t".$te_data[$i]."\n";
+		    }		    
+
+		    if ($j == 4) {
+			
+			my $r_start;
+			my $r_end;
+			
+			# Make start less then end
+			if ($r_pair_coords[1] < $r_pair_coords[2]) {
+			    $r_start = $r_pair_coords[1];
+			    $r_end = $r_pair_coords[2];
+			}
+			else {
+			    $r_start = $r_pair_coords[2];
+			    $r_end = $r_pair_coords[1];
+			}
+
+			# Appending sol_num to sol type will give a
+			# unique name for every occurrence in the gff file
+			my $pair_name = "pair_".$pair_type."_".$pair_number;
+			# Print output to gff file
+			print GFFOUT 
+			    "$seqname\t".                # Seqname
+			    "tenest\t".                  # Source
+			    "exon\t".                    # Feature type name
+			    "$r_start\t".                # Start
+			    "$r_end\t".                  # End
+			    ".\t".                       # Score
+			    # $pair_dir may give strand
+			    ".\t".                       # Strand
+			    ".\t".                       # Frame
+			    "$pair_name\n";              # Feature name
+			
+			$j = 0;
+			#$sol_coords=();
+			
+		    } # End of if $j==4
+		} # End of for $i
+	
+
+	    }
+	    
+	    #-----------------------------+
+	    # MIDDLE                      |
+	    #-----------------------------+
+	    elsif ($te_data[1] =~ 'M') {
+			
+		$num_te_data = @te_data;
+		if ($verbose) {
+		    print STDERR $te_data[0]."\n";
+		    print STDERR "\tNum in array:\t$num_te_data\n";
+		}		
+
+		my @m_pair_coords = ();
+		$j = 0;
+		for ($i=2; $i<$num_te_data; $i++) {
+		    $j++;
+		    $m_pair_coords[$j] = $te_data[$i];
+		   
+		    if ($verbose) {
+			print STDERR "\t$i:\t".$te_data[$i]."\n";
+		    }
+
+		    if ($j == 4) {
+			
+			my $m_start;
+			my $m_end;
+			
+			# Make start less then end
+			if ($m_pair_coords[1] < $m_pair_coords[2]) {
+			    $m_start = $m_pair_coords[1];
+			    $m_end = $m_pair_coords[2];
+			}
+			else {
+			    $m_start = $m_pair_coords[2];
+			    $m_end = $m_pair_coords[1];
+			}
+
+			# Appending sol_num to sol type will give a
+			# unique name for every occurrence in the gff file
+			my $pair_name = "pair_".$pair_type."_".$pair_number;
+			# Print output to gff file
+			print GFFOUT 
+			    "$seqname\t".                # Seqname
+			    "tenest\t".                  # Source
+			    "exon\t".                    # Feature type name
+			    "$m_start\t".                # Start
+			    "$m_end\t".                  # End
+			    ".\t".                       # Score
+			    # $pair_dir may give strand
+			    ".\t".                       # Strand
+			    ".\t".                       # Frame
+			    "$pair_name\n";              # Feature name
+			
+			$j = 0;
+			
+		    } # End of if $j==4
+		} # End of for $i
+
+
+	    }
+
+
+	    # END OF PAIR DATA
+	    if ($pair_line == 3) {
+		$in_pair = 0;
+		$pair_line = 0;
+
+		# Print output to gff
+	    }
+
+	}
+
+	#-----------------------------+
+	# ADDITIONAL FRAG DATA        |
+	#-----------------------------+
+	elsif ($in_frag) {
+	    $in_frag = 0;
+
+	    # Get additinal info
+      	    $num_te_data = @te_data;
+
+	    if ($verbose) {
+		print STDERR $te_data[0]."\n";
+		print STDERR "\tNum in array:\t$num_te_data\n";
+	    }
+
+	    # i is used to index in the parent array
+	    # j is used to index the sol_coords array where
+	    # 1,2,3,4 is seq_start, seq_end, te_start, te_end
+	    #
+	    my @frag_coords = ();
+	    $j = 0;
+	    for ($i=1; $i<$num_te_data; $i++) {
+		$j++;
+		$frag_coords[$j] = $te_data[$i];
+
+		if ($verbose) {
+		    print STDERR "\t$i:\t".$te_data[$i]."\n";
+		}
+
+		if ($j == 4) {
+
+		    # Appending sol_num to sol type will give a
+		    # unique name for every occurrence in the gff file
+		    my $frag_name = "frag_".$frag_type."_".$frag_number;
+		    # Print output to gff file
+		    print GFFOUT 
+			"$seqname\t".                # Seqname
+			"tenest\t".                  # Source
+			"exon\t".                    # Feature type name
+			$frag_coords[1]."\t".         # Start
+			$frag_coords[2]."\t".         # End
+			".\t".                       # Score
+			# $sol_dir may give strand
+			".\t".                 # Strand
+			".\t".                       # Frame
+			"$frag_name\n";                # Feature name
+		    
+		    $j = 0;
+
+		} # End of if $j==4
+	    } # End of for $i
+
+	} # End of $in_frag
+
+	#-----------------------------+
+	# ADDITIONAL NLTR DATA        |
+	#-----------------------------+
+	elsif ($in_nltr) {
+	    $in_nltr = 0;
+
+	    # Get additinal info
+      	    $num_te_data = @te_data;
+
+	    if ($verbose) {
+		print STDERR $te_data[0]."\n";
+		print STDERR "\tNum in array:\t$num_te_data\n";
+	    }
+
+	    # i is used to index in the parent array
+	    # j is used to index the sol_coords array where
+	    # 1,2,3,4 is seq_start, seq_end, te_start, te_end
+	    #
+	    my @nltr_coords = ();
+	    $j = 0;
+	    for ($i=1; $i<$num_te_data; $i++) {
+		$j++;
+		$nltr_coords[$j] = $te_data[$i];
+
+		if ($verbose) {
+		    print STDERR "\t$i:\t".$te_data[$i]."\n";
+		}		
+
+		if ($j == 4) {
+
+		    # Appending sol_num to sol type will give a
+		    # unique name for every occurrence in the gff file
+		    my $nltr_name = "frag_".$nltr_type."_".$nltr_number;
+		    # Print output to gff file
+		    print GFFOUT 
+			"$seqname\t".                # Seqname
+			"tenest\t".                  # Source
+			"exon\t".                    # Feature type name
+			$nltr_coords[1]."\t".         # Start
+			$nltr_coords[2]."\t".         # End
+			".\t".                       # Score
+			# $sol_dir may give strand
+			".\t".                 # Strand
+			".\t".                       # Frame
+			"$nltr_name\n";                # Feature name
+		    
+		    $j = 0;
+
+		} # End of if $j==4
+	    } # End of for $i
+
+	} # End of $in_nltr
+
+
+
+	#-----------------------------------------------------------+
+	# NEW RECORD STARTING                                       |
+	#-----------------------------------------------------------+
+
+	#-----------------------------+
+	# SOLO                        |
+	#-----------------------------+
+	if ($te_data[0] =~ 'SOLO') {
+	    $numsolo++;
+	    $in_solo = 1;              # Flip boolean to true
+
+	    #$sol_entry = $te_data[0]; 
+	    $sol_number = $te_data[1];
+	    $sol_type = $te_data[2];
+	    $sol_dir = $te_data[3];
+	    $sol_nest_group = $te_data[4];
+	    $sol_nest_order = $te_data[5];
+	    $sol_nest_level = $te_data[6];
+
+	}
+
+	#-----------------------------+
+	# PAIR                        |
+	#-----------------------------+
+	elsif ($te_data[0] =~ 'PAIR') {
+	    $numpair++;
+	    $in_pair = 1;              # Flip boolean to true
+
+	    $pair_number = $te_data[1];
+	    $pair_type = $te_data[2];
+	    $pair_dir = $te_data[3]; 
+	    $pair_bsr = $te_data[4];
+	    $pair_nest_group = $te_data[5];
+	    $pair_nest_order = $te_data[6]; 
+	    $pair_nest_level = $te_data[7];
+
+	}
+
+	#-----------------------------+
+	# FRAG                        |
+	#-----------------------------+
+	elsif ($te_data[0] =~ 'FRAG') {
+	    $numfrag++;
+	    $in_frag = 1;              # Flip boolean to true
+
+	    $frag_number = $te_data[1]; 
+	    $frag_type = $te_data[2]; 
+	    $frag_dir = $te_data[3];
+	    $frag_nest_group = $te_data[4]; 
+	    $frag_nest_order = $te_data[5]; 
+	    $frag_nest_level = $te_data[6];
+
+	}
+	
+	#-----------------------------+
+	# NLTR                        |
+	#-----------------------------+
+	elsif ($te_data[0] =~ 'NLTR') {
+	    $numnltr++;
+	    $in_nltr = 1;              # Flip boolean to true
+
+	    #Non-LTR entry, 
+	    $nltr_number = $te_data[1]; 
+	    $nltr_type = $te_data[2]; 
+	    $nltr_dir = $te_data[3]; 
+	    $nltr_nest_group = $te_data[4]; 
+	    $nltr_nest_order = $te_data[5]; 
+	    $nltr_nest_level = $te_data[6];
+
+	}
+
+    } # End of while TESTIN
+    
+
+    # Show summary of counts if vebose
+    if ($verbose) {
+	print STDERR "\n";
+	print STDERR "NUM SOLO:\t$numsolo\n";
+	print STDERR "NUM PAIR:\t$numpair\n";
+	print STDERR "NUM FRAG:\t$numfrag\n";
+	print STDERR "NUM NLTR:\t$numnltr\n";
+    }
+
+    close GFFOUT;
+    
+}
+
 
 sub print_help {
 
@@ -427,7 +989,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/29/2008
 
-UPDATED: 09/29/2008
+UPDATED: 11/06/2008
 
 VERSION: $Rev$
 
@@ -440,3 +1002,7 @@ VERSION: $Rev$
 # 09/29/2008
 # - Program started
 # - Basic idea is to run the tenest program from 
+#
+# 11/06/2008
+# - Added the ability to specify organism
+# - Added the tenest2gff subfunction from cnv_tenest2gff.pl
