@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR  : JAMES C. ESTILL                                 |
 # STARTED : 02/08/2007                                      |
-# UPDATED : 11/05/2007                                      |
+# UPDATED : 11/07/2008                                      |
 # VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
@@ -855,6 +855,7 @@ sortbycolumn : GENOMIC_RANGE
 #-----------------------------------------------------------+
 # EUGENE                                                    |
 #-----------------------------------------------------------+
+
 [Tier]
 tiername : eugene
 expanded : true
@@ -864,6 +865,8 @@ typename : eugene_type
 label : eugene
 tiername : eugene
 resulttype : eugene
+resulttype : eugene:rice
+resulttype : EuGene
 glyph : DrawableResultFeatureSet
 #color : 75,147,216
 color : 128,0,0
@@ -873,8 +876,6 @@ column : SCORE
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
-
-
 
 #-----------------------------------------------------------+
 # OLIGOMER COUNTS TIERS
