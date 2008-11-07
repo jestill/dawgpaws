@@ -281,7 +281,7 @@ for my $ind_file (@fasta_files)
     print STDERR "\n" if $verbose;
 	
     # RUN THE TE NEST COMMAND
-    #system ($te_nest_cmd);
+    system ($te_nest_cmd);
 
     #-----------------------------+
     # CONVERT THE OUTPUT TO       |
