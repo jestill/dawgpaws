@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Dec. 18, 2007<br>
+Nov. 6, 2008<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -269,8 +269,8 @@ files for installation of the software or links to the web services.
 The Operating Systems that the software can be executed on is also
 listed as well as references to the peer reviewed publications
 describing
-the software. Don't think that you have
-to install all of these programs to get any use out of the DAWG-PAWS
+the software. You do not need
+to install all of these programs to make use of the DAWG-PAWS
 package. This is just the complete list of programs that DAWG-PAWS can
 use.<br>
 <ul>
@@ -374,7 +374,10 @@ Res 26(4): 1107-15.<br>
     <li>Ref: Burge, C. and S. Karlin (1997). J Mol Biol 268(1): 78-94.<br>
     </li>
   </ul>
-  <li><span style="font-weight: bold;">HMMER</span><br>
+  <li><span style="font-weight: bold;">HMMER<br>
+    </span><span style="font-style: italic;">HMMER is a freely
+distributable implementation of profile HMM software for protein
+sequence analysis. </span><br>
   </li>
   <ul>
     <li>Source:<a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a></li>
@@ -857,7 +860,32 @@ in batch mode. An alternative to running this program on the softberry
 web server is to use the TriAnnot web service.<br>
 <h1><a name="run_geneid"></a>4. GeneID<br>
 </h1>
-This program is currently not supported in batch mode.<br>
+Required Programs:<br>
+<ul>
+  <li>geneid : <a href="http://www1.imim.es/software/geneid/index.html"
+ rel="nofollow">http://www1.imim.es/software/geneid/index.html</a></li>
+  <li>batch_geneid.pl<br>
+  </li>
+</ul>
+To run the geneid program in batch mode you would use the following
+command. <br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;batch_geneid.pl </span><span class="pln"></span><span
+ class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">hard_masked</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/ --param wheat.param.Apr_22_2004</span></pre>
+You may also specify the full path to the geneid binary using the the
+--geneid-path option.<br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;batch_geneid.pl </span><span class="pln"></span><span
+ class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">hard_masked</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/ --param wheat.param.Apr_22_2004<br>                   --geneid-path /usr/local/geneid.March_1_2005<br></span></pre>
+The original results from the geneid program will be placed in the
+directory named geneid/ while the gff formatted results prepared for
+Apollo will be placed in the gff/ directory.<br>
 <h1><a name="run_eugene"></a>5. Eugene<br>
 </h1>
 This program is currently not supported in batch mode.<br>
@@ -971,9 +999,18 @@ the blast output from </p>
  class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
  class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
  class="pln">batch_cnv_blast2gff</span><span class="pun">.</span><span
- class="pln">pl &nbsp;i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">pl &nbsp;-i wheat_analysis</span><span class="pun">/</span><span
  class="pln">soft_masked </span><span class="pun">-</span><span
  class="pln">o wheat_analysis</span><span class="pun">/</span><span
+ class="pln"> </span></pre>
+This assumes that the blast output is the full alignment format. If you
+did the blast with the -m 8 alignment option, you will need to specify
+this with hte -b option as shown below<br>
+<pre class="prettyprint"><span class="pln"></span><span class="pun">&gt;</span><span
+ class="pln">batch_cnv_blast2gff</span><span class="pun">.</span><span
+ class="pln">pl &nbsp;-i wheat_analysis</span><span class="pun">/</span><span
+ class="pln">soft_masked </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/ -b 8</span><span
  class="pln"> </span></pre>
 <br>
 <hr><br>
@@ -1186,13 +1223,10 @@ PlantGDB:<br>
   </ul>
   <li><a href="man/fetch_tenest.html">fetch_tenest.pl</a></li>
 </ul>
-Currently the TE Nest program is provided as a <a
+The TE Nest program is provided as a <a
  href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">web
-page based service</a> from the Plant GDB web server. The Perl code
-will be made available at some future date. Currently DAWG PAWS relies
-on the web based service for TE Nest Results.<br>
-<br>
-The TE Nest program will use a homology based search approach to
+page based service</a> from the Plant GDB web server. The TE Nest
+program uses a homology based search approach to
 identify nested elements in your query sequence. The fetch_tenest.pl
 program can be used to bulk download results from the TE Nest web
 server and convert results from the TE Nest text format to the GFF
@@ -1217,8 +1251,29 @@ download the results using the fetch_tenest.pl program.<br>
 This will place the results in the wheat_analysis folder with a
 separate set of folders for query sequence defined in the config file.</li>
 </ol>
-<h1><br>
-</h1>
+An alternative is to run TE nest locally using the batch_tenest.pl
+program.<br>
+<br>
+Required Programs:<br>
+<ul>
+  <li>TEnest : <span style="text-decoration: underline;"></span></li>
+  <li><span style="text-decoration: underline;">batch_tenest.pl</span></li>
+</ul>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>&nbsp; </span><span class="pun">&gt;</span><span
+ class="pln">batch_tenest</span><span class="pun">.</span><span
+ class="pln">pl </span><span class="pun">-</span><span class="pln">i wheat_analysis</span><span
+ class="pun">/</span><span class="pln">masked_soft</span><span
+ class="pun">/</span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/ --org wheat </span><span
+ class="pln"></span><span class="pln"></span></pre>
+TEnest will use the maize database by default. This script currently
+does not convert the output to gff format. Valid options for --org
+include barley, wheat, maize, rice
+<h1></h1>
 <h1><a name="findmite"></a>7. FINDMITE for MITE Discovery<br>
 </h1>
 Required Programs:<br>
@@ -1318,7 +1373,7 @@ Required Programs:<br>
 </ul>
 It is possible to use profile hidden Markov models of known
 transposable elements to find the location of TEs in your query
-sequence. This approach was used in to identify MITES and MULEs in
+sequence. This approach was used in to identiTfy MITES and MULEs in
 the Rice genome (Juretic et al. 2004). You can produce your own Profile
 HMMs
 using multiple
@@ -1332,7 +1387,8 @@ using HMMs developed for rice.<br>
  class="pln">wheat_annotation<br>  &gt;batch_hmmer.pl </span><span
  class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                  -c config/batch_hmmer.jcfg --gff</span>
 </pre>
-<h1><a name="te_tandem_repeats_finder"></a>10. Tandem Repeats Finder<br>
+<h1><a name="te_tandem_repeats_finder"></a>10. Tandem Repeats Finder
+(TRF)<br>
 </h1>
 The Tandem Repeats Finder program can currently be run within the
 TriAnnot web service. I may add the ability to run it in batch in the
@@ -1427,16 +1483,36 @@ Predict Function of Human Curated Gene Models<br>
 The following information is provided for additional reference.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="apollo_data_tiers"></a>Apollo Data Tiers</h1>
+<h1><a name="apollo_data_tiers"></a>1. Apollo Data Tiers</h1>
 The GFF files produced by the computational results above are intended
-to be visualized using the Apollo Genome Annotation Curation Tool. A
-tiers file has been created <br>
-<br>
-The
-list below was copied from the old wiki page. This should be updated to
-HTML tables. <br>
-<br>
-The DAWG-PAWS Tiers file<br>
+to be visualized using the Apollo Genome Annotation Curation Tool. The
+way that Apollo displays data can be modified through the use of tiers
+files and style files. These files are placed in your home directory in
+the directory named
+'.apollo'. The dot in the front of the name indicates that this
+direcotry is hidden.A
+tiers file and a style file has been created for visualizing the
+results for wheat annotation. These are included as part of the
+DAWG-PAWS SVN package, but are also available at:<br>
+<ul>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/apollo/wheat.tiers">wheat.tiers</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/apollo/wheat.style">wheat.style</a><br>
+  </li>
+</ul>
+I prefer to point to these using symlinks from within my home directory
+as shown below.<br>
+<pre class="prettyprint"><span class="pln"> </span><span class="pun"> &gt;</span><span
+ class="pln">cd </span><span class="pun">$HOME</span><span class="pln">/.apollo </span><span
+ class="pun"><br>  &gt;</span><span class="pln">ln -s $HOME/apps/dawgpaws/apollo/wheat.tiers fly.tiers</span><br><span
+ class="pun">  &gt;</span><span class="pln">ln -s $HOME/apps/dawgpaws/apollo/wheat.style fly.style</span><span
+ class="pun"></span></pre>
+These will create files name fly.tiers and fly.style that just point to
+the location of the wheat.tiers and wheat.style files in the dawgpaws
+SVN directory. The advantage of this is that when additional data tiers
+are added to the computational evidences that I use, I can create a new
+tiers file and propagate this to all of the annotators using SVN.<br>
 <br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="directory_structure"></a>Computational Results Directory
@@ -1484,7 +1560,7 @@ Links to the program manuals for the indvidual scripts are listed below
 in
 alphabetical
 order. These are essentialy extensive help files for each command line
-program use in the genome annotation process.<br>
+program use in the genome annotation process. <br>
 <dl>
   <dt style="font-weight: bold;"><a href="man/batch_blast.html">batch_blast.pl</a></dt>
   <dd>Do NCBI-BLAST searches for a set of fasta files</dd>
@@ -1522,6 +1598,10 @@ development</span><br>
   <dd>Run RepeatMasker and parse results to a GFF format file</dd>
   <dt style="font-weight: bold;"><a href="man/batch_seq_summary.html">batch_seq_summary.pl</a></dt>
   <dd>Print summary info for a directory of sequence files</dd>
+  <dt>batch_tenest.pl</dt>
+  <dd>Run the TE nest program in batch mode on a directory of fasta
+files.<br>
+  </dd>
   <dt style="font-weight: bold;"><a href="man/clust_write_shell.html">clust_write_shell.pl</a></dt>
   <dd>Write shell scripts for the Platform LSF
 queuing system</dd>
@@ -1659,7 +1739,7 @@ prediction of full-length LTR retrotransposons." Nucleic Acids Res
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Dec 17, 2007</i></td>
+Last Updated: Nov 6, 2008</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
