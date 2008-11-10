@@ -840,6 +840,7 @@ typename : geneid_type
 label : geneid
 tiername : geneid
 resulttype : geneid
+resulttype : geneid_v1.2
 glyph : DrawableResultFeatureSet
 color : 200,227,98
 // Need to add back use score once I figure out the
