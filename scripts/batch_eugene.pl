@@ -220,7 +220,7 @@ for my $ind_file (@fasta_files) {
     my $eugene_dir = $name_root_dir."eugene/";
     unless (-e $eugene_dir) {
 	mkdir $eugene_dir ||
-	    die "Could not create genscan out dir:\n$eugene_dir\n";
+	    die "Could not create eugene out dir:\n$eugene_dir\n";
     }
 
     #-----------------------------+
@@ -231,7 +231,7 @@ for my $ind_file (@fasta_files) {
     my $gff_dir = $name_root_dir."gff/";
     unless (-e $gff_dir) {
 	mkdir $gff_dir ||
-	    die "Could not create genscan out dir:\n$gff_dir\n";
+	    die "Could not create GFF out dir:\n$gff_dir\n";
     }
 
     #-----------------------------+
