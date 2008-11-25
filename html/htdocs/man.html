@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Nov. 10, 2008<br>
+Nov. 24, 2008<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -96,20 +96,28 @@ Annotation De Novo Computational Results</a></li>
     </li>
     <li><a href="#run_fgenesh">FGenesh</a></li>
   </ol>
-  <li><a style="font-weight: bold;" href="#te_annotation">Transposable
-Element Computational Results</a></li>
+  <li><a style="font-weight: bold;" href="#te_annotation_denovo">Transposable
+Element De Novo Computational Results</a></li>
   <ol>
-    <li><a href="#run_te_repeatmasker">RepeatMasker</a><br>
-    </li>
     <li><a href="#ltr_struc">LTR_Struc</a></li>
     <li><a href="#ltr_finder">LTR_FINDER</a></li>
     <li><a href="#find_ltr">find_ltr</a></li>
-    <li><a href="#ltr_seq">ltr_seq</a><a href="man.html#run_genscan">GENSCAN</a></li>
-    <li><a href="#te_nest">TE Nest</a></li>
+    <li><a href="#ltr_seq">ltr_seq</a></li>
+    <li>LTRHarvest - not currently implemented</li>
+    <li>Repseek - not currently implemented<br>
+    </li>
     <li><a href="#findmite">FINDMITE</a></li>
-    <li><a href="#oligo_count">Oligomer Counts</a></li>
-    <li><a href="#hmmer_TE">HMMER - TE Models</a></li>
-    <li><a href="#te_tandem_repeats_finder">Tandem Repeats Finder</a></li>
+    <li><a href="man.html#te_tandem_repeats_finder">Tandem Repeats
+Finder</a></li>
+  </ol>
+  <li><a href="#te_annotation_homology"><span style="font-weight: bold;">Transposable
+Element Homology Based Computational Results</span></a><br>
+  </li>
+  <ol>
+    <li><a href="man.html#run_te_repeatmasker">RepeatMasker</a></li>
+    <li><a href="man.html#te_nest">TE Nest</a></li>
+    <li><a href="man.html#hmmer_TE">HMMER - TE Models</a></li>
+    <li><a href="man.html#oligo_count">Oligomer Counts</a></li>
   </ol>
   <li>BLAST Based Homology Searches</li>
   <ol>
@@ -314,7 +322,8 @@ integrate arbitrary sources of information in its prediction process.</i></li>
   <ul>
     <li>Source:<a
  href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"
- rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a>
+ rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a></li>
+    <li>OS: Linux<br>
     </li>
     <li>Ref: Schiex, T., A. Moisan, et al. (2001). Computational
 Biology. 111-125.<br>
@@ -349,6 +358,12 @@ structural criteria.</i></li>
   <ul>
     <li>Source:<a href="http://www.softberry.com/berry.phtml"
  rel="nofollow">http://www.softberry.com/berry.phtml</a></li>
+    <li>OS:</li>
+    <li>Web Query: <a
+ href="http://linux1.softberry.com/berry.phtml?topic=fgenesh&amp;group=programs&amp;subgroup=gfind">http://linux1.softberry.com/berry.phtml?topic=fgenesh</a><br>
+    </li>
+    <li>Ref:<br>
+    </li>
   </ul>
   <li style="font-weight: bold;">GeneID<span
  style="font-weight: normal;"></span><br>
@@ -389,6 +404,8 @@ sequence analysis. </span><br>
   <ul>
     <li>Source :A Linux Binary is available upon contacting the
 authors : xuzh &lt;at&gt; fudan.edu.cn</li>
+    <li>OS: Linux<br>
+    </li>
     <li>Web Query:<a href="http://tlife.fudan.edu.cn/ltr_finder/">http://tlife.fudan.edu.cn/ltr_finder/</a></li>
     <li>Ref:
 Xu, Z. and H. Wang (2007). Nucleic Acids Res
@@ -621,8 +638,7 @@ single record representing a large contig such as a B. If your query
 sequence file contains multiple fasta
 files, you will first need to split the fasta file into individual
 records.<br>
-<h3><br>
-</h3>
+<br>
 <h1><a name="prep_fasta_shorten"></a>2. Rename FASTA files to a short
 unique name</h1>
 <p>Because
@@ -858,7 +874,8 @@ server due to differences in the paramter files between the two
 pipelines.<br>
 <br>
 <hr><br>
-<h1><a name="te_annotation"></a>D. Transposable Element Computational
+<h1><a name="te_annotation_denovo"></a>D. Transposable Element De Novo
+Computational
 Results<br>
 </h1>
 The information below assumes that you have properly prepared the
@@ -866,18 +883,9 @@ sequence files for annotation <a href="man.html#sequence_preparation">as
 described above</a>. The following transposable element annotation
 steps can generally be done in any order, and you may choose to not
 include some of these programs in your analysis pipeline.<br>
-<h1><a name="run_te_repeatmasker"></a>1. RepeatMask Sequences<br>
-</h1>
-Required Programs:<br>
-<ul>
-  <li>RepeatMasker : <a href="http://www.repeatmasker.org/"
- rel="nofollow">http://www.repeatmasker.org/</a></li>
-</ul>
-The process for running RepeatMasker to identify known Transposable
-Elements is described above.<br>
 <h2>
 </h2>
-<h1><a name="ltr_struc"></a>2. LTR_Struc Program for LTR
+<h1><a name="ltr_struc"></a>1. LTR_Struc Program for LTR
 Retrotransposon Prediction<br>
 </h1>
 Required Programs:<br>
@@ -954,7 +962,8 @@ the query sequence.<br>
  class="pln"></span></pre>
   </li>
 </ol>
-<h1><a name="ltr_finder"></a>3. LTR_FINDER Program for LTR Structure
+<h1><a name="ltr_finder"></a>2. LTR_FINDER Program for LTR
+Retrotransposon
 Prediction<br>
 </h1>
 Required Programs:<br>
@@ -993,7 +1002,9 @@ sequence, and it converts output to the GFF file format.<br>
  class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
  class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
  class="pln">wheat_annotation<br>  &gt;batch_ltrfinder.pl -i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_ltrfinder.jcfg<br></span></pre>
-<h1><a name="find_ltr"></a>4. Run the find_ltr program</h1>
+<h1><a name="find_ltr"></a>3. find_ltr Program for LTR Retrotransposon
+Prediction<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>find_ltr.pl : This is a component of the LTRDeNovo packge<br>
@@ -1021,7 +1032,8 @@ The above example will produce a GFF file for each parameter set in the
 batch_findltr.jcfg file for each fasta input sequence recognized in the
 masked_soft input directory.<br>
 <br>
-<h1><a name="ltr_seq"></a>5. Run the ltr_seq program</h1>
+<h1><a name="ltr_seq"></a>4. ltr_seq for LTR Retrotransposon Prediction<br>
+</h1>
 Required Programs:<br>
 <ul>
   <li>ltr_seq : this is the latest incarnation of the ltr_par program<br>
@@ -1043,25 +1055,133 @@ program.<br>
  class="pun"> &gt;</span><span class="pln">cd </span><span class="pun">/</span><span
  class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
  class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
- class="pln">wheat_annotation/wheat_analysis/HEX0014K09<br>  &gt;mkdir ltr_seq<br>  &gt;RUN LTR_SEQ PROGRAM<br>&nbsp; </span><span
+ class="pln">wheat_annotation/wheat_analysis/HEX0014K09<br>  &gt;mkdir ltr_seq<br>&nbsp; </span><span
  class="pun">&gt;</span><span class="pln">cnv_ltrseq2gff.pl -i ltr_seq/ltr_seq_out.txt -o gff/HEX0014K09_ltrseq.gff<br>                     -s HEX0014K09<br></span></pre>
 This will produce a file name HEX0014K09_ltrseq.gff that contains all
 of the output from the LTR_seq program that was determined to be an LTR
 Retrotransposon. The current version of the LTR_seq program appears to
 produce duplicate predictions.<br>
-<h1><a name="te_nest"></a>6. TE Nest analysis for LTR Retrotransposon
-Nesting<br>
+<h1><a name="ltr_harvest"></a>5. LTRharvest for LTR Retrotransposon
+Prediction<br>
 </h1>
+Required Programs:<br>
+<ul>
+  <li>LTRharvest : <a
+ href="http://www.zbh.uni-hamburg.de/LTRharvest/index.php">http://www.zbh.uni-hamburg.de/LTRharvest/index.php</a></li>
+  <ul>
+    <li>Reference: Ellinghaus, D., S. Kurtz, et al. (2008).
+"LTRharvest, an efficient and
+flexible software for de novo detection of LTR retrotransposons." BMC
+Bioinformatics 9: 18.</li>
+  </ul>
+</ul>
+LTRharvest is currently not supported to run in batch mode as part of
+the DAWG-PAWS package. However, the GFF3 output can be manually opened
+in the newest version of Apollo.<br>
+<h1><a name="repseek"></a>6. RepSeek</h1>
+Information on repseek here.<br>
+<br>
+Required Programs:<br>
+<ul>
+  <li>RepSeek : <a
+ href="http://wwwabi.snv.jussieu.fr/%7Epublic/RepSeek/">http://wwwabi.snv.jussieu.fr/~public/RepSeek/</a></li>
+  <ul>
+    <li>Reference: Achaz, G., F. Boyer, et al. (2007). "Repseek, a tool
+to retrieve approximate repeats from large DNA sequences."
+Bioinformatics 23(1): 119-21.</li>
+  </ul>
+  <li>cnv_repseek2gff.pl</li>
+  <li>batch_repseek.pl<br>
+  </li>
+</ul>
+<h1><a name="findmite"></a>7. FINDMITE for MITE Discovery<br>
+</h1>
+Required Programs:<br>
+<ul>
+  <li>FINDMITE : <a href="http://jaketu.biochem.vt.edu/dl_software.htm"
+ rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_findmite.pl">batch_findmite.pl</a></li>
+</ul>
+The batch_findmite program will do a FINDMITE analysis for each
+parameter
+set in your configuration file for each query sequence in your input
+directory. The results from FINDMITE have a VERY high false positive
+rate so you will need to further evaluate your results to find the true
+MITEs
+in your query sequence.<br>
+<br>
+To run the batch_findmite.pl program you would do the following:<br>
+<pre>  <span class="pun">&gt;</span><span class="pln">cd </span><span
+ class="pun">/</span><span class="pln">home</span><span class="pun">/</span><span
+ class="pln">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
+ class="pun">/</span><span class="pln">wheat_annotation</span>  <br>  &gt;batch_findmite.pl <span
+ class="pln">-i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_findmite.jcfg --gff<br></span></pre>
+The FINDMITE results will be place in the findmite directory while the
+results converted to the GFF format would be placed in the gff
+directory.
+<h1><a name="te_tandem_repeats_finder"></a>8. Tandem Repeats Finder
+(TRF)<br>
+</h1>
+Required Programs:<br>
+<ul>
+  <li>Tandem Repeats Finder (trf) : <a
+ href="http://tandem.bu.edu/trf/trf.download.html">http://tandem.bu.edu/trf/trf.download.html</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/scripts/batch_trf.pl">batch_trf.pl</a><span
+ style="text-decoration: underline;"></span><br>
+  </li>
+</ul>
+The Tandem Repeats Finder can be run in batch mode. This script will
+work with TRF 4.0, I have not tried to use it with earlier versions of
+TRF.<br>
+<pre class="prettyprint"><span class="pln">  &gt;batch_trf.pl </span><span
+ class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                -c config/batch_hmmer.jcfg</span></pre>
+The TRF data file will be placed in the directory, TRF. The gff
+formatted results will be placed in the gff directory.<br>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h1><br>
+</h1>
+<h1><a name="te_annotation_homology"></a>E. Transposable Element
+Homology Based Computational Results</h1>
+The following computational results for transposable elements all
+require a database of known TEs for annotation. These are therefore
+idenified as homology based computational results.<br>
+<br>
+<h1><a name="run_te_repeatmasker"></a>1. RepeatMask Sequences<br>
+</h1>
+Required Programs:<br>
+<ul>
+  <li>RepeatMasker : <a href="http://www.repeatmasker.org/"
+ rel="nofollow">http://www.repeatmasker.org/</a></li>
+</ul>
+The process for running RepeatMasker to identify known Transposable
+Elements is described above.<br>
+<br>
+<h1><a name="te_nest"></a>2. TE Nest<br>
+</h1>
+The Te Nest program can annotate nested insertions. You have the option
+of running the TE Nest program as a web
+service, or downloading the TE Nest program and running it on a local
+machine.<br>
+<h2>TE Nest Web Service</h2>
 Required Programs:<br>
 <ul>
   <li>TE Nest : <a
  href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">http://www.public.iastate.edu/~imagefpc/Subpages/software.html</a></li>
   <ul>
-    <li>The TE Nest program is currently available on the web from
-PlantGDB:<br>
-      <a href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a></li>
+    <li>TENest Web : <a
+ href="http://www.plantgdb.org/prj/TE_nest/TE_nest.html">http://www.plantgdb.org/prj/TE_nest/TE_nest.html</a></li>
+    <li>Reference: Kronmiller, B. A. and R. P. Wise (2008). "TE nest:
+Automated chronological annotation and visualization of nested plant
+transposable elements." Plant Physiol 146(1): 45-59<br>
+    </li>
   </ul>
-  <li><a href="man/fetch_tenest.html">fetch_tenest.pl</a></li>
+  <li><a href="man/fetch_tenest.html">fetch_tenest.pl - Fetch sets of
+result from the TE Nest web server</a></li>
+  <li>cnv_tenest2gff.pl - Convert TE Nest *.LTR output to the gff
+format.</li>
 </ul>
 The TE Nest program is provided as a <a
  href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">web
@@ -1091,13 +1211,21 @@ download the results using the fetch_tenest.pl program.<br>
 This will place the results in the wheat_analysis folder with a
 separate set of folders for query sequence defined in the config file.</li>
 </ol>
-An alternative is to run TE nest locally using the batch_tenest.pl
-program.<br>
+<h2>TE Nest Local Installation</h2>
+An alternative to running TE Nest as a web service is to run TE nest
+locally using the batch_tenest.pl
+program. You are required to run the program locally if you are <br>
 <br>
 Required Programs:<br>
 <ul>
-  <li>TEnest : <span style="text-decoration: underline;"></span></li>
-  <li><span style="text-decoration: underline;">batch_tenest.pl</span></li>
+  <li>TEnest.pl : <a
+ href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/te_nest.html">http://www.public.iastate.edu/~imagefpc/Subpages/te_nest.html</a>
+    <span style="text-decoration: underline;"></span></li>
+  <li>batch_tenest.pl - Run the TE Nest program locally in batch mode.</li>
+  <li>cnv_fasta2tenest.pl - This program can convert a fasta file of
+TEs into a TE Nest database. This program is only required if you want
+to generate you own databases for use with TE Nest.<br>
+  </li>
 </ul>
 <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
  class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
@@ -1112,34 +1240,37 @@ Required Programs:<br>
  class="pln"></span><span class="pln"></span></pre>
 TEnest will use the maize database by default. This script currently
 does not convert the output to gff format. Valid options for --org
-include barley, wheat, maize, rice
-<h1><a name="findmite"></a>7. FINDMITE for MITE Discovery<br>
-</h1>
+include barley, wheat, maize, rice. You may also create your own
+database for use with TE Nest using the cnv_fasta2tenest.pl program.
+This will create the directory structure and files needed to run TE
+Nest on a set of transposable elements.<br>
+<h1>3.HMMER - TE Models</h1>
 Required Programs:<br>
 <ul>
-  <li>FINDMITE : <a href="http://jaketu.biochem.vt.edu/dl_software.htm"
- rel="nofollow">http://jaketu.biochem.vt.edu/dl_software.htm</a></li>
+  <li>hmmsearch : <a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a><br>
+  </li>
   <li><a
- href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_findmite.pl">batch_findmite.pl</a></li>
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_hmmer.pl">batch_hmmer.pl</a></li>
+  <li>Example Config file : <a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/config/batch_hmmer.jcfg">batch_hmmer.jcfg</a><br>
+  </li>
 </ul>
-The batch_findmite program will do a FINDMITE analysis for each
-parameter
-set in your configuration file for each query sequence in your input
-directory. The results from FINDMITE have a VERY high false positive
-rate so you will need to further evaluate your results to find the true
-MITEs
-in your query sequence.<br>
-<br>
-To run the batch_findmite.pl program you would do the following:<br>
-<pre>  <span class="pun">&gt;</span><span class="pln">cd </span><span
- class="pun">/</span><span class="pln">home</span><span class="pun">/</span><span
- class="pln">YourName</span><span class="pun">/</span><span class="pln">projects</span><span
- class="pun">/</span><span class="pln">wheat_annotation</span>  <br>  &gt;batch_findminte.pl <span
- class="pln">-i wheat_analysis/masked_soft/ -o wheat_analysis/<br>                      -c config/batch_findmite.jcfg --gff<br></span></pre>
-The FINDMITE results will be place in the findmite directory while the
-results converted to the GFF format would be placed in the gff
-directory.<br>
-<h1><a name="oligo_count"></a>8. Oligomer Counts<br>
+It is possible to use profile hidden Markov models of known
+transposable elements to find the location of TEs in your query
+sequence. This approach was used in to identiTfy MITES and MULEs in
+the Rice genome (Juretic et al. 2004). You can produce your own Profile
+HMMs
+using multiple
+alignments of sequences of your choice, or you can test this approach
+using HMMs developed for rice.<br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
+ class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
+ class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
+ class="pln">wheat_annotation<br>  &gt;batch_hmmer.pl </span><span
+ class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                  -c config/batch_hmmer.jcfg --gff</span>
+</pre>
+<h1><a name="oligo_count"></a>4. Oligomer Counts<br>
 </h1>
 Required Programs:<br>
 <ul>
@@ -1197,51 +1328,19 @@ placed in the directory: wheat_analysis/HEX0014K09/<br>
 </ol>
 The seq_oligocount.pl program will place the GFF formatted results in
 the gff directory.<br>
-<h1><a name="hmmer_TE"></a>9.HMMER - TE Models</h1>
-Required Programs:<br>
-<ul>
-  <li>hmmsearch : <a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a><br>
-  </li>
-  <li><a
- href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_hmmer.pl">batch_hmmer.pl</a></li>
-  <li>Example Config file : <a
- href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/config/batch_hmmer.jcfg">batch_hmmer.jcfg</a><br>
-  </li>
-</ul>
-It is possible to use profile hidden Markov models of known
-transposable elements to find the location of TEs in your query
-sequence. This approach was used in to identiTfy MITES and MULEs in
-the Rice genome (Juretic et al. 2004). You can produce your own Profile
-HMMs
-using multiple
-alignments of sequences of your choice, or you can test this approach
-using HMMs developed for rice.<br>
+<br>
+The results can be translated to UCSC wiggle format using the
+cnv_gff2wig.pl program. This program currently takes three arguments as
+name, description, and filename to process.<br>
+<br>
 <pre class="prettyprint"><span class="pln"> &nbsp;</span><span
- class="pun">&gt;</span><span class="pln">cd </span><span class="pun">/</span><span
- class="pln">home</span><span class="pun">/</span><span class="pln">YourName</span><span
- class="pun">/</span><span class="pln">projects</span><span class="pun">/</span><span
- class="pln">wheat_annotation<br>  &gt;batch_hmmer.pl </span><span
- class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                  -c config/batch_hmmer.jcfg --gff</span>
-</pre>
-<h1><a name="te_tandem_repeats_finder"></a>10. Tandem Repeats Finder
-(TRF)<br>
-</h1>
-Required Programs:<br>
-<ul>
-  <li>trf : <a href="http://tandem.bu.edu/trf/trf.download.html">http://tandem.bu.edu/trf/trf.download.html</a></li>
-  <li>batch_trf.pl<span style="text-decoration: underline;"></span><br>
-  </li>
-</ul>
-The Tandem Repeats Finder can be run in batch mode. This script will
-work with TRF 4.0, I have not tried to use it with earlier versions of
-TRF.<br>
-<pre class="prettyprint"><span class="pln">  &gt;batch_trf.pl </span><span
- class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                -c config/batch_hmmer.jcfg</span></pre>
-The TRF data file will be placed in the directory, TRF. The gff
-formatted results will be placed in the gff directory.<br>
+ class="pun">&gt;cnv_gff2wig.pl 20mer_counts 20mers vmatch_out.gff</span><span
+ class="pln"></span><span class="pln"></span></pre>
+HOWEVER ... as currently written this will produce a file format not
+compatible with Apollo and this function is under current development.<br>
 <br>
 <hr style="width: 100%; height: 2px;">
-<h1>E. NCBI-BLAST Homology Searches<br>
+<h1>F. NCBI-BLAST Homology Searches<br>
 </h1>
 Additional gene and TE annotation tiers are added using the NCBI BLAST
 program.<br>
@@ -1370,7 +1469,7 @@ this with hte -b option as shown below<br>
  class="pln"> </span></pre>
 <br>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="apollo_preparation"></a> F. Preparing Computational
+<h1><a name="apollo_preparation"></a> G. Preparing Computational
 Results
 for Apollo<br>
 </h1>
@@ -1435,12 +1534,14 @@ wheat_analysis directory.<br>
  class="pun">/ -o </span><span class="pln">wheat_analysis</span><span
  class="pun">/</span></pre>
 <hr style="width: 100%; height: 2px;">
-<h1><a name="human_curation"></a>G. Human Curation of Computational
+<h1><a name="human_curation"></a>H. Human Curation of Computational
 Results<br>
 </h1>
 The Apollo program is used for human curation of the computational
-results generated above.<br>
+results generated above. <br>
 <br>
+<span style="color: rgb(255, 0, 0);">This section of documentation not
+complete.</span><br>
 <br>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="curation_quality_control"></a>Curation Quality Control<br>
@@ -1450,6 +1551,8 @@ There are scripts available for quality control and feature comparison.<br>
 Convert game.xml annotations to GFF format.<br>
 <br>
 Venn Diagram of sequence features<br>
+<br>
+vennseq<br>
 <br>
 Predict Function of Human Curated Gene Models<br>
 <br>
@@ -1502,12 +1605,25 @@ results for the BAC identified as HEX0014K09.<br>
 <ul>
   <li><strong>HEX0014K09</strong> </li>
   <ul>
-    <li><strong>blast</strong> - <i>Results of blast searches</i> </li>
+    <li><strong>blast</strong> - <i>Results of blast searches</i></li>
+    <li><strong>eugene</strong> - <i>Results of the eugene gene
+annoation program</i></li>
+    <li><strong>fgenesh</strong> - <i>Results of the fgenesh gene
+annoation program</i></li>
     <li><strong>find_ltr</strong> - <i>Results from the find_ltr
 program.</i> </li>
     <li><strong>findmite</strong> - <i>Results from the FINDMITE
 program</i> </li>
-    <li><strong>game</strong> - <i>game.xml files</i> </li>
+    <li><strong>game</strong> - <i>game.xml files</i></li>
+    <li><strong>gene</strong> - <i>Results from the genscan gene
+annotation program<br>
+      </i></li>
+    <li><strong>geneid</strong> - <i>Results from the geneid gene
+annotation program<br>
+      </i></li>
+    <li><strong>genemark</strong> - <i>Results from the genemarkHMM
+gene annotaiton program<br>
+      </i></li>
     <li><strong>gff</strong> - <i>gff format data files</i> </li>
     <li><strong>hmmer</strong> - <i>Results from the hmmsearch program.</i>
     </li>
@@ -1526,6 +1642,8 @@ program.</i> </li>
     <li><strong>rm</strong> - <i>Repeatmasker results</i> </li>
     <li><strong>ta</strong> - <i>TriAnnotation results</i></li>
     <li><strong>tenest</strong> - <i>Results from TE NEST</i></li>
+    <li><strong>trf</strong> - <i>Results from Tandem Repeats Finder<br>
+      </i></li>
   </ul>
 </ul>
 <hr style="width: 100%; height: 2px;">
@@ -1656,6 +1774,10 @@ in human genomic DNA." J Mol Biol 268(1): 78-94.<br>
 Edgar, R. C. and E. W. Myers (2005). "PILER: identification and
 classification of genomic repeats." Bioinformatics 21 Suppl 1: i152-8.<br>
 <br>
+Ellinghaus, D., S. Kurtz, et al. (2008). "LTRharvest, an efficient and
+flexible software for de novo detection of LTR retrotransposons." BMC
+Bioinformatics 9: 18.<br>
+<br>
 Juretic, N., T. E. Bureau, et al. (2004). "Transposable element
 annotation of the rice genome." Bioinformatics 20(2): 155-160.<br>
 <br>
@@ -1715,7 +1837,7 @@ prediction of full-length LTR retrotransposons." Nucleic Acids Res
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Nov 10, 2008</i></td>
+Last Updated: Nov 12, 2008</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
