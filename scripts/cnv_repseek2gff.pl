@@ -161,11 +161,16 @@ sub repseek2gff {
     my $interseq_id = 0;
     my $repseek_id = 0;
 
-    my $source = "repseek";
+    my $inv_id = 0;        # Counter/id for inverted repeats
+    my $dir_id = 0;        # Counter/id for direct repeats
 
-    if ($param_set) {
-	$source = $source.":".$param_set;
-    }
+    my $source;            # The data for the source column
+
+#    my $source = "repseek";
+
+#    if ($param_set) {
+#	$source = $source.":".$param_set;
+#    }
 
 
     # MAY CONSIDER JUST RETURNING THE TANDEM REPEATS ?
@@ -187,6 +192,23 @@ sub repseek2gff {
 
 	my $attribute = "repseek".$repseek_id.":$repeat_direction";
 
+
+	# Will split the repseek source into inverted repeats 
+	# vs direct repeats .. putative TEs
+
+	# Source sets
+	# - Overlap
+        # - Palindromes
+
+	
+	if ($repeat_type =~ "Overlap") {
+	    $source = "repseek:overlap_$repeat_direction";
+	}
+	else {
+	    $source = "repseek:$repeat_direction";
+	}
+
+	# parameter set will go in the attribute column
 
 	#-----------------------------+
 	# PRINT OUTPUT TO GFF         |
