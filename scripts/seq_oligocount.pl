@@ -45,6 +45,7 @@ my $infile;                    # Path for the input query sequence
 my $outdir;                    # Path for the output
 my $index;                     # Path to the sequence index file
 my $kmer_len = 20;             # Oligomer length, default is 20
+my $win_len = 50;              # Window length
 my $seq_name;                  # Sequence name used in the output
 
 # Booleans
@@ -54,6 +55,10 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
+my $do_gff_kmer = 0;           # Produce GFF formatted output for kmers
+my $do_gff_win = 0;            # Produce GFF formatted output for win summary
+my $do_wig_kmer = 0;           # Produce wiggle output for kmers
+my $do_wig_win = 1;            # Produce wiggle output for win summary
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -64,7 +69,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"  => \$outdir,
 		    "n|name=s"    => \$seq_name,
 		    # ADDITIONAL OPTIONS
-		    "k|kmer=s"    => \$kmer_len,   
+		    "k|kmer=s"    => \$kmer_len,
+		    "l|len=s"     => \$win_len,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -113,7 +119,7 @@ if ( (!$infile) || (!$outdir) || (!$index) ) {
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+ 
 
-seq_kmer_count ($infile,$outdir,$index,$kmer_len, $seq_name);
+seq_kmer_count ($infile,$outdir,$index,$kmer_len, $win_len, $seq_name);
 
 exit;
 
@@ -186,7 +192,7 @@ sub print_help {
 
 sub seq_kmer_count {
 
-    my ($fasta_in, $outdir, $vmatch_index, $k, $seq_name) = @_;
+    my ($fasta_in, $outdir, $vmatch_index, $k, $l, $seq_name) = @_;
     
     # Array of threshold values
     #my @thresh = ("200");
@@ -312,6 +318,25 @@ sub seq_kmer_count {
 	
 	# This is the pip file, a single pip with depth coverage data
 	# for eack oligo
+
+	# Get summary information ... across window
+
+	#-----------------------------+
+	# GET AVERAGE OF KMERS THAT   |
+	# EACH BASE IS A MEMBER OF    |
+	#-----------------------------+
+	# Is this necessary
+	# Could just smooth for all values that 
+	# are in 
+	for ($i=0; $i<=$max_start; $i++) {
+
+
+	}
+
+	
+
+
+
 	open (GFFCOUNT, ">$gff_count_out") ||
 	    die "Can not open gff out file:\n$gff_count_out\n";
 	
@@ -359,37 +384,6 @@ sub seq_kmer_count {
 
 1;
 __END__
-
-# OLD print_help subfunction
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
 
 =head1 NAME
 
@@ -451,6 +445,11 @@ Path to the fasta file that was indexed with the mkvtree program.
 =item -k,--kmer
 
 Length of the kmer to index. The default value of this variable is 20.
+
+=item -l, --len
+
+Length of window for summarizing kmer index counts. This will be a non 
+overlapping window and can range from 1 to the length of the sequence.
 
 =item --usage
 
@@ -600,3 +599,8 @@ VERSION: $Rev$
 # - Updated POD documentation
 # - Added the print_help subfunction that extracts
 #   usage and help message from the POD documentation
+#
+# 11/12/2008
+# - Removed old print_help subfunction
+# - Working to add summary over window
+#   and output to wiggle format
