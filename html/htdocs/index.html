@@ -30,6 +30,10 @@ General Public License <br>
           </a></i></li>
         <li><i><a href="http://sourceforge.net/projects/dawgpaws/">SourceForge
 Project Website</a></i></li>
+        <li><i><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/">Subversion
+Repository</a><br>
+          </i></li>
         <li>Author: <a href="http://jestill.myweb.uga.edu">James
 C. Estill</a></li>
       </ul>
@@ -69,10 +73,10 @@ results.<br>
 </p>
 <p>Usage of DAWG-PAWS is through a series of command line programs. A
 command line interface was chosen since these programs will usually be
-run on remote high preformance machines running some version of the
+run remotely on high preformance machines running some version of the
 Unix/Linux operating system. Since a command line inteface has been
-written
-into all scripts, no special knowledge of Perl is required to use this
+written for all programs, no special knowledge of Perl is required to
+use this
 suite. However,
 since some the Perl scripts rely on external Perl modules, a working
 knowledge of Perl will be helpful when installing DAWG-PAWS.<br>
@@ -143,8 +147,9 @@ being made available on DAWG-PAWS web site as they are processed<br>
     </span></li>
 </ul>
 <h2><a name="download"></a>Download</h2>
-<p>The full DAWG-PAWS suite will be available in a single download in
-the future. Until then, the individual scripts may be downloaded
+<p>The full DAWG-PAWS suite will be available in a single download in a
+future 1.0 release of the program. Until then, the individual scripts
+may be downloaded
 separately through the <a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/scripts/">SVN
 browse interface</a>. The currently recommended way to get DAWG-PAWS is
@@ -198,33 +203,37 @@ cnv_blast2gff.pl<br>
     </tr>
     <tr>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://urgi.versailles.inra.fr/projects/TriAnnot/">TriAnnot Web
-Service</a><br>
+ href="http://genes.mit.edu/GENSCAN.html">Genscan</a><br>
       </td>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_cnv_ta2ap.html">batch_cnv_ta2ap.pl</a><br>
-cnv_ta2ap.pl<br>
+ href="man/batch_genscan.html">batch_genscan.pl</a><br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://genes.mit.edu/GENSCAN.html">Genscan</a><br>
+      <td style="vertical-align: top;"><a
+ href="http://genome.imim.es/software/geneid/"><span
+ style="font-weight: bold;">GeneID</span></a><br>
       </td>
-      <td style="vertical-align: top;">run_genscan.pl<br>
-      <a style="font-weight: bold;" href="man/batch_genscan.html">batch_genscan.pl</a><br>
+      <td style="vertical-align: top;">batch_geneid.pl<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><a
+ href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"><span
+ style="font-weight: bold;">EuGene</span></a><br>
+      </td>
+      <td style="vertical-align: top;">batch_eugene.pl<br>
       </td>
     </tr>
     <tr>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
  href="http://www.softberry.com/berry.phtml">Fgenesh</a><br>
       </td>
-      <td style="vertical-align: top;">run_fgenesh.pl<br>
-cnv_fgenesh2gff.pl<br>
-      </td>
+      <td style="vertical-align: top;">cnv_fgenesh2gff.pl</td>
     </tr>
     <tr>
       <td style="vertical-align: top; font-weight: bold;"><a
- href="http://exon.gatech.edu/GeneMark/">Genemark</a> </td>
+ href="http://exon.gatech.edu/GeneMark/">GeneMarkHMM</a> </td>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
  href="man/batch_genemark.html">batch_genemark.pl</a><br>
 cnv_genemark2gff.pl </td>
@@ -243,64 +252,7 @@ Program</span><br>
 Scripts</span><br>
       </td>
     </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://www.repeatmasker.org/">RepeatMasker</a><br>
-      </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_mask.html">batch_mask.pl</a><br>
-      <a style="font-weight: bold;" href="man/batch_hardmask.html">batch_hardmask.pl</a><br>
-cnv_repmask2gff.pl<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://www.ncbi.nlm.nih.gov/blast/Blast.cgi">NCBI-BLAST</a><br>
-      </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_blast.html">batch_blast.pl</a><br>
-      <a style="font-weight: bold;" href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a><br>
-cnv_blast2gff.pl<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">TE
-Nest</a><br>
-      </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/fetch_tenest.html">fetch_tenest.pl</a><br>
-cnv_tenest2gff.pl<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://jaketu.biochem.vt.edu/4download/MITE/">FINDMITE</a><br>
-      </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_findmite.html">batch_findmite.pl</a><br>
-cnv_findmite2gff.pl<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://darwin.informatics.indiana.edu/cgi-bin/evolution/ltr.pl">find_ltr</a><br>
-      </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_findltr.html">batch_findltr.pl</a><br>
-cnv_findltr2gff.pl<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="http://www.eecs.wsu.edu/%7Eananth/software.htm">ltr_seq (was
-ltr_par)</a><br>
-      </td>
-      <td style="vertical-align: top;">batch_ltrseq.pl<br>
-      <a style="font-weight: bold;" href="man/cnv_ltrstruc2gff.html">cnv_ltrseq2gff.pl</a><br>
-      </td>
-    </tr>
-    <tr>
+<!-- LTR_STRUC --> <tr>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
  href="http://www.genetics.uga.edu/retrolab/data/LTR_Struc.html">LTR_STRUC</a><br>
       </td>
@@ -311,7 +263,87 @@ ltr_par)</a><br>
       <a style="font-weight: bold;" href="man/cnv_ltrstruc2gff.html">cnv_ltrstruc2gff.pl</a><br>
       </td>
     </tr>
-    <tr>
+<!-- LTR_FINDER --> <tr>
+      <td style="vertical-align: top; font-weight: bold;"><a
+ href="http://tlife.fudan.edu.cn/ltr_finder">LTR_Finder</a> </td>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="man/batch_ltrfinder.html">batch_ltrfinder.pl</a><br>
+cnv_ltrfinder2gff.pl<br>
+      </td>
+    </tr>
+<!-- FIND_LTR --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://darwin.informatics.indiana.edu/cgi-bin/evolution/ltr.pl">find_ltr</a><br>
+      </td>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="man/batch_findltr.html">batch_findltr.pl</a><br>
+cnv_findltr2gff.pl<br>
+      </td>
+    </tr>
+<!-- LTR_SEQ --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://www.eecs.wsu.edu/%7Eananth/software.htm">ltr_seq</a><br>
+      </td>
+      <td style="vertical-align: top;">batch_ltrseq.pl<br>
+      <a style="font-weight: bold;" href="man/cnv_ltrstruc2gff.html">cnv_ltrseq2gff.pl</a><br>
+      </td>
+    </tr>
+<!-- REPSEEK --> <tr>
+      <td style="vertical-align: top;"><a
+ href="http://wwwabi.snv.jussieu.fr/public/RepSeek/"><span
+ style="font-weight: bold;">RepSeek</span></a><br>
+      </td>
+      <td style="vertical-align: top;">cnv_repseek2gff.pl<br>
+      </td>
+    </tr>
+<!-- FINDMITE --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://jaketu.biochem.vt.edu/4download/MITE/">FINDMITE</a><br>
+      </td>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="man/batch_findmite.html">batch_findmite.pl</a><br>
+cnv_findmite2gff.pl<br>
+      </td>
+    </tr>
+<!-- TRF --> <tr>
+      <td style="vertical-align: top;"><a
+ href="http://tandem.bu.edu/trf/trf.html"><span
+ style="font-weight: bold;">Tandem Repeats Finder</span></a><br>
+      </td>
+      <td style="vertical-align: top;">batch_trf.pl<br>
+      </td>
+    </tr>
+<!-- REPEATMASKER --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://www.repeatmasker.org/">RepeatMasker</a><br>
+      </td>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="man/batch_mask.html">batch_mask.pl</a><br>
+      <a style="font-weight: bold;" href="man/batch_hardmask.html">batch_hardmask.pl</a><br>
+cnv_repmask2gff.pl<br>
+      </td>
+    </tr>
+<!-- NCBIBLAST --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://www.ncbi.nlm.nih.gov/blast/Blast.cgi">NCBI-BLAST</a><br>
+      </td>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="man/batch_blast.html">batch_blast.pl</a><br>
+      <a style="font-weight: bold;" href="man/batch_cnv_blast2gff.html">batch_cnv_blast2gff.pl</a><br>
+cnv_blast2gff.pl<br>
+      </td>
+    </tr>
+<!-- TENEST --> <tr>
+      <td style="vertical-align: top;"><a style="font-weight: bold;"
+ href="http://www.public.iastate.edu/%7Eimagefpc/Subpages/software.html">TE
+Nest</a><br>
+      </td>
+      <td style="vertical-align: top;">batch_tenest.pl<br>
+      <a style="font-weight: bold;" href="man/fetch_tenest.html">fetch_tenest.pl</a><br>
+cnv_tenest2gff.pl<br>
+      </td>
+    </tr>
+<!-- HMMER --> <tr>
       <td style="vertical-align: top;"><a style="font-weight: bold;"
  href="http://hmmer.janelia.org/">HMMER</a><br>
       </td>
@@ -319,12 +351,13 @@ ltr_par)</a><br>
  href="man/batch_hmmer.html">batch_hmmer.pl</a><br>
       </td>
     </tr>
-    <tr>
-      <td style="vertical-align: top; font-weight: bold;"><a
- href="http://tlife.fudan.edu.cn/ltr_finder">LTR_Finder</a> </td>
-      <td style="vertical-align: top;"><a style="font-weight: bold;"
- href="man/batch_ltrfinder.html">batch_ltrfinder.pl</a><br>
-cnv_ltrfinder2gff.pl<br>
+<!-- MDRs --> <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold;">Mathematically
+Defined Repeats<br>
+      </span>Depends on the <a href="http://www.vmatch.de/">vmatch</a>
+program<br>
+      </td>
+      <td style="vertical-align: top;">seq_oligocount.pl<br>
       </td>
     </tr>
   </tbody>
@@ -336,7 +369,7 @@ cnv_ltrfinder2gff.pl<br>
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Nov 24, 2008</i></td>
+Last Updated: Jan 19, 2009</i></td>
       <td width="50%"> <br>
       </td>
       <td><a href="http://sourceforge.net/"> <img
