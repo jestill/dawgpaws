@@ -8,16 +8,15 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 04/29/2008                                       |
-# UPDATED: 04/29/2008                                       |
+# UPDATED: 01/19/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Run TeNest in batch mode.
+#  Run TeNest in batch mode.                                |
 #                                                           |
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
 # VERSION: $Rev$                                            |
-#                                                           |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -900,19 +899,21 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
+=head2  Usage
+
     batch_tenest.pl -i indir -o outdir
+
+=head2 Required Arguments
 
     -i,--indir         # Dir containing fasta files to process 
     -o,--outfie        # Dir to place the output in
 
 =head1 DESCRIPTION
 
-This is what the program does
+Runs the program TE Nest in batch mode. This will run TE Nest for all fasta
+files located in the input directory.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -926,9 +927,25 @@ Path of the output file.
 
 =back
 
-=head1 Additional Options
+=head1 OPTIONS
 
 =over 2
+
+=item --org
+
+The organism database to use. The default organism database is maize.
+
+=item --blast-dir
+
+The directory for wu blast. If this directory is not specified at the
+command line, batch_tenest.pl will assume that this is at
+/usr/local/genome/wu_blast/
+
+=item --tenest-dir
+
+The directory that the TE Nest program is located in. If this directory is not
+specified, batch_tenet.pl will assume that the TE Nest program is locate
+in your home directory at $HOME/apps/te_nest/
 
 =item --usage
 
@@ -955,25 +972,86 @@ Run the program with minimal output.
 
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+=over
+
+=item TENest.pl does not exist at: /some/directory/
+
+The TENest.pl program does not exist at the directory you specified or
+in the directory that the program assumes it to be in. The best way to
+make sure this works is to specify a directory using the --tenest-dir option.
+
+=item Can't open directory: /your/input/directory/
+
+The input directory that you specified by the -i file has either been
+typed in incorrectly, the path you entered does not exist, or you
+do not have read access to that directory.
+
+=item ERROR: No fasta files were found in the input directory
+
+Currently this program assumes that all fasta files end with the 
+fasta or fa extension. It is possible that you have fasta files in the
+input directory, but they do not have the *.fasta or *.fa file names.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use of configuration files or variables
+set in the user environment.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+=head2 Required Software
+
+=over 2
+
+=item TE Nest
+
+This program requires the installation of TE Nest. This program is 
+available from:
+http://www.public.iastate.edu/~imagefpc/Subpages/te_nest.html
+
+=back
+
+=head2 Required Databases
+
+This program requires an organism database is the TE Nest format. This
+databases are downloadable from:
+http://www.public.iastate.edu/~imagefpc/Subpages/te_nest.html
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limiations
+
+=over
+
+=item * Please report any limitations you encounter
+
+If you encounter limitations while working with this program, please 
+file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head1 SEE ALSO
+
+This program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
 
 =head1 LICENSE
 
@@ -989,7 +1067,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/29/2008
 
-UPDATED: 11/06/2008
+UPDATED: 01/19/2009
 
 VERSION: $Rev$
 
@@ -1006,3 +1084,6 @@ VERSION: $Rev$
 # 11/06/2008
 # - Added the ability to specify organism
 # - Added the tenest2gff subfunction from cnv_tenest2gff.pl
+# 
+# 01/19/2009
+# -Updated POD help file
