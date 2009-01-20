@@ -94,30 +94,10 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_gff2game.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
-
-#
-#if ($show_usage) {
-#    print_help("");
-#}
-#
-#if ($show_help || (!$ok) ) {
-#    print_help("full");
-#}
-#
-#if ($show_version) {
-#    print "\n$0:\nVersion: $VERSION\n\n";
-#    exit;
-#}
-#
-#if ($show_man) {
-#    # User perldoc to generate the man documentation.
-#    system("perldoc $0");
-#    exit($ok ? 0 : 2);
-#}
 
 #-----------------------------+
 # CHECK FOR REQUIRED VARS     |
@@ -392,6 +372,12 @@ This is known to work on Apollo version 1.6.5.
 
 The command line interface from Apollo does not appear to work on
 text only terminals.
+
+=item * Does not support STDIN/STDOUT
+
+In general the cnv scripts are designed to support input from STDIN and
+output from STDOUT. The gff to game converter relies on Apollo, and currently
+does not support the STDIN and STOUT. :(
 
 =back
 
