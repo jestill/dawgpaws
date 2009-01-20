@@ -6,19 +6,24 @@
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
-# CONTACT: JamesEstill at gmail.com                         |
+# CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 02/09/2007                                       |
-# UPDATED: 08/07/2007                                       |
+# UPDATED: 01/19/2009                                       |
+#                                                           |
 # DESCRIPTION:                                              |
 #  Converts gff data tracks from gff format to the game     |
 #  xml format for use in the Apollo Genome Annotation       |
 #  Curation program.                                        |
+#                                                           |
+# VERSION: $Rev$                                            |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+ 
+
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -254,8 +259,11 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
+=head2 Usage
+
     cnv_gff2game.pl -i InFile.fasta -g GffFile.gff -o OutFile.game.xml
+
+=head2 Required Arguments
 
     -i              # Path to the fasta file the gff refers to
     -g              # Path to the gff file to convert
@@ -267,9 +275,7 @@ Converts gff foramt files to the game.xml format. This program uses the
 Apollo genome annotation program to do this conversion, so you must have
 Apollo installed for this script to work
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -287,7 +293,7 @@ Path of the output game xml file.
 
 =back
 
-=head2 Additional Options
+=head1 OPTIONS
 
 =over 2
 
@@ -335,6 +341,8 @@ set in the user environment.
 
 =head1 DEPENDENCIES
 
+=head2 Required Software
+
 =over 2 
 
 =item Apollo
@@ -381,6 +389,15 @@ does not support the STDIN and STOUT. :(
 
 =back
 
+=head1 SEE ALSO
+
+The seq_oligocount.pl program is part of the DAWG-PAWS package of genome
+annotation programs. See the DAWG-PAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -410,3 +427,4 @@ VERSION: $Rev$
 # - Adding the ability to read from STDIN and write to 
 #   STDOUT
 # - Added the new print_help subfunction
+# - Added package namespace
