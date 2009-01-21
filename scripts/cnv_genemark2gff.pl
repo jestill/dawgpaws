@@ -42,7 +42,7 @@ use File::Spec;                # Convert a relative path to an abosolute path
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my ($VERSION) = q$Rev: 259 $ =~ /(\d+)/;
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #//////////////////////
 my $file_num_max = 1;
 #\\\\\\\\\\\\\\\\\\\\\\
@@ -303,7 +303,7 @@ cnv_genemark2gff.pl - Convert genemark output to gff format
 
 =head1 VERSION
 
-This documentation refers to program version $Rev: 259 $
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
@@ -542,7 +542,7 @@ STARTED: 10/30/2007
 
 UPDATED: 01/21/2009
 
-VERSION: $Rev: 259 $
+VERSION: $Rev$
 
 =cut
 
