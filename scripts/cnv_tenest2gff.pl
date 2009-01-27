@@ -779,7 +779,7 @@ cnv_tenest2gff.pl - Convert TENest output to GFF
 This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
-    
+
 =head2 Usage
 
     cnv_tenest2gff.pl -i infile.txt -o outfile.gff
