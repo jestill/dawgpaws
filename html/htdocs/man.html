@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Jan. 21, 2009<br>
+Jan. 27, 2009<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -825,7 +825,8 @@ Required Programs:<br>
 <ul>
   <li>geneid : <a href="http://www1.imim.es/software/geneid/index.html"
  rel="nofollow">http://www1.imim.es/software/geneid/index.html</a></li>
-  <li>batch_geneid.pl<br>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_geneid.pl">batch_geneid.pl</a><br>
   </li>
 </ul>
 To run the geneid program in batch mode you would use the following
@@ -854,7 +855,8 @@ Required Programs:<br>
   <li>EuGène : <a
  href="http://www.inra.fr/internet/Departements/MIA/T/EuGene/"
  rel="nofollow">http://www.inra.fr/internet/Departements/MIA/T/EuGene/</a></li>
-  <li>batch_eugene.pl</li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_eugene.pl">batch_eugene.pl</a></li>
 </ul>
 Running the EuGène program in batch mode will make use of the hard
 masked input fasta files, as well as a parameter file created for your
@@ -907,7 +909,7 @@ available for the Windows platform, and it does not provide output in a
 form that can be easilty mapped back onto the query sequence. The
 source code for LTR_Struc is not available to allow for modifications
 of these limiting factors. The process for running LTR_Struc therefore
-requires some extraneous steps as outlined below:<br>
+requires some additional steps as outlined below:<br>
 <ol>
   <li>Prepare sequence files for analysis in the MS Windows
 environment. The <big><code>ltrstruc_prep.pl </code></big>program
@@ -1032,21 +1034,47 @@ The above example will produce a GFF file for each parameter set in the
 batch_findltr.jcfg file for each fasta input sequence recognized in the
 masked_soft input directory.<br>
 <br>
-<h1><a name="ltr_seq"></a>4. ltr_seq for LTR Retrotransposon Prediction<br>
+<h1><a name="ltr_seq"></a>4. LTR_seq for LTR Retrotransposon Prediction<br>
 </h1>
 Required Programs:<br>
 <ul>
   <li>ltr_seq : this is the latest incarnation of the ltr_par program<br>
 A binary of this program is available upon contacting the program
 author:<br>
-    <a href="http://www.eecs.wsu.edu/%7Eananth/contact.htm">http://www.eecs.wsu.edu/~ananth/contact.htm</a><br>
+    <a href="http://www.eecs.wsu.edu/%7Eananth/contact.htm">http://www.eecs.wsu.edu/~ananth/contact.htm</a></li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/batch_ltrseq.pl">batch_ltrseq.pl</a><br>
   </li>
   <li><a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_ltrseq2gff.pl">cnv_ltrseq2gff.pl</a><br>
   </li>
 </ul>
-Running ltr_seq in batch mode is currently not supported. You must do
-an individual run of ltr_seq manually and then convert the output to
+Running LTR_seq in batch mode uses the batch_ltrseq.pl program. This
+program can make use of a configuration file that specifies a name for
+a parameter set, and the LTR_seq config file that this parameter set is
+specified in. The following example shows using batch_ltrseq.pl with no
+configuration file. This will run the LTR_seq program using the default
+parameters:<br>
+<pre class="prettyprint"><span class="pln">&nbsp; </span><span
+ class="pun">&gt;</span><span class="pln">batch_ltrseq.pl </span><span
+ class="pln">-i wheat_analysis/masked_soft -o wheat_analysis</span></pre>
+You may also specify a configuration file with the -c option. This
+config file will allow the batch_ltrseq.pl program to run the LTR_seq
+program for multiple parameter combinations for every fasta file in the
+input sequence directory. The configuration file will be a two column,
+tab delimited text file with the following options:&nbsp; Col. 1
+Configuration Set Name, * Col. 2 Config File Path<br>
+<br>
+An example using batch_ltrseq.pl with a config file is below:<br>
+<pre class="prettyprint"><span class="pln">&nbsp; </span><span
+ class="pun">&gt;</span><span class="pln">batch_ltrseq.pl </span><span
+ class="pln">-i wheat_analysis/masked_soft -o wheat_analysis<br>                   -c ltrseq_set.jcfg<br></span></pre>
+Please see the <a href="man/batch_ltrseq.html">batch_ltrseq.pl</a>
+documentaion for more information regarding the batch_ltrseq config
+file as well as how to designate parameters for the LTR_seq program.<br>
+<br>
+You may also do
+an individual run of LTR_seq manually and then convert the output to
 gff using the <a
  href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_ltrseq2gff.pl">cnv_ltrseq2gff.pl</a>
 program.<br>
@@ -1090,7 +1118,8 @@ Required Programs:<br>
 to retrieve approximate repeats from large DNA sequences."
 Bioinformatics 23(1): 119-21.</li>
   </ul>
-  <li>cnv_repseek2gff.pl</li>
+  <li><a
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_repseek2gff.pl">cnv_repseek2gff.pl</a></li>
   <li>batch_repseek.pl<br>
   </li>
 </ul>
