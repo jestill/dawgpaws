@@ -7,10 +7,10 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 08/27/2007                                       |
+# UPDATED: 01/21/2009                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
-# Convert blast output to a Apollo compatible gff file.     |
+#  Convert TE Nest output to gff file format.               |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -23,97 +23,8 @@
 #               tenest:nest_group
 #               tenest:nest_level
 #
-=head1 NAME
 
-cnv_tenest2gff.pl - Convert TENest output to GFF
-
-=head1 VERSION
-
-This documentation refers to program version 1.0
-
-=head1 SYNOPSIS
-    
-  USAGE:
-    cnv_tenest2gff.pl -i InFile -o OutFile
-
-=head1 DESCRIPTION
-
-Converts TE Nest output to gff format output.
-
-=head1 COMMAND LINE ARGUMENTS
-
-=over 2 Required Arugments
-
-=item -i,--infile
-
-Path of the input file to convert.
-
-=item -o,--outfile
-
-Path of the gff formatted output file that .
-
-=back
-
-=head2 Additional Information
-
-=over 2
-
-=item --usage
-
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
-
-=item -q,--quiet
-
-Run the program with minimal output.
-
-=back
-
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
-=head1 CONFIGURATION AND ENVIRONMENT
-
-Names and locations of config files
-environmental variables
-or properties that can be set.
-
-=head1 DEPENDENCIES
-
-Other modules or software that the program is dependent on.
-
-=head1 BUGS AND LIMITATIONS
-
-Any known bugs and limitations will be listed here.
-
-=head1 LICENSE
-
-GNU LESSER GENERAL PUBLIC LICENSE
-
-http://www.gnu.org/licenses/lgpl.html
-
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
-
-=cut
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -121,11 +32,19 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 use strict;
 use Getopt::Long;
 use Bio::SearchIO;             # Parse BLAST output
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+use Cwd;                       # Get the current working directory
+use File::Copy;                # Copy files
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my $VERSION = "1.0";
+my ($VERSION) = q$Rev:$ =~ /(\d+)/;
 
 #-----------------------------+
 # LOCAL VARIABLES             |
@@ -166,23 +85,27 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
-if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
-    exit;
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
-    system("perldoc $0");
+    system ("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+if ($show_version) {
+    print "\ncnv_genemark2gff.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
 }
 
 #-----------------------------+
@@ -792,14 +715,144 @@ sub print_help {
     exit;
 }
 
+=head1 NAME
+
+cnv_tenest2gff.pl - Convert TENest output to GFF
+
+=head1 VERSION
+
+This documentation refers to program version $Rev$
+
+=head1 SYNOPSIS
+    
+=head 2 Usage
+
+    cnv_tenest2gff.pl -i infile.txt -o outfile.gff
+
+=head 2 Required Arguments
+
+    -i,--infile   # Path to the TE Nest result to convert
+    -o,--outfile  # Path to the gff format outfile
+
+=head1 DESCRIPTION
+
+Converts TE Nest output to gff format output. The gff file will label 
+these features as 'exon' to make them compatible with the apollo genome
+annotation curation program.
+
+=head1 COMMAND LINE ARGUMENTS
+
+=over 2
+
+=item -i,--infile
+
+Path of the input file to convert.
+
+=item -o,--outfile
+
+Path of the gff formatted output file that .
+
+=back
+
+=head2 Additional Information
+
+=over 2
+
+=item --usage
+
+Short overview of how to use program from command line.
+
+=item --help
+
+Show program usage with summary of options.
+
+=item --version
+
+Show program version.
+
+=item --man
+
+Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.
+
+=item -q,--quiet
+
+Run the program with minimal output.
+
+=back
+
+=head1 DIAGNOSTICS
+
+The error message that can be generated will be listed here.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This program does not make use of a configuration file or variables set
+in the user's environment.
+
+=head1 DEPENDENCIES
+
+=head2 Required Software
+
+=over 2
+
+=item * TE Nest
+
+This program requires output from the TE Nest web server, or from a local
+copy of the TE nest program. The TE Nest web query is available at:
+http://www.plantgdb.org/prj/TE_nest/TE_nest.html. You can download the
+TE nest program at: 
+http://www.public.iastate.edu/~imagefpc/Subpages/software.html.
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over
+
+=item * Please report limitations to using this software
+
+If you find a limitation that makes it difficult to use this program, please
+file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head1 LICENSE
+
+GNU LESSER GENERAL PUBLIC LICENSE
+
+GNU General Public License, Version 3
+
+L<http://www.gnu.org/licenses/gpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
+=head1 AUTHOR
+
+James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
 STARTED: 08/27/2007
 
-UPDATED: 08/27/2007
+UPDATED: 01/21/2009
 
-VERSION: $Id: $
+VERSION: $Rev$
 
 =cut
 
@@ -809,3 +862,9 @@ VERSION: $Id: $
 #
 # 08/27/2007
 # -Program started
+#
+# 01/21/2009
+# -Moved POD documentation to the end of the file
+# -Updating POD documentation
+# -Adding new help subfunction to extract help messages
+#  from POD documentation
