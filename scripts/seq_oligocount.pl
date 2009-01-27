@@ -7,14 +7,14 @@
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 10/11/2007
-# UPDATED: 10/12/2007
+# STARTED: 10/11/2007                                       |
+# UPDATED: 01/27/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
 #                                                           |
 # USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
+#  seq_oligocount.pl 
 #                                                           |
 # VERSION: $Rev$                                      |
 #                                                           |
@@ -32,6 +32,13 @@ package DAWGPAWS;
 use Bio::SeqIO;                # Seq IO used to to work with the input file
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -126,7 +133,6 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
 sub print_help {
     my ($help_msg, $podfile) =  @_;
     # help_msg is the type of help msg to use (ie. help vs. usage)
@@ -328,14 +334,10 @@ sub seq_kmer_count {
 	# Is this necessary
 	# Could just smooth for all values that 
 	# are in 
-	for ($i=0; $i<=$max_start; $i++) {
-
-
-	}
-
-	
-
-
+#	for ($i=0; $i<=$max_start; $i++) {
+#
+#
+#	}
 
 	open (GFFCOUNT, ">$gff_count_out") ||
 	    die "Can not open gff out file:\n$gff_count_out\n";
@@ -493,7 +495,7 @@ have write permission to the directory you want to place your file in.
 =head1 CONFIGURATION AND ENVIRONMENT
 
 An external configuration file is not required for this program, and
-it does not make use of any variables set in the users environment.
+it does not make use of any variables set in the user's environment.
 
 =head1 DEPENDENCIES
 
@@ -572,6 +574,9 @@ GNU General Public License, Version 3
 
 L<http://www.gnu.org/licenses/gpl.html>
 
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
 =head1 AUTHOR
 
 James C. Estill E<lt>JamesEstill at gmail.comE<gt>
@@ -580,7 +585,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/11/2007
 
-UPDATED: 12/12/2007
+UPDATED: 01/27/2009
 
 VERSION: $Rev$
 
@@ -604,3 +609,8 @@ VERSION: $Rev$
 # - Removed old print_help subfunction
 # - Working to add summary over window
 #   and output to wiggle format
+# 
+# 01/27/2009
+# - Updating POD documentation
+# - Adding print_help subfunction to extract help from
+#   the POD documentation
