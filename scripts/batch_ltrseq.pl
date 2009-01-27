@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/06/2007                                       |
-# UPDATED: 01/26/2009                                       |
+# UPDATED: 01/27/2009                                       |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -507,18 +507,23 @@ sub ltrseq2gff {
 		# The location of the math to generate these will
 		# be strand dependent.
 		my $has_tsr = 0;
+		my $tsr5_start;
+		my $tsr5_end;
+		my $tsr3_start;
+		my $tsr3_end;
+
 		if ($ltr_tsr =~ m/\#(.*)\#/) {
 		    $ltr_tsr = $1;
-		    $has_tsr = 1;
-
 		    my $ltr_tsr_len = length($ltr_tsr);
-		    my $tsr5_start = $ltr5_start - $ltr_tsr_len - 1;
-		    my $tsr5_end = $ltr5_start - 1;
-		    my $tsr3_start = $ltr3_end + 1;
-		    my $tsr3_end = $ltr3_end + $ltr_tsr_len  + 1;
 
+		    if ($ltr_tsr_len > 0) {
+			$has_tsr = 1;
+			$tsr5_start = $ltr5_start - $ltr_tsr_len - 1;
+			$tsr5_end = $ltr5_start - 1;
+			$tsr3_start = $ltr3_end + 1;
+			$tsr3_end = $ltr3_end + $ltr_tsr_len  + 1;
+		    }
 		}
-
 
 		#-----------------------------+
 		# SHOW INFO IF VERBOSE
@@ -538,6 +543,8 @@ sub ltrseq2gff {
 		# PRINT TO GFF OUTPUT FILE    |
 		#-----------------------------+
 		
+		# LTR_seq predicts everything in the positive strand
+
 		# SET THE PROGRAM SOURCE
 		my $prog_src;
 		if ($param_name) {
@@ -556,7 +563,7 @@ sub ltrseq2gff {
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
-		    "$ltrseq_name"."_span\n";  # Features (Name)
+		    "$ltrseq_name\n";          # Features (Name)
 		
 		# 5' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
@@ -569,24 +576,13 @@ sub ltrseq2gff {
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
 
-#		# MID, Mid point of the LTR_retro?
-#		print GFFOUT "$seqname\t".     # Name of sequence
-#		    "$prog_src\t".             # Source name
-#		    "exon\t".                  # Feature, exon for Apollo
-#		    "$mid_start\t".            # Start of the 3'ltr
-#		    "$mid_end\t".              # End of the 3' ltr span
-#		    "$ltr_conf\t".             # Score, LTR Confidence Score
-#		    ".\t".                     # Strand
-#		    ".\t".                     # Frame
-#		    "$ltrseq_name\n";          # Features (Name)
-
 		# 3' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
 		    "$prog_src\t".             # Source name
 		    "three_prime_LTR\t".       # Feature, exon for Apollo
 		    "$ltr3_start\t".           # Start of the 3'ltr
 		    "$ltr3_end\t".             # End of the 3' ltr span
-		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    "$ltr_conf\t".             # LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
@@ -597,10 +593,10 @@ sub ltrseq2gff {
 		    # TSR 5 - 5' Target site duplication
 		    print GFFOUT "$seqname\t".     # Name of sequence
 			"$prog_src\t".             # Source name
-			"target_site_duplication\t".  # Feature, exon for Apollo
+			"target_site_duplication\t". # Feature
 			"$tsr5_start\t".           # Start of the 3'ltr
 			"$tsr5_end\t".             # End of the 3' ltr span
-			"$ltr_conf\t".             # Score, LTR Confidence Score
+			"$ltr_conf\t".             # LTR Confidence Score
 			".\t".                     # Strand
 			".\t".                     # Frame
 			"$ltrseq_name\n";          # Features (Name)
@@ -608,20 +604,19 @@ sub ltrseq2gff {
 		    # TSR - 5' Target site duplication
 		    print GFFOUT "$seqname\t".     # Name of sequence
 			"$prog_src\t".             # Source name
-			"target_site_duplication\t".  # Feature, exon for Apollo
+			"target_site_duplication\t". # Feature
 			"$tsr3_start\t".           # Start of the 3'ltr
 			"$tsr3_end\t".             # End of the 3' ltr span
-			"$ltr_conf\t".             # Score, LTR Confidence Score
+			"$ltr_conf\t".             # LTR Confidence Score
 			".\t".                     # Strand
 			".\t".                     # Frame
 			"$ltrseq_name\n";          # Features (Name)
 		} # End has_tsr
 
+	    } # end of num parts is 19
 
-	    }
 
-
-	    # 15 Parts is Rejected
+	    # 15 Parts are Rejected models
 
 	}
 	# HEADER INFORMATION
@@ -883,7 +878,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/06/2007
 
-UPDATED: 01/26/2009
+UPDATED: 01/27/2009
 
 VERSION: $Rev$
 
@@ -909,4 +904,5 @@ VERSION: $Rev$
 # - Added the ability to pass a configuration set name to the ltrseq2gff subfun
 #
 # 01/27/2009
-# -
+# - Updated GFF output to use LTR feature names instead of exon
+# - Added location of Target Site Duplications of GFF outfile
