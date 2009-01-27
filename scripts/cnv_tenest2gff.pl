@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 01/21/2009                                       |
+# UPDATED: 01/27/2009                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert TE Nest output to gff file format.               |
@@ -44,16 +44,17 @@ use File::Copy;                # Copy files
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my ($VERSION) = q$Rev:$ =~ /(\d+)/;
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # LOCAL VARIABLES             |
 #-----------------------------+
 
 # Set variable scope
-my $seqname;
+my $seqname = "seq";           # Can specify seq name in the command line
 my $infile;
 my $outfile;
+my $param_name;                # Name for the tenest parameter set.
 
 # Booleans
 my $verbose = 0;
@@ -73,6 +74,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "n|name=s"    => \$seqname,
 		    # OPTIONS
+		    "p|param=s"   => \$param_name,
 		    "verbose"     => \$verbose,
 		    "append"      => \$do_append,
 		    # BOOLEANS
@@ -85,7 +87,6 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-
 if ( ($show_usage) ) {
 #    print_help ("usage", File::Spec->rel2abs($0) );
     print_help ("usage", $0 );
@@ -103,25 +104,15 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\ncnv_genemark2gff.pl:\n".
+    print "\ncnv_tenest2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
-}
-
-#-----------------------------+
-# CHECK REQUIRED OPTIONS      |
-#-----------------------------+
-if ( (!$infile) || (!$outfile) || (!$seqname) ) {
-    print "ERROR: Input file was not specified\n" if (!$infile);
-    print "ERROR: Output file was not specified\n" if (!$outfile);
-    print "ERROR: Sequence name was not specified\n" if (!$seqname);
-    print_help("full");
 }
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
-tenest2gff ($infile, $outfile, $do_append, $seqname);
+tenest2gff ($do_append, $seqname, $infile, $outfile, $param_name);
 
 exit;
 
@@ -136,7 +127,7 @@ sub tenest2gff {
     # tenestin - path to the blast input file
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
-    my ($tenestin, $gffout, $append, $seqname) = @_;
+    my ($append, $seqname, $tenestin, $gffout, $param_set) = @_;
     my $tename;           # Name of the hit
     my $start;            # Start of the feature
     my $end;              # End of the feature
@@ -196,21 +187,44 @@ sub tenest2gff {
     my $nltr_nest_order;
     my $nltr_nest_level;
 
-    # Open the BLAST report object
-    open (TENESTIN,"<$tenestin")
-	|| die "Could not open TE-NEST input file:\n$tenestin.\n";
-    
-    # Open file handle to the gff outfile    
-    if ($append) {
-	open (GFFOUT, ">>$gffout") 
-	    || die "Can not open file:\n $gffout\n";
+    # OPEN THE TENEST INTPUT FILE
+    # Default is to expect input from standard input
+    if ($tenestin) {
+	open (TENESTIN,"<$tenestin")
+	    || die "Could not open TE-NEST input file:\n$tenestin.\n";
     }
     else {
-	open (GFFOUT, ">$gffout") 
-	    || die "Can not open file:\n $gffout\n";
+	print STDERR "Expecting input from STDIN\n";
+	open (TENESTIN, "<&STDIN") ||
+	    die "Can not accepte input from standard input.\n";
+    }
+
+    # OPEN OUTPUT FILE HANDLE
+    # Default to STDOUT if no argument given
+    if ($gffout) {
+	if ($append) {
+	    open (GFFOUT, ">>$gffout") 
+		|| die "Can not open file:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT, ">$gffout") 
+		|| die "Can not open file:\n $gffout\n";
+	}
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
     }
     
-    
+
+    # SET THE SOURCE
+    # This allows for the specification of the paramater set in the
+    # gff result fijle
+    my $source = "tenest";
+    if ($param_set) {
+	$source = $source.":".$param_set;
+    }
+
     while (<TENESTIN>) {
 	chomp;                   # Remove line endings
 	my @te_data = split;   # Split by spaces
@@ -263,7 +277,8 @@ sub tenest2gff {
 		    # Print output to gff file
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
-			"tenest\t".                  # Source
+#			"tenest\t".                  # Source
+			"$source\t".                 # Source
 			"exon\t".                    # Feature type name
 			$sol_coords[1]."\t".         # Start
 			$sol_coords[2]."\t".         # End
@@ -335,7 +350,8 @@ sub tenest2gff {
 			# Print output to gff file
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
-			    "tenest\t".                  # Source
+			    "$source\t".                 # Source
+#			    "tenest\t".                  # Source
 			    "exon\t".                    # Feature type name
 			    "$l_start\t".                # Start
 			    "$l_end\t".                  # End
@@ -398,7 +414,8 @@ sub tenest2gff {
 			# Print output to gff file
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
-			    "tenest\t".                  # Source
+			    "$source\t".                 # Source
+			    #"tenest\t".                  # Source
 			    "exon\t".                    # Feature type name
 			    "$r_start\t".                # Start
 			    "$r_end\t".                  # End
@@ -459,7 +476,8 @@ sub tenest2gff {
 			# Print output to gff file
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
-			    "tenest\t".                  # Source
+			    "$source\t".                 # Source
+			    #"tenest\t".                  # Source
 			    "exon\t".                    # Feature type name
 			    "$m_start\t".                # Start
 			    "$m_end\t".                  # End
@@ -524,7 +542,8 @@ sub tenest2gff {
 		    # Print output to gff file
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
-			"tenest\t".                  # Source
+			"$source\t".                 # Source
+			#"tenest\t".                  # Source
 			"exon\t".                    # Feature type name
 			$frag_coords[1]."\t".         # Start
 			$frag_coords[2]."\t".         # End
@@ -577,7 +596,8 @@ sub tenest2gff {
 		    # Print output to gff file
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
-			"tenest\t".                  # Source
+			#"tenest\t".                  # Source
+			"$source\t".                 # Source
 			"exon\t".                    # Feature type name
 			$nltr_coords[1]."\t".         # Start
 			$nltr_coords[2]."\t".         # End
@@ -684,36 +704,71 @@ sub tenest2gff {
 }
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"cnv_tenest2gff.pl -i InFile -o OutFile -n SeqName\n";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"  --name         # Name of the reference sequence\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --append       # Append results to an existing file\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
+
+
+1;
+__END__
 
 =head1 NAME
 
@@ -725,14 +780,16 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
     
-=head 2 Usage
+=head2 Usage
 
     cnv_tenest2gff.pl -i infile.txt -o outfile.gff
 
-=head 2 Required Arguments
+=head2 Required Arguments
 
     -i,--infile   # Path to the TE Nest result to convert
+                  # Expects input from standard input otherwise
     -o,--outfile  # Path to the gff format outfile
+                  # Writes output to standard output otherwise
 
 =head1 DESCRIPTION
 
@@ -740,21 +797,38 @@ Converts TE Nest output to gff format output. The gff file will label
 these features as 'exon' to make them compatible with the apollo genome
 annotation curation program.
 
-=head1 COMMAND LINE ARGUMENTS
+=head1 REQUIRED ARGUMENTS
+
+The following arguments are the most useful in using the cnv_tenest2gff.pl
+program. They are not actually required since the cnv_tenest2gff.p program
+will attempt to use a default name or path that makes sense.
 
 =over 2
 
 =item -i,--infile
 
-Path of the input file to convert.
+Path of the input file to convert. If an input file is not provided, the program
+will expect input from STDIN.
 
 =item -o,--outfile
 
-Path of the gff formatted output file that .
+Path of the gff formatted output file that . If an output path is not provided,
+the program will write output to STDOUT.
+
+=item -n,--name
+
+The sequence name to use in the GFF output file. Otherwise, this will
+just use 'seq' as the sequence name.
+
+=item -p, --param
+
+The name of the paramter set used. This will be appened to the data in the
+second column, and can be used to distinguish among parameter combinations
+for multiple applications of TE Nest to the same sequence file.
 
 =back
 
-=head2 Additional Information
+=head1 OPTIONS
 
 =over 2
 
@@ -850,7 +924,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/27/2007
 
-UPDATED: 01/21/2009
+UPDATED: 01/27/2009
 
 VERSION: $Rev$
 
@@ -868,3 +942,10 @@ VERSION: $Rev$
 # -Updating POD documentation
 # -Adding new help subfunction to extract help messages
 #  from POD documentation
+# -Added option to specify a parameter set name, this will
+#  be added to the second column of the gff output file and
+#  can be used to distinguish among parameter sets.
+# -Modified to accept input from STDIN when --infile not 
+#  specified
+# -Modiied to write otput to STDOUT when --outfile not
+#  specified
