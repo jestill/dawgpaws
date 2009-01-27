@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 09/17/2007                                       |
+# UPDATED: 01/27/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -28,6 +28,14 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+use Cwd;                       # Get the current working directory
+use File::Copy;                # Copy files
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -49,8 +57,8 @@ my $show_man = 0;
 my $show_version = 0;
 my $append = 0;                # Append gff output to existing file
 
-my $suffix = "default";        # Suffix appended to the end of the gff 
-                               # Source ie. 
+my $param;                    # Suffix appended to the end of the gff 
+my $seqname = "seq";          #
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -59,8 +67,9 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
-		    "s|suffix=s"  => \$suffix,
-		    "append"      => \$append,
+		    "p|param=s"   => \$param,
+		    "n|name=s"    => \$seqname,
+		    "append"      => \$append,  # Boolean, append to existing GFF
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -72,76 +81,101 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
-if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
-    exit;
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
-    system("perldoc $0");
+    system ("perldoc $0");
     exit($ok ? 0 : 2);
 }
 
-
-# Throw error if required options not present
-if ( (!$infile) || (!$outfile)  ) {
-    print "\a";
-    print "ERROR: Input file path required;" if !$infile;
-    print "ERROR: Output file path required" if !$outfile;
-    print_help("full");
+if ($show_version) {
+    print "\ncnv_tenest2gff.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
 }
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 
-ltrfinder2gff ("HEXTEST", $infile, $outfile, $append, $suffix);
+ltrfinder2gff ($seqname, $infile, $outfile, $append, $param);
 
-exit;
+exit 0;
 
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"cnv_ltrfinder2gff.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub ltrfinder2gff {
     
@@ -153,7 +187,11 @@ sub ltrfinder2gff {
     my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
     
     # The gff src id
-    my $gff_src = "ltr_finder:".$gff_suffix;
+    my $gff_src = "ltr_finder";
+    if ($gff_suffix) {
+	$gff_src = $gff_src.":".$gff_suffix;
+    }
+
     my $gff_str_out;        # A single out string line of gff out
 
     # LTF FINDER COUTNERS/INDICES
@@ -271,20 +309,35 @@ sub ltrfinder2gff {
     #-----------------------------+
     # OPEN GFF OUTFILE            |
     #-----------------------------+
-    if ($do_append) {
-	open (GFFOUT, ">>$gffout") ||
-	    die "ERROR: Can not open gff outfile:\n $gffout\n";
-    }
+    # Default to STDOUT if no arguemtn given
+    if ($gffout) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT,">$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+    } 
     else {
-	open (GFFOUT,">$gffout") ||
-	    die "ERROR: Can not open gff outfile:\n $gffout\n";
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
     }
 
     #-----------------------------+
     # OPEN INPUT FILE             |
     #-----------------------------+
-    open (INFILE, "<$lf_infile") ||
-	die "ERROR: Can not open LTR_FINDER result file\n $lf_infile\n";
+    if ($lf_infile) {
+	open (INFILE, "<$lf_infile") ||
+	    die "ERROR: Can not open LTR_FINDER result file\n $lf_infile\n";
+	
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accepte input from standard input.\n";
+    }
 
     while (<INFILE>) {
 	chomp;
@@ -327,7 +380,7 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".              # Strand
 		    ".\t".                       # Frame
 		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-		print STDOUT $gff_str_out;
+		#print STDOUT $gff_str_out;
 		print GFFOUT $gff_str_out;
 		
 
@@ -341,7 +394,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".             # Strand
 			".\t".                      # Frame
 			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		}
 
@@ -357,7 +410,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".             # Strand
 			".\t".                      # Frame
 			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		}
 
@@ -372,7 +425,7 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 print STDOUT $gff_str_out;
+		 #print STDOUT $gff_str_out;
 		 print GFFOUT $gff_str_out;
 
 		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
@@ -385,7 +438,7 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 print STDOUT $gff_str_out;
+		 #print STDOUT $gff_str_out;
 		 print GFFOUT $gff_str_out;
 
 		if ($has_tsr) {
@@ -400,7 +453,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;	    
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -412,7 +465,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		}
@@ -432,7 +485,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    #/////////
@@ -447,7 +500,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		} # End of has in_core
@@ -467,7 +520,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -479,7 +532,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		} # End of has_in_cterm
@@ -498,7 +551,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -510,7 +563,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 		    
 		}
@@ -529,7 +582,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -541,7 +594,7 @@ sub ltrfinder2gff {
 			"$lf_strand\t".              # Strand
 			".\t".                       # Frame
 			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    print STDOUT $gff_str_out;
+		    #print STDOUT $gff_str_out;
 		    print GFFOUT $gff_str_out;
 
 		} # End of has_reverse_transcriptase
@@ -737,7 +790,7 @@ sub ltrfinder2gff {
 	"$lf_strand\t".              # Strand
 	".\t".                       # Frame
 	"ltr_finder_$lf_ltr_id\n";   # Retro ID
-    print STDOUT $gff_str_out;
+    #print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     
@@ -751,7 +804,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
@@ -767,7 +820,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
@@ -782,7 +835,7 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    print STDOUT $gff_str_out;
+    #print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     $gff_str_out = "$lf_seq_id\t".  # Seq ID
@@ -795,7 +848,7 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    print STDOUT $gff_str_out;
+    #print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     if ($has_tsr) {
@@ -810,7 +863,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;	    
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -822,7 +875,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -842,7 +895,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	#/////////
@@ -857,7 +910,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has in_core
@@ -877,7 +930,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -889,7 +942,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_in_cterm
@@ -908,7 +961,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -920,7 +973,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -939,7 +992,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -951,7 +1004,7 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	print STDOUT $gff_str_out;
+	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_reverse_transcriptase
@@ -1030,6 +1083,9 @@ sub ltrfinder2gff {
 
 } # End of ltrfinder2gff subfunction
 
+1;
+__END__
+
 =head1 NAME
 
 cnv_ltrfinder2gff.pl - Converts LTR_Finder output to gff format
@@ -1040,9 +1096,12 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    cnv_ltrfinder2gff.pl -i InFile -o OutDir
-    
+=head2 Usage
+
+    cnv_ltrfinder2gff.pl -i infile.txt -o outfile.txt
+
+=head2 Required Arguments
+
     --infile        # Path to the input file
                     # Result from a single record fasta file
     --outdir        # Base output dir
@@ -1055,30 +1114,41 @@ from ltr_finder correspons to a single BAC. A suffix can be passed with the
 run default ltr_finder results with --suffix def to create 
 ltr_finder:def. T
 
-In addition to printing to the GFF file handle, this will also print
-all results to STDOUT.
-
-=head1 COMMAND LINE ARGUMENTS
-
-=head 2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file. If an input file is not provided, the program
+will expect input from STDIN.
 
 =item -o,--outfile
 
-Path of the output file.
+Path of the output file.  If an output path is not provided,
+the program will write output to STDOUT.
 
 =back
 
-=head1 Additional Options
-
-=over
+=head1 OPTIONS
 
 =over 2
+
+=item -n,--name
+
+The sequence name to use in the GFF output file. Otherwise, this will
+just use 'seq' as the sequence name.
+
+=item -p, --param
+
+The name of the paramter set used. This will be appened to the data in the
+second column of the GFF file, and can be used to distinguish among 
+parameter combinations
+for multiple applications of ltrfinder to the same sequence file.
+
+=item --apend
+
+Append the GFF output to the gff file indicate by the --outfile option.
 
 =item --usage
 
@@ -1127,9 +1197,12 @@ Any known bugs and limitations will be listed here.
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU General Public License, Version 3
 
-http://www.gnu.org/licenses/lgpl.html
+L<http://www.gnu.org/licenses/gpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
@@ -1139,7 +1212,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/14/2007
 
-UPDATED: 10/02/2007
+UPDATED: 01/27/2009
 
 VERSION: $Rev$
 
@@ -1161,3 +1234,11 @@ VERSION: $Rev$
 # 10/02/2007
 # - Finishing gff output, now saving to string to write to
 #   both gffout and stdout.
+# 01/27/2009
+# - Modifying program to use the print_help subfunction that
+#   extracts the help message from the POD documentation
+# - Updated POD documentation
+# - Modified to accept intput from STDIN when --infile not
+#   specified at the command line
+# - Modified to write output to STOUT when --outfile not
+#   specified at the command line
