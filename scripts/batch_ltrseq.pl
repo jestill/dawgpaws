@@ -797,10 +797,97 @@ An example configuration file is shown below:
 
     def     DEF
     long    long_ltr.cfg
-    old     lod_ltr.cfg
+    old     old_ltr.cfg
 
-This configuration file would run three sets of parameter files for every
-sequence in the input directory.
+This configuration file would run three sets of LTR_seq configurations
+for every sequence in the input directory. These configurations would
+include (1) the default parameter set, (2) the parameter set name long
+that is specified by the LTR_seq config file long_ltr.cfg, and (3) the
+parameter set name old that is specified by the parameter set old_ltr.cfg.
+
+Please see the LTR_seq documentation for specific information on the 
+LTR_seq configuration files. The configuration files in LTR_seq allow you 
+to specifiy the following parameters:
+
+=over 2
+
+=item * Dmin
+
+The starting positions of the 5' and 3' LTRs should be separated by a minimum 
+of this distance in base pairs.
+
+=item * Dmax
+
+The starting positions of the 5' and 3' LTRs should be separated by a maximum 
+of this distance in base pairs.
+
+=item * LTRmax
+
+The 5' and 3' LTRs can individually span a maximum of this distance in base
+pairs.
+
+=item * LTRmin
+
+The 5' and 3' LTRs can individually span a minimum of this distance in 
+base pairs.
+
+=item * LTRminExactMatch
+
+The 5' and 3' LTRs should contain an exact match of this length in
+base pairs.
+
+=item * match
+
+Dynamic programming score for a match (alignment).
+
+=item * mismatch
+
+Dynamic programming score for a mismatch (alignment).
+
+=item * hgap
+
+Dynamic programming score for a gap opening (alignment).
+
+=item * gap
+
+Dynamic programming score for a gap continuation (alignment).
+
+=item * AlignmentWithN 
+
+Dynamic programming score for aligning an `N' with any other base (alignment).
+
+=item * MaxScoreRatioThreshold
+
+Dynamic programming score threshold in percentage. This allows upto 15% 
+difference in the scores of the optimal alignment vs. the best possible 
+alignment given 100% identity.
+
+=item * TSR_len
+
+Length of the target site repeat.
+
+=item * window
+
+The LTR_seq documentation specifies that this parameter should not be
+changed and is for internal use only.
+
+=back
+
+An example LTR_seq config file is shown below:
+
+    window  12
+    Dmin 600
+    Dmax 15000
+    LTRmax 2000
+    match 2
+    mismatch -5
+    gap -1
+    hgap -6
+    AlignmentWithN -5
+    MaxScoreRatioThreshold  15
+    LTRmin 100
+    TSR_len 6
+    LTRminExactMatch 30
 
 =head2 Environment
 
