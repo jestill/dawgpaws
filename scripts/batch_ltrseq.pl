@@ -204,7 +204,6 @@ else {
     $config_opts[0][1] = "DEF";       # Tag as default config
 }
 
-
 #-----------------------------+
 # CHECK TO SEE IF THE LTRSEQ  |
 # CONFIG FILE EXISTS          |
@@ -483,7 +482,7 @@ sub ltrseq2gff {
 	    #-----------------------------+
 	    elsif ($num_in == 19) {
 		#print "\tACCEPTED\n";
-		print "\n".$_."\n";
+		#print "\n".$_."\n";
 		$ltrseq_num++;              # Increment the count
 
 		$ltr5_start = $in_split[4] || "NULL";
@@ -502,12 +501,28 @@ sub ltrseq2gff {
 
 		$ltrseq_name = $seqname."_ltrseq_".$ltrseq_num;
 
+		#-----------------------------+
+		# GET TSR LOCATIONS           |
+		#-----------------------------+
+		# The location of the math to generate these will
+		# be strand dependent.
+		my $has_tsr = 0;
 		if ($ltr_tsr =~ m/\#(.*)\#/) {
 		    $ltr_tsr = $1;
+		    $has_tsr = 1;
+
+		    my $ltr_tsr_len = length($ltr_tsr);
+		    my $tsr5_start = $ltr5_start - $ltr_tsr_len - 1;
+		    my $tsr5_end = $ltr5_start - 1;
+		    my $tsr3_start = $ltr3_end + 1;
+		    my $tsr3_end = $ltr3_end + $ltr_tsr_len  + 1;
+
 		}
 
+
+		#-----------------------------+
 		# SHOW INFO IF VERBOSE
-		
+		#-----------------------------+
 		if ($verbose) {
 		    print STDERR "$ltrseq_name\n";
 		    print STDERR "\tSTART:    $ltrspan_start\n";
@@ -522,25 +537,31 @@ sub ltrseq2gff {
 		#-----------------------------+
 		# PRINT TO GFF OUTPUT FILE    |
 		#-----------------------------+
-		# May want to allow choice for showing
-		# Details or not
-
-#		# LTR RETRO PREDICTION SPAN
-#		print GFFOUT "$seqname\t".     # Name of sequence
-#		    "LTR_seq:span\t".          # Source name
-#		    "exon\t".                  # Feature, exon for Apollo
-#		    "$ltrspan_start\t".        # Start of the ltr span
-#		    "$ltrspan_end\t".          # End of the ltr span
-#		    "$ltr_conf\t".             # Score, LTR Confidence Score
-#		    ".\t".                     # Strand
-#		    ".\t".                     # Frame
-#		    "$ltrseq_name"."_span\n";  # Features (Name)
 		
+		# SET THE PROGRAM SOURCE
+		my $prog_src;
+		if ($param_name) {
+		    $prog_src = "LTR_seq:".$param_name;
+		}
+		else {
+		    $prog_src = "LTR_seq";
+		}
+
+		# LTR RETRO PREDICTION SPAN
+		print GFFOUT "$seqname\t".     # Name of sequence
+		    "$prog_src\t".             # Source name
+		    "LTR_retrotransposon\t".   # Feature, exon for Apollo
+		    "$ltrspan_start\t".        # Start of the ltr span
+		    "$ltrspan_end\t".          # End of the ltr span
+		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    ".\t".                     # Strand
+		    ".\t".                     # Frame
+		    "$ltrseq_name"."_span\n";  # Features (Name)
 		
 		# 5' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
+		    "$prog_src\t".             # Source name
+		    "five_prime_LTR\t".        # Feature, exon for Apollo
 		    "$ltr5_start\t".           # Start of the 5'ltr
 		    "$ltr5_end\t".             # End of the 5' ltr span
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
@@ -548,27 +569,54 @@ sub ltrseq2gff {
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
 
-		# MID
-		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
-		    "$mid_start\t".            # Start of the 3'ltr
-		    "$mid_end\t".              # End of the 3' ltr span
-		    "$ltr_conf\t".             # Score, LTR Confidence Score
-		    ".\t".                     # Strand
-		    ".\t".                     # Frame
-		    "$ltrseq_name\n";          # Features (Name)
+#		# MID, Mid point of the LTR_retro?
+#		print GFFOUT "$seqname\t".     # Name of sequence
+#		    "$prog_src\t".             # Source name
+#		    "exon\t".                  # Feature, exon for Apollo
+#		    "$mid_start\t".            # Start of the 3'ltr
+#		    "$mid_end\t".              # End of the 3' ltr span
+#		    "$ltr_conf\t".             # Score, LTR Confidence Score
+#		    ".\t".                     # Strand
+#		    ".\t".                     # Frame
+#		    "$ltrseq_name\n";          # Features (Name)
 
 		# 3' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
+		    "$prog_src\t".             # Source name
+		    "three_prime_LTR\t".       # Feature, exon for Apollo
 		    "$ltr3_start\t".           # Start of the 3'ltr
 		    "$ltr3_end\t".             # End of the 3' ltr span
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
+
+		# REPORT TSRs IF PRESENT AND KNOWN
+		if ($has_tsr) {
+
+		    # TSR 5 - 5' Target site duplication
+		    print GFFOUT "$seqname\t".     # Name of sequence
+			"$prog_src\t".             # Source name
+			"target_site_duplication\t".  # Feature, exon for Apollo
+			"$tsr5_start\t".           # Start of the 3'ltr
+			"$tsr5_end\t".             # End of the 3' ltr span
+			"$ltr_conf\t".             # Score, LTR Confidence Score
+			".\t".                     # Strand
+			".\t".                     # Frame
+			"$ltrseq_name\n";          # Features (Name)
+
+		    # TSR - 5' Target site duplication
+		    print GFFOUT "$seqname\t".     # Name of sequence
+			"$prog_src\t".             # Source name
+			"target_site_duplication\t".  # Feature, exon for Apollo
+			"$tsr3_start\t".           # Start of the 3'ltr
+			"$tsr3_end\t".             # End of the 3' ltr span
+			"$ltr_conf\t".             # Score, LTR Confidence Score
+			".\t".                     # Strand
+			".\t".                     # Frame
+			"$ltrseq_name\n";          # Features (Name)
+		} # End has_tsr
+
 
 	    }
 
@@ -615,7 +663,7 @@ This documentation refers to program version $Rev$
 
 =head1 DESCRIPTION
 
-This program runs the ltrseq program for each file in the input directory.
+This program runs the LTR_seq program for each file in the input directory.
 An optional configuartion file can also be used to run the LTR_seq program
 for multiple LTR_seq parameter combinations. If no configuration file is
 provided, batch_ltrseq.pl will run LTR_seq using default parameters.
@@ -859,3 +907,6 @@ VERSION: $Rev$
 # - Adding the ability to accept a configuration file
 # - Added the ltrseq2gff subfunction
 # - Added the ability to pass a configuration set name to the ltrseq2gff subfun
+#
+# 01/27/2009
+# -
