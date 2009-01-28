@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 01/27/2009                                       |
+# UPDATED: 01/28/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -336,7 +336,7 @@ sub ltrfinder2gff {
     else {
 	print STDERR "Expecting input from STDIN\n";
 	open (INFILE, "<&STDIN") ||
-	    die "Can not accepte input from standard input.\n";
+	    die "Can not accept input from standard input.\n";
     }
 
     while (<INFILE>) {
@@ -1098,7 +1098,7 @@ This documentation refers to program version $Rev$
 
 =head2 Usage
 
-    cnv_ltrfinder2gff.pl -i infile.txt -o outfile.txt
+    cnv_ltrfinder2gff.pl -i lf_result.txt -o lf_result.gff
 
 =head2 Required Arguments
 
@@ -1148,7 +1148,10 @@ for multiple applications of ltrfinder to the same sequence file.
 
 =item --apend
 
-Append the GFF output to the gff file indicate by the --outfile option.
+Append the GFF output to the gff file indicate by the --outfile option. This
+allows you to append results from multiple programs to a single GFF file, but
+it is generally recommended to create separate GFF files and concatenate
+them at a later stage.
 
 =item --usage
 
@@ -1175,25 +1178,70 @@ Run the program with minimal output.
 
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+Error messages that you may encounter and possible solutions are listed below:
+
+=over 2
+
+=item Expecting input from STDIN
+
+If a file is not specified by the -i or --infile option, the program will
+expect to receive intput from standard input.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use of a configuartion file or variables set 
+in the user's environment.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+=head2 Software
+
+This program requires the following software:
+
+=over
+
+=item * LTR Finder
+
+This program parses output from the LTR finder program. It is possible to
+obtain a linux binary by contacting the authors : xuzh <at> fudan.edu.cn.
+It is also possible to obtain these results using the LTR_FINDER web page:
+http://tlife.fudan.edu.cn/ltr_finder/
+
+=back
+
+=head2 Perl Modules
+
+This program does not make use of perl modules beyond those installed
+with the basic Perl package. If you discover a dependency that is not
+documented here, please email the author or file a bug report.
 
 =head1 BUGS AND LIMITATIONS
 
 Any known bugs and limitations will be listed here.
+
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over 2
+
+=item * Limited Testing with LTR_FINDER versions
+
+This program is known to parse the results from LTR_FINDER v 1.0.2. This 
+program has not been tested with the results from the LTR_FINDER web site.
+
+=back
 
 =head1 LICENSE
 
@@ -1212,7 +1260,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/14/2007
 
-UPDATED: 01/27/2009
+UPDATED: 01/28/2009
 
 VERSION: $Rev$
 
@@ -1242,3 +1290,5 @@ VERSION: $Rev$
 #   specified at the command line
 # - Modified to write output to STOUT when --outfile not
 #   specified at the command line
+# 01/28/2009
+# - Finished update of POD documentation
