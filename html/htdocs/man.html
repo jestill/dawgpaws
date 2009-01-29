@@ -638,7 +638,17 @@ The entire DAWG-PAWS process assumes that each FASTA file contains a
 single record representing a large contig such as a B. If your query
 sequence file contains multiple fasta
 files, you will first need to split the fasta file into individual
-records.<br>
+records. For example if you had a multiple record fasta file name
+multi_fasta.fasta you could split it into a single fasta file for each
+record using the following command:<br>
+<br>
+<pre class="prettyprint"><span class="str">  &gt;cnv_seq2dir.pl -i multi_fasta.fasta -f fasta -o outdir/</span><span
+ class="pln"></span></pre>
+It is actually possible to read input sequences in any record format
+that is compatible with the <a
+ href="http://www.bioperl.org/wiki/HOWTO:SeqIO#Formats">bioperl SeqIO
+format</a>. The format is specified with the -f&nbsp; option. The
+output files will always be generated in the fasta format.<br>
 <br>
 <h1><a name="prep_fasta_shorten"></a>2. Rename FASTA files to a short
 unique name</h1>
@@ -1754,7 +1764,9 @@ queuing system</dd>
   <dt>cnv_repmask2gff.pl</dt>
   <dd>Convert a single output file from RepeatMasker to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_repseek2gff.html">cnv_repseek2gff.pl</a></dt>
-  <dd>Convert a single output from RepSeek to GFF format.<br>
+  <dd>Convert a single output from RepSeek to GFF format.</dd>
+  <dt style="font-weight: bold;"><a href="man/cnv_seq2dir.html">cnv_seq2dir.pl</a></dt>
+  <dd>Convert a multiple record sequence file to multiple files.<br>
   </dd>
   <dt style="font-weight: bold;"><a href="man/cnv_ta2ap.html">cnv_ta2ap.pl<br>
     </a></dt>
