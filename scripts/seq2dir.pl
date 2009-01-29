@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# seq2dir.pl - Split sequence file to dir of fasta files    | 
+# cnv_seq2dir.pl - Split sequence file to dir of seq files  | 
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
@@ -19,7 +19,7 @@
 #                                                           |
 # Usage:                                                    |
 #                                                           |
-#  Fasta2Dir.pl BigFastaFile.fasta fasta IndFiles.fasta     |
+#  cnv_seq2dir.pl
 #  Fasta2Dir.pl ArabidopsisGenes.xml tigr InGenes.fasta     |
 #                                                           |
 #-----------------------------------------------------------+
@@ -29,17 +29,55 @@
 #-----------------------------+
 use Bio::SeqIO;               # Read and write seq files
 use Cwd;                      # Get the current working directory
+use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+use Cwd;                       # Get the current working directory
+use File::Copy;                # Copy files
 
 #-----------------------------+
 # CMD LINE                    |
 #-----------------------------+
-my $usage = "Fasta2Dir.pl infile infileformat outfile \n";
+#my $usage = "Fasta2Dir.pl infile infileformat outfile \n";
+#
+#my $infile = shift or die $usage;
+#my $infileformat = shift or die $usage;
+#my $outfile = shift or die $usage;  # The name that will be used 
+#                                    # as the prefix for the output files. 
+#                                    # (ie. Output0000001, Output0000002, ..etc)
 
-my $infile = shift or die $usage;
-my $infileformat = shift or die $usage;
-my $outfile = shift or die $usage;  # The name that will be used 
-                                    # as the prefix for the output files. 
-                                    # (ie. Output0000001, Output0000002, ..etc)
+
+# Booleans
+my $quiet = 0;
+my $verbose = 0;
+my $show_help = 0;
+my $show_usage = 0;
+my $show_man = 0;
+my $show_version = 0;
+
+#-----------------------------+
+# COMMAND LINE OPTIONS        |
+#-----------------------------+
+my $ok = GetOptions(# REQUIRED OPTIONS
+		    "i|infile=s"  => \$infile,
+		    "f|format=s"  => \$infileformat,
+                    "o|outfile=s" => \$outfile,
+		    # ADDITIONAL OPTIONS
+		    "p|param=s"   => \$findltr_suffix,
+		    "append"      => \$do_gff_append,
+		    "q|quiet"     => \$quiet,
+		    "verbose"     => \$verbose,
+		    # ADDITIONAL INFORMATION
+		    "usage"       => \$show_usage,
+		    "version"     => \$show_version,
+		    "man"         => \$show_man,
+		    "h|help"      => \$show_help,);
+
+
 
 # Get the current working directory
 my $CurrentDir = cwd();
@@ -88,3 +126,6 @@ exit;
 # 01/26/2008
 #  - Changed default outfile name to the header name for
 #    the sequence file from the fasta record
+# 01/29/2009
+#  - Added command line switches
+#  - Added print_help subfunction
