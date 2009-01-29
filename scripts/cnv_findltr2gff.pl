@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/13/2007                                       |
-# UPDATED: 09/14/2007                                       |
+# UPDATED: 01/29/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the find_ltr.pl program to gff      |
@@ -30,6 +30,15 @@ package DAWGPAWS;
 use strict;
 use Getopt::Long;
 
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
+use Cwd;                       # Get the current working directory
+use File::Copy;                # Copy files
+
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
@@ -40,8 +49,8 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 my $infile;
 my $outfile;
-my $inseqname;
-my $findltr_suffix = "def";    # find_ltr_suffix
+my $inseqname = "seq";         # Default name is seq
+my $findltr_suffix;            # Parameter name
 
 # Booleans
 my $do_gff_append = 0;
@@ -60,7 +69,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "s|seqname=s" => \$inseqname,
 		    # ADDITIONAL OPTIONS
-		    "suffix"      => \$findltr_suffix,
+		    "p|param=s"   => \$findltr_suffix,
 		    "append"      => \$do_gff_append,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -70,36 +79,29 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
 
+
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( $show_usage ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
-if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
-    exit;
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
-    system("perldoc $0");
+    system ("perldoc $0");
     exit($ok ? 0 : 2);
 }
 
-# SHOW HELP IF REQUIRED VARIABLES NOT PRESENT
-
-if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
-    print "\a";
-    print "ERROR: An input file must be specified\n" if (!$infile); 
-    print "ERROR: An output file must be specified\n" if (!$outfile);
-    print "ERROR: A sequence name must be specified\n" if (!$inseqname);
-    print_help("full");
+if ($show_version) {
+    print "\ncnv_tenest2gff.pl:\n".
+	"Version: $VERSION\n\n";
     exit;
 }
 
@@ -118,39 +120,68 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"  --seqname      # Name to use in seqname column in gff file".
-	"\n".
-	"OPTIONS::\n".
-	"  --suffix       # Suffix added to the gff source name".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
-}
+    $pipe->close();
+    close TMPSTDIN;
 
+    print "\n";
+
+    exit 0;
+   
+}
 
 sub findltr2gff {
 
@@ -185,18 +216,32 @@ sub findltr2gff {
     #-----------------------------+
     # OPEN FILES                  |
     #-----------------------------+
-    open (INFILE, "<$findltr_in") ||
-	die "Can not open input file:\n$findltr_in\n";
-
-    if ($append_gff) {
-	open (GFFOUT, ">>$gff_out") ||
-	    die "Could not open output file for appending\n$gff_out\n";
+    if ($findltr_in) {
+	open (INFILE, "<$findltr_in") ||
+	    die "Can not open input file:\n$findltr_in\n";
     }
     else {
-	open (GFFOUT, ">$gff_out") ||
-	    die "Could not open output file for output\n$gff_out\n";
-    } # End of if append_gff
-    
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+
+
+    if ($gff_out) {
+	if ($append_gff) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "Could not open output file for appending\n$gff_out\n";
+	}
+	else {
+	    open (GFFOUT, ">$gff_out") ||
+		die "Could not open output file for output\n$gff_out\n";
+	} # End of if append_gff
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
     #-----------------------------+
     # PROCESS INFILE              |
     #-----------------------------+
@@ -226,12 +271,17 @@ sub findltr2gff {
 	    $mid_end = $ltr3_start - 1;   
 
 	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
-	    $gff_source = "findltr:".$gff_suffix;
+	    
+	    # Append parameter name if passed
+	    $gff_source = "findltr";
+	    if ($gff_suffix) {
+		$gff_source = $gff_source.":".$gff_suffix;
+	    }
 
-	    # 5'LTR
+	    # FULL LTR Retrotransposon Span
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
+		"LTR_retrotransposon\t".
 		"$ltr5_start\t".       # Feature start
 		"$ltr5_end\t".	       # Feature end
 		".\t".                 # Score, Could use $ltr_similarity
@@ -239,21 +289,21 @@ sub findltr2gff {
 		".\t".                 # Frame
 		"$findltr_name\n";     # Features (name)
 
-	    # MID
+	    # 5'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
-		"$mid_start\t".        # Feature start
-		"$mid_end\t".	       # Feature end
+		"five_prime_LTR\t".
+		"$ltr5_start\t".       # Feature start
+		"$ltr5_end\t".	       # Feature end
 		".\t".                 # Score, Could use $ltr_similarity
 		"$ltr_strand\t".         # Strand
 		".\t".                 # Frame
 		"$findltr_name\n";     # Features (name)
-	    
+
 	    # 3'LTR
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
-		"exon\t".              # Features, exon for Apollo
+		"three_prime_LTR\t".
 		"$ltr3_start\t".       # Feature start
 		"$ltr3_end\t".	       # Feature end
 		".\t".                 # Score, Could use $ltr_similarity
@@ -278,41 +328,50 @@ This documentation refers to version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    cnv_findltr2gff.pl -i InFile.ltrpos -o OutFile.gff [-suffix def]
-    
-    --infile        # Path to the ltrpos input file 
-    --outfie        # Path to the gff format output file
-    --seqname       # Name to use in seqname column in gff file
-    --suffix        # Name of use as a suffix in the gff source column
+=head2 Usage
+
+    cnv_findltr2gff.pl -i infile.ltrpos -o outfile.gff [--seqname HEX451]
+
+=head2 Required Arguments
+
+    --i        # Path to the ltrpos input file 
+               # Defaults to STDIN if not specified
+    --o        # Path to the gff format output file
+               # Defaults to STDOUT if not specified
+    --s        # Identifier for the annotated sequence
+    --p        # Name of use as a suffix in the gff source column
+               # This is generally the parameter set used
 
 =head1 DESCRIPTION
 
 Converts output from the find_ltr.pl ltr annotation program to 
-the standard gff format.
+the standard gff format. The find_ltr.pl program is a component of
+the LTR DeNovo package 
+( http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz ) 
+described in Rho, M., J. H. Choi, et al. (2007). BMC Genomics 8: 90.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file. This is a computational result from the find_ltr.pl
+program.  If an input file is not provided, the program
+will expect input from STDIN.
 
 =item -o,--outfile
 
-Path of the output file.
-
+Path of the output file.  If an output path is not provided,
+the program will write output to STDOUT.
 
 =back
 
-=head2 Additional Options
+=head1 OPTIONS
 
 =over 2
 
-=item --suffix
+=item -p, --param
 
 Name to use as the suffix when naming the source in the gff output. This
 can be used to distinguish among find_ltr runs that used different paramater
@@ -321,6 +380,18 @@ unique for each parameter set result. For example the default parameter set
 could be given a I<def> suffix while and alternate paramater set could
 be given the suffix I<alt>. This will produce gff source lines of
 I<findltr:def> and I<findltr:alt>.
+
+=item -s,--seqname
+
+The name of the sequence that is being annotated. This is placed in the 
+first field of the gff output file.
+
+=item --apend
+
+Append the GFF output to the gff file indicate by the --outfile option. This
+allows you to append results from multiple programs to a single GFF file, but
+it is generally recommended to create separate GFF files and concatenate
+them at a later stage.
 
 =item -q,--quiet
 
@@ -332,72 +403,89 @@ Run the program in verbose mode.
 
 =back
 
-=head2 Additional Information
+=head1 DIAGNOSTICS
+
+
+Error messages that you may encounter and possible solutions are listed below:
 
 =over 2
 
-=item --usage
+=item Expecting input from STDIN
 
-Short overview of how to use program from command line.
-
-=item --help
-
-Show program usage with summary of options.
-
-=item --version
-
-Show program version.
-
-=item --man
-
-Show the full program manual. This uses the perldoc command to print the 
-POD documentation for the program.
+If a file is not specified by the -i or --infile option, the program will
+expect to receive intput from standard input.
 
 =back
 
-=head1 DIAGNOSTICS
-
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
-
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use of a configuration file or variables set
+in the user's environment.
 
 =head1 DEPENDENCIES
 
-B<ltr_finder Program>
+=head2 Software
+
+The following software is required for this program:
+
+=over 2 
+
+=item *ltr_finder Program
 
 This program is designed to parse output from the ltr_finder.pl
-program. H<http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz>
+program. http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz
 
 M Rho et al. 2007. I<'De novo identificatio of LTR retrotransposons
 in eukaryotic genomes'> BMC Genomics 8:90.
+
+=back
+
+=head2 Perl Modules
+
+This program does not make use of perl modules beyond those installed
+with the basic Perl package. If you discover a dependency that is not
+documented here, please email the author or file a bug report.
 
 =head1 BUGS AND LIMITATIONS
 
 Any known bugs and limitations will be listed here.
 
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over 2
+
+=item * Works with 2008 version of find_ltr.pl
+
+This program can parse results generated by the find_ltr.p program 
+as downloaded from
+http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz
+in 2008.
+
+=back
+
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU General Public License, Version 3
 
-http://www.gnu.org/licenses/lgpl.html
+L<http://www.gnu.org/licenses/gpl.html>
 
-=head1 AUTHOR
-
-James C. Estill E<lt>JamesEstill at gmail.comE<gt>
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 HISTORY
 
 STARTED: 09/13/2007
 
-UPDATED: 09/14/2007
+UPDATED: 01/29/2009
 
 VERSION: $Rev$
 
@@ -412,3 +500,11 @@ VERSION: $Rev$
 # - Added the suffix to the gff_source variable this allows
 #   for different parameter sets to recieve unique names in
 #   the gff output file.
+# 01/29/2009
+# -Updating POD documentation
+# -Adding input from STDIN output to STDOUT
+# -Added help function to extract help from POD doc
+# -Dropped required variables (infile,outfile,seqname
+#  replaced with STDIN,STDOUT and seq
+# -Replaced exon if gff names with names of objects
+
