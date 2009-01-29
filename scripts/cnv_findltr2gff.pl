@@ -334,12 +334,12 @@ This documentation refers to version $Rev$
 
 =head2 Required Arguments
 
-    --i        # Path to the ltrpos input file 
+    -i         # Path to the ltrpos input file 
                # Defaults to STDIN if not specified
-    --o        # Path to the gff format output file
+    -o         # Path to the gff format output file
                # Defaults to STDOUT if not specified
-    --s        # Identifier for the annotated sequence
-    --p        # Name of use as a suffix in the gff source column
+    -s         # Identifier for the annotated sequence
+    -p         # Name of use as a suffix in the gff source column
                # This is generally the parameter set used
 
 =head1 DESCRIPTION
@@ -404,7 +404,6 @@ Run the program in verbose mode.
 =back
 
 =head1 DIAGNOSTICS
-
 
 Error messages that you may encounter and possible solutions are listed below:
 
