@@ -635,13 +635,13 @@ Directory Structure</a> below. </p>
 represents the command line prompt. </p>
 <h1><a name="prep_split_multifasta"></a>1. Split MutliFASTA Files</h1>
 The entire DAWG-PAWS process assumes that each FASTA file contains a
-single record representing a large contig such as a B. If your query
+single record representing a large contig such as an individual BAC,
+YAC or chromosome pseudomolecule. If your query
 sequence file contains multiple fasta
 files, you will first need to split the fasta file into individual
 records. For example if you had a multiple record fasta file name
 multi_fasta.fasta you could split it into a single fasta file for each
 record using the following command:<br>
-<br>
 <pre class="prettyprint"><span class="str">  &gt;cnv_seq2dir.pl -i multi_fasta.fasta -f fasta -o outdir/</span><span
  class="pln"></span></pre>
 It is actually possible to read input sequences in any record format
@@ -1744,6 +1744,9 @@ files.</dd>
   <dt style="font-weight: bold;"><a href="man/clust_write_shell.html">clust_write_shell.pl</a></dt>
   <dd>Write shell scripts for the Platform LSF
 queuing system</dd>
+  <dt style="font-weight: bold;"><a href="man/cnv_blast2gff.html">cnv_blast2gff.pl</a></dt>
+  <dd>Convert BLAST output to the gff format.<br>
+  </dd>
   <dt>cnv_fgenesh2gff.pl</dt>
   <dd>Convert a single FGENESH output to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_findltr2gff.html">cnv_findltr2gff.pl</a></dt>
