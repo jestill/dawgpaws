@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 01/30/2009                                       |
+# UPDATED: 01/31/2009                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert blast output to a Apollo compatible gff file.    |
@@ -16,7 +16,7 @@
 #  cnv_blast2gff.pl -i infile.bln -o blast_out.gff          |
 #                                                           |
 # VERSION:                                                  |
-#  $Rev$                                                    |
+#  $Rev$                                              |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -42,7 +42,7 @@ use File::Spec;                # Convert a relative path to an abosolute path
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my ($VERSION) = q$Rev:$ =~ /(\d+)/;
+my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
 #-----------------------------+
 # LOCAL VARIABLES             |
@@ -95,24 +95,28 @@ my $ok = GetOptions(# REQUIRED
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( $show_usage ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
-if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
-    exit;
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
-    system("perldoc $0");
+    system ("perldoc $0");
     exit($ok ? 0 : 2);
 }
+
+if ($show_version) {
+    print "\ncnv_blast2gff.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
+}
+
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
@@ -322,34 +326,66 @@ sub blast2gff {
 }
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"cnv_blast2gff.pl -i InFile -o OutFile\n";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --append       # Append results to an existing file\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
 =head1 NAME
@@ -569,7 +605,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/06/2007
 
-UPDATED: 01/30/2009
+UPDATED: 01/31/2009
 
 VERSION: $Rev$
 
@@ -595,3 +631,5 @@ VERSION: $Rev$
 # -Added options to pass database name, query sequence id,
 #  and program used. Otherwise these are attempted to
 #  be extracted from the command line
+# 01/31/2009
+# -Fixed print_help to extract help from POD
