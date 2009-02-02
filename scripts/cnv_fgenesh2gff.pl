@@ -16,7 +16,7 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #                                                           |
 # LICENSE:                                                  |
@@ -457,9 +457,7 @@ the fgenesh output file appears to be saved from the web, the program
 will attempt to first strip the HTML tags from the text before converting
 to the GFF format.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head2 REQUIRED ARGUMENTS
 
 =over 2
 
