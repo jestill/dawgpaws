@@ -457,7 +457,7 @@ the fgenesh output file appears to be saved from the web, the program
 will attempt to first strip the HTML tags from the text before converting
 to the GFF format.
 
-=head2 REQUIRED ARGUMENTS
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
