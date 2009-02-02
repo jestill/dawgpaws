@@ -52,6 +52,7 @@ my $infile;
 my $outfile;
 my $seqname;
 my $param;
+my $tmp_file_path;            # A temp file stripped of html tags
 
 # BOOLEANS
 my $quiet = 0;
@@ -63,6 +64,7 @@ my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 my $append = 0;
 my $test = 0;
+my $strip_html = 0;               # Attempt to strip html
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -73,6 +75,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    # ADDITIONAL OPTIONS
 		    "p|param=s"   => \$param,
 		    "n|name=s"    => \$seqname,
+		    "html"        => \$strip_html,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    "append"      => \$append,
@@ -111,10 +114,83 @@ if ($show_version) {
 }
 
 #-----------------------------+
+# TAKE A LOOK AT THE FILE TO  |
+# SEE IF IT IS HTML           |
+#-----------------------------+
+unless ($strip_html) {
+# OPEN INPUT FILE HANDLE
+    if ($infile) {
+	open (TMPIN, "<$infile") ||
+	    die "Can not open input file ";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (TMPIN, "<STDIN") ||
+	    die ""
+    }
+    
+    while (<TMPIN>) {
+	if ($_ =~ m/DOCTYPE HTML PUBLIC/) {
+	    print STDERR "------------------------------------------------\n";
+	    print STDERR " WARNING: The input file appears to be HTML\n";
+	    print STDERR " Attempting to strip HTML from text file\n";
+	    print STDERR "------------------------------------------------\n";
+	    $strip_html = 1;
+	}
+    }
+    close TMPIN;
+}
+
+#-----------------------------+
+# STRIP HTML                  |
+#-----------------------------+
+# A very simple attempt to strip HTML from the output
+if ($strip_html) {
+
+    # OPEN INPUT FILE HANDLE
+    if ($infile) {
+	open (TMPIN, "<$infile") ||
+	    die "Can not open input file ";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (TMPIN, "<STDIN") ||
+	    die ""
+    }
+
+    # OPEN OUTPUT FILE HANDLE
+    if ($infile) {
+	$tmp_file_path = "$infile.strip.tmp";
+    }
+    else {
+	$tmp_file_path = "fgenesh.strip.tmp";
+    }
+    open (TMPOUT, ">$tmp_file_path") ||
+	die "Can not write to temp file:\n$tmp_file_path\n";
+
+    # STRIP HTML
+    while (<TMPIN>) {
+	next if m/^\</;      # Remove lines starting with <
+	s /\&gt\;/\>/;       # Replace &gt; with >
+	#print STDERR $_;
+	print TMPOUT $_;
+    }
+    
+    close TMPIN;
+    close TMPOUT;
+}
+
+
+#-----------------------------+
 # DO THE CONVERSION           |
 #-----------------------------+
 my $prog = "fgenesh";
-fgenesh2gff ($prog, $infile, $outfile, $seqname, $param, $append);
+if ($strip_html) {
+    fgenesh2gff ($prog, $tmp_file_path, $outfile, $seqname, $param, $append);
+}
+else {
+    fgenesh2gff ($prog, $infile, $outfile, $seqname, $param, $append);
+}
 
 exit 0;
 
@@ -357,23 +433,29 @@ __END__
 
 =head1 NAME
 
-Name.pl - Short program description. 
+cnv_fgenesh2gff.pl - Convert fgenesh gene predictions to gff format
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    Name.pl -i InFile -o OutFile
+=head2 Usage
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    cnv_fgenesh2gff.pl -i infile.txt -o outfile.gff
+
+=head2 Required Arguments
+
+    --infile        # Path to fgenesh result to convert
+    --outfie        # Path to the gff format output
 
 =head1 DESCRIPTION
 
-This is what the program does
+This program converts output from the fgenesh program to the gff format. If 
+the fgenesh output file appears to be saved from the web, the program
+will attempt to first strip the HTML tags from the text before converting
+to the GFF format.
 
 =head1 COMMAND LINE ARGUMENTS
 
@@ -383,17 +465,37 @@ This is what the program does
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file. This should a text file of the result of the fgenesh
+gene prediction program. If an input file is not specified, then the program
+will expect input from STDIN.
 
 =item -o,--outfile
 
-Path of the output file.
+Path of the gff file that is produced by the program. If an output file
+is not specified, the program will write output to STDOUT.
 
 =back
 
-=head1 Additional Options
+=head1 OPTIONS
 
 =over 2
+
+=item --html
+
+Use this to convert the output from the softberry website if you
+saved the text in html format.
+
+=item -p,--param
+
+The label used to describe the parameter set used for the the annotation
+program. This identifier will be appended the source column (col 2)
+in the GFF output.
+
+=item -n,--seqname
+
+This is the name of the sequence that was annotated. This will be used
+in the source column (col 1) of the gff output file. Be default, the program
+will use the name of the sequence as specified in the fgenesh output file.
 
 =item --usage
 
@@ -418,29 +520,196 @@ Run the program with minimal output.
 
 =back
 
+=head1 EXAMPLES
+
+=over 2
+
+=item Typical Use
+
+Typically you will be using this program to convert the fgenesh annotation 
+output for an individual sequence file to the gff format.
+
+  cnv_fgenesh2gff.pl -i fgenesh_result.txt -o fgenesh_result.gff
+
+This will result in a GFF result similar to the following:
+
+ HEX3045G05  fgenesh   exon	961	1456	12.02	+     .	gene_1
+ HEX3045G05  fgenesh   exon	1702	2725	0.04	+     .	gene_1
+ HEX3045G05  fgenesh   exon	3619	3982	10.41	+     .	gene_1
+ HEX3045G05  fgenesh   exon	6960	7273	13.70	+     .	gene_2
+ HEX3045G05  fgenesh   exon	7435	7789	21.29	+     .	gene_2
+ HEX3045G05  fgenesh   exon	7904	8091	1.14	+     .	gene_2
+ HEX3045G05  fgenesh   exon	8248	9163	13.79	+     .	gene_2
+ HEX3045G05  fgenesh   exon	9206	9587	8.00	+     .	gene_2
+ ...
+
+=item Specify the Sequence ID
+
+Generally the cvn_fgenesh2gff.pl program will use the label for the sequence
+as reported in the fgenesh report file. Otherwise, you can specify the
+source sequence name using the -n or --name flag. For example:
+
+  cnv_fgenesh2gff.pl -i result.txt -o result.gff -n wheat_1
+
+Will result in a gff file like the following:
+
+ wheat_1    fgenesh	exon	961	1456	12.02	+     .	gene_1
+ wheat_1    fgenesh	exon	1702	2725	0.04	+     .	gene_1
+ wheat_1    fgenesh	exon	3619	3982	10.41	+     .	gene_1
+ wheat_1    fgenesh	exon	6960	7273	13.70	+     .	gene_2
+ wheat_1    fgenesh	exon	7435	7789	21.29	+     .	gene_2
+ wheat_1    fgenesh	exon	7904	8091	1.14	+     .	gene_2
+ wheat_1    fgenesh	exon	8248	9163	13.79	+     .	gene_2
+ wheat_1    fgenesh	exon	9206	9587	8.00	+     .	gene_2
+ ...
+
+This option allows you to change the name of the sequence source without
+having to run the fgenesh program again.
+
+=item Specify the Parameter Set
+
+It is often useful to run a program using different parameter sets. The
+cnv_fgenesh2gff.pl program therefore allows you to specify the label
+for a set of parameters to be able to distinguish multiple prediction results
+from the same program using different parameter combinations. This
+parameter set label will be added to the second column of the gff
+output file.
+
+For example running the program with parameter set one:
+
+  cnv_fgenesh2gff.pl -i result.txt -o result.gff -p set_1
+
+This will result in a GFF file like the following:
+
+ HEX3045G05  fgenesh:set_1  exon   961    1456	12.02	+    .	gene_1
+ HEX3045G05  fgenesh:set_1  exon   1702   2725	0.04	+    .	gene_1
+ HEX3045G05  fgenesh:set_1  exon   3619   3982	10.41	+    .	gene_1
+ HEX3045G05  fgenesh:set_1  exon   6960   7273	13.70	+    .	gene_2
+ HEX3045G05  fgenesh:set_1  exon   7435   7789	21.29	+    .	gene_2
+ HEX3045G05  fgenesh:set_1  exon   7904   8091	1.14	+    .	gene_2
+ HEX3045G05  fgenesh:set_1  exon   8248   9163	13.79	+    .	gene_2
+ HEX3045G05  fgenesh:set_1  exon   9206   9587	8.00	+    .	gene_2
+ ...
+
+Then running the program wit parameter set two:
+
+  cnv_fgenesh2gff.pl -i result.txt -o result.gff -p set_2
+
+This will result in a GFF file like the following:
+
+ HEX3045G05  fgenesh:set_2  exon   961    1456	12.02	+    .	gene_1
+ HEX3045G05  fgenesh:set_2  exon   1702   2725	0.04	+    .	gene_1
+ HEX3045G05  fgenesh:set_2  exon   3619   3982	10.41	+    .	gene_1
+ ...
+
+This will allow you to later distinguish between the result for parameter
+set one and the parameter set two results.
+
+=item Accepting Input from STDIN
+
+It is often useful in working at the unix command line to pipe the output 
+from one program to another. For that reason, the cnv_fgenesh2gff.pl program
+can accept input from STDIN. For example, given a text file named result.txt.
+You can send the result to cnv_fgenesh2gff.pl using the cat command and
+then the pipe '|':
+
+  cat result.txt | cnv_fgenesh2gff.pl
+
+Since an output file is not specified, the result will be printed to
+STDOUT and will appear on the screen.
+
+=item Writing Output to STDOUT
+
+Since the program can write output to STDOUT, it is possible to
+directly load the GFF file to your database. For example, if you
+have a script called load_gff2mydb.pl, you can pipe the GFF results
+to this program directly:
+
+  cnv_fgenesh2gff.pl -i result.txt | load_gff2mydb.pl
+
+This will load the result to your database without generating a copy
+of the GFF file on your hard drive.
+
+=item Removing Text That Throws Warnings
+
+Saving the output from the fgenesh webpage will included the copywrite statement
+from. You will get the following warning:
+
+  --------------------- WARNING ---------------------
+  MSG: seq doesn't validate, mismatch is ?1999,2009,<,://,/>
+  ---------------------------------------------------
+
+This warning is only written to STDERR, and should not affect the gff output
+of the program. However, you can remove the offending line of fgenesh
+output using the grep command before piping the text to the
+cnv_fgenesh2gff.pl program.
+
+  grep -v 'www.softberry.com' fgenesh.txt | cnv_fgenesh2gff.pl 
+
+=item Strip HTML Tags
+
+It is also possible to parse output from the softberry website if
+it was saved in html text format using the --html option. This
+will attempt to strip the html and save a local tmp copy that
+is in plain text file that will then be parsed:
+
+  cnv_fgenesh2gff.pl -i infile.txt --html
+
+=back
+
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+The following lists some typical error messages and solutions:
+
+=over 2
+
+=item * MSG: seq doesn't validate, mismatch is ?1999,2009,<,://,/>
+
+This generally will be seen when the fgenesh text file includes the
+copywrite statement from the softberry web site.
+
+=item * MSG: seq doesn't validate, mismatch is &,;,:[,]13,(,)961,39821884,,,+,
+
+You may see something like this if you are trying to parse a result
+you saved from the softberry web site in the html format. The solution 
+to this problem is to save the program as text. You can strip the 
+html from the program using the --html option.
+
+=item *  WARNING: The input file appears to be HTML
+
+You will see this message if the program detects that the fgenesh output
+you are trying to parse is in HTML format. If this is the case, 
+cnv_fgenesh2gff.pl will attempt to save a copy of the fgenesh
+result as a normal text file before converting to GFF format.
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use of a configuartion file or varaibles
+defined in the user's environment.
 
 =head1 DEPENDENCIES
 
 =head2 Required Software
 
+=over 2
+
+=item * Fgenesh
+
+This program is designed to parse ab initio gene annotation results generated
+by the Fgenesh program. These results can be generated from a local copy
+of the Fgenesh program, or can be results obtained by the Fgenesh web
+service provided by softberry
+http://linux1.softberry.com/berry.phtml
+
+=back
+
 =head2 Required Perl Modules
 
 =over 2
 
-= * Bio::Tools::Fgenesh
+=item * Bio::Tools::Fgenesh
 
 This program requires the perl module Bio::Tools::Fgenesh. This module is
 part of the bioperl package
@@ -451,7 +720,29 @@ Other modules or software that the program is dependent on.
 
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+=head2 Bugs
+
+=over 2
+
+=item * No bugs currently known 
+
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
+
+=back
+
+=head2 Limitations
+
+=over 2
+
+=item * Not Tested on Fgenesh Binary
+
+This progarm has only been tested with output from the softberry
+website and has not been tested with the Fgenesh binary. If you find
+that this program does work with the standalone program, please
+contact the author and let me know.
+
+=back
 
 =head1 LICENSE
 
@@ -459,15 +750,18 @@ GNU General Public License, Version 3
 
 L<http://www.gnu.org/licenses/gpl.html>
 
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
+
 =head1 AUTHOR
 
 James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 01/31/2009
 
-UPDATED:
+UPDATED: 02/02/2009
 
 VERSION: $Rev$
 
@@ -477,3 +771,10 @@ VERSION: $Rev$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 01/31/2009
+# - Program started, basic conversion to gff using the
+#   bioperl module for parsing fgenesh programs
+# 02/02/2009
+# - Updated POD documentation
+# - Added the --html flag to strip html if needed
+# - Added autodetect of html format
