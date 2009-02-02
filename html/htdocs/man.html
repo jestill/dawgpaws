@@ -23,7 +23,7 @@
       <h1>DAWG-PAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Jan. 29, 2009<br>
+Feb. 2, 2009<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -823,13 +823,25 @@ Required Programs:<br>
   <li>FGeneSH : <a href="http://www.softberry.com/berry.phtml"
  rel="nofollow">http://www.softberry.com/berry.phtml</a></li>
   <li><a
- href="http://dawgpaws.svn.sourceforge.net/viewvc/*checkout*/dawgpaws/trunk/scripts/cnv_fgenesh2gff.pl?revision=309">cnv_fgenesh2gff.pl</a></li>
+ href="http://dawgpaws.svn.sourceforge.net/viewvc/dawgpaws/trunk/scripts/cnv_fgenesh2gff.pl">cnv_fgenesh2gff.pl</a></li>
 </ul>
 The FGeneSH program can be run in a limited form on the Softberry web
-site. Since a license for this program is so expensive to rent, I have
-not had access to the code to write a script for running this program
+site. I do have
+not have access to the code to write a script for running this program
 in batch mode. An alternative to running this program on the softberry
-web server is to use the TriAnnot web service.<br>
+web server.<br>
+<br>
+If you have output from the softberry web site, you can convert to gff
+format using the cnv_fgenesh2gff.pl program:<br>
+<pre class="prettyprint"><span class="pln"> &nbsp;</span><span
+ class="pun">&gt;</span><span class="pln">cnv_fgenesh2gff.pl</span><span
+ class="pln"> </span><span class="pun">-</span><span class="pln">i fgenesh_result.txt</span><span
+ class="pun"></span><span class="pln"> </span><span class="pun">-</span><span
+ class="pln">o fgenesh_result.gff</span></pre>
+If you did not save this output in text format, the cnv_fgenesh2gff.pl
+program will attempt to remove HTML tags before converting to gff
+format. To see the full list of options available in this program, read
+the <a href="man/cnv_fgenesh2gff.html">cnv_fgenesh2gff.pl man page</a>.<br>
 <h1><a name="run_geneid"></a>4. GeneID<br>
 </h1>
 Required Programs:<br>
@@ -1500,8 +1512,8 @@ the blast output from </p>
  class="pln"> </span></pre>
 This assumes that the blast output is the full alignment format. If you
 did the blast with the -m 8 alignment option, you will need to specify
-this with hte -b option as shown below<br>
-<pre class="prettyprint"><span class="pln"></span><span class="pun">&gt;</span><span
+this with the -m option as shown below<br>
+<pre class="prettyprint"><span class="pln"></span><span class="pun">  &gt;</span><span
  class="pln">batch_cnv_blast2gff</span><span class="pun">.</span><span
  class="pln">pl &nbsp;-i wheat_analysis</span><span class="pun">/</span><span
  class="pln">soft_masked </span><span class="pun">-</span><span
@@ -1747,7 +1759,7 @@ queuing system</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_blast2gff.html">cnv_blast2gff.pl</a></dt>
   <dd>Convert BLAST output to the gff format.<br>
   </dd>
-  <dt>cnv_fgenesh2gff.pl</dt>
+  <dt style="font-weight: bold;"><a href="man/cnv_fgenesh2gff.html">cnv_fgenesh2gff.pl</a></dt>
   <dd>Convert a single FGENESH output to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_findltr2gff.html">cnv_findltr2gff.pl</a></dt>
   <dd>Convert a single findltr output file to GFF format</dd>
@@ -1888,7 +1900,7 @@ prediction of full-length LTR retrotransposons." Nucleic Acids Res
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Jan 29, 2009<br>
+Last Updated: Feb 2, 2009<br>
       </i></td>
       <td width="50%"> <br>
       </td>
