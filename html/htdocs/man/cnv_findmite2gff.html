@@ -1,0 +1,295 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>cnv_findmite2gff.pl</title>
+<link rel="stylesheet" href="../css/dawgpaws_man.css" type="text/css" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@omen.apple.com" />
+</head>
+
+<body>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;cnv_findmite2gff.pl</span></strong></big>
+</td></tr>
+</table>
+
+<p><a name="__index__"></a></p>
+<!-- INDEX BEGIN -->
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<ul>
+
+		<li><a href="#usage">Usage</a></li>
+		<li><a href="#required_options">Required Options</a></li>
+	</ul>
+
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#required_arguments">REQUIRED ARGUMENTS</a></li>
+	<li><a href="#options">OPTIONS</a></li>
+	<li><a href="#diagnostics">DIAGNOSTICS</a></li>
+	<li><a href="#configuration_and_environment">CONFIGURATION AND ENVIRONMENT</a></li>
+	<li><a href="#dependencies">DEPENDENCIES</a></li>
+	<ul>
+
+		<li><a href="#software">Software</a></li>
+		<li><a href="#perl_modules">Perl Modules</a></li>
+	</ul>
+
+	<li><a href="#bugs_and_limitations">BUGS AND LIMITATIONS</a></li>
+	<ul>
+
+		<li><a href="#bugs">Bugs</a></li>
+		<li><a href="#limitations">Limitations</a></li>
+	</ul>
+
+	<li><a href="#license">LICENSE</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#history">HISTORY</a></li>
+</ul>
+<!-- INDEX END -->
+
+<hr />
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>cnv_findmite2gff.pl - Convert FINDMITE output to gff format</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>This documentation refers to program $Rev: 527 $</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>
+</p>
+<h2><a name="usage">Usage</a></h2>
+<pre>
+    cnv_findmite2gff -i InFile -o GffOutFile [-f FastaOutFile]</pre>
+<p>
+</p>
+<h2><a name="required_options">Required Options</a></h2>
+<pre>
+    -i   # Path to the Findmite result to convert
+         # If not specified, the program will expect input from STDIN
+    -o   # Path to the gff format output file
+         # If not specified the program will write output to STDOUT</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>Converts FINDMITE output to GFF format. May also be used to extract the
+MITEs from to a FASTA file by using the --fasta option.</p>
+<p>
+</p>
+<hr />
+<h1><a name="required_arguments">REQUIRED ARGUMENTS</a></h1>
+<dl>
+<dt><strong><a name="item__2di_2c_2d_2dinfile">-i,--infile</a></strong>
+
+<dd>
+<p>Path of the input file that contains the results of the FINDMITE program.
+If this option is not specified, the program
+will expect input from STDIN.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2do_2c_2d_2doutfile">-o,--outfile</a></strong>
+
+<dd>
+<p>Path to the gff output file. If and outfile file path is not specified, the
+program will write the output to STDERR.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="options">OPTIONS</a></h1>
+<dl>
+<dt><strong><a name="item__2dp_2c_2d_2dparam">-p,--param</a></strong>
+
+<dd>
+<p>The parameter name to append to the source program name. This information will
+be appended to the second column of the gff output file. This is used to 
+specify the parameter set used to generate the FINDMITE results.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dprogram">--program</a></strong>
+
+<dd>
+<p>The program name to use. This is the data in the second column of the 
+gff output file. Be default, this is set to 'findmite'. This option
+allows you to specify other program names if desired.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dn_2c_2d_2dname">-n,--name</a></strong>
+
+<dd>
+<p>Identifier for the sequence file that was masked with repeatmasker. The
+out file from repeatmasker may have truncated your original file name,
+and this option allows you to use the full sequence name.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2df_2c__2d_2dfasta">-f, --fasta</a></strong>
+
+<dd>
+<p>Genreate a fasta format output file. This file will contain the putative MITEs.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dappend_2dgff">--append-gff</a></strong>
+
+<dd>
+<p>Append the gff data to the any existing data in the file specified
+by -o,--outfile.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dappend_2dfasta">--append-fasta</a></strong>
+
+<dd>
+<p>Append the MITE fasta file data to any existing data in the file
+specified by -f,fasta.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2dq_2c_2d_2dquiet">-q,--quiet</a></strong>
+
+<dd>
+<p>Run the program with minimal output.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dverbose">--verbose</a></strong>
+
+<dd>
+<p>Run the program in verbose mode.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dusage">--usage</a></strong>
+
+<dd>
+<p>Short overview of how to use program from command line.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dhelp">--help</a></strong>
+
+<dd>
+<p>Show program usage with summary of options.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dversion">--version</a></strong>
+
+<dd>
+<p>Show program version.</p>
+</dd>
+</li>
+<dt><strong><a name="item__2d_2dman">--man</a></strong>
+
+<dd>
+<p>Show the full program manual. This uses the perldoc command to print the 
+POD documentation for the program.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="diagnostics">DIAGNOSTICS</a></h1>
+<p>The error messages that can be generated will be listed here.</p>
+<ul>
+<li><strong><a name="item_expecting_input_from_stdin">Expecting Input from STDIN</a></strong>
+
+<p>You will see this message if you did not specify an input file with the -i
+or --input options.</p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="configuration_and_environment">CONFIGURATION AND ENVIRONMENT</a></h1>
+<p>This program does not make use of a configuration file or variables set 
+in the user environment.</p>
+<p>
+</p>
+<hr />
+<h1><a name="dependencies">DEPENDENCIES</a></h1>
+<p>Other modules or software that the program is dependent on.</p>
+<p>
+</p>
+<h2><a name="software">Software</a></h2>
+<ul>
+<li><strong><a name="item_findmite_2e">FINDMITE.</a></strong>
+
+<p>This program requires the FINDMITE program. This program is available as
+an executable for Unix based operating systems at:
+at <a href="http://jaketu.biochem.vt.edu/dl_software.htm">http://jaketu.biochem.vt.edu/dl_software.htm</a></p>
+</li>
+</ul>
+<p>
+</p>
+<h2><a name="perl_modules">Perl Modules</a></h2>
+<p>This program does not make use of Perl modules outside of the normal suite
+of modules present in a typical installation of perl.</p>
+<p>
+</p>
+<hr />
+<h1><a name="bugs_and_limitations">BUGS AND LIMITATIONS</a></h1>
+<p>
+</p>
+<h2><a name="bugs">Bugs</a></h2>
+<ul>
+<li><strong><a name="item_no_bugs_currently_known">No bugs currently known</a></strong>
+
+<p>If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: <a href="http://sourceforge.net/tracker/?group_id=204962">http://sourceforge.net/tracker/?group_id=204962</a></p>
+</li>
+</ul>
+<p>
+</p>
+<h2><a name="limitations">Limitations</a></h2>
+<ul>
+<li><strong><a name="item_no_major_limitations_currently_known">No Major Limitations Currently Known</a></strong>
+
+<p>If you discover limitations with your use of this software, please
+file a bug 
+report on the DAWG-PAWS
+Sourceforge website: <a href="http://sourceforge.net/tracker/?group_id=204962">http://sourceforge.net/tracker/?group_id=204962</a></p>
+</li>
+</ul>
+<p>
+</p>
+<hr />
+<h1><a name="license">LICENSE</a></h1>
+<p>GNU General Public License, Version 3</p>
+<p><a href="http://www.gnu.org/licenses/gpl.html">http://www.gnu.org/licenses/gpl.html</a></p>
+<p>THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>James C. Estill &lt;JamesEstill at gmail.com&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="history">HISTORY</a></h1>
+<p>STARTED: 08/30/2007</p>
+<p>UPDATED: 02/03/2009
+
+</p>
+<p>VERSION: $Rev: 527 $
+
+</p>
+<table border="0" width="100%" cellspacing="0" cellpadding="3">
+<tr><td class="block" valign="middle">
+<big><strong><span class="block">&nbsp;cnv_findmite2gff.pl</span></strong></big>
+</td></tr>
+</table>
+
+</body>
+
+</html>
