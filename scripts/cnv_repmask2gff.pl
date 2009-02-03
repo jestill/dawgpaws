@@ -8,17 +8,16 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 10/30/2007                                       |
-# UPDATED: 10/30/2007                                       |
+# UPDATED: 02/02/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Runs the RepeatMasker program for a set of input         |
-#  FASTA files against a set of repeat library files &      |
-#  then converts the repeat masker *.out file into the      |
-#  GFF format and then to the game XML format for           |
-#  visualization by the Apollo genome anotation program.    |
+#  Converts the repeat masker *.out file into the GFF       |
+#  format.                                                  |
 #                                                           |
 # USAGE:                                                    |
-#  cnv_repmaske2gff.pl -i infile.out -o outfile.gff         |
+#  cnv_repmask2gff.pl -i infile.out -o outfile.gff          |
+#                                                           |
+# VERSION: $Rev$                                            |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -27,7 +26,6 @@
 #-----------------------------------------------------------+
 
 package DAWGPAWS;
-print "\n";
 
 #-----------------------------+
 # INCLUDES                    |
@@ -35,11 +33,18 @@ print "\n";
 use strict;
 use File::Copy;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+
 #//////////////////////
 my $file_num_max = 1;
 #\\\\\\\\\\\\\\\\\\\\\\
@@ -47,64 +52,11 @@ my $file_num_max = 1;
 #-----------------------------------------------------------+
 # VARIABLE SCOPE                                            |
 #-----------------------------------------------------------+
-
-# VARS WITH DEFAULT VALUES
-my $engine = "crossmatch";
-
-# GENERAL PROGRAM VARS
-my @inline;                    # Parse of an input line
-my $msg;                       # Message printed to the log file
-
-# DIR PATHS
 my $infile;                    # Input path of *.out file to convert
 my $outfile;                   # Output gff file path
-my $prefix;                    # Prefix name for gff output file
-
-my $bac_out_dir;               # Dir for each sequence being masked
-my $bac_rep_out_dir;           # Dir to hold BAC repeat masker output
-                               # $bac_out_dir/rm
-my $gff_out_dir;               # Dir for the gff output
-                               # $bac_out_dir/gff
-
-# FILE PATHS
-my $logfile;                   # Path to a logfile to log error info
-my $rm_path;                   # Full path to the repeatmasker binary
-my $ap_path;                   # Full path to the apollo program
-my $rep_db_path;               # Path to an indivual repeat database
-my $file_to_mask;              # The fasta file to be masked
-my $repmask_outfile;           # Repeat masked outfile
-my $repmask_catfile;           # Concatenated repeat masked outfile
-my $config_file;               # Full path to the configuration file
-                               # This includes the db names and paths
-                               # of the fasta files to use for masking
-my $repmask_cat_cp;            # Path to the copy of the RepMask 
-
-
-my $search_name;               # Name searched for in grep command
-my $name_root;                 # Root name to be used for output etc
-my $repmask_log;
-my $repmask_log_cp;
-
-my $repmask_tbl_file;
-my $repmask_masked_file;
-
-
-my $gff_alldb_out;
-my $gff_el_out;
-my $xml_alldb_out;
-my $xml_el_out;
-
-# FINAL FILE LOCATIONS
-my $repmask_masked_cp;        # Masked fasta file
-my $repmask_local_cp;         # Copy of masked in fasta file
-my $repmask_tbl_cp;           # Repmask Table
-my $repmask_el_cp;            # Individual 
-my $repmask_xml_el_cp;
-my $repmask_out_cp;           # Repmask out file copy
-
-# REPEAT DB VARS
-my $rep_db_name;               # Name of the repeat database
-my $ind_lib;                   # Vars for an individual library
+my $param;                     # The parameter set, db name used
+my $seqname;                   # The id of the sequence annoated
+my $prog = "repeatmasker";     # The program used 
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -116,62 +68,48 @@ my $apollo = 0;                # Path to apollo and apollo variables
 my $test = 0;
 my $verbose = 0;
 my $debug = 0;                 # Run the program in debug mode 
-
-# PROGRAM COMMAND STRINGS
-my $cmd_repmask;               # Command to run RepeatMasker
-my $cmd_make_gff_db;           # Make the gff file for an individual database
-my $cmd_make_gff_el;           # Appears to not be used
-
-# COUNTERS AND INDEX VARS
-my $num_proc = 1;              # Number of processors to use
-my $i;                         # Used to index the config file
-my $proc_num = 0;              # Counter for processes
-my $file_num = 0;              # Counter for fasta files being processed
-
-# ARRAYS
-my @mask_libs = ();
+my $append = 0;
+my $pos_strand = 0;            # Put all results in positive strand
+#my $neg_strand = 0;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions(
-		    # REQUIRED ARGUMENTS
+my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "i|infile=s"   => \$infile,
                     "o|outfile=s"  => \$outfile,
-		    "prefix"       => \$prefix,
 		    # ADDITIONAL OPTIONS
-		    "rm-path=s"    => \$rm_path,
-		    "ap-path=s",   => \$ap_path,
-		    "logfile=s"    => \$logfile,
-		    "p|num-proc=s" => \$num_proc,
-		    "engine=s"     => \$engine,
+		    "program=s"      => \$prog,
+		    "p|param=s"      => \$param,
+		    "n|name=s"       => \$seqname,
 		    # BOOLEANS
-		    "apollo"       => \$apollo,
+		    "plus"         => \$pos_strand,
+		    "append"       => \$append,
 		    "verbose"      => \$verbose,
 		    "debug"        => \$debug,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
 		    "version"      => \$show_version,
 		    "man"          => \$show_man,
-		    "h|help"       => \$show_help,
-		    "q|quiet"      => \$quiet,);
+		    "h|help"       => \$show_help,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
     system ("perldoc $0");
     exit($ok ? 0 : 2);
-}
-
-if ($show_help || (!$ok) ) {
-    print_help("full");
 }
 
 if ($show_version) {
@@ -180,172 +118,78 @@ if ($show_version) {
     exit;
 }
 
-# Show full help when required options
-# are not present
-if ( (!$infile) || (!$outfile) ) {
-    print "\a";
-    print "ERROR: An input file was not specified with the -i flag\n"
-	if !$infile;
-    print "ERROR: An output file was not specified with the -o flag\n"
-	if !$outfile;
-    print_help("full");
-}
-
-#-----------------------------+
-# OPEN THE LOG FILE           |
-#-----------------------------+
-if ($logfile) {
-    # Open file for appending
-    open ( LOG, ">>$logfile" ) ||
-	die "Can not open logfile:\n$logfile\n";
-    my $time_now = time;
-    print LOG "==================================\n";
-    print LOG "  batch_mask.pl\n";
-    print LOG "  JOB: $time_now\n";
-    print LOG "==================================\n";
-}
-
-rmout_to_gff ($infile, $outfile, "online" );
+# DO CONVERSION
+rmout2gff ($prog, $infile, $outfile, $seqname, $param, $append, $pos_strand );
 
 exit;
 
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+sub rmout2gff {
 
-sub apollo_convert {
-
-#-----------------------------+
-# CONVERT AMONG FILE FORMATS  |
-# USING THE APOLLO PROGRAM    |
-#-----------------------------+
-# Converts among the various data formats that can be used 
-# from the command line in tbe Apollo program. For example
-# can convert GFF format files into the game XML format.
-# NOTES:
-#  - Currently assumes that the input file is in the correct
-#    coordinate system.
-#  - GFF files will require a sequence file
-#  - ChadoDB format will require a db password
-
-    # ApPath - the path of dir with the Apollo binary
-    #          Specifying the path will allow for cases
-    #          where the program is not in the PATHS
-    # ApCmd  - the apollo commands to run
-
-    print "Converting output to Apollo game.xml format\n"
-	unless $quiet;
-
-    my $InFile = $_[0];        # Input file path
-    my $InForm = $_[1];        # Output file format:
-                               # game|gff|gb|chadoxml|backup
-    my $OutFile = $_[2];       # Output file path
-    my $OutForm = $_[3];       # Ouput file foramt
-                               # chadoDB|game|chadoxml|genbank|gff|backup
-    my $SeqFile = $_[4];       # The path of the sequence file
-                               # This is only required for GFF foramt files
-                               # When not required this can be passed as na
-    my $DbPass = $_[5];        # Database password for logging on to the 
-                               # chado database for reading or writing.
-    my ( $ApPath, $ApCmd );
-
-    #$ApPath = "/home/jestill/Apps/Apollo/";
-    $ApPath = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
-
-    # Set the base command line. More may need to be added for different
-    # formats. For example, GFF in requires a sequence file and the CHADO
-    # format will require a database password.
-#    $ApPath = "/home/jestill/Apps/Apollo/";
-#    $ApCmd = $ApPath."Apollo -i ".$InForm." -f ".$InFile.
-#	" -o ".$OutForm." -w ".$OutFile;
-
-    $ApCmd = $ApPath." -i ".$InForm." -f ".$InFile.
-	" -o ".$OutForm." -w ".$OutFile;
-
-    # Make sure that that input output formats are in lowercase
-    # may need to add something here to avoid converting chadoDB
-    $InForm = lc($InForm);
-    $OutForm = lc($OutForm);
-    
-    # Determine the proper command to use based on the input format
-    # since GFF file also require a sequence file
-    if ($InForm =~ "gff" ) {
-	$ApCmd = $ApCmd." -s ".$SeqFile;
-    }
-    
-    if ($InForm =~ "chadodb") {
-	$ApCmd = $ApCmd." -D ".$DbPass;
-    }
-    
-    # Do the apollo command
-    system ( $ApCmd );
-
-}
-
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-    
-    my $usage = "USAGE:\n".
-	"  batch_mask.pl -i DirToProcess -o OutDir";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"  --config       # Path to database list config file\n".
-	"\n".
-	"ADDITIONAL OPTIONS:\n".
-	"  --rm-path      # Full path to repeatmasker binary\n".
-	"  --engine       # The repeatmasker engine to use:\n".
-	"                 # [crossmatch|wublast|decypher]\n".
-	"                 # default is to use crossmatch\n".
-	"  --num-proc     # Number of processors to use for RepeatMasker\n".
-	"                 # default is one.\n".
-	"  --apollo       # Convert output to game.xml using apollo\n".
-	"                 # default is not to use apollo\n".
-	"  --quiet        # Run program with minimal output\n".
-	"  --test         # Run the program in test mode\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"\n".
-	"ADDITIONAL INFORMATION\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n";
-
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
-sub rmout_to_gff {
-
-# Subfunction to convert repeatmasker out file
-# to gff format for apollo
-    
+    # $source = program name source for the annotation
     # $rm_file = path to the repeat masker file
     # $gff_file = path to the gff output file
-    # $pre is the way that the output file will
-    # be made, it should be either > or >>
-    # > for overwrite
-    # >> for concatenate
+    # $seq_id   = identifier of the sequence being processed
+    # $src_suffix = parameter name/ db name suffix for source
+    # $do_append  = append results to an existing gff file
+    # $all_plus   = place all results on the plus strand
     # the default will be to concatenate when the prefix
     # variable can not be undertood
-    my ( $rm_file, $gff_file, $pre ) = @_;
-    my $IN;
-    my $OUT;
+    my ( $source, $rm_file, $gff_out, $seq_id, $src_suffix, $do_append, 
+	 $all_plus) = @_;
+
     my $strand;
+
+    # Set the has_seq_id flag to true is a over ride sequence id was passed
+    my $has_seq_id;
+    if ($seq_id) {
+	$has_seq_id = 1;
+    }
+    else {
+	$has_seq_id = 0;
+    }
+    
+    #-----------------------------+
+    # OPEN RM FILE                |
+    #-----------------------------+
+    # Default is to expect intput from STDIN if infile path not given
+    if ($rm_file) {
+	open ( RM_IN, "<".$rm_file ) ||
+	    die "Could not open the RM infile:\n $rm_file\n";
+    }
+    else {
+	print STDERR "Expecting input from STDIN";
+	open ( RM_IN, "<&STDIN" ) ||
+	    die "Could not open the RM infile:\n $rm_file\n";
+    }
+
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gff_out) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	}
+	else {
+	    open (GFFOUT,">$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	}
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    #-----------------------------+
+    # SET PROGRAM SOURCE          |
+    #-----------------------------+
+    if ($src_suffix) {
+	$source = $source.":".$src_suffix;
+    }
 
     #-----------------------------------------------------------+
     # REPEATMASKER OUT FILE CONTAINS
@@ -369,14 +213,6 @@ sub rmout_to_gff {
     #   (using top-strand numbering)
     #13 ending position of match in database sequence
 
-    my $gff_out_path = $gff_file;
-
-    open ( RM_IN, "<".$rm_file ) ||
-	die "Could not open the RM infile:\n $rm_file\n";
-
-    open ( RM_OUT, ">".$gff_out_path) ||
-	die "Could not open the GFF outfile:\n $gff_out_path\n";
-    
     while (<RM_IN>) {
 	chomp;
 	my @rmout = split;
@@ -385,6 +221,9 @@ sub rmout_to_gff {
 
 	my $cur_strand = $rmout[8];
 
+	#-----------------------------+
+	# GET STRAND                  |
+	#-----------------------------+
 	if ($cur_strand =~ "C" ) {
 	    $strand = "-";
 	}
@@ -392,61 +231,117 @@ sub rmout_to_gff {
 	    $strand = "+";
 	}
 
-	#-----------------------------+
-	# The following uses the TREP |   
-	# hits as names this is done  |
-	# by calling the attributes   |
-	# exons..a strange kluge      |
-	#-----------------------------+
-	# This places the RepMask output in the same frame as 
-	# the hit was found in the database. 
-	#print RM_OUT "$rmout[4]\t";      # qry sequence name
-	#print RM_OUT "repeatmasker:trep9\t";   # software used
-	#print RM_OUT "exon\t";  # attribute name
-	#print RM_OUT "$rmout[5]\t";      # start
-	#print RM_OUT "$rmout[6]\t";      # stop
-	#print RM_OUT "$rmout[0]\t";      # smith waterman score"
-	#print RM_OUT "$strand\t";              # strand
-	#print RM_OUT ".\t";              # frame
-	#print RM_OUT "$rmout[9]";        # attribute
-	#print RM_OUT "\n";
+	if ($all_plus) {
+	    $strand = "+";
+	}
 
 	#-----------------------------+
-	# THE FOLLOWING MAKES THE HITS|
-	# CUMULATIVE IN BOTH STRANDS  |
-	# OR JUST THE POSITVE STRAND  |
+	# SET SEQUENCE ID             |
 	#-----------------------------+
-	print RM_OUT "$rmout[4]\t";            # qry sequence name
-	print RM_OUT "repeatmasker\t";         # software used
-	print RM_OUT "exon\t";                 # attribute name
-	print RM_OUT "$rmout[5]\t";            # start
-	print RM_OUT "$rmout[6]\t";            # stop
-	print RM_OUT "$rmout[0]\t";            # smith waterman score"
-	print RM_OUT "+\t";                    # Postive strand
-	print RM_OUT ".\t";                    # frame
-	print RM_OUT "$rmout[9]";              # attribute
-	print RM_OUT "\n";
+	unless ($has_seq_id) {
+	    if ($rmout[4]) {
+		$seq_id = $rmout[4];
+	    }
+	    else {
+		$seq_id = "seq";
+	    }
+	}
 
-	#print RM_OUT "$rmout[4]\t";            # qry sequence name
-	#print RM_OUT "repeatmasker:trep9\t";   # software used
-	#print RM_OUT "exon\t";                 # attribute name
-	#print RM_OUT "$rmout[5]\t";            # start
-	#print RM_OUT "$rmout[6]\t";            # stop
-	#print RM_OUT "$rmout[0]\t";            # smith waterman score"
-	#print RM_OUT "-\t";                    # Negative strand
-	#print RM_OUT ".\t";                    # frame
-	#print RM_OUT "$rmout[9]";              # attribute
-	#print RM_OUT "\n";
-
+	#-----------------------------+
+	# PRINT GFF OUT               |
+	#-----------------------------+
+	# TO DO: Allow for attribute name at cmd line
+	# May also want to place everything in positive strand
+	print GFFOUT "$seq_id\t".              # qry sequence name
+	    "$source\t".              # software used
+	    "exon\t".                 # attribute name
+	    "$rmout[5]\t".            # start
+	    "$rmout[6]\t".            # stop
+	    "$rmout[0]\t".            # smith waterman score"
+	    "$strand\t".              # Postive strand
+	    ".\t".                    # frame
+	    "$rmout[9]".              # attribute
+	    "\n";
+	
     }
-
+    
+    close RM_IN;
+    close GFFOUT;
+    
     return;
     
 }
 
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+
+1;
+__END__
+
 =head1 NAME
 
-batch_mask.pl - Run RepeatMasker and parse results to a gff format file. 
+batch_mask.pl - Convert RepeatMasker output to the gff format.
 
 =head1 VERSION
 
@@ -454,65 +349,72 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
- USAGE:
-    batch_mask.pl -i DirToProcess -o OutDir -c ConfigFile
+=head2 Usage
+
+    cnv_repmask2gff.pl -i infile.out -o outfile.gff
+
+=head2 Required Variables
+
+    -i    # Path to the repeatmasker file to convert
+    -o    # Path to the gff output file
 
 =head1 DESCRIPTION
 
-Runs the RepeatMasker program for a set of input
-FASTA files against a set of repeat library files &
-then converts the repeat masker *.out file into the
-GFF format and then to the game XML format for
-visualization by the Apollo genome anotation program.
+This program will convert the output from RepeatMasker to the standard
+gff file format.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
-=item -i,--indir
+=item -i,--infile
 
-Path of the directory containing the sequences to process.
+Path to the intput file that contains the repeatmasker out file to
+convert to the gff format. If this option is not specified, the program
+will expect input from STDIN.
 
-=item -o,--outdir
+=item -o,--oufile
 
-Path of the directory to place the program output.
-
-=item -c, --config
-
-Configuration file that lists the database names and paths of the
-fasta files to use as masking databases.
+Path to the gff output file. If and outfile file path is not specified, the
+program will write the output to STDERR.
 
 =back
 
-=head2 Additional Options
+=head1 OPTIONS
 
 =over 2
 
-=item -p,--num-proc
+=item -p,--param
 
-The number of processors to use for RepeatMasker. Default is one.
+The parameter name to append to the source program name. This information will
+be appended to the second column of the gff output file. This is used to 
+specify if
+you masked with the same database using a different parameter set or if you
+used a different database.
 
-=item --engine
+=item --program
 
-The repeatmasker engine to use: [crossmatch|wublast|decypher].
-The default is to use the crossmatch engine.
+The program name to use. This is the data in the second column of the 
+gff output file. Be default, this is set to 'repeatmasker'. This option
+allows you to specify other program names if desired.
 
-=item --apollo
+=item -n,--name
 
-Use the apollo program to convert the file from gff to game xml.
-The default is not to use apollo.
+Identifier for the sequence file that was masked with repeatmasker. The
+out file from repeatmasker may have truncated your original file name,
+and this option allows you to use the full sequence name.
 
-=item --rm-path
+=item --plus
 
-The full path to the RepeatMasker binary.
+Write all of the annotations to be in the positive (plus) strand. By default
+the program will interpret strand results reported as 'C' to be in the
+negative strand orientation. Setting the --plus flag will report all
+RepeatMasker hit results as occurring in the plus strand orientation.
 
-=item --logfile
+=item --append
 
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
+Append the results to an existing gff file. This must be used in
+conjunctions with the --outfile option.
 
 =item -q,--quiet
 
@@ -521,12 +423,6 @@ Run the program with minimal output.
 =item --test
 
 Run the program without doing the system commands.
-
-=back
-
-=head2 Additional Program Information
-
-=over 2
 
 =item --usage
 
@@ -547,43 +443,115 @@ POD documentation for the program.
 
 =back
 
+=head1 EXAMPLES
+
+=over 2
+
+=item Typical Use
+
+The typical use of this program will be to convert a repeat masker
+output file to the gff format.
+
+  cnv_repmask2gff.pl -i HEX3045G05_TREP.out -o HEX3045G05_TREP.gff
+
+This will produce a GFF file similar to the following:
+
+ HEX3045G05  repeatmasker    exon     469	493	25	-     .	AT_rich
+ HEX3045G05  repeatmasker    exon     716	754	25	+     .	AT_rich
+ HEX3045G05  repeatmasker    exon     1764	2069	469	+     .	TREP20
+ HEX3045G05  repeatmasker    exon     1816	2105	507	+     .	TREP58
+ HEX3045G05  repeatmasker    exon     1920	2248	450	+     .	TREP214
+ ...
+
+=item Identify the Database Used
+
+It may be also be useful to run repeatmasker against a number of different
+databases. You would therefore want to specify the database used in your
+gff output file. This can be specified using the --param option, to specify
+the database in the parameter tag. For example, if you used the TREP
+database as your database for masking:
+
+  cnv_repmask2gff.pl -i rm_result.out -o rm_resout.gff --param TREP
+
+This will append the parameter tag 'TREP' to the source column (col 2) of 
+the gff output file and 
+will produce a GFF file simlar to the following:
+
+ HEX3045G05  repeatmasker:TREP	exon   469     493     25     -	.      AT_rich
+ HEX3045G05  repeatmasker:TREP	exon   716     754     25     +	.      AT_rich
+ HEX3045G05  repeatmasker:TREP	exon   1764    2069    469    +	.      TREP20
+ HEX3045G05  repeatmasker:TREP	exon   1816    2105    507    +	.      TREP58
+ HEX3045G05  repeatmasker:TREP	exon   1920    2248    450    +	.      TREP214
+ ...
+
+=item Program Source
+
+It may also be useful for you to specify a different program source name
+depending on the needs of your individual pipeline. You can do this
+using the --program option. For example, to shorten the full name
+repeatmasker to 'RM', you could use the following command
+
+  cnv_repmask2gff.pl -i rm_result.out -o rm_result.gff --program RM
+
+This will changed the source id in the second column of the output to RM
+and will result in a GFF output file similar to the following:
+
+  HEX3045G05	RM     exon	469	493	25	-     .	AT_rich
+  HEX3045G05	RM     exon	716	754	25	+     .	AT_rich
+  HEX3045G05	RM     exon	1764	2069	469	+     .	TREP20
+  HEX3045G05	RM     exon	1816	2105	507	+     .	TREP58
+  HEX3045G05	RM     exon	1920	2248	450	+     .	TREP214
+  ...
+
+This can also be used in conjunction with the param tag:
+
+  cnv_repmask2gff.pl -i result.out -o result.gff --program RM --param TREP
+
+This will result in a GFF file similar to the following
+
+ HEX3045G05   RM:TREP	exon	469	493	25	-     .	AT_rich
+ HEX3045G05   RM:TREP	exon	716	754	25	+     .	AT_rich
+ HEX3045G05   RM:TREP	exon	1764	2069	469	+     .	TREP20
+ HEX3045G05   RM:TREP	exon	1816	2105	507	+     .	TREP58
+ ...
+
+=item Specify the Sequence Source
+
+It is possible that the repeatmasker out file will truncate the name of
+your source sequence. You can restore this to the original name using the
+--name option. For example, if your full name was HEX3045G05_A001 you could
+specify this as:
+
+  cnv_repmask2gff.pl -i result.out -o result.gff --name HEX3045G05_A001
+
+This will result in a GFF output file similar to the following:
+
+ HEX3045G05_A001   repeatmasker	exon	469	493	25	-    .	AT_rich
+ HEX3045G05_A001   repeatmasker	exon	716	754	25	+    .	AT_rich
+ HEX3045G05_A001   repeatmasker	exon	1764	2069	469	+    .	TREP20
+ HEX3045G05_A001   repeatmasker	exon	1816	2105	507	+    .	TREP58
+ HEX3045G05_A001   repeatmasker	exon	1920	2248	450	+    .	TREP214
+ ...
+
+=back
+
 =head1 DIAGNOSTICS
 
 The error messages that can be generated will be listed here.
 
-=head1 CONFIGURATION AND ENVIRONMENT
-
-The major configuration file for this program is the list of
-datbases indicated by the -c flag.
-
-=head2 Databases Config File
-
-This file is a tab delimited text file. Line beginning with # are ignored.
-
-B<EXAMPLE>
-
-  #-------------------------------------------------------------
-  # DBNAME       DB_PATH
-  #-------------------------------------------------------------
-  TREP_9         /db/repeats/Trep9.nr.fasta
-  TIGR_Trit      /db/repeats/TIGR_Triticum_GSS_Repeats.v2.fasta
-  # END
-
-The columns above represent the following 
-
 =over 2
 
-=item Col. 1
+=item * Expecting Input from STDIN
 
-The name of the repeat library
-This will be used to name the output files from the analysis
-and to name the data tracks that will be used by Apollo.
-
-=item Col. 2
-
-The path to the fasta format file containing the repeats.
+You will see this message if you did not specify an input file with the -i
+or --input options.
 
 =back
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+This program does not make use of a configuration file or variables set in the
+user's environment.
 
 =head1 DEPENDENCIES
 
@@ -591,49 +559,29 @@ The path to the fasta format file containing the repeats.
 
 =over
 
-=item *
+=item * RepeatMasker
 
-RepeatMasker
-(http://www.repeatmasker.org/)
-
-=item *
-
-Apollo (Genome Annotation Curation Tool)
-http://www.fruitfly.org/annot/apollo/
+This program is designed to parse output file produce by the RepeatMasker
+program. RepeatMaske is available for download from:
+http://www.repeatmasker.org/
 
 =back
 
 =head2 Required Perl Modules
 
-=over
-
-=item *
-
-File::Copy
-
-=item *
-
-Getopt::Long
-
-=back
+This program does not make use of Perl modules outside of the normal suite
+of modules present in a typical installation of perl.
 
 =head1 BUGS AND LIMITATIONS
 
-=head2 TO DO
+=head2 Bugs
 
 =over 2
 
-=item *
+=item * No bugs currently known 
 
-Make the results compatable for an upload to a chado
-database.
-
-=item *
-
-Make it a variable to possible to put the gff output (1) all in positive 
-strand, (2) all in negative strand, (3) alignment to positive or
-negative strand, (4) cumulative in both positive and negative strand.
-Current behavior is to do number 1 above.
+If you find a bug with this software, file a bug report on the DAWG-PAWS
+Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
@@ -641,17 +589,22 @@ Current behavior is to do number 1 above.
 
 =over
 
-=item *
+=item * Limited RepeatMasker Version Testing.
 
-This program has been tested with RepeatMasker v  3.1.6
+This program has been tested with RepeatMasker v  3.1.6. If you find that this
+program is not compatible with other versions of RepeatMasker, please file
+a BUG report an include an output file that is not able to be parsed. 
 
 =back
 
 =head1 LICENSE
 
-GNU LESSER GENERAL PUBLIC LICENSE
+GNU General Public License, Version 3
 
-http://www.gnu.org/licenses/lgpl.html
+L<http://www.gnu.org/licenses/gpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
@@ -661,7 +614,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 09/11/2007
+UPDATED: 02/02/2009
 
 VERSION: $Rev$
 
@@ -806,3 +759,10 @@ VERSION: $Rev$
 # 09/11/2007
 # - Getting rid of LOG, all printing to STDERR
 # - Dropped attempts to move *.tbl file.
+#
+# 02/02/2009
+# - Dropped the Apollo converstion subfunction
+# - Updating POD documentation
+# - Added print_help subfunction to extract help from 
+#   POD documentation
+# - Dropped log file in favor of STDERR
