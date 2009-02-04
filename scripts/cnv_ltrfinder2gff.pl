@@ -382,7 +382,6 @@ sub ltrfinder2gff {
 		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
 		#print STDOUT $gff_str_out;
 		print GFFOUT $gff_str_out;
-		
 
 		if ($has_pbs) {
 		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
