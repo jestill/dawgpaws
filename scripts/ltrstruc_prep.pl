@@ -185,7 +185,7 @@ for my $ind_file (@fasta_files) {
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	$name_root = $ind_file;
     }
 
     # File paths
@@ -294,12 +294,12 @@ sub unix2dos {
        # Use the regular expression search operator to replace unix
        $line =~ s/$unix/$dos/g;
        print OUT "$line";
-       print "$line_num \n" if $verbose;
+       print STDERR "Processing line $line_num \n" if $verbose;
     }
     close(IN);
     close(OUT);
 
-    print "Unix2DOX Conversion is complete. \n" if $verbose;
+    print STDERR "Unix2DOX Conversion is complete. \n" if $verbose;
 
 }
 
