@@ -17,7 +17,7 @@
 # USAGE:                                                    |
 #  cnv_repmask2gff.pl -i infile.out -o outfile.gff          |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -162,7 +162,7 @@ sub rmout2gff {
     else {
 	print STDERR "Expecting input from STDIN";
 	open ( RM_IN, "<&STDIN" ) ||
-	    die "Could not open the RM infile:\n $rm_file\n";
+	    die "Could not open STDIN for input\n";
     }
 
     #-----------------------------+
