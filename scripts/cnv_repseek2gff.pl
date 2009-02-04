@@ -17,7 +17,7 @@
 # USAGE:                                                    |
 #  cnv_repseek2gff.pl -i repseek_out.txt -o repseek.gff     |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #                                                           |
 # LICENSE:                                                  |
@@ -101,7 +101,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_repseek2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -141,7 +141,7 @@ sub repseek2gff {
     else {
 	print STDERR "Expecting input from STDIN\n";
 	open (REPIN, "<&STDIN") ||
-	    die "Can not open input file:\n$repin\n";
+	    die "Can not accept input from standard input.\n";
     }
 
     # DEFAULT TO STDOUT
@@ -315,15 +315,20 @@ cnv_repseek2gff.pl - Convert repseek output to gff format
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    Name.pl -i InFile -o OutFile
+=head2 Usage
+
+    cnv_repseek2gff.pl -i InFile -o OutFile
+
+=head2 Required Options
 
     --infile        # Path to the repseek output file
+                    # Assumes STDIN if not givien
     --outfile       # Path to the output gff file
+                    # Assumes STDOUT if not given
 
 =head1 DESCRIPTION
 
@@ -432,7 +437,6 @@ http://wwwabi.snv.jussieu.fr/~public/RepSeek/
 
 =head1 BUGS AND LIMITATIONS
 
-
 =head2 Bugs
 
 =over 2
@@ -460,6 +464,9 @@ Other versions have not been tested for compatibility.
 GNU General Public License, Version 3
 
 L<http://www.gnu.org/licenses/gpl.html>
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
