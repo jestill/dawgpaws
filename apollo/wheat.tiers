@@ -116,24 +116,24 @@
 # 08/28/2007
 # This will be used to show gaps in the 
 # assembled BAC
-[Tier]
-tiername : Gap Annotation
-expanded : false
-labeled : false
-curated : true
-warnonedit : true
-
-[Type]
-label : gap
-tiername : Gap Annotation
-datatype : gap	
-glyph : Zigzag
-color : 255,0,0
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-sortbycolumn : GENOMIC_RANGE
-name_method : FlyNameAdapter
-idformat : DPgap\d{7}
+#[Tier]
+#tiername : Gap Annotation
+#expanded : false
+#labeled : false
+#curated : true
+#warnonedit : true
+#
+#[Type]
+#label : gap
+#tiername : Gap Annotation
+#datatype : gap	
+#glyph : Zigzag
+#color : 255,0,0
+#column : GENOMIC_RANGE
+#column : GENOMIC_LENGTH
+#sortbycolumn : GENOMIC_RANGE
+#name_method : FlyNameAdapter
+#idformat : DPgap\d{7}
 
 #-----------------------------------------------------------+
 #-----------------------------------------------------------+
