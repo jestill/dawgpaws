@@ -16,7 +16,7 @@
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
