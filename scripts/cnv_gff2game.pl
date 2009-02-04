@@ -15,7 +15,7 @@
 #  xml format for use in the Apollo Genome Annotation       |
 #  Curation program.                                        |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -290,7 +290,7 @@ Path of the input gff file
 =item -o,--outfile
 
 Path of the output game xml file.
-
+ 
 =back
 
 =head1 OPTIONS
@@ -391,7 +391,7 @@ does not support the STDIN and STOUT. :(
 
 =head1 SEE ALSO
 
-The seq_oligocount.pl program is part of the DAWG-PAWS package of genome
+This program is part of the DAWG-PAWS package of genome
 annotation programs. See the DAWG-PAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
