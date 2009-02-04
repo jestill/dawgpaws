@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 03/06/2007                                       |
-# UPDATED: 11/12/2007                                       |
+# UPDATED: 01/04/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
 #  Creates a Venn Diagram comparing the overlap of sequence |
@@ -50,12 +50,15 @@ package DAWGPAWS::VennSeq;
 use Getopt::Long;              # Get cmd line options
 use Bio::SearchIO;             # Parse BLAST output
 use Bio::SeqIO;                # Parse fasta sequence input file
-#use GD;                        # Draw using the GD program
-#                               # In case I want to draw a coverage map
+#use GD;                       # Draw using the GD program
+#                              # In case I want to draw a coverage map
 
 # REPLACE THE FOLLOWING WITH ENV OPTIONS
-my $vmaster_dir = $ENV{VMASTER_DIR};
-my $java_bin = $ENV{VMASTER_JAVA_BIN};
+# REPLACED THE FOLLOWING WITH LINE AFTER
+my $vmaster_dir = $ENV{VMASTER_DIR} || "/Applications/VennMaster-0.37.3/";
+#my $vmaster_dir = "/Applications/VennMaster-0.37.3/";
+my $java_bin = $ENV{VMASTER_JAVA_BIN} || 'java';
+my $java_mem = 256;
 
 #my $vmaster_dir = "/home/jestill/Apps/VennMaster/VennMaster-0.33.6/";
 #my $java_bin = "/usr/java/jre1.6.0/bin/java";
@@ -90,7 +93,8 @@ my $do_audit_blast = 0;        # Audit the blast output
 my $do_audit_rm = 0;           # Audit the repeatmasker output
 my $do_audit_ta = 0;           # Audit the TriAnnotation output
 my $do_full_audit = 0;         # Audit everything
-
+my $debug = 0;
+my $no_launch_vm = 0;          # Don't launch the venn master program
 
 my $seq_len;                    # Full length of the sequence that the
                                # features are being mapped onto
@@ -109,6 +113,7 @@ my @FeatLabels;                # Category labels for the features
 my @CrossTab;                  # Cross table matrix
 my $FileTestNum = 0;           # Initialize counter of file test number
 my $EmptyFileNum = 0;          # Initialize counter of empty files
+my $seq_id;
 
 #-----------------------------------------------------------+
 # COMMAND LINE VARIABLES                                    |
@@ -116,22 +121,29 @@ my $EmptyFileNum = 0;          # Initialize counter of empty files
 
 
 my $ok = GetOptions(
-                    # Required
-		    "i|infile=s"   => \$infile,
-                    "o|outfile=s"  => \$outfile,
-                    "d|dir=s"      => \$feature_dir,
-                    "f|format=s"   => \$feat_format,
-    		    # Optional strings
-                    "s|svg-out=s"  => \$svg_outfile,
-		    #"logfile=s"    => \$logfile,
+                    # Required variables
+		    "i|infile=s"     => \$infile,
+                    "o|outfile=s"    => \$outfile,
+                    "d|dir=s"        => \$feature_dir,
+                    "f|format=s"     => \$feat_format,  # accepts gff or tab delim blast
+    		    # Options
+                    "s|svg-out=s"    => \$svg_outfile,  # outfile for svg, not given,
+                                                        # vm program is opened
+                                                        # allows for automated run
+                    "venn-master=s"  => \$vmaster_dir,  # dir of the venn master program
+                    "no-vm"          => \$no_launch_vm, # Don't run venn master
+                    "java-path"      => \$java_bin,   # path of the java binary to use
+                    "java-mem"       => \$java_mem,   # Amount of mem to allocate to java
+                    "seq-id"         => \$seq_id,     # Sequence id to prepend to ids
 		    # Booleans
-		    "verbose"      => \$verbose,
-		    "test"         => \$test,
-		    "usage"        => \$show_usage,
-		    "version"      => \$show_version,
-		    "man"          => \$show_man,
-		    "h|help"       => \$show_help,
-		    "q|quiet"      => \$quiet,
+                    "debug"          => \$debug,
+		    "verbose"        => \$verbose,
+		    "test"           => \$test,
+		    "usage"          => \$show_usage,
+		    "version"        => \$show_version,
+		    "man"            => \$show_man,
+		    "h|help"         => \$show_help,
+		    "q|quiet"        => \$quiet,
                     );
 
 
@@ -165,6 +177,7 @@ unless ($feature_dir =~ /\/$/ ) {
 #-----------------------------+
 # CHECK FILE EXISTENCE        |
 #-----------------------------+
+# This is the fasta sequence file
 unless (-e $infile) {
     print STDERR "ERROR:The input sequence file could not be found:\n$infile\n";
 }
@@ -199,8 +212,7 @@ while (my $inseq = $seq_in->next_seq) {
 #-----------------------------------------------------------+
 # GET SEQUENCE FEATURES                                     |
 #-----------------------------------------------------------+
-if ($feat_format =~ "tab")
-{
+if ($feat_format =~ "tab") {
     #-----------------------------------------------------------+
     # TAB DELIM BLAST OUTPUT                                    |
     #-----------------------------------------------------------+
@@ -209,6 +221,9 @@ if ($feat_format =~ "tab")
 	die "Can not open input directory:\n$feature_dir: $!";
     @feature_files = grep /blo$/, readdir INDIR;
 
+    # TO DO, CHECK NUMBER FEATURE FILES, IF NONE FOUND
+    # ATTEMPT TO USE ALL FILES IN THE INPUT DIRECTORY
+
     #-----------------------------+
     # TEST FOR FILE LENGTH        |
     #-----------------------------+
@@ -216,14 +231,14 @@ if ($feat_format =~ "tab")
     # Check for files with no hits here by checking for zero length
     # 
     # Can load indexes to delete ??
-    foreach my $FileTest (@feature_files)
-    {
+    foreach my $FileTest (@feature_files) {
 	$FileTestNum++;
 	
 	#LOAD ZERO LENGTH FILE TO EmptyFiles array
 	# Otherise push them to the FeatFiles array
-	if (-z $feature_dir.$FileTest) # If the file is zero length
-	{
+
+        # If the file is zero length
+	if (-z $feature_dir.$FileTest) {
 	    $EmptyFileNum++;
 #	    $EmptyFiles[$EmptyFileNum][1] = $EmptyFileNum;
 #	    $EmptyFiles[$EmptyFileNum][2] = $FileTestNum;
@@ -233,7 +248,8 @@ if ($feat_format =~ "tab")
 	    # empty files array, if the GetShort Name does
 	    # not return a database then I will use the File Name
 	    push (@EmptyFiles, &GetShortName($FileTest) || $FileTest);
-	}else{
+	}
+	else{
 	    push (@FeatFiles, $FileTest); 
 	}# End of if FileSize = 0
     } # End of for each file in File test
@@ -242,12 +258,10 @@ if ($feat_format =~ "tab")
     # PRINT OUT THE EMPTY FILES   |
     #-----------------------------+
     # This is a place to drop empty files from the array
-    if ($EmptyFileNum > 0)
-    {
-	print "The following files had no BLAST hits:\n";
-	foreach my $IndEmptyFile (@EmptyFiles)
-	{
-	    print "\t".$IndEmptyFile."\n";
+    if ($EmptyFileNum > 0) {
+	print STDERR "The following files had no BLAST hits:\n";
+	foreach my $IndEmptyFile (@EmptyFiles) {
+	    print STDERR "\t".$IndEmptyFile."\n";
 	}
     }
     
@@ -258,12 +272,12 @@ if ($feat_format =~ "tab")
 #    exit;
     
 
-    if ($NumFeatFiles == 0) 
-    {
+    if ($NumFeatFiles == 0) {
 	print "No feature files of type \"$feat_format\" were found in:\n".
 	    "$feature_dir\n";
 	exit;
-    }else{
+    }
+    else {
 	print "$NumFeatFiles of type $feat_format were found in\n".
 	    "$feature_dir\n";
 	# temp exit for debug
@@ -275,13 +289,11 @@ if ($feat_format =~ "tab")
     # WITH ZEROS                  |
     #-----------------------------+
     print "Initializing feature matrix and binary matrix with zeros\n";
-    for (my $row=1; $row<=$NumFeatFiles; $row++)
-    {
+    for (my $row=1; $row<=$NumFeatFiles; $row++) {
 	my $NumCol=0;              # Varialbe to count number of cols
 	                           # for debug purpsoses
 	print "\tInitializing row $row...";
-	for (my $col=1; $col<=$seq_len; $col++)
-	{
+	for (my $col=1; $col<=$seq_len; $col++) {
 	    $FeatMatrix[$row][$col] = 0;
 	    $BinFeatMatrix[$row][$col] = 0;
 	    $NumCol++;
@@ -298,10 +310,8 @@ if ($feat_format =~ "tab")
     # any problems with var names
     my $Row = 0;                   # Reset row count to zero
                                    # Each feature has a unique row
-
-    print "Loading data from feature files.\n";
-    foreach my $IndFile (@FeatFiles)
-    {
+    print STDERR "Loading data from feature files.\n" if $verbose;
+    foreach my $IndFile (@FeatFiles) {
 	$Row++;                    # Increment row for each file
 
 	$FeatLabels[$Row] = &GetShortName($IndFile);
@@ -314,22 +324,19 @@ if ($feat_format =~ "tab")
 
 	open (FEATIN, "<$FeatPath") ||
 	    die "Can not open the feature file:\n$FeatPath\n";
-	while (<FEATIN>)
-	{
+	while (<FEATIN>) {
 	    chomp;
 	    $NumLines++;
 
 	    # Use unless to ignore comment lines from -m 9 output
-	    unless (m/^\#.*/)       
-	    {
+	    unless (m/^\#.*/) {
 		# TEST THAT THE LENGTH OF THE ARRAY IS 
 		# WHAT IS EXPECT
 		my @TabSplit = split(/\t/);
 		my $TestLen = @TabSplit;
-		if ($TestLen > '12')
-		{
-		    print "ERROR: The BLAST file has an unexpected\n".
-			"number of tab delimitedy columns.";
+		if ($TestLen > '12') {
+		    print STDERR "ERROR: The BLAST file has an unexpected".
+			" number of tab delimitedy columns.\n";
 		    #exit;
 		    # Currently just skip this record and move forward
 		}
@@ -344,10 +351,9 @@ if ($feat_format =~ "tab")
 		# FOR DEBUG PURPOSES          |
 		#-----------------------------+
 		# Just do this for the first few hits
-		unless ($quiet)
-		{
-		    if ($NumLines < '3')
-		    {
+		#unless ($quiet) {
+		if ($debug) {
+		    if ($NumLines < '3') {
 			print "\n\t\t  LINE: $NumLines\n";
 			print "\t\t   QRY: $QryId\n";
 			print "\t\t   SUB: $SubId\n";
@@ -356,8 +362,7 @@ if ($feat_format =~ "tab")
 		    } # End of If NumLines less then three
 		} # End of unless quiet
 
-		for (my $Col=$QStart; $Col<=$QEnd; $Col++)
-		{
+		for (my $Col=$QStart; $Col<=$QEnd; $Col++) {
 		    $BinFeatCount++;
 		    $FeatMatrix[$Row][$Col] = $FeatMatrix[$Row][$Col] + 1;
 		} # End of for my $col from Query Start to End
@@ -372,8 +377,7 @@ if ($feat_format =~ "tab")
 	# For tab delimited blast the number of features
 	# is roughly equal to the number of lines == number of HSPS
 	#print "\t\tFILE: $FeatPath\n";
-	unless ($quiet)
-	{
+	unless ($quiet) {
 	    print STDERR "\t\tFILE: $IndFile\n";
 	    print STDERR "\t\tFEAT: $NumLines\n";
 	    print STDERR "\t\t BIN: $BinFeatCount\n";
@@ -381,20 +385,6 @@ if ($feat_format =~ "tab")
     } # End of For each $IndFile in @FeatFiles
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-#////////////////////////////////////////////////////////////
-
 
 #-----------------------------------------------------------+
 # GFF FEATURE FILE FORMAT                                   |
@@ -418,8 +408,7 @@ elsif ($feat_format =~ "gff") {
     # Check for files with no hits here by checking for zero length
     # 
     # Can load indexes to delete ??
-    foreach my $FileTest (@feature_files)
-    {
+    foreach my $FileTest (@feature_files) {
 	$FileTestNum++;
 	
 	#LOAD ZERO LENGTH FILE TO EmptyFiles array
@@ -439,9 +428,9 @@ elsif ($feat_format =~ "gff") {
     # This is a place to drop empty files from the array
     if ($EmptyFileNum > 0) {
 	if ($verbose) {
-	    print "The following files had no data:\n";
+	    print STDERR "The following files had no data:\n";
 	    foreach my $IndEmptyFile (@EmptyFiles) {
-		print "\t".$IndEmptyFile."\n";
+		print STDERR "\t".$IndEmptyFile."\n";
 	    }
 	}
     }
@@ -466,8 +455,7 @@ elsif ($feat_format =~ "gff") {
     #-----------------------------+
     print STDERR "Initializing feature matrix and binary matrix with zeros\n" 
 	if $verbose;
-    for (my $row=1; $row<=$NumFeatFiles; $row++)
-    {
+    for (my $row=1; $row<=$NumFeatFiles; $row++) {
 	my $NumCol=0;              # Varialbe to count number of cols
 	                           # for debug purpsoses
 	print STDERR "\tInitializing row $row..." if $verbose;
@@ -484,14 +472,14 @@ elsif ($feat_format =~ "gff") {
     #-----------------------------+
     my $Row = 0;                   # Reset row count to zero
                                    # Each feature has a unique row
-    print "Loading data from feature files.\n";
-    foreach my $IndFile (@FeatFiles)
-    {
+    print STDERR "Loading data from feature files.\n" if $verbose;
+    foreach my $IndFile (@FeatFiles) {
 	$Row++;                    # Increment row for each file
 
 	$FeatLabels[$Row] = &GetShortName($IndFile);
 
-	print "\tLoading data from feature file $FeatLabels[$Row]\n";
+	print STDERR "\tLoading data from feature file $FeatLabels[$Row]\n"
+	    if $verbose; 
 
 	my $FeatPath = $feature_dir.$IndFile;
 	my $NumLines = 0;                  # Number of lines in the feat file
@@ -514,16 +502,14 @@ elsif ($feat_format =~ "gff") {
 		# FOR DEBUG PURPOSES          |
 		#-----------------------------+
 		# Just do this for the first few hits
-		if ($verbose)
-		{
-		    if ($NumLines < '3')
-		    {
-			print "\n\t\t  LINE: $NumLines\n";
-			print "\t\t   seq: $seqname\n";
-			print "\t\t   src: $source\n";
-			print "\t\t  feat: $feature\n";
-			print "\t\t start: $start\n";
-			print "\t\t   end: $end\n";
+		if ($verbose) {
+		    if ($NumLines < '3') {
+			print STDERR "\n\t\t  LINE: $NumLines\n";
+			print STDERR "\t\t   seq: $seqname\n";
+			print STDERR "\t\t   src: $source\n";
+			print STDERR "\t\t  feat: $feature\n";
+			print STDERR "\t\t start: $start\n";
+			print STDERR "\t\t   end: $end\n";
 		    } # End of If NumLines less then three
 		} # End of unless quiet
 		
@@ -542,17 +528,12 @@ elsif ($feat_format =~ "gff") {
 	# For tab delimited blast the number of features
 	# is roughly equal to the number of lines == number of HSPS
 	#print "\t\tFILE: $FeatPath\n";
-	unless ($quiet)
-	{
-	    print STDERR "\t\tFILE: $IndFile\n";
-	    print STDERR "\t\tFEAT: $NumLines\n";
-	    print STDERR "\t\t BIN: $BinFeatCount\n";
-	} # End of unless quiet
+	print STDERR "\t\tFILE: $IndFile\n" if $verbose;
+	print STDERR "\t\tFEAT: $NumLines\n" if $verbose;
+	print STDERR "\t\t BIN: $BinFeatCount\n" if $verbose;
     } # End of For each $IndFile in @FeatFiles
 
 }
-
-
 
 #-----------------------------------------------------------+
 # UNRECOGNIZED FEATURE FILE FORMAT                          |
@@ -567,25 +548,30 @@ else {
 #-----------------------------------------------------------+
 
 print "Filling the binary matrix.\n" if $verbose;
-for ($row=1; $row<=$NumFeatFiles; $row++)
-{
-    print "\tLoading row $row\n";
+for ($row=1; $row<=$NumFeatFiles; $row++) {
+    print STDERR "\tLoading row $row\n" if $verbose;
 
     my $BinFeatLen = 0;                    # Binary feature length
     my $BinFeatOccur = 0;                  # Occurrence of features
 
-    for ($col=1; $col<=$seq_len; $col++)
-    {
+    for ($col=1; $col<=$seq_len; $col++) {
 	$BinFeatLen++;
 	# If the feature matrix contains data
-	if ($FeatMatrix[$row][$col] >> 0)
-	{
+	if ($FeatMatrix[$row][$col] >> 0) {
 	    $BinFeatOccur++;
 	    $BinFeatMatrix[$row][$col] = 1;
-	    # Print to screen first to see if this actually
-	    # does work
-	    print OUT "$col\t$FeatLabels[$row]\n";
-#	    print "$col\t$FeatLabels[$row]\n";
+
+	    # Print output for the VennMaster program
+	    # The following workds
+	    #print OUT "$col\t$FeatLabels[$row]\n";
+	    #my $seq_id = "pos_";
+	    # Trying to add seq_id, this will allow multiple seqs to be used together
+	    if ($seq_id) {
+		print OUT "$seq_id$col\t$FeatLabels[$row]\n";
+	    }
+	    else {
+		print OUT "$col\t$FeatLabels[$row]\n";
+	    }
 	} 
     } # End of for $col
 
@@ -594,15 +580,15 @@ for ($row=1; $row<=$NumFeatFiles; $row++)
     # OF THE FEATURE AFTER        |
     # TESTING FOR DIVIDE BY ZERO  |
     #-----------------------------+
-    if ($BinFeatOccur == 0)
-    {
-	print "\t\tERROR: The feature has zero length.\n";
-    } else {
+    if ($BinFeatOccur == 0) {
+	print STDERR "\t\tERROR: The feature has zero length.\n" if $verbose;
+    } 
+    else {
 	# Calculate feature coverage
 	my $BinFeatCov = $BinFeatOccur/$BinFeatLen;
 	# Convert feature coverage to percent
 	$BinFeatCov = sprintf("%.4f",$BinFeatCov);
-	print "\t\tLEN: $BinFeatLen\tCOV: $BinFeatCov\n"
+	print STDERR "\t\tLEN: $BinFeatLen\tCOV: $BinFeatCov\n" if $verbose;
     }
 
 } # End of for row
@@ -618,7 +604,7 @@ close OUT;
 # Where N is the number of sequence features being comparedh zeros
 print "Generating the Cross tab\n" if $verbose;
 
-print "\n";
+print STDOUT "\n";
 
 #-----------------------------+
 # PRINT TABLE HEADER          |
@@ -630,38 +616,33 @@ print "\n";
 # PRINT TOP OF CROSS TABLE    |
 #-----------------------------+
 my $Sep = "+";
-for (my $i=1; $i<=$NumFeatFiles ; $i++)
-{$Sep = $Sep."--------+";}
-print $Sep."\n";
+for (my $i=1; $i<=$NumFeatFiles ; $i++) {
+    $Sep = $Sep."--------+";
+}
+print STDOUT $Sep."\n";
 
 #-----------------------------+
 # PRINT BODY OF CROSS TABLE   |
 #-----------------------------+
-for (my $i=1; $i<=$NumFeatFiles ; $i++)
-{
-    print "|"; # Print the left hand side of the cross tab
+for (my $i=1; $i<=$NumFeatFiles ; $i++) {
+    print STDOUT "|"; # Print the left hand side of the cross tab
 
-    for (my $j=1; $j<=$NumFeatFiles ; $j++)
-    {
+    for (my $j=1; $j<=$NumFeatFiles ; $j++) {
 	my $SharedCount=0;    # Initialize the count of shared
 	my $iCount=0;         # Initialize the i feature count
 	my $CrossRatio; # Set scope of the cross ratio
 
-	if ($i != $j)
-	{
+	if ($i != $j) {
 
 	    #-----------------------------+
 	    # CALCULATE CROSS TABLE RATIO |
 	    #-----------------------------+
 	    # k is the sequence position
-	    for (my $k=1; $k<=$seq_len; $k++)
-	    {
-		if ($BinFeatMatrix[$i][$k] == 1)
-		{
+	    for (my $k=1; $k<=$seq_len; $k++) {
+		if ($BinFeatMatrix[$i][$k] == 1) {
 		    # Increment the i feature count
 		    $iCount++;
-		    if ($BinFeatMatrix[$j][$k] == 1)
-		    {
+		    if ($BinFeatMatrix[$j][$k] == 1) {
 			# Increment the shared feature count
 			$SharedCount++;
 		    } # End of if j = 1 in binary matrix
@@ -672,11 +653,11 @@ for (my $i=1; $i<=$NumFeatFiles ; $i++)
 	    # LOAD RESULT TO CROSS TABLE  |
 	    # AFTER DIVIDE BY ZERO TEST   |
 	    #-----------------------------+
-	    if ($iCount >0)
-	    {
+	    if ($iCount >0) {
 		$CrossRatio = $SharedCount/$iCount;
 		$CrossRatio = sprintf("%.4f",$CrossRatio);
-	    }else{
+	    }
+	    else {
 		# If if = 0 this is the NULL case
 		$CrossRatio = "  NULL  ";
 	    } # End of if $iCount > 0
@@ -684,24 +665,25 @@ for (my $i=1; $i<=$NumFeatFiles ; $i++)
 	    # Load to the Cross Tab Array
 	    $CrossTab[$i][$j]=$CrossRatio;	    
 	    # To print in table format
-	    print " ".$CrossRatio." |";
-	}else{
+	    print STDOUT " ".$CrossRatio." |";
+	}
+	else {
 	    # If i = j then print the data source
 	    # label in the table, this will need to
 	    # be formatted to fit in the box
 	    # - sign below indicates left justification
 	    my $DatSrcLab = sprintf ('%-*s', 8, $FeatLabels[$i]);
-	    print $DatSrcLab."|";
+	    print STDOUT $DatSrcLab."|";
 	}
 	
     } # End of for j (Seq feature set two)
 
-    print "\n"; # Print new line for end of row in cross tab
-    print $Sep."\n";
+    print STDOUT "\n"; # Print new line for end of row in cross tab
+    print STDOUT $Sep."\n";
 } # End of for i (Seq feature set one)
 
 #print $Sep."\n";
-print "\n"; # Print final new row at the very end of cross tab
+print STDOUT "\n"; # Print final new row at the very end of cross tab
 
 
 # Exit while debugging 11/12/2007
@@ -710,7 +692,7 @@ print "\n"; # Print final new row at the very end of cross tab
 #-----------------------------------------------------------+
 # OPEN VENN MASTER TO DISPLAY VENN DIAGRAMS                 |
 #-----------------------------------------------------------+
-print "Running the VennMaster program.\n" if $verbose;
+print STDERR "Running the VennMaster program.\n" if $verbose;
 
 
 # VENN MASTER OPTIONS
@@ -766,32 +748,30 @@ else {
 	"venn.jar --list $outfile --svg $svg_outfile";
 }
 
-$vm_cmd = "java -ea -Xms256m -Xmx256m -cp".
-    " /Applications/Vennmaster-0.36.0/venn.jar:".
-    "/Applications/Vennmaster-0.36.0/junit.jar:".
-    "/Applications/Vennmaster-0.36.0/batik venn.VennMaster".
-    " --list $outfile --svg $svg_outfile";
+print STDERR "VennMaster Command:\n$vm_cmd\n" if $verbose;
 
-system ($vm_cmd) ||
-    die "Could not run the VennMaster program with cmd:\n$vm_cmd\n";
+# LAUNCH THE VENN MASTER PROGRAM UNLESS SET OTHERWISE
+unless ($no_launch_vm) {
+    system ($vm_cmd) ||
+	die "Could not run the VennMaster program with cmd:\n$vm_cmd\n";
+}
 
 #-----------------------------------------------------------+
-# CREATE COVERAGE DIAGRAM AS A HEAT MAP                     |
+# TO DO : CREATE COVERAGE DIAGRAM AS A HEAT MAP             |
 #-----------------------------------------------------------+
 
 # This can me made to be an option
 # It would also be useful to do this as an exported file
 # that could be viewed in Apollo or Gbrowse
+# 
 
-# TRUE EXIT
 exit;
 
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
-sub ParseConfigFile
-{
+sub ParseConfigFile {
 
 #-----------------------------------------------------------+
 # This will parase a configuration text file to set         |
@@ -809,8 +789,7 @@ sub ParseConfigFile
     open (CONFILE, $ConfigFilePath) ||
         die "Could not open config file:\n\t$ConfigFilePath";
 
-    while (<CONFILE>)
-    {
+    while (<CONFILE>) {
         chomp;                 # Remove newline character
         unless (m/\#.*/)       # Ignore comment lines
         {
@@ -824,8 +803,7 @@ sub ParseConfigFile
 
 }
 
-sub GetShortName
-{
+sub GetShortName {
 #-----------------------------------------------------------+
 # CONVERT THE  NAME TO A SHORTENED FORM                     |
 #-----------------------------------------------------------+ 
@@ -841,6 +819,7 @@ sub GetShortName
 # 10/22/2007 -JCE
 # Al alternative is to use a db config file that cotains
 # this information.
+# Best alternative is probably a text file that can be parsed.
 
     my $InName = $_[0]; #  Input name string
     my $OutName;        #  Set scope for the name to return
@@ -849,117 +828,164 @@ sub GetShortName
     #-----------------------------------------------------------+
     # REPEAT DATABASES                                          |
     #-----------------------------------------------------------+
-    if ($InName =~ m/TREP9_nr/)
-    {
+    if ($InName =~ m/TREP9_nr/) {
 	$OutName = "TREP9nr";
-    }elsif ($InName =~ m/TREP9_total/){
+    }
+    elsif ($InName =~ m/TREP9_total/) {
 	$OutName = "TREP9tot";
-    }elsif ($InName =~ m/mips_REdat/){
+    }
+    elsif ($InName =~ m/mips_REdat/) {
 	$OutName = "MIPS";
-    }elsif ($InName =~ m/TIGR_Gram/){
+    }
+    elsif ($InName =~ m/TIGR_Gram/) {
 	$OutName = "TIGRGram";
-    }elsif ($InName =~ m/RB_pln/){
+    }
+    elsif ($InName =~ m/RB_pln/) {
 	$OutName = "RB_pln";
-    }elsif ($InName =~ m/TATrans/){
+    }
+    elsif ($InName =~ m/TATrans/) {
 	$OutName = "TATran";
-    }elsif ($InName =~ m/Wessler/){
+    }
+    elsif ($InName =~ m/Wessler/) {
 	$OutName = "Wessler ";
-    }elsif ($InName =~ m/SanMiguel/){
+    }
+    elsif ($InName =~ m/SanMiguel/) {
 	$OutName = "SanMig";
     #-----------------------------------------------------------+
     # EST DATABASES                                             |
     #-----------------------------------------------------------+
     # TIGR GENE INDICES	
-    }elsif ($InName =~ m/TaGI_10/){
+    }
+    elsif ($InName =~ m/TaGI_10/) {
 	$OutName = "TaGI_10";    	
-    }elsif ($InName =~ m/AtGI_13/){
+    }
+    elsif ($InName =~ m/AtGI_13/) {
 	$OutName = "AtGI_13";    	
-    }elsif ($InName =~ m/ZmGI_17/){
+    }
+    elsif ($InName =~ m/ZmGI_17/) {
 	$OutName = "ZmGI_17";
-    }elsif ($InName =~ m/SbGI_8/){
+    }
+    elsif ($InName =~ m/SbGI_8/) {
 	$OutName = "SbGI_8";
-    }elsif ($InName =~ m/OsGI_17/){
+    }
+    elsif ($InName =~ m/OsGI_17/) {
 	$OutName = "OsGI_17";
-    }elsif ($InName =~ m/HvGI_9/){
+    }
+    elsif ($InName =~ m/HvGI_9/) {
 	$OutName = "HvGI_17";
     #-----------------------------+ 
     # EST: TIGR TAs               |
     #-----------------------------+
-    }elsif ($InName =~ m/AcTA_1/){
+    }
+    elsif ($InName =~ m/AcTA_1/) {
 	$OutName = "AcTA_1";
-    }elsif ($InName =~ m/AsTA_1/){
+    }
+    elsif ($InName =~ m/AsTA_1/) {
 	$OutName = "AsTA_1";
-    }elsif ($InName =~ m/AsTA_1/){
+    }
+    elsif ($InName =~ m/AsTA_1/) {
 	$OutName = "AsTA_1";
-    }elsif ($InName =~ m/AvenSatTA_2/){
+    }
+    elsif ($InName =~ m/AvenSatTA_2/) {
 	$OutName = "AvenSaTa";
-    }elsif ($InName =~ m/CdTA_2/){
+    }
+    elsif ($InName =~ m/CdTA_2/) {
 	$OutName = "CeTA_2";
-    }elsif ($InName =~ m/FaTA_2/){
+    }
+    elsif ($InName =~ m/FaTA_2/) {
 	$OutName = "FaTA_2";
-    }elsif ($InName =~ m/HvTA_2/){
+    }
+    elsif ($InName =~ m/HvTA_2/) {
 	$OutName = "HvTA_2";
-    }elsif ($InName =~ m/OsTA_2/){
+    }
+    elsif ($InName =~ m/OsTA_2/) {
 	$OutName = "OsTA_2";
-    }elsif ($InName =~ m/PgTA_2/){
+    }
+    elsif ($InName =~ m/PgTA_2/) {
 	$OutName = "PgTA_2";
-    }elsif ($InName =~ m/SbTA_2/){
+    }
+    elsif ($InName =~ m/SbTA_2/) {
 	$OutName = "SbTA_2";
-    }elsif ($InName =~ m/ShTA_2/){
+    }
+    elsif ($InName =~ m/ShTA_2/) {
 	$OutName = "ShTA_2";
-    }elsif ($InName =~ m/SoTA_2/){
+    }
+    elsif ($InName =~ m/SoTA_2/) {
 	$OutName = "SoTA_2";
-    }elsif ($InName =~ m/SpTA_2/){
+    }
+    elsif ($InName =~ m/SpTA_2/) {
 	$OutName = "SpTA_2";
-    }elsif ($InName =~ m/TaTA_2/){
+    }
+    elsif ($InName =~ m/TaTA_2/) {
 	$OutName = "TaTA_2";
-    }elsif ($InName =~ m/TmTA_2/){
+    }
+    elsif ($InName =~ m/TmTA_2/) {
 	$OutName = "TmTA_2";
-    }elsif ($InName =~ m/TtTA_1/){
+    }
+    elsif ($InName =~ m/TtTA_1/) {
 	$OutName = "TtTA_1";
-    }elsif ($InName =~ m/ZmB73TA_1/){
+    }
+    elsif ($InName =~ m/ZmB73TA_1/) {
 	$OutName = "ZmB71TA_1";
     #-----------------------------+	
     # EST: NCBI UniGenes	  |
     #-----------------------------+
-    }elsif ($InName =~ m/AtUniGene_56/){
+    }
+    elsif ($InName =~ m/AtUniGene_56/) {
 	$OutName = "AtUn_56";
-    }elsif ($InName =~ m/HvUniGene_47/){
+    }
+    elsif ($InName =~ m/HvUniGene_47/) {
 	$OutName = "HvUn_47";
-    }elsif ($InName =~ m/OsUniGene_65/){
+    }
+    elsif ($InName =~ m/OsUniGene_65/) {
 	$OutName = "OsUn_65";
-    }elsif ($InName =~ m/SbUniGene_21/){
+    }
+    elsif ($InName =~ m/SbUniGene_21/) {
 	$OutName = "SbUn_21";
-    }elsif ($InName =~ m/SoUniGene_8/){
+    }
+    elsif ($InName =~ m/SoUniGene_8/) {
 	$OutName = "SoUn_8";
-    }elsif ($InName =~ m/TaUniGene_46/){
+    }
+    elsif ($InName =~ m/TaUniGene_46/) {
 	$OutName = "TaUn_46";
-    }elsif ($InName =~ m/ZmUniGene_61/){
+    }
+    elsif ($InName =~ m/ZmUniGene_61/) {
 	$OutName = "ZmUn_61";
     #-----------------------------+
     # EST: PLANT GDB PUTS         |
     #-----------------------------+
-    }elsif ($InName =~ m/AsPUT_157/){
+    }
+    elsif ($InName =~ m/AsPUT_157/) {
 	$OutName = "AsPUT157";
-    }elsif ($InName =~ m/AtPUT_157/){
+    }
+    elsif ($InName =~ m/AtPUT_157/) {
 	$OutName = "AtPUT157";
-    }elsif ($InName =~ m/HvPUT_157/){
+    }
+    elsif ($InName =~ m/HvPUT_157/) {
 	$OutName = "HvPUT157";
-    }elsif ($InName =~ m/OsIndPUT_157/){
+    }
+    elsif ($InName =~ m/OsIndPUT_157/) {
 	$OutName = "OsIndPUT";
-    }elsif ($InName =~ m/OsJap_157/){
+    }
+    elsif ($InName =~ m/OsJap_157/) {
 	$OutName = "OsJapPUT";
-    }elsif ($InName =~ m/OsPut_157/){
+    }
+    elsif ($InName =~ m/OsPut_157/) {
 	$OutName = "OsPUT157";
-    }elsif ($InName =~ m/SbPUT_157/){
+    }
+    elsif ($InName =~ m/SbPUT_157/) {
 	$OutName = "SbPUT157";
-    }elsif ($InName =~ m/SpPUT_157/){
+    }
+    elsif ($InName =~ m/SpPUT_157/) {
 	$OutName = "SpPUT157";
-    }elsif ($InName =~ m/TaPUT_157/){
+    }
+    elsif ($InName =~ m/TaPUT_157/) {
 	$OutName = "TaPUT157";
-    }elsif ($InName =~ m/TmPUT_157/){
+    }
+    elsif ($InName =~ m/TmPUT_157/) {
 	$OutName = "TmPUT157";
-    }elsif ($InName =~ m/ZmPUT_157/){
+    }
+    elsif ($InName =~ m/ZmPUT_157/) {
 	$OutName = "ZmPUT157";
     #-----------------------------------------------------------+
     # PLANT PROTEIN DATABASES                                   |
@@ -967,54 +993,70 @@ sub GetShortName
     #-----------------------------------------------------------+
     # FINISHED GENOMES PROTEINS BLASTX                          |
     #-----------------------------------------------------------+
-    }elsif ($InName =~ m/TAIR6/){
+    }
+    elsif ($InName =~ m/TAIR6/) {
 	$OutName = "TAIR6";
-    }elsif ($InName =~ m/Os_5_cds_pep/){
+    }
+    elsif ($InName =~ m/Os_5_cds_pep/) {
 	$OutName = "OS_5_cds_pep";
-    }elsif ($InName =~ m/Os_5_RAP1_pep/){
+    }
+    elsif ($InName =~ m/Os_5_RAP1_pep/) {
 	$OutName = "OS_5_cds_pep";
     #-----------------------------------------------------------+
     # UNIPROT                                                   |
     #-----------------------------------------------------------+
-    }elsif ($InName =~ m/Os_5_RAP1_pep/){
+    }
+    elsif ($InName =~ m/Os_5_RAP1_pep/) {
 	$OutName = "OS_5_cds_pep";
     #-----------------------------------------------------------+
     # COMBINATION DATABASES                                     |
     #-----------------------------------------------------------+
-    }elsif ($InName =~ m/EST_DB/){
+    }
+    elsif ($InName =~ m/EST_DB/) {
 	$OutName = "EST_DB";
-    }elsif ($InName =~ m/TE_DB/){
+    }
+    elsif ($InName =~ m/TE_DB/) {
 	$OutName = "TE_DB";
     #-----------------------------------------------------------+
     # TRIANNOTATION FILES                                       |
     #-----------------------------------------------------------+
-    }elsif ($InName =~ m/1trf/){
+    }
+    elsif ($InName =~ m/1trf/) {
 	$OutName = "trf";
-    }elsif ($InName =~ m/2gmHv/){
+    }
+    elsif ($InName =~ m/2gmHv/) {
 	$OutName = "gmHv";
-    }elsif ($InName =~ m/2gmOs/){
+    }
+    elsif ($InName =~ m/2gmOs/) {
 	$OutName = "gmOs";
-    }elsif ($InName =~ m/2gmTa/){
+    }
+    elsif ($InName =~ m/2gmTa/) {
 	$OutName = "gmTa";
-    }elsif ($InName =~ m/2gmZm/){
+    }
+    elsif ($InName =~ m/2gmZm/) {
 	$OutName = "gmZm";
-    }elsif ($InName =~ m/2gID/){
+    }
+    elsif ($InName =~ m/2gID/) {
 	$OutName = "gID";
-    }elsif ($InName =~ m/2eugOs/){
+    }
+    elsif ($InName =~ m/2eugOs/) {
 	$OutName = "eugOs";
-    }elsif ($InName =~ m/2fGh/){
+    }
+    elsif ($InName =~ m/2fGh/) {
 	$OutName = "2fGh";
-    }elsif ($InName =~ m/genscan/){
+    }
+    elsif ($InName =~ m/genscan/) {
 	$OutName = "gensc";
     #-----------------------------------------------------------+
     # UNKNOWN DATABASES                                         |
     #-----------------------------------------------------------+
-    # Use the input name
-    # It may be better to flag this as UNK
-    }else{
+    # Use the input name if no match found
+    # another alternative is to flag this as unkonwn
+    }
+    else {
 
-	$OutName = "UNK";
-	#$OutName = $InName;
+	#$OutName = "UNK";
+	$OutName = $InName;
     }
 
     return $OutName;
@@ -1067,7 +1109,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 Started: 03/06/2007
 
-Updated: 05/21/2007
+Updated: 01/04/2009
 
 Version: $Rev$
 
@@ -1119,7 +1161,12 @@ Version: $Rev$
 #
 # 12/17/2007
 # - Updated POD documentation slightly
-
+#
+# 01/05/2009
+# - Minor code clean up
+# - Added test files to the svn repository
+# - Added debug option and debug variable
+#
 # - TEST CMD IS:
 #   ./vennseq.pl -i /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.fasta.masked -o /home/jestill/projects/wheat_annotation/VennTest/TestOutTwo.txt -d /home/jestill/projects/wheat_annotation/VennTest/ -f tab -s /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.test.svg
 
