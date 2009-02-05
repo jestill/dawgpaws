@@ -51,7 +51,6 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $file_num_max = 1;
 #\\\\\\\\\\\\\\\\\\\\\\
 
-
 #-----------------------------------------------------------+
 # VARIABLE SCOPE                                            |
 #-----------------------------------------------------------+
@@ -74,8 +73,9 @@ my $gff_out_dir;               # Dir for the gff output
 
 # FILE PATHS
 my $logfile;                   # Path to a logfile to log error info
-my $rm_path;                   # Full path to the repeatmasker binary
+my $rm_path = "RepeatMasker";  # Full path to the repeatmasker binary
 my $ap_path;                   # Full path to the apollo program
+my $rm_opt;                    # Repmasker options
 my $rep_db_path;               # Path to an indivual repeat database
 my $file_to_mask;              # The fasta file to be masked
 my $repmask_outfile;           # Repeat masked outfile
@@ -279,16 +279,26 @@ while (<CONFIGFILE>) {
 		print STDERR "INLINE SPLIT, i:$i \n";
 		print STDERR "\t\t".$in_line[0]."\n";
 		print STDERR "\t\t".$in_line[1]."\n";
-
-		print "VAL1 IS:";
-		print $mask_libs[$i][0]."\n";
 		
-		print "VAL2 IS:";
-		print $mask_libs[$i][1]."\n";
+		print STDERR "VAL1 IS:" if $verbose;
+		print STDERR $mask_libs[$i][0]."\n";
+		
+		print STDERR "VAL2 IS:" if $verbose;
+		print STDERR $mask_libs[$i][1]."\n";
 	    } # End of print for debug runs
+	    
+	    $i++;
+	}
+	# Iff three cols then we have additional options
+	elsif ($num_in_line == 3) {
+	    $mask_libs[$i][0] = $in_line[0];
+	    $mask_libs[$i][1] = $in_line[1];
+	    $mask_libs[$i][2] = $in_line[2];
 
 	    $i++;
 	}
+
+
     } # End of unless comment line
 } # End of while CONFIGFILE
 close CONFIGFILE;
@@ -438,6 +448,7 @@ for my $ind_file (@fasta_files)
  	
 	$rep_db_name = $mask_libs[$i][0];
 	$rep_db_path = $mask_libs[$i][1];
+	$rm_opt = $mask_libs[$i][2];
 
 	#-----------------------------+
 	# GET THE STRING TO SEARCH    |
@@ -474,7 +485,17 @@ for my $ind_file (@fasta_files)
  	$gff_alldb_out = $indir.$name_root."_ALLDB.gff";
 	$xml_alldb_out = $indir.$name_root."_ALLDB.game.xml";
 	
-	if ($rm_path) {
+	
+	if ($rm_opt) {
+	    $cmd_repmask = $rm_path.
+		" -lib ".$rep_db_path.
+		" -pa ".$num_proc.
+		" -engine ".$engine.
+		" -xsmall".
+		" $rm_opt ".
+		" $file_to_mask";
+	}
+	else {
 	    $cmd_repmask = $rm_path.
 		" -lib ".$rep_db_path.
 		" -pa ".$num_proc.
@@ -482,14 +503,6 @@ for my $ind_file (@fasta_files)
 		" -xsmall".
 		" $file_to_mask";
 	}
-	else {
-	    $cmd_repmask = "RepeatMasker".
-		" -lib ".$rep_db_path.
-		" -pa ".$num_proc.
-		" -engine ".$engine.
-		" -xsmall".
-		" $file_to_mask";
-	}       
 
 	#-----------------------------+
 	# SHOW THE USER THE COMMANDS  | 
@@ -1065,6 +1078,7 @@ B<EXAMPLE>
   #-------------------------------------------------------------
   TREP_9         /db/repeats/Trep9.nr.fasta
   TIGR_Trit      /db/repeats/TIGR_Triticum_GSS_Repeats.v2.fasta
+  TREP_9_Clip    /db/repeats/Trep9.nr.fasta     -is_clip
   # END
 
 The columns above represent the following 
@@ -1080,6 +1094,15 @@ and to name the data tracks that will be used by Apollo.
 =item Col. 2
 
 The path to the fasta format file containing the repeats.
+
+=item Col. 3
+
+An optional third col may also be included. This can include addiontal options
+to include in the RepeatMasker run. This should include valid RepeatMasker
+options separated by spaces. You can type RepeatMasker --help for the full
+list of options accepted by your version of RepeatMasker. In the example
+above, the -is_clip option will clip any E. coli insertion elements
+that are contained in the contigs.
 
 =back
 
@@ -1170,7 +1193,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 12/10/2007
+UPDATED: 02/05/2009
 
 VERSION: $Rev$
 
@@ -1320,3 +1343,7 @@ VERSION: $Rev$
 # - Changed print_help to a subfunction that extracts
 #   help and usage message from the POD documentation
 # - Updated POD documentation
+#
+# 02/05/2009
+# - Added the ability to accept a third column of option
+#   arguments in the configuration file
