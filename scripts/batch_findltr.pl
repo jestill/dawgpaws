@@ -224,16 +224,24 @@ for my $ind_file (@fasta_files) {
     $file_num++;
 
 
+
     # Get root file name
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/) {
+	# file ends in .masked.fasta
+	$name_root = "$1";
+    }
+    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+	# file ends in .fasta
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fa$/ ) {	    
+	# file ends in .fa
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	$name_root = $ind_file;
     }
+
 
     # The following added for temp work with gff output
     # 09/28/2007
