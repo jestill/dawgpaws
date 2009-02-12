@@ -406,19 +406,23 @@ for my $ind_file (@fasta_files)
     $repmask_masked_file = $file_to_mask.".masked";
     
     $proc_num++;
+
+    # Print log file report
     print LOG "\n\nProcess $proc_num of $num_proc_total.\n" if $logfile;
-    print "\n\n+-----------------------------------------------------------+\n"
+
+    # Print process information to STDERR
+    print STDERR "\n\n+---------------------------------------------------+\n"
 	unless $quiet;
-    print "| Process $proc_num of $num_proc_total.\n" unless $quiet;
-    print "+-----------------------------------------------------------+\n"
+    print STDERR "| Process $proc_num of $num_proc_total.\n" unless $quiet;
+    print STDERR "+---------------------------------------------------+\n"
 	unless $quiet;
 
     #-----------------------------+
     # SHOW BASIC RUN INFO
     #-----------------------------+
-    print "\n";
-    print "\tINFILE: $ind_file\n";
-    print "\t  ROOT: $name_root\n";
+    print STDERR "\n";
+    print STDERR "\tINFILE: $ind_file\n";
+    print STDERR "\t  ROOT: $name_root\n";
 
     #-----------------------------+
     # MAKE OUTPUT DIR             |
@@ -460,8 +464,8 @@ for my $ind_file (@fasta_files)
 	while (<IN>) {
 	    chomp;
 	    if (/^\>(.*)/) {
-		print "\tFASTA HEADER:\n\t$_\n" if  $verbose;
-		print "\tSEQ_ID:\n\t$1\n" if $verbose;
+		print STDERR "\tFASTA HEADER:\n\t$_\n" if  $verbose;
+		print STDERR "\tSEQ_ID:\n\t$1\n" if $verbose;
 		
 		$search_name = $1;
 		
@@ -509,25 +513,25 @@ for my $ind_file (@fasta_files)
 	# THAT WILL BE USED           |
 	#-----------------------------+
 	if ($verbose) {
-	    print "\n";
-	    print "+-----------------------------+\n";
-	    print "| CONVERT COMMANDS            |\n";
-	    print "+-----------------------------+\n";
-	    print "\tSEARCH:   ".$search_name."\n";
-	    print "\tOUTFILE:  ".$repmask_outfile."\n";
-	    print "\tDB-NAME:  ".$rep_db_name."\n";
-	    print "\tGFF-FILE: ".$gff_alldb_out."\n";
+	    print STDERR "\n";
+	    print STDERR "+-----------------------------+\n";
+	    print STDERR "| CONVERT COMMANDS            |\n";
+	    print STDERR "+-----------------------------+\n";
+	    print STDERR "\tSEARCH:   ".$search_name."\n";
+	    print STDERR "\tOUTFILE:  ".$repmask_outfile."\n";
+	    print STDERR "\tDB-NAME:  ".$rep_db_name."\n";
+	    print STDERR "\tGFF-FILE: ".$gff_alldb_out."\n";
 	    
 	    
-	    print "\n";
-	    print "+-----------------------------+\n";
-	    print "| REPEATMASKER COMMANDS       |\n";
-	    print "+-----------------------------+\n";
-	    print "\tLIB-NAME: ".$rep_db_name."\n";
-	    print "\tLIB-PATH: ".$rep_db_path."\n";
-	    print "\tEL-OUT:   ".$gff_el_out."\n";
-	    print "\tREPCMD:   ".$cmd_repmask."\n";
-	    print "\n\n";
+	    print STDERR "\n";
+	    print STDERR "+-----------------------------+\n";
+	    print STDERR "| REPEATMASKER COMMANDS       |\n";
+	    print STDERR "+-----------------------------+\n";
+	    print STDERR "\tLIB-NAME: ".$rep_db_name."\n";
+	    print STDERR "\tLIB-PATH: ".$rep_db_path."\n";
+	    print STDERR "\tEL-OUT:   ".$gff_el_out."\n";
+	    print STDERR "\tREPCMD:   ".$cmd_repmask."\n";
+	    print STDERR "\n\n";
 	}
 
 	#-----------------------------+
