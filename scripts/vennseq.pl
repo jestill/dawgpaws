@@ -1,19 +1,20 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# vennseq.pl - DAWG-PAWS Venn Diagram Program               |
+# vennseq.pl - Venn diagram overlap of sequence features    |
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 03/06/2007                                       |
-# UPDATED: 01/04/2009                                       |
+# UPDATED: 02/18/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
 #  Creates a Venn Diagram comparing the overlap of sequence |
 #  features along a query sequence. The purpose is to allow |
 #  me to visualize the overlap of Repeat Databases or gene  |
-#  models along a BAC.                                      |
+#  models along a BAC. This is also used to compare gene    |
+#  annotation curation results among curators               |
 #                                                           |
 # DEPENDENCIES:                                             |
 #  -BioPERL                                                 |
@@ -21,12 +22,13 @@
 #  -Venn Master                                             |
 #                                                           |
 # USAGE:                                                    |
-#                                                           |
+#   vennseq.pl -i HEX3045G05.fasta -o test_out_txt.txt      |
+#              -s test_out_svg.svg -d work_gff -f gff       |
 #                                                           |
 # NOTES:                                                    |
 #  -All array indices start at one.                         |
 #   This will facilitate parsing information from sequence  |
-#   features that are all indexed from 1 to L               |
+#   features that are all indexed from 1 to length of seq   |
 #  -q is quiet, Q is super quiet                            |
 #                                                           |
 #                                                           |
@@ -35,14 +37,15 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-# To do. If no fasta file then the sequence length may
-#        be passed as a variable from the command line.
-
+# To do.- If no fasta file then the sequence length may
+#         be passed as a variable from the command line.
+#       - Take a single gff file as input       
+#
 # TEST CMD: vennseq.pl -i HEX3045G05_TREP9.masked.fasta -o test_out_txt.txt -s test_out_svg.svg -d work_gff -f gff
 #
 # This is a test of svn 
 
-package DAWGPAWS::VennSeq;
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -52,16 +55,6 @@ use Bio::SearchIO;             # Parse BLAST output
 use Bio::SeqIO;                # Parse fasta sequence input file
 #use GD;                       # Draw using the GD program
 #                              # In case I want to draw a coverage map
-
-# REPLACE THE FOLLOWING WITH ENV OPTIONS
-# REPLACED THE FOLLOWING WITH LINE AFTER
-my $vmaster_dir = $ENV{VMASTER_DIR} || "/Applications/VennMaster-0.37.3/";
-#my $vmaster_dir = "/Applications/VennMaster-0.37.3/";
-my $java_bin = $ENV{VMASTER_JAVA_BIN} || 'java';
-my $java_mem = 256;
-
-#my $vmaster_dir = "/home/jestill/Apps/VennMaster/VennMaster-0.33.6/";
-#my $java_bin = "/usr/java/jre1.6.0/bin/java";
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -75,11 +68,16 @@ my $infile;                    # Path to sequence file in fasta format
 my $outfile;                   # Output file path for Venn text file
 my $svg_outfile;               # Output file path for Venn SVG image output
 my $feature_dir;               # Directory containing sequence features
-my $feat_format;               # Format of the sequence feature files
+my $feat_format = "gff";       # Format of the sequence feature files
                                #  - blast or b
                                #  - tab or t
                                #  - gff or g
 
+# VARS WITH EVN OPTIONS
+my $vmaster_dir = $ENV{VMASTER_DIR} || 
+    "/Applications/VennMaster-0.37.3/";
+my $java_bin = $ENV{VMASTER_JAVA_BIN} || 'java';
+my $java_mem = $ENV{VMASTER_JAVA_MEM} || 512;
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -96,15 +94,15 @@ my $do_full_audit = 0;         # Audit everything
 my $debug = 0;
 my $no_launch_vm = 0;          # Don't launch the venn master program
 
-my $seq_len;                    # Full length of the sequence that the
+my $seq_len;                   # Full length of the sequence that the
                                # features are being mapped onto
-my @FeatFiles;                 # Array to hold the path of the 
+my @feat_files;                # Array to hold the path of the 
                                # feature files.
 my @feature_files;             # The original list of potential feature
                                # files. The zero length files will
                                # be ignored leaving only files with data
-my @EmptyFiles;                # Files with no hits (0 length files)
-my $NumFeatFiles;              # The number of feature files
+my @empty_files;                # Files with no hits (0 length files)
+my $num_feat_files;              # The number of feature files
 my @FeatMatrix;                # Count of feature occurrences
 my @BinFeatMatrix;             # Presence/abscence binary form of the
                                # feature matrix
@@ -121,20 +119,19 @@ my $seq_id;
 
 
 my $ok = GetOptions(
-                    # Required variables
+                    # Required Variables
 		    "i|infile=s"     => \$infile,
                     "o|outfile=s"    => \$outfile,
                     "d|dir=s"        => \$feature_dir,
-                    "f|format=s"     => \$feat_format,  # accepts gff or tab delim blast
     		    # Options
-                    "s|svg-out=s"    => \$svg_outfile,  # outfile for svg, not given,
-                                                        # vm program is opened
-                                                        # allows for automated run
-                    "venn-master=s"  => \$vmaster_dir,  # dir of the venn master program
-                    "no-vm"          => \$no_launch_vm, # Don't run venn master
-                    "java-path"      => \$java_bin,   # path of the java binary to use
-                    "java-mem"       => \$java_mem,   # Amount of mem to allocate to java
-                    "seq-id"         => \$seq_id,     # Sequence id to prepend to ids
+                    "f|format=s"     => \$feat_format,
+                    "s|svg-out=s"    => \$svg_outfile,  
+                    "venn-master=s"  => \$vmaster_dir,  
+                    "no-vm"          => \$no_launch_vm,
+                    "java-path"      => \$java_bin,
+                    "java-mem"       => \$java_mem,
+                    "seq-id"         => \$seq_id,
+		    "seq-len"        => \$seq_len,
 		    # Booleans
                     "debug"          => \$debug,
 		    "verbose"        => \$verbose,
@@ -147,23 +144,22 @@ my $ok = GetOptions(
                     );
 
 
-# may also use a "MAX" varialble
 my $Usage = "\nVennSeq.pl -i InputFastaFile -o OutputFile\n".
 	"-d FeatureFileDirecotry \n";
 
 #-----------------------------+
 # REQUIRED VARIABLE CHECK     |
 #-----------------------------+
-if ( (!$infile) || (!$outfile) || (!$feature_dir) || (!$feat_format) ) {
+if ( (!$outfile) || (!$feature_dir) ) {
     print "\a";
-    print "ERROR: The fasta format infile  must be specified at the".
-	" command line\n" if !$infile;
+#    print "ERROR: The fasta format infile  must be specified at the".
+#	" command line\n" if !$infile;
     print "ERROR: The outfile must be specified at the command line\n"
 	if !$outfile;
     print "ERROR: The feature directory must be specified at the command line\n"
 	if !$feature_dir;
-    print "ERROR: The feature file format must be specified at the command".
-	" line\n" if !$feat_format;
+ #   print "ERROR: The feature file format must be specified at the command".
+	#" line\n" if !$feat_format;
     exit;
 }
 
@@ -190,33 +186,38 @@ open (OUT, ">$outfile") ||
 
 #-----------------------------+
 # GET LENGTH OF THE SEQUENCE  |
-# FROM THE FASTA INPUT FILE   |
 #-----------------------------+
-# This will be used to determine the length of the array
-# This includes an internal check for only one sequence
-# in the input file.
-my $seq_in = Bio::SeqIO->new('-file' => "<$infile",
-                             '-format' => 'fasta') ||
-    die "Can not open input file:n\$infile\n";
-
-my $num_seq = 0;
-while (my $inseq = $seq_in->next_seq) {
-    $num_seq++;
-    $seq_len = $inseq->length();
-    if ($num_seq >> 1) {
-	print "ERROR. Input sequence file contains more then one sequence.\n";
-	exit;
+unless ($seq_len) {
+    # This will be used to determine the length of the array
+    # This includes an internal check for only one sequence
+    # in the input file.
+    my $seq_in = Bio::SeqIO->new('-file' => "<$infile",
+				 '-format' => 'fasta') ||
+				     die "Can not open input file:n\$infile\n";
+    
+    my $num_seq = 0;
+    while (my $inseq = $seq_in->next_seq) {
+	$num_seq++;
+	$seq_len = $inseq->length();
+	if ($num_seq >> 1) {
+	    print "ERROR. Input sequence file contains more then one sequence.\n";
+	    exit;
+	}
     }
-} 
+    
+}
+
 
 #-----------------------------------------------------------+
 # GET SEQUENCE FEATURES                                     |
 #-----------------------------------------------------------+
+
+#-----------------------------+
+# TAB DELIM BLAST OUTPUT      |
+#-----------------------------+
+# Currently only supporting the blo extension
 if ($feat_format =~ "tab") {
-    #-----------------------------------------------------------+
-    # TAB DELIM BLAST OUTPUT                                    |
-    #-----------------------------------------------------------+
-    # Currently only supporting the blo extension
+
     opendir(INDIR, $feature_dir) ||
 	die "Can not open input directory:\n$feature_dir: $!";
     @feature_files = grep /blo$/, readdir INDIR;
@@ -247,10 +248,10 @@ if ($feat_format =~ "tab") {
 	    # Load the short name of the database to the 
 	    # empty files array, if the GetShort Name does
 	    # not return a database then I will use the File Name
-	    push (@EmptyFiles, &GetShortName($FileTest) || $FileTest);
+	    push (@empty_files, &GetShortName($FileTest) || $FileTest);
 	}
 	else{
-	    push (@FeatFiles, $FileTest); 
+	    push (@feat_files, $FileTest); 
 	}# End of if FileSize = 0
     } # End of for each file in File test
     
@@ -260,45 +261,40 @@ if ($feat_format =~ "tab") {
     # This is a place to drop empty files from the array
     if ($EmptyFileNum > 0) {
 	print STDERR "The following files had no BLAST hits:\n";
-	foreach my $IndEmptyFile (@EmptyFiles) {
+	foreach my $IndEmptyFile (@empty_files) {
 	    print STDERR "\t".$IndEmptyFile."\n";
 	}
     }
     
-    $NumFeatFiles = @FeatFiles;
-    print "\n$NumFeatFiles files have hits\n";
+    $num_feat_files = @feat_files;
+    print "\n$num_feat_files files have hits\n";
 
-    # Temp exit while I test working with file size
-#    exit;
-    
-
-    if ($NumFeatFiles == 0) {
+    if ($num_feat_files == 0) {
 	print "No feature files of type \"$feat_format\" were found in:\n".
 	    "$feature_dir\n";
 	exit;
     }
     else {
-	print "$NumFeatFiles of type $feat_format were found in\n".
+	print "$num_feat_files of type $feat_format were found in\n".
 	    "$feature_dir\n";
-	# temp exit for debug
-	#exit;
     }
 
     #-----------------------------+
     # FILL THE FEATURE MATRIX     |
     # WITH ZEROS                  |
     #-----------------------------+
-    print "Initializing feature matrix and binary matrix with zeros\n";
-    for (my $row=1; $row<=$NumFeatFiles; $row++) {
-	my $NumCol=0;              # Varialbe to count number of cols
-	                           # for debug purpsoses
-	print "\tInitializing row $row...";
+    print STDERR "Initializing feature matrix and binary matrix with zeros\n" 
+	if $verbose;
+    for (my $row=1; $row<=$num_feat_files; $row++) {
+	my $NumCol=0;
+	
+	print STDERR "\tInitializing row $row..." if $verbose;
 	for (my $col=1; $col<=$seq_len; $col++) {
 	    $FeatMatrix[$row][$col] = 0;
 	    $BinFeatMatrix[$row][$col] = 0;
 	    $NumCol++;
 	}
-	print "$NumCol cols.\n";
+	print STDERR "$NumCol cols.\n" if $verbose;
     }
 
     #-----------------------------+
@@ -311,7 +307,7 @@ if ($feat_format =~ "tab") {
     my $Row = 0;                   # Reset row count to zero
                                    # Each feature has a unique row
     print STDERR "Loading data from feature files.\n" if $verbose;
-    foreach my $IndFile (@FeatFiles) {
+    foreach my $IndFile (@feat_files) {
 	$Row++;                    # Increment row for each file
 
 	$FeatLabels[$Row] = &GetShortName($IndFile);
@@ -336,9 +332,7 @@ if ($feat_format =~ "tab") {
 		my $TestLen = @TabSplit;
 		if ($TestLen > '12') {
 		    print STDERR "ERROR: The BLAST file has an unexpected".
-			" number of tab delimitedy columns.\n";
-		    #exit;
-		    # Currently just skip this record and move forward
+			" number of tab delimited columns.\n";
 		}
 
 		my ($QryId, $SubId, $PID, $Len,
@@ -350,18 +344,16 @@ if ($feat_format =~ "tab") {
 		# PRINT SOME FEATURE VALUES   |
 		# FOR DEBUG PURPOSES          |
 		#-----------------------------+
-		# Just do this for the first few hits
-		#unless ($quiet) {
 		if ($debug) {
 		    if ($NumLines < '3') {
-			print "\n\t\t  LINE: $NumLines\n";
+			print "\n\t\tLINE: $NumLines\n";
 			print "\t\t   QRY: $QryId\n";
 			print "\t\t   SUB: $SubId\n";
 			print "\t\tQSTART: $QStart\n";
 			print "\t\t  QEND: $QEnd\n\n";
 		    } # End of If NumLines less then three
 		} # End of unless quiet
-
+		
 		for (my $Col=$QStart; $Col<=$QEnd; $Col++) {
 		    $BinFeatCount++;
 		    $FeatMatrix[$Row][$Col] = $FeatMatrix[$Row][$Col] + 1;
@@ -382,7 +374,7 @@ if ($feat_format =~ "tab") {
 	    print STDERR "\t\tFEAT: $NumLines\n";
 	    print STDERR "\t\t BIN: $BinFeatCount\n";
 	} # End of unless quiet
-    } # End of For each $IndFile in @FeatFiles
+    } # End of For each $IndFile in @feat_files
 
 }
 
@@ -393,10 +385,6 @@ if ($feat_format =~ "tab") {
 
 elsif ($feat_format =~ "gff") {
 
-    #-----------------------------------------------------------+
-    # GFF FILE FORMAT                                           |
-    #-----------------------------------------------------------+
-    # Currently only supporting the gff extension
     opendir(INDIR, $feature_dir) ||
 	die "Can not open input directory:\n$feature_dir: $!";
     @feature_files = grep /gff$/, readdir INDIR;
@@ -404,7 +392,6 @@ elsif ($feat_format =~ "gff") {
     #-----------------------------+
     # TEST FOR FILE LENGTH        |
     #-----------------------------+
-
     # Check for files with no hits here by checking for zero length
     # 
     # Can load indexes to delete ??
@@ -415,11 +402,12 @@ elsif ($feat_format =~ "gff") {
 	# Otherise push them to the FeatFiles array
 	if (-z $feature_dir.$FileTest) {
 	    $EmptyFileNum++;
-	    push (@EmptyFiles, &GetShortName($FileTest) || $FileTest);
+	    push (@empty_files, &GetShortName($FileTest) || $FileTest);
 	}
 	else {
-	    push (@FeatFiles, $FileTest); 
-	}# End of if FileSize = 0
+	    push (@feat_files, $FileTest); 
+	} # End of if FileSize = 0
+
     } # End of for each file in File test
 
     #-----------------------------+
@@ -429,22 +417,22 @@ elsif ($feat_format =~ "gff") {
     if ($EmptyFileNum > 0) {
 	if ($verbose) {
 	    print STDERR "The following files had no data:\n";
-	    foreach my $IndEmptyFile (@EmptyFiles) {
+	    foreach my $IndEmptyFile (@empty_files) {
 		print STDERR "\t".$IndEmptyFile."\n";
 	    }
 	}
     }
     
-    $NumFeatFiles = @FeatFiles;
-    print STDERR "\n$NumFeatFiles files have data\n" if $verbose;
+    $num_feat_files = @feat_files;
+    print STDERR "\n$num_feat_files files have data\n" if $verbose;
 
-    if ($NumFeatFiles == 0) {
+    if ($num_feat_files == 0) {
 	print STDERR "No feature files of type \"$feat_format\"".
 	    " were found in:\n$feature_dir\n" if $verbose;
 	exit;
     }
     else {
-	print STDERR "$NumFeatFiles files of type $feat_format were found in\n".
+	print STDERR "$num_feat_files files of type $feat_format were found in\n".
 	    "$feature_dir\n" if $verbose;
     }
 
@@ -455,7 +443,7 @@ elsif ($feat_format =~ "gff") {
     #-----------------------------+
     print STDERR "Initializing feature matrix and binary matrix with zeros\n" 
 	if $verbose;
-    for (my $row=1; $row<=$NumFeatFiles; $row++) {
+    for (my $row=1; $row<=$num_feat_files; $row++) {
 	my $NumCol=0;              # Varialbe to count number of cols
 	                           # for debug purpsoses
 	print STDERR "\tInitializing row $row..." if $verbose;
@@ -473,7 +461,7 @@ elsif ($feat_format =~ "gff") {
     my $Row = 0;                   # Reset row count to zero
                                    # Each feature has a unique row
     print STDERR "Loading data from feature files.\n" if $verbose;
-    foreach my $IndFile (@FeatFiles) {
+    foreach my $IndFile (@feat_files) {
 	$Row++;                    # Increment row for each file
 
 	$FeatLabels[$Row] = &GetShortName($IndFile);
@@ -531,7 +519,7 @@ elsif ($feat_format =~ "gff") {
 	print STDERR "\t\tFILE: $IndFile\n" if $verbose;
 	print STDERR "\t\tFEAT: $NumLines\n" if $verbose;
 	print STDERR "\t\t BIN: $BinFeatCount\n" if $verbose;
-    } # End of For each $IndFile in @FeatFiles
+    } # End of For each $IndFile in @feat_files
 
 }
 
@@ -548,7 +536,7 @@ else {
 #-----------------------------------------------------------+
 
 print "Filling the binary matrix.\n" if $verbose;
-for ($row=1; $row<=$NumFeatFiles; $row++) {
+for ($row=1; $row<=$num_feat_files; $row++) {
     print STDERR "\tLoading row $row\n" if $verbose;
 
     my $BinFeatLen = 0;                    # Binary feature length
@@ -560,12 +548,7 @@ for ($row=1; $row<=$NumFeatFiles; $row++) {
 	if ($FeatMatrix[$row][$col] >> 0) {
 	    $BinFeatOccur++;
 	    $BinFeatMatrix[$row][$col] = 1;
-
-	    # Print output for the VennMaster program
-	    # The following workds
-	    #print OUT "$col\t$FeatLabels[$row]\n";
-	    #my $seq_id = "pos_";
-	    # Trying to add seq_id, this will allow multiple seqs to be used together
+	    
 	    if ($seq_id) {
 		print OUT "$seq_id$col\t$FeatLabels[$row]\n";
 	    }
@@ -616,7 +599,7 @@ print STDOUT "\n";
 # PRINT TOP OF CROSS TABLE    |
 #-----------------------------+
 my $Sep = "+";
-for (my $i=1; $i<=$NumFeatFiles ; $i++) {
+for (my $i=1; $i<=$num_feat_files ; $i++) {
     $Sep = $Sep."--------+";
 }
 print STDOUT $Sep."\n";
@@ -624,10 +607,10 @@ print STDOUT $Sep."\n";
 #-----------------------------+
 # PRINT BODY OF CROSS TABLE   |
 #-----------------------------+
-for (my $i=1; $i<=$NumFeatFiles ; $i++) {
+for (my $i=1; $i<=$num_feat_files ; $i++) {
     print STDOUT "|"; # Print the left hand side of the cross tab
 
-    for (my $j=1; $j<=$NumFeatFiles ; $j++) {
+    for (my $j=1; $j<=$num_feat_files ; $j++) {
 	my $SharedCount=0;    # Initialize the count of shared
 	my $iCount=0;         # Initialize the i feature count
 	my $CrossRatio; # Set scope of the cross ratio
@@ -685,17 +668,13 @@ for (my $i=1; $i<=$NumFeatFiles ; $i++) {
 #print $Sep."\n";
 print STDOUT "\n"; # Print final new row at the very end of cross tab
 
-
-# Exit while debugging 11/12/2007
-#exit;
-
 #-----------------------------------------------------------+
 # OPEN VENN MASTER TO DISPLAY VENN DIAGRAMS                 |
 #-----------------------------------------------------------+
 print STDERR "Running the VennMaster program.\n" if $verbose;
 
 
-# VENN MASTER OPTIONS
+# NOTE: VENN MASTER OPTIONS
 #-help,-?
 #    displays help information
 #--version, -v
@@ -723,17 +702,6 @@ print STDERR "Running the VennMaster program.\n" if $verbose;
 #--prof file.txt
 #    error profile output for the last simulation 
 
-
-# Working path is:
-# /usr/java/jre1.6.0/bin/java -Xms256m -Xmx256m -jar 
-#   /home/jestill/Apps/VennMaster/VennMaster-0.33.6/venn.jar
-
-# Without the At we have
-#my $vm_cmd = "$java_bin -Xms256m -Xmx256m -jar $vmaster_dir".
-#    "venn.jar --list $outfile --svg $svg_outfile";
-
-# CAN ALSO HAVE
-#java -ea -Xms256m -Xmx256m -cp /Applications/Vennmaster-0.36.0/venn.jar:/Applications/Vennmaster-0.36.0/junit.jar:/Applications/Vennmaster-0.36.0/batik venn.VennMaster
 
 #-----------------------------+
 # RUN VENN MASTER             |
@@ -823,7 +791,6 @@ sub GetShortName {
 
     my $InName = $_[0]; #  Input name string
     my $OutName;        #  Set scope for the name to return
-
 
     #-----------------------------------------------------------+
     # REPEAT DATABASES                                          |
@@ -1065,12 +1032,21 @@ sub GetShortName {
 
 =head1 NAME
 
-vennseq.pl - DAWG-PAWS Venn Diagram Program
+vennseq.pl - Venn diagram overlap of sequence features
 
 =head1 SYNOPSIS
 
+=head2 Usage
+
     vennseq.pl -i InputFastaFile.fasta -o OutputFile -d FeatureFileDir
                -f tab
+
+=head2 Required Options
+
+    -i       # Fasta file being annotated
+    -o       # Output file
+    -d       # Feature file directory
+    -f       # Format of the annotation data [gff]
            
 =head1 DESCRIPTION
 
@@ -1083,16 +1059,23 @@ models along a BAC.
 
 =over 2
 
-=item -i InputFastaFile
+=item -i
+
+Path to the sequence file in fasta format.
 
 =item -o OutputFile
 
+Path to the output file in the Venn text file.
+
 =item -d FeatureFileDir
+
+Directory containing sequence features.
 
 =item -f tab
 
 The feature file format. This must be one of ( tab | blast | gff ).
-Currently only tab delim blast hits are supported.
+Currently only tab delim blast hits are supported. This is set to
+gff default.
 
 =back
 
@@ -1109,7 +1092,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 Started: 03/06/2007
 
-Updated: 01/04/2009
+Updated: 02/18/2009
 
 Version: $Rev$
 
@@ -1166,6 +1149,10 @@ Version: $Rev$
 # - Minor code clean up
 # - Added test files to the svn repository
 # - Added debug option and debug variable
+#
+# 02/18/2009
+# - Additional code clean up
+# - Updated POD documentation
 #
 # - TEST CMD IS:
 #   ./vennseq.pl -i /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.fasta.masked -o /home/jestill/projects/wheat_annotation/VennTest/TestOutTwo.txt -d /home/jestill/projects/wheat_annotation/VennTest/ -f tab -s /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.test.svg
