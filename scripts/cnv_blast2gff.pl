@@ -499,6 +499,105 @@ Run the program with minimal output.
 
 =back
 
+=head1 EXAMPLES
+
+The following are examples on how to use the cnv_blast2gff.pl program.
+
+=head2 Typical Use
+
+The typical use of this program will be to convert an existing blast output
+to to the GFF file format:
+
+  cnv_blast2gff.pl -i blast_result.bln -o parsed_result.gff
+
+This will generate a GFF format file named parsed_result.gff.
+
+=head2 Piping BLAST Result Directly to the Conversion Utility
+
+It is also possible to directly send the blast result to the cnv_blast2gff.pl
+program using the standard streams.
+
+  blastall -p blastin .. | cnv_blast2gff.pl -o blast_result.gff
+
+This will take the blast output from NCBI's blastall program and 
+convert the output to the gff format.
+
+=head2 Combining Blast Results in GFF format
+
+Since the cnv_blast2gff.pl program will write the results to the
+standard output stream if no file path is specified, it is possible to
+use standard unix commands to combined results. Consider the following
+set of commands:
+
+  cnv_blast2gff.pl blast_result01.bln > combined_results.gff
+  cnv_blast2gff.pl blast_result02.bln >> combined_results.gff
+  cnv_blast2gff.pl blast_result03.bln >> combined_results.gff
+
+This will combined the blast results from the 01, 02 and 03 search into
+a single gff file named combined_results.gff
+
+=head2 Specify the Sequence ID with --name
+
+The first column in the GFF output file results indicates the id of the
+sequence that is being annotated. By default, the cnv_blast2gff.pl program
+will attempt to extract this ID from the blast result. It is also possible
+to specify this from the command line using the --name option. For example
+consider you had a blast report that gave the following result"
+
+  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff
+
+that generated a gff file like the following
+
+ HEX3045G05   blast:mips   exon     8537    8667    39	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     9911    9996    38	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     10025   10191   36	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     76161   76235   35	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     81151   81200   34	 +    .	 rire1
+ ...
+
+where HEX304GO5 indicates the sequence id. This sequence identifier could
+be modified using the --name option:
+
+  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff --name HEX001
+
+this would give the following result:
+
+ HEX001   blast:mips   exon     8537    8667    39	 +    .	 rire1
+ HEX001   blast:mips   exon     9911    9996    38	 +    .	 rire1
+ HEX001   blast:mips   exon     10025   10191   36	 +    .	 rire1
+ HEX001   blast:mips   exon     76161   76235   35	 +    .	 rire1
+ HEX001   blast:mips   exon     81151   81200   34	 +    .	 rire1
+ ...
+
+=head2 Specify the Database name with --database
+
+By default the cnv_blast2gff.pl program will identify the database in the
+second column as a suffix to the blast program, separated by a colon.
+The command:
+
+  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff
+
+that generated a gff file like the following
+
+ HEX3045G05   blast:mips   exon     8537    8667    39	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     9911    9996    38	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     10025   10191   36	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     76161   76235   35	 +    .	 rire1
+ HEX3045G05   blast:mips   exon     81151   81200   34	 +    .	 rire1
+ ...
+
+Could have the database suffix modified using the --database option as follows:
+
+  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff --name tes
+
+This would modify the gff output to the following:
+
+ HEX3045G05   blast:tes   exon     8537    8667    39	 +    .	 rire1
+ HEX3045G05   blast:tes   exon     9911    9996    38	 +    .	 rire1
+ HEX3045G05   blast:tes   exon     10025   10191   36	 +    .	 rire1
+ HEX3045G05   blast:tes   exon     76161   76235   35	 +    .	 rire1
+ HEX3045G05   blast:tes   exon     81151   81200   34	 +    .	 rire1
+
 =head1 DIAGNOSTICS
 
 =over 2
@@ -633,3 +732,5 @@ VERSION: $Rev$
 #  be extracted from the command line
 # 01/31/2009
 # -Fixed print_help to extract help from POD
+# 03/09/2009
+# -Added some examples
