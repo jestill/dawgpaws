@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 10/30/2007                                       |
-# UPDATED: 01/21/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the genemark.hmm gene prediction    |
@@ -310,8 +310,6 @@ This documentation refers to program version $Rev$
 =head2 Usage
 
     cnv_genemark2gff.pl -i infile.genemark -o outfile.gff
-    
-    gmmhme3 | cnv_genemark2gff.pl --src-seq HEX0014K09
 
 =head2 Required Arguments
 
@@ -523,6 +521,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -540,7 +549,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/30/2007
 
-UPDATED: 01/21/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
