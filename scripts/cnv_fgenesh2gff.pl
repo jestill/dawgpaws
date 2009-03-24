@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 01/31/2009                                       |
-# UPDATED: 01/31/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert output from fgenesh to the gff format.           |
@@ -17,7 +17,6 @@
 #  ShortFasta Infile.fasta Outfile.fasta                    |
 #                                                           |
 # VERSION: $Rev$                                      |
-#                                                           |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -108,7 +107,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_fgenesh2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -220,7 +219,7 @@ sub fgenesh2gff {
     #-----------------------------+
     # OPEN THE GFF OUTFILE        |
     #-----------------------------+
-     # Default to STDOUT if no arguemtn given
+     # Default to STDOUT if no argument given
     if ($gff_out) {
 	if ($do_append) {
 	    open (GFFOUT, ">>$gff_out") ||
@@ -742,6 +741,17 @@ contact the author and let me know.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -759,7 +769,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 01/31/2009
 
-UPDATED: 02/02/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
