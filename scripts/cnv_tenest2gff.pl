@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 01/27/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert TE Nest output to gff file format.               |
@@ -905,6 +905,17 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU LESSER GENERAL PUBLIC LICENSE
@@ -924,7 +935,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/27/2007
 
-UPDATED: 01/27/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
