@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 08/30/2007                                       |
-# UPDATED: 12/13/2007                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the FINDMITE program in batch mode using a config    |
@@ -103,7 +103,7 @@ if ( ($show_help) || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
+    print "\nbatch_findmite.pl:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -779,7 +779,7 @@ This documentation refers to batch_findmite version $Rev$
 
 =head2 Usage
 
-    batch_findminte.pl -i InDir -o OutDir -c ConfigFile [-gff]
+    batch_findmite.pl -i InDir -o OutDir -c ConfigFile [-gff]
 
 =head2 Required Arguments
 
@@ -796,7 +796,7 @@ input directory. The results from FINDMITE have a VERY high false positive
 rate so you will need to further evaluate your results to find the true MITEs
 in your query sequence.
 
-=head2 REQUIRED ARGUMENTS
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -1029,6 +1029,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
@@ -1046,7 +1057,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/30/2007
 
-UPDATED: 12/13/2007
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
