@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/13/2007                                       |
-# UPDATED: 09/14/2007                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the find_ltr.pl LTR finding program in batch mode.   |
@@ -106,7 +106,7 @@ if ( ($show_help) || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
+    print "\nbatch_findltr.pl:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -590,13 +590,14 @@ This documentation refers to program version $Rev$
 
 =head2 Usage
 
-    batch_findltr.pl -i InFile -o OutFile -c Config.cfg [--gff]
+    batch_findltr.pl -i InDir -o OutDir -c Config.cfg [--gff]
 
 =head2 Required Arguments
 
     --indir         # Path to the input directory of fasta files
     --outdir        # Path to the base output directory
     --config        # Config file containg batch_findltr.pl paramaters
+    --gff           # Produce GFF formatted output
 
 =head1 DESCRIPTION
 
@@ -838,12 +839,23 @@ being used with batch_blast.
 
 =head1 SEE ALSO
 
-The batch_blast.pl program is part of the DAWG-PAWS package of genome
+The batch_findltr.pl program is part of the DAWG-PAWS package of genome
 annotation programs. See the DAWG-PAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
@@ -859,7 +871,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/13/2007
 
-UPDATED: 12/10/2007
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
