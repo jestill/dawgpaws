@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 01/28/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -98,7 +98,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\ncnv_tenest2gff.pl:\n".
+    print "\ncnv_ltrfinder2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -1242,6 +1242,17 @@ program has not been tested with the results from the LTR_FINDER web site.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -1259,7 +1270,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/14/2007
 
-UPDATED: 01/28/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
