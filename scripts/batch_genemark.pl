@@ -1,14 +1,14 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_gemark.pl - Run Genmark gene prediction program     |
+# batch_genemark.pl - Run Genemark gene prediction program  |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 11/09/2007                                       |
-# UPDATED: 12/14/2007                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the genmark gene prediction program in batch mode.   |
@@ -120,7 +120,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\batch_genmark.pl:\n".
+    print "\nbatch_genmark.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -505,7 +505,7 @@ sub print_help {
 
 =head1 NAME
 
-batch_genmark.pl - Run GenMark.hmm and parse results to a gff format file. 
+batch_genemark.pl - Run GenMark.hmm and parse results to a gff format file. 
 
 =head1 VERSION
 
@@ -515,7 +515,7 @@ This documentation refers to batch_genemark.pl version $Rev$
 
 =head2 Usage
 
-    batch_genscan.pl -i DirToProcess -o OutDir
+    batch_genemark.pl -i DirToProcess -o OutDir
 
 =head2 Required Arguments
 
@@ -710,6 +710,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
@@ -727,7 +738,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/09/2007
 
-UPDATED: 12/14/2007
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
