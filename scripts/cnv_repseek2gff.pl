@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 11/24/2008                                       |
-# UPDATED: 11/24/2008                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert repseek output to a GFF format compatible with   |
@@ -335,9 +335,7 @@ This documentation refers to program version $Rev$
 Convert repseek output to a GFF format compatible with
 the Apollo genome annotation program.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -353,7 +351,7 @@ will write output to STDOUT.
 
 =back
 
-=head1 Additional Options
+=head1 OPTIONS
 
 =over 2
 
@@ -459,6 +457,17 @@ Other versions have not been tested for compatibility.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -476,7 +485,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/25/2008
 
-UPDATED: 11/25/2008
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
