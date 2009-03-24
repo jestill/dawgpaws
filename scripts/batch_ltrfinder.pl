@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/03/2007                                       |
-# UPDATED: 01/30/2008                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the LTR_FINDER program in batch mode and extract     |
@@ -129,7 +129,7 @@ if ( ($show_help) || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
+    print "\nbatch_ltrfinder.pl:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -2195,7 +2195,6 @@ sub print_help {
     exit;
 }
 
-
 =head1 NAME
 
 batch_ltrfinder.pl - Run the LTRFinder program in batch mode
@@ -2452,6 +2451,17 @@ being used with batch_blast.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
@@ -2466,7 +2476,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/02/2007
 
-UPDATED: 01/30/2008
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
