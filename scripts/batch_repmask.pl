@@ -1,14 +1,14 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# batch_mask.pl - Run RepeatMasker in batch mode            |
+# batch_repmask.pl - Run RepeatMasker in batch mode         |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 09/11/2007                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -18,9 +18,9 @@
 #  visualization by the Apollo genome anotation program.    |
 #                                                           |
 # USAGE:                                                    |
-#  batch_mask.pl -i InDir -o OutDir -c ConfigFile.txt       |
+#  batch_repmask.pl -i InDir -o OutDir -c ConfigFile.txt    |
 #                                                           |
-#  batch_mask.pl --man                                      |
+#  batch_repmask.pl --man                                   |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -187,7 +187,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\nbatch_repmask.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -217,7 +217,7 @@ if ($logfile) {
 	die "Can not open logfile:\n$logfile\n";
     my $time_now = time;
     print LOG "==================================\n";
-    print LOG "  batch_mask.pl\n";
+    print LOG "  batch_repmask.pl\n";
     print LOG "  JOB: $time_now\n";
     print LOG "==================================\n";
 }
@@ -943,7 +943,7 @@ sub rmout_to_gff {
 
 =head1 NAME
 
-batch_mask.pl - Run RepeatMasker and parse results to a GFF format file. 
+batch_repmask.pl - Run RepeatMasker and parse results to a GFF format file. 
 
 =head1 VERSION
 
@@ -953,7 +953,7 @@ This documentation refers to program version $Rev$
 
 =head2 Usage
 
-    batch_mask.pl -i DirToProcess -o OutDir -c ConfigFile
+    batch_repmask.pl -i DirToProcess -o OutDir -c ConfigFile
 
 =head2 Required Arguments
 
@@ -1173,12 +1173,23 @@ and some common options in the environment.
 
 =head1 SEE ALSO
 
-The batch_mask.pl program is part of the DAWG-PAWS package of genome
+The batch_repmask.pl program is part of the DAWG-PAWS package of genome
 annotation programs. See the DAWG-PAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
@@ -1197,7 +1208,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 02/05/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
@@ -1331,7 +1342,7 @@ VERSION: $Rev$
 #   help this to run machines without having to 
 #   make any changes to the user's environment.
 #   (ie. don't have to add RepeatMaker to user's path)
-# - Renamed program again to batch_mask.pl
+# - Renamed program again to batch_repmask.pl
 # 
 # 09/07/2007
 # - Moving POD documentation to the end of the program
