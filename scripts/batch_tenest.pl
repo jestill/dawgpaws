@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 04/29/2008                                       |
-# UPDATED: 01/19/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run TeNest in batch mode.                                |
@@ -106,7 +106,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\batch_genmark.pl:\n".
+    print "\nbatch_tenest.pl:\n".
         "Version: $VERSION\n\n";
     exit;
 }
@@ -859,35 +859,70 @@ sub tenest2gff {
 
 
 sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
     }
     else {
-	print "\n$usage\n\n";
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
     }
     
-    exit;
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
 }
 
+1;
+__END__
 
 =head1 NAME
 
@@ -906,7 +941,7 @@ This documentation refers to program version $Rev$
 =head2 Required Arguments
 
     -i,--indir         # Dir containing fasta files to process 
-    -o,--outfie        # Dir to place the output in
+    -o,--outdir        # Dir to place the output in
 
 =head1 DESCRIPTION
 
@@ -917,13 +952,14 @@ files located in the input directory.
 
 =over 2
 
-=item -i,--infile
+=item -i,--indir
 
-Path of the input file.
+Path to the directory containing the input files to annotate with TEnest.
+These files must be in the fasta format.
 
-=item -o,--outfile
+=item -o,--outdir
 
-Path of the output file.
+Path to the base output directory to place the batch_tenest.pl output.
 
 =back
 
@@ -1053,6 +1089,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -1067,7 +1114,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/29/2008
 
-UPDATED: 01/19/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
