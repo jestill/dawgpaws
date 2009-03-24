@@ -100,7 +100,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\ncnv_tenest2gff.pl:\n".
+    print "\ncnv_findltr2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -470,6 +470,17 @@ http://darwin.informatics.indiana.edu/evolution/LTR.tar.gz
 in 2008.
 
 =back
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
