@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/01/2007                                       |
-# UPDATED: 09/29/2008                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files, this will find gaps    |
@@ -749,6 +749,17 @@ annotation programs. See the DAWG-PAWS web page
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
