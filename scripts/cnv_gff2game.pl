@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 02/09/2007                                       |
-# UPDATED: 01/19/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts gff data tracks from gff format to the game     |
@@ -398,6 +398,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -412,7 +423,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 02/09/2007
 
-UPDATED: 01/19/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
