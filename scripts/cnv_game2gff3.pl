@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 02/17/2009                                       |
-# UPDATED: 02/20/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert a game xml format file to the gff3 format. This  |
@@ -18,7 +18,7 @@
 # USAGE:                                                    |
 #  cnv_game2gff.pl -i HEX001.game.xml -o HEX001.gff         |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #                                                           |
 # LICENSE:                                                  |
@@ -101,7 +101,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_game2gff3.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -454,6 +454,17 @@ program since it depends on Apollo to do the conversion.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -471,7 +482,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 02/17/2009
 
-UPDATED: 02/20/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
