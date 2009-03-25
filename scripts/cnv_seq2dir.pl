@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/22/2004                                       |
-# UPDATED: 01/29/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Takes an input file in any valid bioperl format and      |
@@ -96,7 +96,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_seq2dir.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -245,14 +245,15 @@ sub print_help {
    
 }
 
-
 =head1 NAME
 
 cnv_seq2dir.pl - Split sequence file to dir of seq files
 
 =head1 VERSION
 
-This documentation refers to program version $Rev:$
+This documentation refers to program version $Rev$
+
+=head1 SYNOPSIS
 
 =head2 Usage
 
@@ -399,6 +400,17 @@ http://sourceforge.net/tracker/?group_id=204962
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -416,7 +428,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/22/2004
 
-UPDATED: 01/29/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
