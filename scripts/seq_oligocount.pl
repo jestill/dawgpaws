@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 10/11/2007                                       |
-# UPDATED: 01/27/2009                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
@@ -100,7 +100,7 @@ if ( ($show_help) || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
+    print "\nseq_oligocount.pl:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -402,7 +402,7 @@ This documentation refers to program version $Rev$
     seq_oligocount.pl -i InFile -o OutDir -db index.fasta
                       -n SeqName -k 20
 
-=head2 Required Argumenta
+=head2 Required Arguments
 
     -i,--infile   # Path to the input fasta file
     -d,--db       # Path to the mkvtree index file
@@ -568,6 +568,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
@@ -585,7 +596,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/11/2007
 
-UPDATED: 01/27/2009
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
