@@ -8,16 +8,14 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/27/2007                                       |
-# UPDATED: 12/11/2007                                       |
+# UPDATED: 03/24/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Merge a two directories containing subdirs with the same |
 #  name into a single dir. One dir can serve as the template|
 #  or an entirely new directory set could be created.       |
 #                                                           |
-# VERSION:                                                  |
-# $Id::                                                  $: |
-#                                                           |
+# VERSION: $Rev$                                                   |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -93,7 +91,7 @@ if ( ($show_help) || (!$ok) ) {
 }
 
 if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
+    print "\ndir_merge.pl:\nVersion: $VERSION\n\n";
     exit;
 }
 
@@ -545,6 +543,17 @@ and it works, drop me an email E<lt>JamesEstill at gmail.comE<gt>.
 
 =back
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
@@ -559,7 +568,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/27/2007
 
-UPDATED: 12/11/2007
+UPDATED: 03/24/2009
 
 VERSION: $Rev$
 
