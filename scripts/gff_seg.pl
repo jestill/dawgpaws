@@ -24,7 +24,7 @@
 #  gff_seg.pl -i infile.gff -s outfile.gff - p parseout.gff |
 #             -t [integer] --min [int] --max [int]          |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -39,6 +39,12 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
+# The following needed for printing help
+use Pod::Select;               # Print subsections of POD documentation
+use Pod::Text;                 # Print POD doc as formatted text file
+use IO::Scalar;                # For print_help subfunction
+use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
+use File::Spec;                # Convert a relative path to an abosolute path
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -99,27 +105,29 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "version"       => \$show_version,
 		    "man"           => \$show_man,
 		    "h|help"        => \$show_help,);
-
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
-if ($show_usage) {
-    print_help("");
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
 }
 
-if ($show_help || (!$ok) ) {
-    print_help("full");
-}
-
-if ($show_version) {
-    print "\n$0:\nVersion: $VERSION\n\n";
-    exit;
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
 }
 
 if ($show_man) {
     # User perldoc to generate the man documentation.
-    system("perldoc $0");
+    system ("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+if ($show_version) {
+    print "\nbatch_mask.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
 }
 
 #-----------------------------+
@@ -251,6 +259,73 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+
+sub print_help {
+    my ($help_msg, $podfile) =  @_;
+    # help_msg is the type of help msg to use (ie. help vs. usage)
+    
+    print "\n";
+    
+    #-----------------------------+
+    # PIPE WITHIN PERL            |
+    #-----------------------------+
+    # This code made possible by:
+    # http://www.perlmonks.org/index.pl?node_id=76409
+    # Tie info developed on:
+    # http://www.perlmonks.org/index.pl?node=perltie 
+    #
+    #my $podfile = $0;
+    my $scalar = '';
+    tie *STDOUT, 'IO::Scalar', \$scalar;
+    
+    if ($help_msg =~ "usage") {
+	podselect({-sections => ["SYNOPSIS|MORE"]}, $0);
+    }
+    else {
+	podselect({-sections => ["SYNOPSIS|ARGUMENTS|OPTIONS|MORE"]}, $0);
+    }
+
+    untie *STDOUT;
+    # now $scalar contains the pod from $podfile you can see this below
+    #print $scalar;
+
+    my $pipe = IO::Pipe->new()
+	or die "failed to create pipe: $!";
+    
+    my ($pid,$fd);
+
+    if ( $pid = fork() ) { #parent
+	open(TMPSTDIN, "<&STDIN")
+	    or die "failed to dup stdin to tmp: $!";
+	$pipe->reader();
+	$fd = $pipe->fileno;
+	open(STDIN, "<&=$fd")
+	    or die "failed to dup \$fd to STDIN: $!";
+	my $pod_txt = Pod::Text->new (sentence => 0, width => 78);
+	$pod_txt->parse_from_filehandle;
+	# END AT WORK HERE
+	open(STDIN, "<&TMPSTDIN")
+	    or die "failed to restore dup'ed stdin: $!";
+    }
+    else { #child
+	$pipe->writer();
+	$pipe->print($scalar);
+	$pipe->close();	
+	exit 0;
+    }
+    
+    $pipe->close();
+    close TMPSTDIN;
+
+    print "\n";
+
+    exit 0;
+   
+}
+
+1;
+__END__
+
 sub print_help {
 
     # Print requested help or exit.
@@ -292,8 +367,11 @@ This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
     
-  USAGE:
+=head2 Usage
+
     gff_seg.pl -i infile.gff -s seg_out.gff -p par_out.gff -t integer
+
+=head2 Required Arguments
 
     -i,--infile         # Path to the input file
     -s,--seg-out        # Path to the segmented output file
@@ -311,9 +389,7 @@ criteria while the parse file returns all points or
 segments in the input file that exceed the threshold
 value.
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -338,7 +414,7 @@ to the threshold value.
 
 =back
 
-=head1 Additional Options
+=head1 OPTIONS
 
 =over 2
 
@@ -386,6 +462,17 @@ Other modules or software that the program is dependent on.
 =head1 BUGS AND LIMITATIONS
 
 Any known bugs and limitations will be listed here.
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
