@@ -148,6 +148,31 @@ my $Usage = "\nVennSeq.pl -i InputFastaFile -o OutputFile\n".
 	"-d FeatureFileDirecotry \n";
 
 #-----------------------------+
+# SHOW REQUESTED HELP         |
+#-----------------------------+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
+}
+
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
+
+if ($show_man) {
+    # User perldoc to generate the man documentation.
+    system ("perldoc $0");
+    exit($ok ? 0 : 2);
+}
+
+if ($show_version) {
+    print "\nvennseq.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
+}
+
+#-----------------------------+
 # REQUIRED VARIABLE CHECK     |
 #-----------------------------+
 if ( (!$outfile) || (!$feature_dir) ) {
@@ -1029,6 +1054,12 @@ sub GetShortName {
     return $OutName;
 
 }
+
+
+
+
+
+
 
 =head1 NAME
 
