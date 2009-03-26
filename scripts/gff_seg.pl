@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 02/17/2008                                       |
-# UPDATED: 02/17/2008                                       |
+# UPDATED: 03/25/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a gff file that contains point or segement data    |
@@ -70,6 +70,9 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
+my $program;                  # The program name
+my $param;                    # The parameter tag
+my $seqid;                    # The sequence ID
 
 # Vars that take values from the gff file
 my $seg_start;
@@ -97,6 +100,9 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "p|parse-out=s" => \$outfile_parse,
 		    "t|thresh=s"    => \$thresh,
 		    # ADDITIONAL OPTIONS
+		    "seqid=s"       => \$seqid,
+		    "program=s"     => \$program,
+		    "param=s"       => \$param,
 		    "min-len=s"     => \$min_len,
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
@@ -133,12 +139,11 @@ if ($show_version) {
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if  ( (!$infile) || (!$thresh) || ( (!$outfile_seg) || ($outfile_parse)  )  ) {
-    print "\a";
-    print "ERROR: An infile must be specfied at the command line" 
-	if (!$infile);
-    print "ERROR: A threshold value must be specified at the command line"
-	if (!$thresh);
+if  ( !$thresh ) {
+    print STDERR "\a";
+    print STDERR "ERROR: A threshold value must be specified at the".
+	" command line\n" if (!$thresh);
+    exit;
 }
 
 #-----------------------------------------------------------+ 
@@ -158,8 +163,22 @@ if ( ($outfile_parse) ) {
 	|| die "ERROR: Can not open parse out file:\n$outfile_parse\n";
 }
 
-open (GFFIN, "<$infile")
-    || die "ERROR: Can not open gff input file:\n$infile\n";
+
+# If neither a seg file or par file are given then do seg file
+# to STDOUT
+if ( (!$outfile_seg) && (!$outfile_parse) ) {
+    open (SEGOUT, ">&STDOUT")
+	|| die "ERROR: Can not print to STDOUT\n";
+}
+
+if ($infile) {
+    open (GFFIN, "<$infile")
+	|| die "ERROR: Can not open gff input file:\n$infile\n";
+} else {
+    print STDERR "Expecting input from STDIN\n";
+    open (GFFIN, "<&STDIN") ||
+	die "Can not accept input from standard input.\n";
+}
 
 #-----------------------------+
 # PROCESS GFF FILE            |
@@ -218,7 +237,18 @@ while (<GFFIN>) {
 	    # If we just got out of a segment, print output
 	    if ( $in_seg==1 ) {
 		# A very simplified view of the gff file
-		# print to the 
+		if ($program) {
+		    $in_source = $program;
+		}
+
+		if ($param) {
+		    $in_source = $in_source.":".$param;
+		}
+
+		if ($seqid) {
+		    $in_seq_name = $seqid;
+		}
+
 		my $gff_out_str = $in_seq_name."\t".
 		    $in_source."\t".
 		    $in_feat."\t".
@@ -326,37 +356,6 @@ sub print_help {
 1;
 __END__
 
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
-
 =head1 NAME
 
 gff_seg.pl - Segment and parse a large gff file
@@ -417,6 +416,17 @@ to the threshold value.
 =head1 OPTIONS
 
 =over 2
+
+=item --program
+
+The program used to generate the gff result. This is the value in the 
+second column of the GFF file.
+By default, the program name used in the original GFF file will be used.
+
+=item --param
+
+The parameter used to generate the segmentation. For example, 20mer_100x
+for 20mer oligos with a threshold value of 100x coverage.
 
 =item --usage
 
@@ -488,7 +498,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 02/17/2008
 
-UPDATED: 02/17/2008
+UPDATED: 03/25/2009
 
 VERSION: $Rev$
 
