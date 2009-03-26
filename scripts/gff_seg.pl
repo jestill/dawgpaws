@@ -100,7 +100,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "p|parse-out=s" => \$outfile_parse,
 		    "t|thresh=s"    => \$thresh,
 		    # ADDITIONAL OPTIONS
-		    "seqid=s"       => \$seqid,
+		    "seqname=s"     => \$seqid,
 		    "program=s"     => \$program,
 		    "param=s"       => \$param,
 		    "min-len=s"     => \$min_len,
@@ -427,6 +427,11 @@ By default, the program name used in the original GFF file will be used.
 
 The parameter used to generate the segmentation. For example, 20mer_100x
 for 20mer oligos with a threshold value of 100x coverage.
+
+=item --seqname
+
+The name of the sequence file being annotated. This is the first column
+of data in the gff output file.
 
 =item --usage
 
