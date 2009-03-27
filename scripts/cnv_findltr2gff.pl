@@ -51,6 +51,7 @@ my $infile;
 my $outfile;
 my $inseqname = "seq";         # Default name is seq
 my $findltr_suffix;            # Parameter name
+my $program = "FindLTR";
 
 # Booleans
 my $do_gff_append = 0;
@@ -69,6 +70,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "s|seqname=s" => \$inseqname,
 		    # ADDITIONAL OPTIONS
+		    "program=s"   => \$program,
 		    "p|param=s"   => \$findltr_suffix,
 		    "append"      => \$do_gff_append,
 		    "q|quiet"     => \$quiet,
@@ -109,10 +111,10 @@ if ($show_version) {
 # MAIN PROGRAM BODY           |
 #-----------------------------+
 if ($do_gff_append) {
-    findltr2gff ( $infile, $outfile, 1, $inseqname, $findltr_suffix);
+    findltr2gff ( $program, $infile, $outfile, 1, $inseqname, $findltr_suffix);
 }
 else {
-    findltr2gff ( $infile, $outfile, 0, $inseqname, $findltr_suffix);
+    findltr2gff ( $program, $infile, $outfile, 0, $inseqname, $findltr_suffix);
 }
 
 exit;
@@ -189,10 +191,11 @@ sub findltr2gff {
     # SUBFUNCTION VARS            |
     #-----------------------------+
     # gff_suffix is the name appended to the end of the gff_source
-    my ($findltr_in, $gff_out, $append_gff, $seqname, $gff_suffix) = @_;
+    my ($gff_source, 
+	$findltr_in, $gff_out, $append_gff, $seqname, $gff_suffix) = @_;
 
     # find_ltr
-    my $gff_source;                 # 
+    #my $gff_source;                 # 
     my $findltr_id;                 # Id as assigned from find_ltr.pl
     my $findltr_name;               # Full name for the find_ltr prediction
     my $ltr5_start;                 # Start of the 5' LTR
@@ -242,6 +245,11 @@ sub findltr2gff {
 	    die "Can not print to STDOUT\n";
     }
 
+    # Append parameter name if passed
+    if ($gff_suffix) {
+	$gff_source = $gff_source.":".$gff_suffix;
+    }
+
     #-----------------------------+
     # PROCESS INFILE              |
     #-----------------------------+
@@ -272,12 +280,6 @@ sub findltr2gff {
 
 	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
 	    
-	    # Append parameter name if passed
-	    $gff_source = "findltr";
-	    if ($gff_suffix) {
-		$gff_source = $gff_source.":".$gff_suffix;
-	    }
-
 	    # FULL LTR Retrotransposon Span
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
@@ -370,6 +372,11 @@ the program will write output to STDOUT.
 =head1 OPTIONS
 
 =over 2
+
+=item --program
+
+The program name used to produce the computational prediction. By default
+this is set to be 'FindLTR'.
 
 =item -p, --param
 
