@@ -58,7 +58,8 @@ my $show_version = 0;
 my $append = 0;                # Append gff output to existing file
 
 my $param;                    # Suffix appended to the end of the gff 
-my $seqname = "seq";          #
+my $seqname;          #
+my $program = "ltr_finder";   # The source program
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -68,8 +69,9 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
 		    "p|param=s"   => \$param,
-		    "n|name=s"    => \$seqname,
-		    "append"      => \$append,  # Boolean, append to existing GFF
+		    "program=s"   => \$program,
+		    "s|seqname=s" => \$seqname,
+		    "append"      => \$append,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -107,7 +109,7 @@ if ($show_version) {
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 
-ltrfinder2gff ($seqname, $infile, $outfile, $append, $param);
+ltrfinder2gff ($program, $seqname, $infile, $outfile, $append, $param);
 
 exit 0;
 
@@ -184,10 +186,10 @@ sub ltrfinder2gff {
     # where the id assigned by ltr_struc differs from the way
     # the user is referring to the assembly
     # MAY WANT TO ALLOW FOR USING THE $ls_seq_id
-    my ($seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
+    my ($gff_src, $seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
     
     # The gff src id
-    my $gff_src = "ltr_finder";
+    #my $gff_src = "ltr_finder";
     if ($gff_suffix) {
 	$gff_src = $gff_src.":".$gff_suffix;
     }
@@ -370,6 +372,10 @@ sub ltrfinder2gff {
 		# or print line at a time .. currently printing 
 		# a line at a time. JCE 10/02/2007
 
+		if ($seqname) {
+		    $lf_seq_id = $seqname;
+		}
+
 		# FULL SPAN
 		 $gff_str_out = "$lf_seq_id\t". # Seq ID
 		    "$gff_src\t".                # Source
@@ -444,7 +450,7 @@ sub ltrfinder2gff {
 		    
 		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
 #		    print STDOUT "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".              # Source
+			"$gff_src\t".               # Source
 			"target_site_duplication\t". # Data type
 			"$lf_5tsr_start\t".          # Start
 			"$lf_5tsr_end\t".            # End
@@ -1302,3 +1308,8 @@ VERSION: $Rev$
 #   specified at the command line
 # 01/28/2009
 # - Finished update of POD documentation
+#
+# 03/27/2009
+# - Renamed --name to --seqname
+# - Fixed program to accept seqname to override parsed name
+# - Added program
