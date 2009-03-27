@@ -52,6 +52,7 @@ my $outfile;
 my $seqname;
 my $param;
 my $tmp_file_path;            # A temp file stripped of html tags
+my $prog;                     # The program used to generate the data
 
 # BOOLEANS
 my $quiet = 0;
@@ -73,7 +74,9 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
 		    "p|param=s"   => \$param,
-		    "n|name=s"    => \$seqname,
+		    "program=s"   => \$prog,
+		    # Allow name in addition to seqname
+		    "s|name|seqname=s" => \$seqname,
 		    "html"        => \$strip_html,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -184,7 +187,7 @@ if ($strip_html) {
 #-----------------------------+
 # DO THE CONVERSION           |
 #-----------------------------+
-my $prog = "fgenesh";
+#my $prog = "fgenesh";
 if ($strip_html) {
     fgenesh2gff ($prog, $tmp_file_path, $outfile, $seqname, $param, $append);
 }
@@ -489,10 +492,10 @@ The label used to describe the parameter set used for the the annotation
 program. This identifier will be appended the source column (col 2)
 in the GFF output.
 
-=item -n,--seqname
+=item -s,--seqname
 
 This is the name of the sequence that was annotated. This will be used
-in the source column (col 1) of the gff output file. Be default, the program
+in the source column (col 1) of the gff output file. By default, the program
 will use the name of the sequence as specified in the fgenesh output file.
 
 =item --usage
@@ -790,3 +793,5 @@ VERSION: $Rev$
 #
 # 03/27/2009
 # - Working on adding code to deal with (c) statement
+# - Added --program option
+# - Renamed --name option to --seqname
