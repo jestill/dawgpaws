@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 10/30/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/27/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the genemark.hmm gene prediction    |
@@ -66,6 +66,7 @@ my $ap_path;                   # Full path to the apollo program
 
 my $src_prog = "GeneMarkHMM";        # Source program and matrix
 my $src_seq = "unknown_src";         # Set source seq to unknown by default
+my $param;                     # Parameter file used (ie wheat)
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -94,8 +95,9 @@ my $ok = GetOptions(
 		    "i|infile=s"   => \$infile,
                     "o|outfile=s"  => \$outfile,
 		    # ADDITIONAL OPTIONS
-		    "src-prog=s"   => \$src_prog, 
-		    "src-seq=s"    => \$src_seq,
+		    "program=s"    => \$src_prog, 
+		    "seqname=s"    => \$src_seq,
+                    "parameter=s"  => \$param,
 		    # BOOLEANS
 		    "verbose"      => \$verbose,
 		    "debug"        => \$debug,
@@ -131,7 +133,7 @@ if ($show_version) {
     exit;
 }
 
-genemark_to_gff ($src_seq, $src_prog, $infile, $outfile);
+genemark_to_gff ($src_seq, $src_prog, $infile, $outfile, $param);
 
 exit;
 
@@ -141,7 +143,8 @@ exit;
 
 sub genemark_to_gff {
     
-    my ($gm_src_seq, $gm_src_prog, $gm_in_path, $gff_out_path, ) = @_;
+    my ($gm_src_seq, $gm_src_prog, $gm_in_path, $gff_out_path, 
+	$parameter) = @_;
 
     if ($gff_out_path) {
 	open (GFFOUT, ">$gff_out_path") ||
@@ -155,6 +158,10 @@ sub genemark_to_gff {
     }
     else {
 	$gm_obj = Bio::Tools::Genemark->new(-fh => \*STDIN);
+    }
+    
+    if ($parameter) {
+	$gm_src_prog = $gm_src_prog.":".$parameter;
     }
 
     # OPEN THE GFF OUTFILE
@@ -178,11 +185,11 @@ sub genemark_to_gff {
 	    my $strand = $ind_gene->strand;
 	    my $feature = "exon";
 
-	    if ($strand =~ '1') {
-		$strand = "+"; 
+	    if ($strand =~ '-1') {
+		$strand = "-"; 
 	    }
-	    elsif ($strand =~ '-1') {
-		$strand = "-";
+	    elsif ($strand =~ '1') {
+		$strand = "+";
 	    }
 	    else {
 		$strand = ".";
@@ -317,7 +324,7 @@ This documentation refers to program version $Rev$
                  # If not provided, assumes input from STDIN
     --outfile    # Path to the output gff file
                  # If not provided, writes output to STDOUT
-    --src-seq    # The id of the sequence analyzed
+    --seqname    # The id of the sequence analyzed
 
 =head1 DESCRIPTION
 
@@ -346,13 +353,13 @@ will write the gff file to standard output.
 
 =over 2
 
-=item --src-seq
+=item --seqname
 
 This is the value listed as the source sequence in the gff output file. While
 not a specifically required variable, the default value for this in unknown.
 This will generally be set to the BAC ID or contig ID.
 
-=item --src-prog
+=item --program
 
 This is the source program name used in the gff output file. By default this
 is set to be GeneMarkHMM. This option allows you to set the source program
@@ -392,7 +399,7 @@ Run the program without doing the system commands.
 The typical use of this program will be to parse a file produce from the
 genemark.hmm program.
 
-    cnv_genemark2gff.pl -i HEX2493A05_genemark_hv.out --src-seq HEX2493A05
+    cnv_genemark2gff.pl -i HEX2493A05_genemark_hv.out --seqname HEX2493A05
                         -o HEX2493A05_genemark_hv.gff
 
 This will produce a gff output file similar to the following:
@@ -409,8 +416,8 @@ This will produce a gff output file similar to the following:
     HEX2493A05 GeneMarkHMM	exon	3947	4711	.  +  .	RNA0002
     ...
 
-The --src-seq option used above allows you to specify the value written in the 
-first column of the gff file. If the --src-seq was not specified
+The --seqname option used above allows you to specify the value written in the 
+first column of the gff file. If the --seqname was not specified
 like the following:
 
     cnv_genemark2gff.pl -i HEX2493A05_genemark_hv.out
@@ -433,15 +440,15 @@ The gff output would be similar to the following:
 =head2 Specify the Training Matrix Used
 
 It is also possible to designate the second column of the gff output file
-using the --src-prog option.
+using the --program option.
 This can be used to specify the training data use for gene predictions.
 This will allow you to later separate gene models for different
 training data sets.
 For example if I used the wheat training matrix, I may do the following:
 
-    cnv_genemark2gff.pl -i HEX2493A05_genemark_hv.out --src-seq HEX2493A05
+    cnv_genemark2gff.pl -i HEX2493A05_genemark_hv.out --seqname HEX2493A05
                         -o HEX2493A05_genemark_hv.gff 
-                        --src-prog GeneMark:wheat
+                        --program GeneMark:wheat
 
 This will produce output similar to the following:
 
@@ -570,3 +577,6 @@ VERSION: $Rev$
 # 01/21/2009
 # - Added support for input from STDIN if -i option
 #   not given.
+# 03/27/2009
+# - Renamed --src-seq to --seqname
+# - Fixed bug where every gene model was being placed in the positive strand
