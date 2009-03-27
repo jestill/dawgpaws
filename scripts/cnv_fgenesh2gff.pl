@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 01/31/2009                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/27/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert output from fgenesh to the gff format.           |
@@ -169,8 +169,9 @@ if ($strip_html) {
 
     # STRIP HTML
     while (<TMPIN>) {
-	next if m/^\</;      # Remove lines starting with <
-	s /\&gt\;/\>/;       # Replace &gt; with >
+	next if m/^\</;              # Remove lines starting with <
+	next if m/www\.softberry/;   # Remove copywrite
+	s /\&gt\;/\>/;               # Replace &gt; with >
 	#print STDERR $_;
 	print TMPOUT $_;
     }
@@ -786,3 +787,6 @@ VERSION: $Rev$
 # - Updated POD documentation
 # - Added the --html flag to strip html if needed
 # - Added autodetect of html format
+#
+# 03/27/2009
+# - Working on adding code to deal with (c) statement
