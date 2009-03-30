@@ -58,6 +58,7 @@ my $outfile;                    # Default to STDOUT if not given
 my $blast_program = "blast";
 my $blast_alignment = 0;        # Alternatives include 8 and 9
 my $param;
+my $feature_type = "exon";
 
 # Booleans
 my $verbose = 0;
@@ -76,8 +77,9 @@ my $do_append = 0;
 my $ok = GetOptions(# REQUIRED
 		    "i|infile=s"   => \$infile,
                     "o|outfile=s"  => \$outfile,
-		    "n|name=s"     => \$qry_name,
+		    "n|s|seqname|name=s"  => \$qry_name,
 		    # OPTIONS
+		    "f|feature=s"  => \$feature_type,
 		    "p|program=s"  => \$blast_program,
 		    "m|align=s"    => \$blast_alignment,
 		    "d|database=s" => \$param,
@@ -122,7 +124,7 @@ if ($show_version) {
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 blast2gff ($infile, $outfile, $do_append, $qry_name, $blast_alignment,
-	   $param, $blast_program);
+	   $param, $blast_program, $feature_type);
 
 exit;
 
@@ -142,7 +144,8 @@ sub blast2gff {
     # suffix  - the suffix to add to type of blast
     # prog    - blast program (blastn, blastx, wublast etc)
     # gff second column is built as progparam
-    my ($blastin, $gffout, $append, $seqname, $align, $suffix, $prog) = @_;
+    my ($blastin, $gffout, $append, $seqname, $align, $suffix, $prog,
+	$feature) = @_;
     my $blastprog;        # Name of the blast program used (blastn, blastx)
     my $dbname;           # Name of the database blasted
     my $hitname;          # Name of the hit
@@ -309,7 +312,7 @@ sub blast2gff {
 		#-----------------------------+
 		print GFFOUT "$seqname\t".                   # Seqname
 		    "$source\t".                             # Source
-		    "exon\t".                                # Feature type name
+		    "$feature\t".                            # Feature type name
 		    "$start\t".                              # Start
 		    "$end\t".                                # End
 		    $blast_hsp->score()."\t".                # Score
@@ -408,7 +411,7 @@ This documentation refers to program version $Rev$
             # If not specified the program will expect input from STDIN
     -o      # Path to the output file
             # If not specified the program will write to STDOUT
-    -n      # Name of the query sequence
+    -s      # Name of the query sequence
             # If a name is not specified, the name will be
             # extracted from the blast report or use "seq"
 
@@ -440,7 +443,7 @@ will write output to STDOUT.
 
 =over 2
 
-=item -n,--name
+=item -s,--seqname
 
 Identifier of the sequence that has been used as the query sequence
 in the blast report. This will be used as the first column in the 
@@ -451,6 +454,12 @@ gff output file.
 The blast program used. This will be used to identify the source program in the
 second column of the GFF output file. Example of valid values include
 blastn, blastx, or wublast.
+
+=item --feature
+
+The type of feature. Be default, this is set to exon to facilitate using
+this blast report in Apollo. It is also possible to set this to an
+ontology complient name such as match or expressed_sequence_match.
 
 =item -d,--database
 
@@ -558,7 +567,7 @@ that generated a gff file like the following
 where HEX304GO5 indicates the sequence id. This sequence identifier could
 be modified using the --name option:
 
-  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff --name HEX001
+  cnv_blast2gff.pl -i bl_result.bln -o gff_result.gff --seqname HEX001
 
 this would give the following result:
 
@@ -745,3 +754,6 @@ VERSION: $Rev$
 # -Fixed print_help to extract help from POD
 # 03/09/2009
 # -Added some examples
+# 03/30/2009
+# -added -s and --seqname
+# -added support for --feature, kept exon as default
