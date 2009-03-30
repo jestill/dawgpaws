@@ -24,6 +24,8 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+# TO DO: Better Sequence ontology feature names
+#        currently just using exon for Apollo rendering
 
 package DAWGPAWS;
 
@@ -81,7 +83,7 @@ my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    # ADDITIONAL OPTIONS
 		    "program=s"      => \$prog,
 		    "p|param=s"      => \$param,
-		    "n|name=s"       => \$seqname,
+		    "n|s|seqname|name=s"  => \$seqname,
 		    # BOOLEANS
 		    "plus"         => \$pos_strand,
 		    "append"       => \$append,
@@ -218,7 +220,9 @@ sub rmout2gff {
 	my @rmout = split;
 
 	my $line_len = @rmout;
-
+	# Skip lines related to database used etc
+	next if ($line_len < 13);
+	
 	my $cur_strand = $rmout[8];
 
 	#-----------------------------+
@@ -398,7 +402,7 @@ The program name to use. This is the data in the second column of the
 gff output file. Be default, this is set to 'repeatmasker'. This option
 allows you to specify other program names if desired.
 
-=item -n,--name
+=item -s,--seqname
 
 Identifier for the sequence file that was masked with repeatmasker. The
 out file from repeatmasker may have truncated your original file name,
@@ -777,3 +781,6 @@ VERSION: $Rev$
 # - Added print_help subfunction to extract help from 
 #   POD documentation
 # - Dropped log file in favor of STDERR
+#
+# 03/30/2009
+# - Added support for --seqname in addition to --name
