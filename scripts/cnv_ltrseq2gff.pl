@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/03/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/30/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts LTR_seq output to gff file format.              |
@@ -45,7 +45,8 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $infile;                    # Path of the LTR_seq file to convert
 my $outfile;                   # Path to the gff format file created
 my $inseqname;                 # Name of the sequence analyzed
-
+my $parameter;                 # The parameter set used
+my $program="LTR_seq";         # The program name                     
 # Optional
 my $infasta;                   # Path to the FASTA file analyzed
 
@@ -66,6 +67,8 @@ my $ok = GetOptions(# Required options
                     "o|outfile=s"   => \$outfile,
 		    "s|seqname=s"   => \$inseqname,
 		    # Additional Optons
+		    "program=s"     => \$program,
+		    "param=s"       => \$parameter,
 		    #"f|fastafile=s" => \$infasta,
 		    "append"        => \$do_gff_append,
 		    "q|quiet"       => \$quiet,
@@ -103,13 +106,8 @@ if ($show_man) {
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
+if ( (!$inseqname) ) {
     print "\a";
-    print STDERR "\n";
-    print STDERR "ERROR: An input file was not specified at the".
-	" command line\n" if (!$infile);
-    print STDERR "ERROR: An output file path was no specified at the".
-	" command line\n" if (!$outfile);
     print STDERR "ERROR: A sequence name was not specified at the".
 	" command line\n" if (!$inseqname);
     print_help ("usage", $0 );
@@ -120,10 +118,10 @@ if ( (!$infile) || (!$outfile) || (!$inseqname) ) {
 #-----------------------------------------------------------+
 
 if ($do_gff_append) {
-    ltrseq2gff ( $infile, $outfile, 1, $inseqname);
+    ltrseq2gff ( $infile, $outfile, 1, $inseqname, $program, $parameter);
 } 
 else {
-    ltrseq2gff ( $infile, $outfile, 0, $inseqname);
+    ltrseq2gff ( $infile, $outfile, 0, $inseqname, $program, $parameter);
 }
 
 exit;
@@ -200,7 +198,9 @@ sub ltrseq2gff {
     #-----------------------------+
     # SUBFUNCTION VARS            |
     #-----------------------------+
-    my ($ltrseq_in, $gff_out, $append_gff, $seqname) = @_;
+    # $source is the program
+    my ($ltrseq_in, $gff_out, $append_gff, $seqname,
+	$source, $param) = @_;
 
     #-----------------------------+
     # LTRSEQ VARS                 |
@@ -238,17 +238,35 @@ sub ltrseq2gff {
     #-----------------------------+
     # OPEN FILES                  |
     #-----------------------------+
-    open (INFILE, "<$ltrseq_in") ||
-	die "ERROR: Can not open input file:\n$ltrseq_in\n";
-
-    if ($append_gff) {
-	open (GFFOUT, ">>$gff_out") ||
-	    die "ERROR: Can not open output file for appending\n$gff_out\n";
+    
+    if ($ltrseq_in) {
+	open (INFILE, "<$ltrseq_in") ||
+	    die "ERROR: Can not open input file:\n$ltrseq_in\n";
     }
     else {
-	open (GFFOUT, ">$gff_out") ||
-	    die "ERROR: Can not open output file for output\n$gff_out\n";
-    } # End of if append_gff
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+    
+    if ($gff_out) {
+	if ($append_gff) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Can not open output file for appending\n$gff_out\n";
+	}
+	else {
+	    open (GFFOUT, ">$gff_out") ||
+		die "ERROR: Can not open output file for output\n$gff_out\n";
+	} # End of if append_gff
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    if ($param) {
+	$source = $source.":".$param
+    }
 
     #-----------------------------+
     # PROCESS INFILE              |
@@ -279,10 +297,11 @@ sub ltrseq2gff {
 	    #-----------------------------+
 	    elsif ($num_in == 19) {
 		#print "\tACCEPTED\n";
-		print "\n".$_."\n";
+		print STDERR "\n".$_."\n" if $verbose;
+
 		$ltrseq_num++;              # Increment the count
 
-		$ltr5_start = $in_split[4] || "NULL";
+		$ltr5_start = $in_split[4] || "0";   # Replaced with zero
 		$ltr5_end = $in_split[5] || "NULL";
 		$ltr3_start = $in_split[7] || "NULL";
 		$ltr3_end = $in_split[8] || "NULL";
@@ -296,7 +315,7 @@ sub ltrseq2gff {
 		$ltr_conf = $in_split[16];
 		$ltr_tsr = $in_split[18];
 
-		$ltrseq_name = $seqname."_ltrseq_".$ltrseq_num;
+		$ltrseq_name = "ltrseq_".$ltrseq_num;
 
 		if ($ltr_tsr =~ m/\#(.*)\#/) {
 		    $ltr_tsr = $1;
@@ -318,25 +337,22 @@ sub ltrseq2gff {
 		#-----------------------------+
 		# PRINT TO GFF OUTPUT FILE    |
 		#-----------------------------+
-		# May want to allow choice for showing
-		# Details or not
 
-#		# LTR RETRO PREDICTION SPAN
-#		print GFFOUT "$seqname\t".     # Name of sequence
-#		    "LTR_seq:span\t".          # Source name
-#		    "exon\t".                  # Feature, exon for Apollo
-#		    "$ltrspan_start\t".        # Start of the ltr span
-#		    "$ltrspan_end\t".          # End of the ltr span
-#		    "$ltr_conf\t".             # Score, LTR Confidence Score
-#		    ".\t".                     # Strand
-#		    ".\t".                     # Frame
-#		    "$ltrseq_name"."_span\n";  # Features (Name)
-		
+		# LTR RETRO PREDICTION SPAN
+		print GFFOUT "$seqname\t".     # Name of sequence
+		    "$source\t".               # Source
+		    "LTR_retrotransposon\t".   # Feature, exon for Apollo
+		    "$ltrspan_start\t".        # Start of the ltr span
+		    "$ltrspan_end\t".          # End of the ltr span
+		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    ".\t".                     # Strand
+		    ".\t".                     # Frame
+		    "$ltrseq_name\n";          # Features (Name)
 		
 		# 5' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
+		    "$source\t".               # Source
+		    "five_prime_LTR\t".        # Feature, exon for Apollo
 		    "$ltr5_start\t".           # Start of the 5'ltr
 		    "$ltr5_end\t".             # End of the 5' ltr span
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
@@ -344,28 +360,16 @@ sub ltrseq2gff {
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
 
-		# MID
-		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
-		    "$mid_start\t".            # Start of the 3'ltr
-		    "$mid_end\t".              # End of the 3' ltr span
-		    "$ltr_conf\t".             # Score, LTR Confidence Score
-		    ".\t".                     # Strand
-		    ".\t".                     # Frame
-		    "$ltrseq_name\n";          # Features (Name)
-
 		# 3' LTR
 		print GFFOUT "$seqname\t".     # Name of sequence
-		    "LTR_seq\t".               # Source
-		    "exon\t".                  # Feature, exon for Apollo
+		    "$source\t".               # Source
+		    "three_prime_LTR\t".       # Feature, exon for Apollo
 		    "$ltr3_start\t".           # Start of the 3'ltr
 		    "$ltr3_end\t".             # End of the 3' ltr span
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
 		    "$ltrseq_name\n";          # Features (Name)
-
 	    }
 
 
@@ -453,10 +457,14 @@ Converts program output from LTR_seq LTR prediction program to GFF format.
 =item -i,--infile
 
 Path of the input file which is the prediction results from LTR_seq.
+If an input file is not specified, the program will expect intput from
+STDIN.
 
 =item -o,--outfile
 
 Path of the output file which will be the GFF output from cnv_ltrseq2gff.pl.
+If an input file is not specified, the program will print output
+to STDOUT.
 
 =item -s,--seqname
 
@@ -622,7 +630,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/03/2007
 
-UPDATED: 12/13/2007
+UPDATED: 03/30/2009
 
 VERSION: $Rev$
 
@@ -640,3 +648,12 @@ VERSION: $Rev$
 # - Updated POD documentation
 # - Added print_help subfunction that extracts help
 #   and usage messages from the POD documentation
+# 03/30/2009
+# - Added param
+# - Added program
+# - Added STDIN support
+# - Added STOUT support
+# - Added proper feature names for LTR_retrotransposon,
+#   three_prime_LTR, and five_prime_LTR
+# - Fixed error where vals starting at zero were 
+#   set to null
