@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 11/24/2008                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/30/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert repseek output to a GFF format compatible with   |
@@ -53,6 +53,8 @@ my $outfile;
 my $seq_id = "seq";        # Default seqname is seq
 my $parameter_set = 0;     # The parameter set used, set to default
 
+my $program = "repseek";
+
 # BOOLEANS
 my $test = 0;
 my $quiet = 0;
@@ -71,6 +73,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
 		    "s|seqname=s" => \$seq_id,
+		    "program=s"   => \$program,
 		    "p|param=s"   => \$parameter_set,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -111,7 +114,7 @@ if ($show_version) {
 #-----------------------------+
 # Just use the repseek2gff subfunction to do the conversion
 
-&repseek2gff ($seq_id, $parameter_set, $infile, $outfile);
+&repseek2gff ($seq_id, $parameter_set, $infile, $outfile, $program);
 
 exit 0;
 
@@ -128,7 +131,7 @@ sub repseek2gff {
     # $repin is the path to the file to convert to gff
     # $repout is the path to the gff output file
 
-    my ($seqname, $param_set, $repin, $repout) = @_;
+    my ($seqname, $param_set, $repin, $repout, $source) = @_;
 
     #-----------------------------+
     # OPEN FILE HANDLES           |
@@ -164,13 +167,12 @@ sub repseek2gff {
     my $inv_id = 0;        # Counter/id for inverted repeats
     my $dir_id = 0;        # Counter/id for direct repeats
 
-    my $source;            # The data for the source column
-
+#    my $source;            # The data for the source column
 #    my $source = "repseek";
 
-#    if ($param_set) {
-#	$source = $source.":".$param_set;
-#    }
+    if ($param_set) {
+	$source = $source.":".$param_set;
+    }
 
 
     # MAY CONSIDER JUST RETURNING THE TANDEM REPEATS ?
@@ -192,20 +194,34 @@ sub repseek2gff {
 
 	my $attribute = "repseek".$repseek_id.":$repeat_direction";
 
-
 	# Will split the repseek source into inverted repeats 
 	# vs direct repeats .. putative TEs
 
 	# Source sets
 	# - Overlap
         # - Palindromes
+	my $feature;
+	#$source = "repseek";
 
-	
+
+
+	# Translate repeat direction
+	if ($repeat_direction =~ "inv") {
+	    $repeat_direction = "inverted";
+	}
+	elsif ($repeat_direction =~ "dir") {
+	    $repeat_direction = "direct";
+	}
+
 	if ($repeat_type =~ "Overlap") {
-	    $source = "repseek:overlap_$repeat_direction";
+	    $feature = "overlapping_"."$repeat_direction"."_repeat";
 	}
 	else {
-	    $source = "repseek:$repeat_direction";
+	    $feature = "$repeat_direction"."_repeat";
+	}
+
+	if ($repeat_type =~ "Palindrome") {
+	    $feature = "palindromic_repeat";
 	}
 
 	# parameter set will go in the attribute column
@@ -215,7 +231,7 @@ sub repseek2gff {
 	#-----------------------------+
 	print GFFOUT "$seqname\t".       # Seqname
 	    "$source\t".                 # Source
-	    "exon\t".                    # Features: Apollo kluge
+	    "$feature\t".                    # Features: Apollo kluge
 	    "$copy1_start\t".            # Start
 	    "$copy1_end\t".              # End
 	    "$alignment_score\t".        # Score
@@ -226,7 +242,7 @@ sub repseek2gff {
 
 	print GFFOUT "$seqname\t".       # Seqname
 	    "$source\t".                 # Source
-	    "exon\t".                    # Features: Apollo kluge
+	    "$feature\t".                    # Features: Apollo kluge
 	    "$copy2_start\t".            # Start
 	    "$copy2_end\t".              # End
 	    "$alignment_score\t".        # Score
@@ -485,7 +501,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/25/2008
 
-UPDATED: 03/24/2009
+UPDATED: 03/30/2009
 
 VERSION: $Rev$
 
@@ -503,3 +519,17 @@ VERSION: $Rev$
 #
 # 01/20/2009
 # - Added svn revision tracking
+# 
+# 03/30/2009
+# - changed source to not include repeat direction
+# - changed feature name from exon to sequence ontology
+#   complient names for repeats
+#      -inv -> inverted_repeat
+#      -dir -> direct_repeat
+#      -overlapping_direct_repeat   
+#         -- not SeqOntology complient
+#      -overlapping_inverted_repeat
+#         -- not SeqOntology complient
+#      -palindromic_repeat
+#  - Added support for --param
+#  - Added support for --program
