@@ -879,6 +879,8 @@ sub rmout_to_gff {
 	my @rmout = split;
 
 	my $line_len = @rmout;
+	# Skip lines related to database used etc
+	next if ($line_len < 13);
 
 	my $cur_strand = $rmout[8];
 
