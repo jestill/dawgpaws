@@ -61,6 +61,8 @@ my $show_version = 0;
 my $do_copy = 0;
 my $do_seq_data = 0;          # Create files in outdir with sequence data
 
+my $program = "LTR_Struc";
+my $parameter;
 my $name_root;
 
 #-----------------------------+
@@ -71,6 +73,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"    => \$outdir,
 		    "r|results=s"   => \$repdir,
 		    # ADDITIONAL OPTIONS
+		    "param=s"       => \$parameter,
+		    "program=s"     => \$program,
 		    "c|copy"        => \$do_copy,
 		    "q|quiet"       => \$quiet,
 		    "s|seq-data"    => \$do_seq_data,
@@ -200,7 +204,10 @@ for my $ind_fasta_file (@fasta_files) {
     #-----------------------------+
     # GET ROOT FILE NAME          |
     #-----------------------------+
-    if ($ind_fasta_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_fasta_file =~ m/(.*)\.masked\.fasta$/ ) {	    
+	$name_root = "$1";
+    }  
+    elsif ($ind_fasta_file =~ m/(.*)\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_fasta_file =~ m/(.*)\.fa$/ ) {	    
@@ -267,24 +274,21 @@ for my $ind_fasta_file (@fasta_files) {
 		# If first record start new gff file
 		ltrstruc2gff ( $fasta_file_path, $report_file_path,
 			       $gff_out_path, 0, $ind_report_num, 
-			       $do_seq_data);
+			       $do_seq_data, $program, $parameter);
 	    }
 	    else {
 		# If not first record append to existing gff file
 		ltrstruc2gff ( $fasta_file_path, $report_file_path,
 			       $gff_out_path, 1, $ind_report_num,
-			       $do_seq_data);
+			       $do_seq_data, $program, $parameter);
 
 	    }
-
-	    
 
 	} # End of if report is for the fasta seq 
 	
     } # End for for each individual report
 
     print STDERR "\tNum Reports: $ind_report_num\n" if $verbose;
-
 
     #-----------------------------+
     # COPY FILES TO ltr_struc DIR |
@@ -294,7 +298,6 @@ for my $ind_fasta_file (@fasta_files) {
 	    || die "Can not open directory:\n$repdir\n";
 	my @ls_files = grep /^$name_root/, readdir REPDIR;
 	closedir (REPDIR); 
-	
 	
 	for my $ind_ls_file (@ls_files) {
 	    print STDERR "Copying file: \t$ind_ls_file\n" if $verbose;
@@ -325,12 +328,18 @@ exit;
 sub ltrstruc2gff {
     
     # VARS PASSED TO THE SUBFUNCTION
+    # $source is program name
+    # $param is parameter name
     my ($fasta_in, $report_in, $gff_out, $gff_append, $ls_id_num, 
-	$print_seq_data) = @_;
+	$print_seq_data, $source, $param) = @_;
 
     # print_seq_data - create fasta files containing the sequences
     #                  for the prediced LTRS, PBS etc. [Boolean]
 
+    # Append parameter name to the program name
+    if ($param) {
+	$source = $source.":".$param;
+    }
 
     # FASTA RELATED VARS
     my $qry_seq;
@@ -436,7 +445,9 @@ sub ltrstruc2gff {
     while (<INFASTA>) {
 	chomp;
 	unless(m/^\>/) {
-	    $qry_seq = $qry_seq.$_;
+	    # Do uppercase to make sure lowercase masked sequences
+	    # will properly match
+	    $qry_seq = $qry_seq.uc($_);
 	}
     }
     close (INFASTA);
@@ -576,6 +587,7 @@ sub ltrstruc2gff {
     # however, telling the search to start at the end of the
     # 5' LTR will solve this problem since the index function
     # will accept an offset at the third argument
+    # Index returns the first occurrence of the string
     $ltr5_start = index ($ls_full_retro_seq, $ls_5ltr_seq) + 1;
     $ltr5_end = $ltr5_start + $ls_5ltr_len;
     $ltr3_start = index ($ls_full_retro_seq, $ls_3ltr_seq) + 1;
@@ -646,8 +658,8 @@ sub ltrstruc2gff {
     # http://song.cvs.sourceforge.net/*checkout*/song/ontology/so.obo
     my $gff_result_id = "ltr_struc_".$ls_id_num;
     print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"LTR_retrotransposon\t".        # Data type, has to be exon for APOLLO
+	"$source\t".               # Source
+	"LTR_retrotransposon\t".   # Data type, has to be exon for APOLLO
 	"$gff_full_retro_start\t". # Start
 	"$gff_full_retro_end\t".   # End
 	"$ls_score\t".             # Score
@@ -656,9 +668,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"primer_binding_site\t".   # SO:0005850
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_pbs_start\t".        # Start
 	"$gff_pbs_end\t".          # End
 	"$ls_score\t".             # Score
@@ -667,9 +678,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"RR_tract\t".              # SO:0000435 
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ppt_start\t".        # Start
 	"$gff_ppt_end\t".          # End
 	"$ls_score\t".             # Score
@@ -678,9 +688,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"five_prime_LTR\t".        # SO:0000425
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ltr5_start\t".       # Start
 	"$gff_ltr5_end\t".         # End
 	"$ls_score\t".             # Score
@@ -689,9 +698,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print GFFOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"three_prime_LTR\t".       # SO:0000426  
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ltr3_start\t".       # Start
 	"$gff_ltr3_end\t".         # End
 	"$ls_score\t".             # Score
@@ -700,9 +708,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print GFFOUT "$name_root\t".     # Seq ID
-	"ltr_struc\t".               # Source
+	"$source\t".                 # Source
 	"target_site_duplication\t". # SO:0000434
-#	"exon\t".                    # Data type, has to be exon for APOLLO
 	"$gff_5tsr_start\t".         # Start
 	"$gff_5tsr_end\t".           # End
 	"$ls_score\t".               # Score
@@ -711,9 +718,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";          # Retro Id
 
     print GFFOUT "$name_root\t".     # Seq ID
-	"ltr_struc\t".               # Source
+	"$source\t".                 # Source
 	"target_site_duplication\t". # SO:0000434
-#	"exon\t".                    # Data type, has to be exon for APOLLO
 	"$gff_3tsr_start\t".         # Start
 	"$gff_3tsr_end\t".           # End
 	"$ls_score\t".               # Score
@@ -722,9 +728,15 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";          # Retro Id
 
 
+    #-----------------------------+
+    # PRINT TO STDOUT             |
+    #-----------------------------+
+    # This allows for an easy way to send the results to a single file
+    # that contains all of the LTR_Struc results
+
     print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
-	"LTR_retrotransposon\t".        # Data type, has to be exon for APOLLO
+	"$source\t".               # Source
+	"LTR_retrotransposon\t".   # Data type, has to be exon for APOLLO
 	"$gff_full_retro_start\t". # Start
 	"$gff_full_retro_end\t".   # End
 	"$ls_score\t".             # Score
@@ -733,9 +745,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"primer_binding_site\t".   # SO:0005850
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_pbs_start\t".        # Start
 	"$gff_pbs_end\t".          # End
 	"$ls_score\t".             # Score
@@ -744,9 +755,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"RR_tract\t".              # SO:0000435 
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ppt_start\t".        # Start
 	"$gff_ppt_end\t".          # End
 	"$ls_score\t".             # Score
@@ -755,9 +765,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"five_prime_LTR\t".        # SO:0000425
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ltr5_start\t".       # Start
 	"$gff_ltr5_end\t".         # End
 	"$ls_score\t".             # Score
@@ -766,9 +775,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print STDOUT "$name_root\t".   # Seq ID
-	"ltr_struc\t".             # Source
+	"$source\t".               # Source
 	"three_prime_LTR\t".       # SO:0000426  
-#	"exon\t".                  # Data type, has to be exon for APOLLO
 	"$gff_ltr3_start\t".       # Start
 	"$gff_ltr3_end\t".         # End
 	"$ls_score\t".             # Score
@@ -777,9 +785,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";        # Retro Id
 
     print STDOUT "$name_root\t".     # Seq ID
-	"ltr_struc\t".               # Source
+	"$source\t".                 # Source
 	"target_site_duplication\t". # SO:0000434
-#	"exon\t".                    # Data type, has to be exon for APOLLO
 	"$gff_5tsr_start\t".         # Start
 	"$gff_5tsr_end\t".           # End
 	"$ls_score\t".               # Score
@@ -788,9 +795,8 @@ sub ltrstruc2gff {
 	"$gff_result_id\n";          # Retro Id
 
     print STDOUT "$name_root\t".     # Seq ID
-	"ltr_struc\t".               # Source
+	"$source\t".               # Source
 	"target_site_duplication\t". # SO:0000434
-#	"exon\t".                    # Data type, has to be exon for APOLLO
 	"$gff_3tsr_start\t".         # Start
 	"$gff_3tsr_end\t".           # End
 	"$ls_score\t".               # Score
@@ -864,10 +870,6 @@ sub ltrstruc2gff {
 	#print "\t\t3\'LTR: $ls_3ltr_seq\n";
 	#print "$ls_full_retro_seq\n";
     }
-
-
-
-
 
     #-----------------------------+
     # PRINT SEQ DATA              |
@@ -1024,6 +1026,7 @@ This documentation refers to program version $Rev$
 =head2 Required Arguments
 
     --indir         # Directory with the fasta files
+                    # This is used to find the root seq names
     --outdir        # Directory for the base output dir
     --results       # Directory containing the LTR_STRUC results
 
@@ -1040,12 +1043,19 @@ from,
 =item -i,--indir
 
 Path of the intput directory containing the fasta files that were
-analyzed by LTR_STRUC.
+analyzed by LTR_STRUC. It may seem awkward to need to provide this
+directory of fasta files, but it is currently necessary to be able
+to find the reports for that sequence set. LTR_Struc does not provide the
+sequence name in a format that can be parsed. Furthermore, LTR_struc
+does not provide the location of the sequence features on the sequence file,
+so the fasta file is needed to map the LTR retrotransposon model back
+onto the sequence file.
 
 =item -o,--outdir
 
 Path of the output directory that will serve as the base for the
-output from the conversion to gff.
+output from the conversion to gff. Every sequence will have a subdirectory
+created in this parent dir.
 
 =item -r,--results
 
@@ -1057,6 +1067,16 @@ expected that these file names will end with rprt.txt.
 =head1 OPTIONS
 
 =over 2
+
+=item --program
+
+Specify the program name to use in the GFF output file. By default, the program
+name used is ltr_sturc
+
+=item --param
+
+Specify the parameter set name to used. This will be appended to the 
+program name in the source column of the gff output file.
 
 =item --usage
 
@@ -1217,3 +1237,11 @@ VERSION: $Rev$
 # - Changed print_help subfunction to extract help and 
 #   usage messages from the POD documentation
 # - Updated POD documentation
+#
+# 03/30/2009
+# - Added program
+# - Added parameter
+# - Updated POD
+# - Added support for masked.fasta in seq name
+# - Added support for the use of lowercase masked fasta files
+#   by making the input of the Fasta file use uc()
