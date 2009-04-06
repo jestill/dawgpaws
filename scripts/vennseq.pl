@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 03/06/2007                                       |
-# UPDATED: 02/18/2009                                       |
+# UPDATED: 04/06/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
 #  Creates a Venn Diagram comparing the overlap of sequence |
@@ -616,7 +616,7 @@ close OUT;
 # This should be made and option, ie. don't do under quiet
 # Generates the NxN CrossTab matrix 
 # Where N is the number of sequence features being comparedh zeros
-print "Generating the Cross tab\n" if $verbose;
+print STDERR "Generating the Cross tab\n" if $verbose;
 
 print STDOUT "\n";
 
@@ -1316,6 +1316,12 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 I have only tested this will VennMaster on the Mac OS 10.5.
 
+=item * Separate sources must be in separate files
+
+For gff files, the separate sources must be in separate gff files. Currently
+sources defined in the second colum will be regarded as the same source
+if they are in the same gff file.
+
 =back
 
 =head1 SEE ALSO
@@ -1355,7 +1361,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 Started: 03/06/2007
 
-Updated: 03/24/2009
+Updated: 04/06/2009
 
 Version: $Rev$
 
@@ -1421,3 +1427,4 @@ Version: $Rev$
 #   ./vennseq.pl -i /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.fasta.masked -o /home/jestill/projects/wheat_annotation/VennTest/TestOutTwo.txt -d /home/jestill/projects/wheat_annotation/VennTest/ -f tab -s /home/jestill/projects/wheat_annotation/VennTest/HEX0075G21.test.svg
 
 
+# vennseq.pl -i HEX2493A05.masked.fasta -d features/ -o test_out.venn
