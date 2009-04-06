@@ -50,7 +50,7 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 # LOCAL VARIABLES             |
 #-----------------------------+
-my $feature_type = "transposable_element";
+my $feature_type;
 # Set variable scope
 my $seqname;                   # Can specify seq name in the command line
 my $infile;
@@ -133,8 +133,10 @@ sub tenest2gff {
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
     # feature - the type of feature it is
-    my ($append, $seqname, $tenestin, $gffout, $source, $param_set, $feature) 
+    my ($append, $seqname, $tenestin, $gffout, $source, $param_set, 
+	$feature_type) 
 	= @_;
+    my $feature;          # The sequence feature
     my $tename;           # Name of the hit
     my $start;            # Start of the feature
     my $end;              # End of the feature
@@ -240,6 +242,9 @@ sub tenest2gff {
 	chomp;                   # Remove line endings
 	my @te_data = split;   # Split by spaces
 	
+	# set feature to default type
+	$feature = "transposable_element";
+
 	# Four annotation types
 	#SOLO (solo LTRs), 
 	#PAIR (full LTR retrotransposons), 
@@ -287,11 +292,16 @@ sub tenest2gff {
 		    my $sol_name = "solo_".$sol_type."_".$sol_number;
 		    # Print output to gff file
 
-
-
 		    #-----------------------------+
 		    # SOLO LTR                    |
 		    #-----------------------------+
+		    if ($feature_type) {
+			$feature = $feature_type;
+		    }
+		    else {
+			$feature = "LTR_retrotransposon";
+		    }
+
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
 			"$source\t".                 # Source
@@ -299,12 +309,9 @@ sub tenest2gff {
 			$sol_coords[1]."\t".         # Start
 			$sol_coords[2]."\t".         # End
 			".\t".                       # Score
-			# $sol_dir may give strand
 			".\t".                 # Strand
 			".\t".                       # Frame
 			"$sol_name\n";                # Feature name
-
-
 		    
 		    $j = 0;
 		    #$sol_coords=();
@@ -366,6 +373,17 @@ sub tenest2gff {
 			# unique name for every occurrence in the gff file
 			my $pair_name = "pair_".$pair_type."_".$pair_number;
 			# Print output to gff file
+
+			#-----------------------------+
+			# LEFT LTR                    |
+			#-----------------------------+
+			if ($feature_type) {
+			    $feature = $feature_type;
+			}
+			else {
+			    $feature = "five_prime_LTR_component";
+			}
+
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
@@ -373,7 +391,6 @@ sub tenest2gff {
 			    "$l_start\t".                # Start
 			    "$l_end\t".                  # End
 			    ".\t".                       # Score
-			    # $pair_dir may give strand
 			    ".\t".                       # Strand
 			    ".\t".                       # Frame
 			    "$pair_name\n";              # Feature name
@@ -428,10 +445,20 @@ sub tenest2gff {
 			# unique name for every occurrence in the gff file
 			my $pair_name = "pair_".$pair_type."_".$pair_number;
 			# Print output to gff file
+
+			#-----------------------------+
+			# RIGHT LTR                   |
+			#-----------------------------+
+			if ($feature_type) {
+			    $feature = $feature_type;
+			}
+			else {
+			    $feature = "three_prime_LTR_component";
+			}
+
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
-			    #"tenest\t".                 # Source
 			    "$feature\t".                # Feature type name
 			    "$r_start\t".                # Start
 			    "$r_end\t".                  # End
@@ -490,10 +517,20 @@ sub tenest2gff {
 			# unique name for every occurrence in the gff file
 			my $pair_name = "pair_".$pair_type."_".$pair_number;
 			# Print output to gff file
+
+			#-----------------------------+
+			# MIDDLE OF LTR RETRO         |
+			#-----------------------------+
+			if ($feature_type) {
+			    $feature = $feature_type;
+			}
+			else {
+			    $feature = "LTR_retrotransposon";
+			}
+
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
-			    #"tenest\t".                  # Source
 			    "$feature\t".                # Feature type name
 			    "$m_start\t".                # Start
 			    "$m_end\t".                  # End
@@ -556,10 +593,20 @@ sub tenest2gff {
 		    # unique name for every occurrence in the gff file
 		    my $frag_name = "frag_".$frag_type."_".$frag_number;
 		    # Print output to gff file
+
+		    #-----------------------------+
+		    # LTR FRAGMENT                |
+		    #-----------------------------+
+		    if ($feature_type) {
+			$feature = $feature_type;
+		    }
+		    else {
+			$feature = "LTR_retrotransposon";
+		    }
+
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
 			"$source\t".                 # Source
-			#"tenest\t".                  # Source
 			"$feature\t".                 # Feature type name
 			$frag_coords[1]."\t".         # Start
 			$frag_coords[2]."\t".         # End
@@ -610,9 +657,19 @@ sub tenest2gff {
 		    # unique name for every occurrence in the gff file
 		    my $nltr_name = "nonltr_".$nltr_type."_".$nltr_number;
 		    # Print output to gff file
+
+		    #-----------------------------+
+		    # TRANSPOSABLE ELEMENT        |
+		    #-----------------------------+
+		    if ($feature_type) {
+			$feature = $feature_type;
+		    }
+		    else {
+			$feature = "transposable_element";
+		    }
+
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
-			#"tenest\t".                  # Source
 			"$source\t".                 # Source
 			"$feature\t".                 # Feature type name
 			$nltr_coords[1]."\t".         # Start
@@ -622,7 +679,6 @@ sub tenest2gff {
 			".\t".                 # Strand
 			".\t".                       # Frame
 			"$nltr_name\n";                # Feature name
-#			"test_name\n";                # Feature name
 		    
 		    $j = 0;
 
