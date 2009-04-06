@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 04/03/2009                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert TE Nest output to gff file format.               |
@@ -18,11 +18,12 @@
 #                                                           |
 #                                                           |
 #-----------------------------------------------------------+
-# TODO: May want to consider sources as 
-#               tenest:component
-#               tenest:nest_group
-#               tenest:nest_level
-#
+# TODO: -follow ontology names for: 
+#    - LTR_fragment
+#    - solo_LTR
+#    - non-LTR
+#    - pair-LTR
+#  Allow override of this name using --feature
 
 package DAWGPAWS;
 
@@ -49,12 +50,13 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 # LOCAL VARIABLES             |
 #-----------------------------+
-
+my $feature_type = "transposable_element";
 # Set variable scope
-my $seqname = "seq";           # Can specify seq name in the command line
+my $seqname;                   # Can specify seq name in the command line
 my $infile;
 my $outfile;
 my $param_name;                # Name for the tenest parameter set.
+my $program = "tenest";        # The program, used in source col
 
 # Booleans
 my $verbose = 0;
@@ -72,8 +74,10 @@ my $do_append = 0;
 my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
-		    "n|name=s"    => \$seqname,
+		    "n|s|seqname|name=s"  => \$seqname,
 		    # OPTIONS
+		    "feature=s"   => \$feature_type,
+		    "program=s"   => \$program,
 		    "p|param=s"   => \$param_name,
 		    "verbose"     => \$verbose,
 		    "append"      => \$do_append,
@@ -112,7 +116,8 @@ if ($show_version) {
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
-tenest2gff ($do_append, $seqname, $infile, $outfile, $param_name);
+tenest2gff ($do_append, $seqname, $infile, $outfile, $program, $param_name,
+	    $feature_type);
 
 exit;
 
@@ -127,7 +132,9 @@ sub tenest2gff {
     # tenestin - path to the blast input file
     # gffout  - path to the gff output file
     # append  - boolean append data to existing file at gff out
-    my ($append, $seqname, $tenestin, $gffout, $param_set) = @_;
+    # feature - the type of feature it is
+    my ($append, $seqname, $tenestin, $gffout, $source, $param_set, $feature) 
+	= @_;
     my $tename;           # Name of the hit
     my $start;            # Start of the feature
     my $end;              # End of the feature
@@ -137,6 +144,10 @@ sub tenest2gff {
 
     my $i;                # Array index val
     my $j;                # Array index val
+
+    unless ($seqname) {
+	$seqname = "seq";
+    }
 
     # Initialize counters
     my $numfrag = 0;
@@ -220,7 +231,7 @@ sub tenest2gff {
     # SET THE SOURCE
     # This allows for the specification of the paramater set in the
     # gff result fijle
-    my $source = "tenest";
+    #my $source = "tenest";
     if ($param_set) {
 	$source = $source.":".$param_set;
     }
@@ -275,11 +286,16 @@ sub tenest2gff {
 		    # unique name for every occurrence in the gff file
 		    my $sol_name = "solo_".$sol_type."_".$sol_number;
 		    # Print output to gff file
+
+
+
+		    #-----------------------------+
+		    # SOLO LTR                    |
+		    #-----------------------------+
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
-#			"tenest\t".                  # Source
 			"$source\t".                 # Source
-			"exon\t".                    # Feature type name
+			"$feature\t".                # Feature type name
 			$sol_coords[1]."\t".         # Start
 			$sol_coords[2]."\t".         # End
 			".\t".                       # Score
@@ -287,6 +303,8 @@ sub tenest2gff {
 			".\t".                 # Strand
 			".\t".                       # Frame
 			"$sol_name\n";                # Feature name
+
+
 		    
 		    $j = 0;
 		    #$sol_coords=();
@@ -351,8 +369,7 @@ sub tenest2gff {
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
-#			    "tenest\t".                  # Source
-			    "exon\t".                    # Feature type name
+			    "$feature\t".                # Feature type name
 			    "$l_start\t".                # Start
 			    "$l_end\t".                  # End
 			    ".\t".                       # Score
@@ -366,7 +383,6 @@ sub tenest2gff {
 			
 		    } # End of if $j==4
 		} # End of for $i
-		
 		
 	    }
 
@@ -415,8 +431,8 @@ sub tenest2gff {
 			print GFFOUT 
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
-			    #"tenest\t".                  # Source
-			    "exon\t".                    # Feature type name
+			    #"tenest\t".                 # Source
+			    "$feature\t".                # Feature type name
 			    "$r_start\t".                # Start
 			    "$r_end\t".                  # End
 			    ".\t".                       # Score
@@ -478,7 +494,7 @@ sub tenest2gff {
 			    "$seqname\t".                # Seqname
 			    "$source\t".                 # Source
 			    #"tenest\t".                  # Source
-			    "exon\t".                    # Feature type name
+			    "$feature\t".                # Feature type name
 			    "$m_start\t".                # Start
 			    "$m_end\t".                  # End
 			    ".\t".                       # Score
@@ -544,7 +560,7 @@ sub tenest2gff {
 			"$seqname\t".                # Seqname
 			"$source\t".                 # Source
 			#"tenest\t".                  # Source
-			"exon\t".                    # Feature type name
+			"$feature\t".                 # Feature type name
 			$frag_coords[1]."\t".         # Start
 			$frag_coords[2]."\t".         # End
 			".\t".                       # Score
@@ -590,15 +606,15 @@ sub tenest2gff {
 
 		if ($j == 4) {
 
-		    # Appending sol_num to sol type will give a
+		    # Appending nltr_num to sol type will give a
 		    # unique name for every occurrence in the gff file
-		    my $nltr_name = "frag_".$nltr_type."_".$nltr_number;
+		    my $nltr_name = "nonltr_".$nltr_type."_".$nltr_number;
 		    # Print output to gff file
 		    print GFFOUT 
 			"$seqname\t".                # Seqname
 			#"tenest\t".                  # Source
 			"$source\t".                 # Source
-			"exon\t".                    # Feature type name
+			"$feature\t".                 # Feature type name
 			$nltr_coords[1]."\t".         # Start
 			$nltr_coords[2]."\t".         # End
 			".\t".                       # Score
@@ -606,6 +622,7 @@ sub tenest2gff {
 			".\t".                 # Strand
 			".\t".                       # Frame
 			"$nltr_name\n";                # Feature name
+#			"test_name\n";                # Feature name
 		    
 		    $j = 0;
 
@@ -613,8 +630,6 @@ sub tenest2gff {
 	    } # End of for $i
 
 	} # End of $in_nltr
-
-
 
 	#-----------------------------------------------------------+
 	# NEW RECORD STARTING                                       |
@@ -815,10 +830,22 @@ will expect input from STDIN.
 Path of the gff formatted output file that . If an output path is not provided,
 the program will write output to STDOUT.
 
-=item -n,--name
+=back
+
+=head1 OPTIONS
+
+=over 2
+
+=item -s,--seqname
 
 The sequence name to use in the GFF output file. Otherwise, this will
 just use 'seq' as the sequence name.
+
+=item --program
+
+The program used to generate the annotation result. This data is written
+to the second colum in the gff output file. Be default this value is
+set to be "tenest".
 
 =item -p, --param
 
@@ -826,11 +853,11 @@ The name of the paramter set used. This will be appened to the data in the
 second column, and can be used to distinguish among parameter combinations
 for multiple applications of TE Nest to the same sequence file.
 
-=back
+=item --feature
 
-=head1 OPTIONS
-
-=over 2
+The name to use for the feature type. This is the output value in the third
+colum of the gff output file. Be default this value is set to 
+"transposable_element".
 
 =item --usage
 
@@ -960,3 +987,12 @@ VERSION: $Rev$
 #  specified
 # -Modiied to write otput to STDOUT when --outfile not
 #  specified
+#
+# 03/30/2009
+# -Added support for -s,--seqname
+#
+# 04/03/2009
+# -Added support for --feature
+# -Fixed name col for non_ltrs, these were previously mislabeled
+#  as fragments of LTRs
+#
