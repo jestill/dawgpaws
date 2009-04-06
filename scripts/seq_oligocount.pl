@@ -67,6 +67,9 @@ my $do_gff_win = 0;            # Produce GFF formatted output for win summary
 my $do_wig_kmer = 0;           # Produce wiggle output for kmers
 my $do_wig_win = 1;            # Produce wiggle output for win summary
 
+my $param;                     # The parameter set
+my $program="vmatch";          # The source program the result is derived from
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -74,8 +77,10 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
 		    "d|db=s"      => \$index,
                     "o|outdir=s"  => \$outdir,
-		    "n|name=s"    => \$seq_name,
+		    "s|seqname=s" => \$seq_name,
 		    # ADDITIONAL OPTIONS
+		    "param=s"     => \$param,
+		    "program-s"   => \$program,
 		    "k|kmer=s"    => \$kmer_len,
 		    "l|len=s"     => \$win_len,
 		    "q|quiet"     => \$quiet,
@@ -122,11 +127,18 @@ if ( (!$infile) || (!$outdir) || (!$index) ) {
 
 }
 
+
+#-----------------------------+
+# CREATE OUTDIR IF NOT PRESENT|
+#-----------------------------+
+mkdir $outdir, 0777 unless (-e $outdir);
+
+
 #-----------------------------------------------------------+ 
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+ 
 
-seq_kmer_count ($infile,$outdir,$index,$kmer_len, $win_len, $seq_name);
+seq_kmer_count ($infile, $outdir, $index, $kmer_len, $win_len, $seq_name);
 
 exit;
 
@@ -198,15 +210,21 @@ sub print_help {
 
 sub seq_kmer_count {
 
-    my ($fasta_in, $outdir, $vmatch_index, $k, $l, $seq_name) = @_;
+    my ($fasta_in, $outdir, $vmatch_index, $k, $l, $seq_name ) = @_;
     
     # Array of threshold values
-    #my @thresh = ("200");
     my $thresh = 50;
-
     my $in_seq_num = 0;
-    my $inseq = Bio::SeqIO->new( -file => "<$fasta_in",
-				 -format => 'fasta');
+
+    my $inseq;
+    if ($fasta_in) {
+	$inseq = Bio::SeqIO->new( -file => "<$fasta_in",
+				  -format => 'fasta');
+    }
+    else {
+	$inseq = Bio::SeqIO->new( -fh => \*STDIN,
+				  -format => 'fasta');
+    }
 
     # Counts of the number of occurences of each oligo
     my @counts = ();    
@@ -339,24 +357,33 @@ sub seq_kmer_count {
 #
 #	}
 
-	open (GFFCOUNT, ">$gff_count_out") ||
-	    die "Can not open gff out file:\n$gff_count_out\n";
-	
+	# OPEN GFF OUT FILE, STDOUT IF NO FILE PATH USED
+	if ($gff_count_out) {
+	    open (GFFCOUNT, ">$gff_count_out") ||
+		die "Can not open gff out file:\n$gff_count_out\n";
+	}	
+	else {
+	    open (GFFCOUNT, ">&STDOUT") ||
+		die "Can not print to STDOUT\n";
+	}
 
-	print "\nCreating gff output files ...\n";
+	# SET VARIABLES FOR GFF OUT FILE
+	if ($param) {
+	    $program = $program.":".$param;
+	}
+
+	print STDERR "\nCreating gff output files ...\n" if $verbose;
+
 	for ($i=0; $i<=$max_start; $i++) {
 
 	    $start_pos = $i + 1;
 	    $end_pos = $start_pos + $k - 1;
 	    
-	    ## print output to stdout
-	    #print GFFCOUNT "$start_pos\t".$counts[$i]."\n";
-	    
 	    # The count will be placed in the score position
 	    my $seq_str = $seq->subseq($start_pos, $end_pos);
 	    print GFFCOUNT "$seq_name\t".  # Ref sequence
-		"vmatch\t".                # Source
- 		"wheat_count\t".           # Type
+		"$program\t".              # Source
+ 		"oligo_count\t".           # Type
 		"$start_pos\t".            # Start
 		"$end_pos\t".              # End
 		$counts[$i]."\t".          # Score
@@ -364,13 +391,13 @@ sub seq_kmer_count {
 		".\t".                     # Phase
 		"Vmatch ".$k."mer\n";    # Group
 
-
-	    # PRINT OUT SEQS EXCEEDING THRESHOLD VALUES
-	    if ($counts[$i] > $thresh) {
-		my $thresh_seq = $seq->subseq($start_pos, $end_pos);
-		print "$start_pos\t".$counts[$i]."\t".
-		    "$thresh_seq\n";
-	    }
+# THE FOLLOWING REMOVED 03/26/2009
+#	    # PRINT OUT SEQS EXCEEDING THRESHOLD VALUES
+#	    if ($counts[$i] > $thresh) {
+#		my $thresh_seq = $seq->subseq($start_pos, $end_pos);
+#		print "$start_pos\t".$counts[$i]."\t".
+#		    "$thresh_seq\n";
+#	    }
 
 	}
 	
@@ -380,7 +407,6 @@ sub seq_kmer_count {
 
     # May want to make a single fasta file of all oligos for the
     # qry fasta_sequence and parse the results from vmatch from that
-    
 
 }
 
@@ -452,6 +478,11 @@ Length of the kmer to index. The default value of this variable is 20.
 
 Length of window for summarizing kmer index counts. This will be a non 
 overlapping window and can range from 1 to the length of the sequence.
+
+=item -s,--seqname
+
+The name of the sequence being annotated. This is the first column of data
+in the GFF output file.
 
 =item --usage
 
