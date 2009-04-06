@@ -77,7 +77,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
 		    "d|db=s"      => \$index,
                     "o|outdir=s"  => \$outdir,
-		    "s|seqname=s" => \$seq_name,
+		    "n|s|seqname|name=s" => \$seq_name,
 		    # ADDITIONAL OPTIONS
 		    "param=s"     => \$param,
 		    "program-s"   => \$program,
