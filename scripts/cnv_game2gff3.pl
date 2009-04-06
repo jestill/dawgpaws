@@ -51,8 +51,7 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 my $infile;
 my $outfile;
-
-my $apollo_bin="apollo";
+my $apollo_bin = $ENV{DP_APOLLO_BIN} || "apollo";
 
 # BOOLEANS
 my $quiet = 0;
@@ -71,7 +70,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
-		    "ap-bin"      => \$apollo_bin,
+		    "ap-path=s"   => \$apollo_bin,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -408,8 +407,24 @@ all end with xml.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use a configuration file or variables defined
-in the user's environment.
+=head 2 Configuration
+
+This program does not make use a configuration file.
+
+=head 2 Environment
+
+The following variables can be defined in the user environment:
+
+=over
+
+=item * DP_APOLLO_BIN
+
+The location of the apollo binary file. This is the path used to
+lauch the Apollo genome annotation program. If not specified in the
+user environment, this will attempt to call 'apollo'. The path may
+also be specified using the --ap-path option at the command line.
+
+=back
 
 =head1 DEPENDENCIES
 
