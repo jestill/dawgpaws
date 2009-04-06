@@ -54,7 +54,7 @@ my $infile_gff;
 my $outfile;
 
 # Options with default values
-my $ap_path = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
+my $ap_path = $ENV{DP_APOLLO_BIN} || "apollo";
 
 # Booleans
 my $quiet = 0;
@@ -336,8 +336,24 @@ The output file path provided by the -o, --outfile witch is not valid.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of configuration files or variables
-set in the user environment.
+=head 2 Configuration
+
+This program does not make use a configuration file.
+
+=head 2 Environment
+
+The following variables can be defined in the user environment:
+
+=over
+
+=item * DP_APOLLO_BIN
+
+The location of the apollo binary file. This is the path used to
+lauch the Apollo genome annotation program. If not specified in the
+user environment, this will attempt to call 'apollo'. The path may
+also be specified using the --ap-path option at the command line.
+
+=back
 
 =head1 DEPENDENCIES
 
