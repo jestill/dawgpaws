@@ -162,9 +162,11 @@ if ($logfile) {
 # VARIABLES                   |
 #-----------------------------+
 # If the indir does not end in a slash then append one
-# TO DO: Allow for backslash
-unless ($indir =~ /\/$/ ) {
-    $indir = $indir."/";
+# Do not do the check if the indir is actually a single file
+unless (-f $indir) {
+    unless ($indir =~ /\/$/ ) {
+	$indir = $indir."/";
+    }
 }
 
 unless ($outdir =~ /\/$/ ) {
@@ -176,10 +178,16 @@ unless ($outdir =~ /\/$/ ) {
 # directory provided by the   |
 # var $indir                  |
 #-----------------------------+
-opendir( DIR, $indir ) || 
-    die "Can't open directory:\n$indir"; 
-my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
-closedir( DIR );
+my @fasta_files;
+if (-f $indir) {
+    push (@fasta_files, $indir);
+}
+else {
+    opendir( DIR, $indir ) || 
+	die "Can't open directory:\n$indir"; 
+    @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+    closedir( DIR );
+}
 
 my $num_files = @fasta_files;
 
@@ -219,7 +227,6 @@ for my $ind_file (@fasta_files)
     
     $file_num++;
 
-
     #-----------------------------+
     # Get the root name of the    |
     # file to mask                |
@@ -240,7 +247,13 @@ for my $ind_file (@fasta_files)
 	$name_root = $ind_file;
     }
 
-    $file_to_mask = $indir.$ind_file;
+    if (-f $indir) {
+	$file_to_mask = $indir;
+    }
+    else {
+	$file_to_mask = $indir.$ind_file;
+    }
+
     $hard_mask_out = $outdir.$name_root.$out_ext;
     
     print "Converting:\n".
