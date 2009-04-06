@@ -73,7 +73,7 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 my $test = 0;
-my $uppercase = 0;            # Convert sequence strigs to uppercase
+my $uppercase = 0;             # Convert sequence strings to uppercase
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -81,15 +81,15 @@ my $uppercase = 0;            # Convert sequence strigs to uppercase
 my $ok = GetOptions(
 		    # Required options
 		    "i|indir=s"      => \$indir,
-                    "o|oudir=s"      => \$outdir,
+                    "o|outdir=s"     => \$outdir,
 		    # Additional options
 		    "l|length=s"     => \$new_len,
 		    "d|delim-char=s" => \$delim_char,
 		    "p|delim-pos=s"  => \$delim_pos,
 		    # Booleans
-		    "verbose"        => \$verbose,
 		    "rename"         => \$rename,
 		    "uppercase"      => \$uppercase,
+		    "verbose"        => \$verbose,
 		    "usage"          => \$show_usage,
 		    "version"        => \$show_version,
 		    "man"            => \$show_man,
@@ -269,6 +269,13 @@ for my $ind_file (@fasta_files) {
 
 		if ($rename) {
 		    my $outfile = $outdir.$head_new.".fasta";    
+
+		    if (-e $outfile) {
+			print STDERR "\aWARNING: Outfile already exists".
+			    "\n\t$outfile\n".
+			    "\texisting file will be overwritten.\n";
+		    }
+		    
 		    open (OUT, ">".$outfile) ||
 			die "Can not open outfile:\n$outfile\n";
 		}
@@ -294,11 +301,43 @@ for my $ind_file (@fasta_files) {
 		    # the > character
 		    $head_new = substr ( $_, 1, $new_len );
 		    print STDERR "\tNEW: >$head_new\n" if $verbose;
+
+		    # OPEN RENAMED OUTPUT FILE HANDLE
+		    if ($rename) {
+			my $outfile = $outdir.$head_new.".fasta"; 
+
+			if (-e $outfile) {
+			    print STDERR "\aWARNING: Outfile already exists".
+				"\n\t$outfile\n".
+				"\texisting file will be overwritten.\n";
+			}
+   
+			open (OUT, ">".$outfile) ||
+			    die "Can not open outfile:\n$outfile\n";
+		    }
+
 		    print OUT ">$head_new\n";
+
 		} 
 		else {
+		    
+		    # If not longer, then use existing string
+		    $head_new = substr ( $_, 1);
+		    if ($rename) {
+			my $outfile = $outdir.$head_new.".fasta";    
+
+			if (-e $outfile) {
+			    print STDERR "\aWARNING: Outfile already exists".
+				"\n\t$outfile\n".
+				"\texisting file will be overwritten.\n";
+			}
+
+			open (OUT, ">".$outfile) ||
+			    die "Can not open outfile:\n$outfile\n";
+		    }
+		    
+		    # print the header to the outfile unchanged		    
 		    print OUT "$_\n";
-		    # print the header to the outfile unchanged
 		    
 		} # End of if header is too long
 
@@ -331,21 +370,20 @@ for my $ind_file (@fasta_files) {
 
     } # End of while IN
 
-
     close (IN);
     close (OUT);
  
-
     # This rename by move could really wreak havoc
     # There are definitely better ways to do this, but this
     # should work for now. This will rewrite any existing file
     # that has the same name at the new location. Therefore
     # if fasta headers are not unique you will loose data.
-    if ( ($rename) ) {
-	my $new_outfile = $outdir.$head_new.".fasta";
-	move ($outfile,$new_outfile) ||
-	    die "Count not move:\n$outfile to\n$new_outfile";
-    }
+    # REMOVED THE FOLLOWING 04/06/2009
+#    if ( ($rename) ) {
+#	my $new_outfile = $outdir.$head_new.".fasta";
+#	move ($outfile,$new_outfile) ||
+#	    die "Count not move:\n$outfile to\n$new_outfile";
+#    }
 
 } # End of for each file in the directory
 
@@ -503,6 +541,14 @@ be the fist position in the split array. If delim-pos is greater
 then the number of split characters, the first position will be used
 and a message sent to STDERR.
 
+=item --upercase
+
+Convert all sequence residues to uppercase.
+
+=item --rename
+
+Rename the output fasta files to the new FASTA header name.
+
 =item --usage
 
 Short overview of how to use program from command line.
@@ -545,6 +591,18 @@ The output directory could not be created at the path you specified.
 This could be do to the fact that the directory that you are trying
 to place your base directory in does not exist, or because you do not
 have write permission to the directory you want to place your file in.
+
+=item WARNING: Outfile already exits
+
+This will occur when you are choosing to rename the output fasta file, and the
+new file name is not unique. The existing file will be overwritten by
+the new file. You can avoid this problem by keeping the original
+sequence name, by selecting a longer string (-l) to generate unique
+new strings, or by choosing a different delimit character to generate
+unique names.
+
+This may also occur when you are writing new fasta files to a directory
+that already contaings a fasta file with the same name.
 
 =back
 
@@ -683,3 +741,7 @@ VERSION: $Rev$
 #       -ffn - untranslated nucleotide sequences
 #       -frn - nucleotide sequences of RNA related features
 # - Adding default mode to use all the files in the directory
+#
+# 04/06/2009
+# -Minor code cleanup
+# -Fixed OUT file handle for length delim output with rename
