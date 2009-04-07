@@ -20,10 +20,10 @@
       <td width="50%">
       <ul>
       </ul>
-      <h1>DAWG-PAWS<br>
+      <h1>DAWGPAWS<br>
 User Manual</h1>
       <a href="http://jestill.myweb.uga.edu">James C. Estill</a><br>
-Feb. 3, 2009<br>
+March 23, 2009<br>
       <br>
       <h2><span style="text-decoration: underline;"><span
  style="font-style: italic;"></span></span></h2>
@@ -34,13 +34,10 @@ Feb. 3, 2009<br>
   </tbody>
 </table>
 <hr>
-<h1><span style="color: rgb(255, 0, 0);">!! THIS DOCUMENT IS UNDER
-CURRENT
-DEVELOPMENT !!<br>
-</span></h1>
 <h4>This program manual and the scripts that make up the DAWG-PAWS
-package are under current development. Everything is subject to change
-without notice at this point. This software comes as is, without any
+package are under current development. The user manual and script
+functions are subject to change
+without notice. This software comes as is, without any
 expressed or implied warranty. Use at your own risk.<br>
 </h4>
 <h1>TABLE OF CONTENTS<br>
@@ -158,27 +155,27 @@ INDIVUDAL PROGRAMS</a></h3>
 <hr style="width: 100%; height: 2px;">
 <h1><a name="getting_started"></a>I. GETTING STARTED<br>
 </h1>
-Getting started using DAWG-PAWS may require that you install some the
+Getting started using DAWGPAWS may require that you install some the
 required software or define some variables in your user environment.
 The steps involved in preparing to do genome annotation with the
-DAWG-PAWS package is described in detail below.<br>
+DAWGPAWS package is described in detail below.<br>
 <br>
 This user documentation will generally assume that you are running
-DAWG-PAWS on a Unix or Linux machine and that you are operating from
+DAWGPAWS on a Unix or Linux machine and that you are operating from
 the <a href="http://www.gnu.org/software/bash/">bash shell</a>.
 Anywhere where I have written <big><code>yourname</code></big> below,
 simply substitute your user name.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="dawg_paws_installation"></a>Install DAWG-PAWS</h1>
-Currently the best way to download the DAWG-PAWS program is to
+<h1><a name="dawg_paws_installation"></a>Install DAWGPAWS</h1>
+Currently the best way to download the DAWGPAWS program is to
 anonymously check
 out the SVN code from the code repository on SourceForge. This will
 require that you have the SVN client program installed which can be
 downloaded from <a
  href="http://subversion.tigris.org/project_packages.html">http://subversion.tigris.org/project_packages.html</a>.
 Once you have the SVN client program installed, navigate to the
-location where you want to place the DAWG-PAWS program and check out
+location where you want to place the DAWGPAWS program and check out
 the
 code. This is illustrated by the following commands:<br>
 <pre class="prettyprint"><span class="str">  &gt;mkdir /home/yourname/apps<br>  &gt;cd /home/yourname/apps/<br>  &gt;svn co https://dawgpaws.svn.sourceforge.net/svnroot/dawgpaws/trunk dawgpaws </span><span
@@ -202,7 +199,7 @@ using the apollo program are installed here</span><br>
     </li>
     <li><span style="font-weight: bold;">docs</span><br>
       <span style="font-style: italic;">Additional documentation for
-using the DAWG-PAWS program and the full text of the GNU GPL license.</span><br>
+using the DAWGPAWS program and the full text of the GNU GPL license.</span><br>
     </li>
     <li><span style="font-weight: bold;">emacs_modes</span><br>
       <span style="font-style: italic;">Major modes files for emacs,
@@ -226,10 +223,10 @@ dawgpaws web are here.</span><br>
     </ul>
     <li><span style="font-weight: bold;">scripts</span><br>
       <span style="font-style: italic;">The scripts that are the
-backbone of DAWG-PAWS are stored in this directory</span></li>
+backbone of DAWGPAWS are stored in this directory</span></li>
     <li><span style="font-weight: bold;">t</span><span
  style="font-style: italic;"><span style="font-style: italic;"><br>
-      </span>Test files for checking if DAWG-PAWS is ready to go<br>
+      </span>Test files for checking if DAWGPAWS is ready to go<br>
       </span></li>
     <ul>
       <li><span style="font-weight: bold;">data</span><span
@@ -239,22 +236,22 @@ Data files that will be used by the test scripts.<br>
     </ul>
   </ul>
 </ul>
-The svn co command will check out the version of DAWG-PAWS that is the
+The svn co command will check out the version of DAWGPAWS that is the
 most up to date at the time of your initial download. To update to the
-most recent version of DAWG-PAWS at any time in the future you will
+most recent version of DAWGPAWS at any time in the future you will
 need to run the svn update command from within the dawgpaws
 directory:<br>
 <pre class="prettyprint"><span class="str">  &gt;cd /home/yourname/apps/dawgpaws<br>  &gt;svn update </span></pre>
-This will update to the most current version of DAWG-PAWS.<br>
+This will update to the most current version of DAWGPAWS.<br>
 <h3>Symbolic Link to the Perl Binary</h3>
 In Linux and the Mac OS X environment, it is possible to run all of the
-DAWG-PAWS programs without needing to type <big><code>perl</code></big>
+DAWGPAWS programs without needing to type <big><code>perl</code></big>
 before the
 program name. To make this
-possible, all of the DAWG-PAWS programs assume that your local
+possible, all of the DAWGPAWS programs assume that your local
 installation of perl is at <big><code>/usr/bin/perl</code></big>. You
 can see this by opening
-up a DAWG-PAWS program in a text editor. You will see that <big><code>#!/usr/bin/perl
+up a DAWGPAWS program in a text editor. You will see that <big><code>#!/usr/bin/perl
 -w</code> </big>is the first line in the program.<br>
 <br>
 If your local copy of the perl binary is not at the <big><code>/usr/bin/perl</code></big>
@@ -270,17 +267,17 @@ shows to to make a shortcut when your local installation of perl is at
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="install_additional_software"></a>Install Additional
 Required Software</h1>
-The DAWG-PAWS suite of programs are scripts that provide for high
+The DAWGPAWS suite of programs are scripts that provide for high
 throughput execution of existing genome annotation software. The
 following represents an alphabetical list of software and web services
-that may be used by DAWG-PAWS. This list provides a link to the source
+that may be used by DAWGPAWS. This list provides a link to the source
 files for installation of the software or links to the web services.
 The Operating Systems that the software can be executed on is also
 listed as well as references to the peer reviewed publications
 describing
 the software. You do not need
-to install all of these programs to make use of the DAWG-PAWS
-package. This is just the complete list of programs that DAWG-PAWS can
+to install all of these programs to make use of the DAWGPAWS
+package. This is just the complete list of programs that DAWGPAWS can
 use.<br>
 <ul>
   <li style="font-weight: bold;">Apollo : Genome Annotation Curation
@@ -311,7 +308,8 @@ Cross_match is part of the Phrap package and is used by RepeatMasker.
 It is a general purpose application for comparing any two DNA sequence
 sets.</span></li>
   <ul>
-    <li>Source: <a href="http://www.phrap.org/">http://www.phrap.org/</a><br>
+    <li>Source: <a href="http://www.phrap.org/">http://www.phrap.org/</a></li>
+    <li>Ref: No literature reference for this program<br>
     </li>
   </ul>
   <li><span style="font-weight: bold;">EuG</span><span
@@ -359,11 +357,13 @@ structural criteria.</i></li>
   <ul>
     <li>Source:<a href="http://www.softberry.com/berry.phtml"
  rel="nofollow">http://www.softberry.com/berry.phtml</a></li>
-    <li>OS:</li>
+    <li>OS: Multiple, Web Interface Available<br>
+    </li>
     <li>Web Query: <a
  href="http://linux1.softberry.com/berry.phtml?topic=fgenesh&amp;group=programs&amp;subgroup=gfind">http://linux1.softberry.com/berry.phtml?topic=fgenesh</a><br>
     </li>
-    <li>Ref:<br>
+    <li>Ref: Solovyev VV, Salamov AA, Lawrence CB. (1995). Proc Int
+Conf Intell Syst Mol Biol 3:367-375.<br>
     </li>
   </ul>
   <li style="font-weight: bold;">GeneID<span
@@ -399,6 +399,8 @@ sequence analysis. </span><br>
   <ul>
     <li>Source:<a href="http://hmmer.janelia.org/">http://hmmer.janelia.org/</a></li>
     <li>OS: Linux32,Linux64,Mac OS X</li>
+    <li>Ref: Eddy SR (1998). Bioinformatics 14:755-763.<br>
+    </li>
   </ul>
   <li><span style="font-weight: bold;">LTR_FINDER</span> <br>
   </li>
@@ -440,6 +442,8 @@ that screens DNA sequences for interspersed repeats and low complexity
 DNA sequences</i></li>
   <ul>
     <li>Source:<a href="http://www.repeatmasker.org/" rel="nofollow">http://www.repeatmasker.org/</a></li>
+    <li>Ref: No published reference for this program<br>
+    </li>
   </ul>
   <li style="font-weight: bold;">Tandem Repeats Finder<span
  style="font-weight: normal;"> <br>
@@ -473,7 +477,8 @@ annotation system for wheat similar to existing resources for rice.</span></span
   </li>
   <ul>
     <li>Web Query:<a
- href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php">http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php</a><br>
+ href="http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php">http://urgi.versailles.inra.fr/projects/TriAnnot/pipeline.php</a></li>
+    <li>Ref: No published reference for this program<br>
     </li>
   </ul>
   <li style="font-weight: bold;">Vmatch<span
@@ -487,17 +492,23 @@ software Reputer (Kurtz et al 2001).</span> </li>
     <li>Source:<a href="http://www.vmatch.de/">http://www.vmatch.de/</a></li>
     <li>OS: Linux32, Linux64, Mac OSX, Solaris32, Solaris64</li>
     <li>Program Manual : <a
- href="http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf">http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf</a><br>
+ href="http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf">http://www.zbh.uni-hamburg.de/vmatch/virtman.pdf</a></li>
+    <li>Ref: <br>
     </li>
   </ul>
-  <li><span style="font-weight: bold;">WUBLAST</span><span
+  <li><span style="font-weight: bold;">WU-BLAST</span><span
  style="font-style: italic;"><br>
-WUBLAST is a Local Alignment program similar to NCBI-BLAST but it quite
-different in its implementation , speed and results.</span><br>
+WU-BLAST is a Local Alignment program similar to NCBI-BLAST but it
+quite
+different in its implementation, speed and results.</span><br>
   </li>
   <ul>
     <li>Source:<a href="http://blast.wustl.edu/licensing/">http://blast.wustl.edu/licensing/</a></li>
     <li>OS: Linux32, Linux64, Mac OSX, Solaris32, Solaris64</li>
+    <li>Note: <span style="font-style: italic; font-weight: bold;">WU-BLAST
+no longer exists</span>, although existing licences are still valid, it
+is now owned by http://www.advbiocomp.com and is called AB-BLAST.<br>
+    </li>
   </ul>
 </ul>
 <br>
@@ -508,7 +519,8 @@ The following Perl modules are required:<br>
 <ul>
   <li><span style="font-weight: bold;">BioPerl</span><span
  style="font-style: italic;"><br>
-BioPerl is used on a few scripts. </span><br>
+BioPerl is used on a few scripts. For information on installing BioPerl
+see the module below.</span><br>
   </li>
   <ul>
     <li>Source: <a
@@ -522,25 +534,25 @@ BioPerl is used on a few scripts. </span><br>
 In the Unix-like operating systems including Unix, Linux, and Mac OS X,
 you can define variables in your command line environment. These
 variables change the way you interact with the command line, and can be
-used to simplify command tasks. Modifying the environment will
+used to simplify common tasks. Modifying the environment will
 allow you to use a program at the command line without referring to its
-full path, and can simplify using DAWG-PAWS scripts by letting you
+full path, and can simplify using DAWGPAWS scripts by letting you
 define common variables in your environment instead of defining them at
 the
 command line every time you use a program. The following information
-shows you how to define environment variables for use by the DAWG-PAWS
+shows you how to define environment variables for use by the DAWGPAWS
 suite of programs. For more information on the shell and user
 environment in Linux you can refer to <a
  href="http://www.comptechdoc.org/os/linux/usersguide/linux_ugenvironment.html">http://www.comptechdoc.org/os/linux/usersguide/linux_ugenvironment.html</a><br>
-<h4>Add the DAWG-PAWS code directory</h4>
-Adding the DAWG-PAWS code directory to your path will allow you type in
-the DAWG-PAWS commands without needing to type the entire path to the
-DAWG-PAWS program. For example, you will be able to just type <big><code>batch_blast.pl</code></big>
+<h4>Add the DAWGPAWS code directory</h4>
+Adding the DAWGPAWS code directory to your path will allow you type in
+the DAWGPAWS commands without needing to type the entire path to the
+DAWGPAWS program. For example, you will be able to just type <big><code>batch_blast.pl</code></big>
 to launch the batch_blast program.pl instead of needing to type <big><code>/home/yourname/code/dawgpaws/scripts/batch_blast.pl</code></big>.
 In the bash shell you would add the following line to your user profile.<br>
 <pre class="prettyprint"><span class="str">  export PATH=$PATH:$HOME/apps/dawgpaws/scripts</span></pre>
 <h4>Define paths to required software</h4>
-Many of the DAWG-PAWS command line programs use external software that
+Many of the DAWGPAWS command line programs use external software that
 may be stored at different locations in different user environments.
 You can define the location of these external programs at the command
 line, but you are also able to define these paths in your user
@@ -551,11 +563,11 @@ An example of settings these path variables in the bash shell is below:<br>
 <pre class="prettyprint"><span class="str">1.  <span
  style="color: rgb(255, 0, 0);">#FIND_LTR</span><br></span>2.  export PATH=$PATH:/home/yourname/apps/LTRDeNovo/LTR/tool<br><br></pre>
 The above information is not complete.<br>
-<h4>DAWG-PAWS Options</h4>
+<h4>DAWGPAWS Options</h4>
 A number of environment variable options are also available for the
-DAWG-PAWS scripts. These variables include things such as the path to
+DAWGPAWS scripts. These variables include things such as the path to
 commonly used programs, paths to&nbsp; user name and dsn connection for
-logging onto databases, a<br>
+logging onto databases.<br>
 <h4>Full variable set for the bash shell</h4>
 Putting the above set of environment options together in a single file
 gives the following. In the bash shell you can copy and paste the
@@ -565,7 +577,7 @@ directory paths to the true locations of the software on your machine.<br>
 <pre class="prettyprint"><span class="str"><span
  style="color: rgb(255, 0, 0);">#-----------------------------+</span></span><br><span
  class="str"><span style="color: rgb(255, 0, 0);"># SOFTWARE                    |<br></span></span><span
- class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br><br># DAWG-PAWS SCRIPTS <br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br><br># DAWGPAWS SCRIPTS <br></span></span><span
  class="str">export PATH=$PATH:$HOME/code/dawgpaws/scripts</span><br><br><span
  style="color: rgb(255, 0, 0);"># FIND_LTR</span><br>export PATH=$PATH:$HOME/apps/LTRDeNovo/LTR/tool<br>export FIND_LTR_ROOT='/home/yourname/apps/LTRDeNovo/LTR/tool/'<span
  class="str"><span style="color: rgb(255, 0, 0);"><br><br># LTR_FINDER</span></span><br><span
@@ -575,8 +587,8 @@ directory paths to the true locations of the software on your machine.<br>
  class="str"><span style="color: rgb(255, 0, 0);"># EuGene</span></span><br><span
  class="str">export EUGENEDIR='$HOME/apps/eugene-3.3'</span><br>&nbsp;<span
  class="str"><span style="color: rgb(255, 0, 0);"><br>#-----------------------------+</span></span><br><span
- class="str"><span style="color: rgb(255, 0, 0);"># DAWG-PAWS VARS              |<br></span></span><span
- class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br># The following variables are used directly by DAWG-PAWS scripts<br><br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);"># DAWGPAWS VARS              |<br></span></span><span
+ class="str"><span style="color: rgb(255, 0, 0);">#-----------------------------+<br># The following variables are used directly by DAWGPAWS scripts<br><br></span></span><span
  class="str"><span style="color: rgb(255, 0, 0);"></span></span><span
  style="color: rgb(255, 0, 0);"># LTR_Finder path</span><br><span
  class="str">export LTR_FINDER='$HOME/apps/ltr_finder/ltr_finder'</span>
@@ -586,23 +598,22 @@ directory paths to the true locations of the software on your machine.<br>
  style="color: rgb(255, 0, 0);"># VennMaster</span><br>export VMASTER_DIR='/$HOME/apps/VennMaster/VennMaster-0.36.0/'<br>export VMASTER_JAVA_BIN='/usr/java/jre1.6.0/bin/java'<br></span></pre>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
-<h1><a name="install_test"></a>Test Your Installation of DAWG-PAWS<br>
+<h1><a name="install_test"></a>Test Your Installation of DAWGPAWS<br>
 </h1>
-<br>
 I am currently writing test scripts to test your DAWG::PAWS
 installation.<br>
 <br>
 <hr style="width: 100%; height: 2px;"><br>
 <h1><a name="annotation_process"></a>II. ANNOTATION PROCESS</h1>
-Despite the name, the use of DAWG-PAWS for annotation is really more of
+Despite the name, the use of DAWGPAWS for annotation is really more of
 a process then a pipeline. There is not a single place where you drop
 in a sequence, push a button and get a fully annotated genome as
-output. The series of scripts that comprise DAWG-PAWS are designed to
+output. The series of scripts that comprise DAWGPAWS are designed to
 be robust across operating systems as much as possible, and are
 expected to be usable in an
 <span style="font-style: italic;">a la carte </span>fashion. The
 following outline of an annotation process
-indicates the use of the full suite DAWG-PAWS programs; however, a
+indicates the use of the full suite DAWGPAWS programs; however, a
 subset of these programs
 could be chosen for use in producing computational results for genome
 annotation.<br>
@@ -617,8 +628,8 @@ working copy of you annotation.<br>
 Annotation<br>
 </h1>
 The following is
-an overview of the process used to annotate sequences with the
-DAWG-PAWS set of programs. This assumes that you are running the
+an overview of the process used to annotate sequences with the DAWGPAWS
+set of programs. This assumes that you are running the
 analysis on a Linux machine, and that you are storing your annotation
 computational results in the directory
 <pre class="prettyprint"><span class="str">  /home/</span><span
@@ -629,7 +640,7 @@ computational results in the directory
 <p>This
 directory will have a subdirectory named for every annotated sequence.
 The subdirectories for the annotated sequence will follow the directory
-structure indicated in the <a href="man.html#directory_structure">DAWG-PAWS
+structure indicated in the <a href="man.html#directory_structure">DAWGPAWS
 Directory Structure</a> below. </p>
 <p>In all of the following command examples, the &gt; character
 represents the command line prompt. </p>
@@ -1517,7 +1528,7 @@ this with the -m option as shown below<br>
  class="pln">batch_cnv_blast2gff</span><span class="pun">.</span><span
  class="pln">pl &nbsp;-i wheat_analysis</span><span class="pun">/</span><span
  class="pln">soft_masked </span><span class="pun">-</span><span
- class="pln">o wheat_analysis</span><span class="pun">/ -b 8</span><span
+ class="pln">o wheat_analysis</span><span class="pun">/ -m 8</span><span
  class="pln"> </span></pre>
 <br>
 <hr style="width: 100%; height: 2px;">
@@ -1765,6 +1776,9 @@ queuing system</dd>
   <dd>Convert a single findltr output file to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_findmite2gff.html">cnv_findmite2gff.pl</a></dt>
   <dd>Convert a single findmite output file to GFF format</dd>
+  <dt style="font-weight: bold;"><a href="man/cnv_game2gff3.html">cnv_game2gff3.pl</a></dt>
+  <dd>Convert a game xml file to the GFF3 format.<br>
+  </dd>
   <dt style="font-weight: bold;"><a href="man/cnv_genemark2gff.html">cnv_genemark2gff.pl</a></dt>
   <dd>Convert a single output file from genemark to GFF format</dd>
   <dt style="font-weight: bold;"><a href="man/cnv_gff2game.html">cnv_gff2game.pl</a></dt>
@@ -1900,7 +1914,7 @@ prediction of full-length LTR retrotransposons." Nucleic Acids Res
     <tr>
       <td width="50%"><i>Author: <a
  href="http://www.arches.uga.edu/%7Ejestill">James Estill</a><br>
-Last Updated: Feb 3, 2009<br>
+Last Updated: Feb 20, 2009<br>
       </i></td>
       <td width="50%"> <br>
       </td>
