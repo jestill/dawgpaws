@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/26/2007                                       |
-# UPDATED: 12/17/2007                                       |
+# UPDATED: 04/06/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given information from the command line, write the shell |
@@ -37,7 +37,6 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
-
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -106,7 +105,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\nclust_write_shell.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -175,25 +174,29 @@ for (my $i=1; $i<$max_num; $i++) {
     my $shell_path = $outdir.$base_name."_shell".$i.".sh";
     
     print "Writing to $shell_path\n";
-    #open ()
+
     if ($prog_name =~ "batch_blast") {
 	open (SHOUT, ">".$shell_path);
-
-	print SHOUT "/home/jlblab/jestill/scripts/dawg-paws/batch_blast.pl".
+	print SHOUT "batch_blast.pl".
 	    " -i /scratch/jestill/wheat_in/$base_name$i/".
 	    " -o /scratch/jestill/wheat_out/".
 	    " -c /home/jlblab/jestill/scripts/dawg-paws/batch_blast_full.jcfg".
 	    " -d /db/jlblab/paws/".
 	    " --logfile /home/jlblab/jestill/$base_name$i.log";
-    } 
+	close SHOUT;
+
+    }
+    elsif ($prog_name =~ "batch_repmask") {
+	open (SHOUT, ">".$shell_path);
+	close SHOUT;
+
+    }
     else {
-	print "The program name is not recognized: $prog_name\n";
+	print STDERR "The program name is not recognized: $prog_name\n";
 	exit;
     }
     
 }
-
-
 
 exit;
 
@@ -431,6 +434,17 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
@@ -448,7 +462,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/26/2007
 
-UPDATED: 12/17/2007
+UPDATED: 04/06/2009
 
 VERSION: $Rev$
 
