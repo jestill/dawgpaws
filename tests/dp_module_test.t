@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 12/18/2007                                       |
-# UPDATED: 12/18/2007                                       |
+# UPDATED: 04/14/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
 #  Test to see if modules required by DAWG-PAWS are         |
@@ -17,7 +17,7 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Test::More tests => 18;
+use Test::More tests => 20;
 
 print "Testing required modules ...\n";
 
@@ -56,6 +56,8 @@ use_ok( 'Bio::SearchIO' );
 use_ok( 'Bio::SeqIO' );
 use_ok( 'Bio::Tools::Genemark' );
 use_ok( 'Bio::Tools::HMMER::Results' );
+use_ok( 'Bio::Tools::Run::StandAloneBlast' );
+use_ok( 'Bio::Location::Simple' );
 
 #-----------------------------+
 # CONNECTIVITY                |
@@ -75,3 +77,4 @@ use_ok( 'Text::Wrap' );
 # Dont Know why               |
 #-----------------------------+
 use_ok( 'utf8' );
+
