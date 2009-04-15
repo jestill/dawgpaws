@@ -18,17 +18,18 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Test::More tests => 11;
+use Test::More tests => 9;
 
 print "Testing user environment ...\n";
 
 #-----------------------------+
 # VENNMASTER                  |
 #-----------------------------+
-ok ( $ENV{VMASTER_DIR}, 
-     "VennMaster Dir Defined"  );
-ok ( $ENV{VMASTER_JAVA_BIN}, 
-     "VennMaster Java Binary Defined" );
+# Dropped these and added to the dp_venn_test.t script
+#ok ( $ENV{VMASTER_DIR}, 
+#     "VennMaster Dir Defined"  );
+#ok ( $ENV{VMASTER_JAVA_BIN}, 
+#     "VennMaster Java Binary Defined" );
 
 #-----------------------------+
 # FIND LTR                    |
