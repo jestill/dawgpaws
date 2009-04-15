@@ -13,13 +13,28 @@
 #  Test of the converts in the dawpaws program.             |
 #-----------------------------------------------------------+
 
-use Test::More tests => 1;
+use Test::More tests => 3;
 
 print "Testing Apollo dependent game.xml converters ...\n";
 
 #-----------------------------+
+# TESTING APOLLO BIN DEFINED  |
+#-----------------------------+
+my $ap_bin;
+ok ( $ap_bin = $ENV{DP_APOLLO_BIN} || "apollo", 
+     "Apollo Binary Path Defined as $ap_bin" );
+
+#-----------------------------+
+# APOLLO TEST COMMAND         |
+#-----------------------------+
+my $ap_test_cmd = "$ap_bin --help";
+ok ( my $apollo_result = `$ap_test_cmd`,
+    "Apollo test command");
+
+#-----------------------------+
 # cnv_gff2game.pl             |
 #-----------------------------+
+print STDERR "Testing apollo mediated conversion ..\n";
 open (EXPECTED, '<data/exp/genscan_gamexml_expected.txt');
 my @game_xml_exp;
 my $in_analysis = 0;
