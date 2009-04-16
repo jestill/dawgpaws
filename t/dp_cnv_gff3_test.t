@@ -14,7 +14,7 @@
 #                                                           |
 #-----------------------------------------------------------+
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 
 diag ("Testing Apollo dependent game.xml converters ...");
 
@@ -50,8 +50,9 @@ my $cnv_cmd = "cnv_game2gff3.pl".
     " -i data/HEX3045G05/HEX3045G05_ann_test.game.xml".
     " -o $tmp_out_file";
 # Need to make the cnv_game2gff3.pl program return true
-#ok (system ($cnv_cmd) , "cnv_game2gff3.pl - run");
-system ($cnv_cmd);
+# When everything works, this will exit 0 .. no errors
+ok ( system($cnv_cmd)==0 , "cnv_game2gff3.pl - run");
+#system ($cnv_cmd);
 
 my $obs_file = $tmp_out_file;
 open (OBSERVED, '<'.$obs_file) ||
