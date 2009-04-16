@@ -19,7 +19,7 @@
 #-----------------------------+
 use Test::More tests => 20;
 
-print "Testing required modules ...\n";
+diag ("Testing required modules ...\n");
 
 # Need to check on where I am using this
 use_ok( 'Carp' );
@@ -77,4 +77,3 @@ use_ok( 'Text::Wrap' );
 # Dont Know why               |
 #-----------------------------+
 use_ok( 'utf8' );
-
