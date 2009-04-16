@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: jestill_at_sourceforge.net                       |
 # STARTED: 12/18/2007                                       |
-# UPDATED: 12/18/2007                                       |
+# UPDATED: 04/15/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
 #  Test to see if variables defined in the user environment |
@@ -20,7 +20,7 @@
 #-----------------------------+
 use Test::More tests => 9;
 
-print "Testing user environment ...\n";
+diag ("Testing user environment ...");
 
 #-----------------------------+
 # VENNMASTER                  |
@@ -35,36 +35,47 @@ print "Testing user environment ...\n";
 # FIND LTR                    |
 #-----------------------------+
 ok ( $ENV{FIND_LTR_PATH}, 
-     "FIND LTR PATH Defined" );
+     "FIND LTR path defined in the environment" ) ||
+    diag ("The find_ltr path can be defined with FIND_LTR_PATH");
 
 #-----------------------------+
 # APOLLO                      |
 #-----------------------------+
 ok ( $ENV{DP_APOLLO_BIN}, 
-     "Apollo Binary Path Defined" );
+     "Apollo binary path defined in the environment" ) ||
+    diag("The path to the Apollo binary can be defined with DP_APOLLO_BIN");
 
 #-----------------------------+
 # GENEMARK                    |
 #-----------------------------+
 ok ($ENV{GM_BIN_DIR},
-    "GENEMARK Binary Defined");
+    "GENEMARK binary directory defined in the environment") ||
+    diag("The path to the genemark directory can be defined with GM_BIN_DIR");
 ok ($ENV{GM_LIB_DIR},
-    "GENEMARK Library defined");
+    "GENEMARK library directory defined in the environment") ||
+    diag ("The path to the genemark libary directory can be defined".
+	  " with GM_LIB_DIR");
 
 #-----------------------------+
 # GENSCAN                     |
 #-----------------------------+
 ok ($ENV{DP_GENSCAN_BIN},
-    "Genscan Binary Defined");
+    "Path to GENSCAN binary defined in the environment") ||
+    diag("The path to the Genscan library can be defined with DP_GENSCAN_BIN");
 ok ($ENV{DP_GENSCAN_LIB},
-    "Genscan libary directory defined");
+    "Genscan libary directory defined in the environment") ||
+    diag("The path to the genscan library directory can be defined with".
+	 " DP_GENSCAN_LIB");
 
 #-----------------------------+
 # LTR FINDER                  |
 #-----------------------------+
 ok ($ENV{TRNA_DB},
-    "LTR FINDER TRNA_DB Defined");
+    "LTR FINDER TRNA_DB defined in environment") ||
+    diag("The path to the TRNA DB can be defined with TRNA_DB");
 ok ($ENV{PROSITE_DIR}, 
-    "LTR FINDER Prosite Dir Defined");
+    "LTR FINDER Prosite directory defined in environment") ||
+    diag("The path to prosite dir can be defined with PROSITE_DIR");
 ok ($ENV{LTR_FINDER},
-    "LTR Finder binary path Defind");
+    "LTR Finder binary path defined in environment") ||
+    diag("The path to the LTR finder binary can be defined with LTR_FINDER");
