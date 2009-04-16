@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# dp_gene_parse_test.pl - Test gene prediction converters   |
+# dp_cnv_test.pl - Test DAWGPAWS conversion programs.       |
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
@@ -10,12 +10,12 @@
 # UPDATED: 04/14/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
-#  Test of the converts in the dawpaws program.             |
+#  Test of the DAWGPAWS conversion programs.                |
 #-----------------------------------------------------------+
 
 use Test::More tests => 10;
 
-print "Testing DAWGPAWS converters ...\n";
+diag ("Testing DAWGPAWS converters ...");
 
 #-----------------------------+
 # FGENESH TXT                 |
