@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# dp_gene_parse_test.pl - Test gene prediction converters   |
+# dp_cnv_game_test.pl - Test conversion from gff to game    |
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
@@ -10,12 +10,13 @@
 # UPDATED: 04/14/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
-#  Test of the converts in the dawpaws program.             |
+#  Test of the conversion from gff to game.xml using the    |
+#  Apollo program to mediate the conversion.                |
 #-----------------------------------------------------------+
 
 use Test::More tests => 3;
 
-print "Testing Apollo dependent game.xml converters ...\n";
+diag ("Testing Apollo dependent game.xml converters ...");
 
 #-----------------------------+
 # TESTING APOLLO BIN DEFINED  |
@@ -34,7 +35,7 @@ ok ( my $apollo_result = `$ap_test_cmd`,
 #-----------------------------+
 # cnv_gff2game.pl             |
 #-----------------------------+
-print STDERR "Testing apollo mediated conversion ..\n";
+diag ("Testing apollo mediated conversion ..");
 open (EXPECTED, '<data/exp/genscan_gamexml_expected.txt');
 my @game_xml_exp;
 my $in_analysis = 0;
@@ -55,7 +56,6 @@ while (<EXPECTED>) {
 close (EXPECTED);
 
 my $num_lines = @game_xml_expected;
-print STDERR "Lines $num_lines\n";
 
 # OBSERVED
 my $tmp_result = "~/tmp_gamexml_observed.txt";
