@@ -50,9 +50,7 @@ my $indir;
 my $outdir;
 my $geneid_param_file;         # File containing the parameters for geneid
 
-my $geneid_path = "geneid";    # Path to the geneid binary
-#my $geneid_path = " /usr/local/genome/geneid/geneid.March_1_2005";
-
+my $geneid_path = $ENV{GENEID_BIN} || "geneid";  
 
 # BOOLEANS
 my $quiet = 0;
