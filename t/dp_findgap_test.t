@@ -22,7 +22,9 @@ use Test::More tests => 3;
 diag ("Testing running the batch_findgaps.pl program, this is slow ...");
 my $out_dir = $ENV{HOME}."/dp_temp_test/";
 my $findgaps_cmd = "batch_findgaps.pl -i data/fasta/ -o $out_dir";
-ok ( system($findgaps_cmd) , "batch_findgaps.pl");
+
+# This will exit zero when things work
+ok ( system($findgaps_cmd)==0 , "batch_findgaps.pl");
 
 #-----------------------------+
 # TEST PROGRAM OUTPUT         |
