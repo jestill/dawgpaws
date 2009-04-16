@@ -407,7 +407,7 @@ for my $ind_file (@fasta_files) {
 
 close LOG if $logfile;
 
-exit 1;
+exit 0;
 
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
