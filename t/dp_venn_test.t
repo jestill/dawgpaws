@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# dp_gene_parse_test.pl - Test gene prediction converters   |
+# dp_venn_test.pl - Test the vennseq.pl program.            |
 #                                                           |
 #-----------------------------------------------------------+
 #  AUTHOR: James C. Estill                                  |
@@ -10,7 +10,9 @@
 # UPDATED: 04/14/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
-#  Test of the converts in the dawpaws program.             |
+#  Test the vennseq.pl program. This tests the basic        |
+#  crosstab results, as well as checks that the vennmaster  |
+#  program is installed and runs correctly.                 |
 #-----------------------------------------------------------+
 
 use Test::More tests => 7;
@@ -18,7 +20,7 @@ use Test::More tests => 7;
 #-----------------------------+
 # PROGRAM CROSS TAB           |
 #-----------------------------+
-print STDERR "Testing vennseq program crosstab output ...\n";
+diag ("Testing vennseq program crosstab output ...");
 open (EXPECTED, '<data/exp/venn_test_result.txt');
 my @vennseq_exp = <EXPECTED>;
 close (EXPECTED);
@@ -31,7 +33,7 @@ is_deeply ( \@vennseq_obs, \@vennseq_exp, "vennseq.pl");
 # CHECKING ENV OPTIONS        |
 # VARS WITH EVN OPTIONS       |
 #-----------------------------+
-print STDERR "Checking ENV options ...\n";
+diag ("Checking vennseq ENV options ...");
 
 # VennMaster Directory Defined
 ok ( my $vmaster_dir = $ENV{VMASTER_DIR} 
