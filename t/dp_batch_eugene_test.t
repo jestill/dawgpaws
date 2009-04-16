@@ -14,7 +14,7 @@
 #                                                           |
 #-----------------------------------------------------------+
 
-use Test::More tests => 1;
+use Test::More tests => 4;
 
 #-----------------------------+
 # TESTING BINARY PATH         |
@@ -28,44 +28,44 @@ my $basic_eug_cmd = "eugene";
 ok ( system($basic_eug_cmd), "Eugene is Installed" ) ||
     diag ("You must have eugene installed, and in your PATH.");
 
-
-
-# Use the parameters file
-#my $eugene_cmd = $eugene_bin." -p g -A $param_file ".
-#    " -O $eugene_dir".
-#    " $eug_fasta";
-
-exit;
-
 #-----------------------------+
 # TEST RUNNING THE PROGRAM    |
 #-----------------------------+
-diag ("Testing running the batch_eugene.pl program, this is slow ...");
+diag ("Testing running the batch_eugene.pl program, this is very slow ...");
 my $out_dir = $ENV{HOME}."/dp_temp_test/";
-my $eugene_cmd = "batch_eugene.pl -i data/fasta/ -o $out_dir".
-    " -p ";
+
+my $can_clean = 0;  # The tmp dir did not already exist
+unless (-e $out_dir) {
+    mkdir $out_dir;
+}
+
+my $batch_eug_cmd = "batch_eugene.pl -i data/fasta/ -o $out_dir".
+    " -p data/config/hex_eugene.par";
 
 # This will exit zero when things work
-ok ( system($findgaps_cmd)==0 , "batch_eugene.pl");
+ok ( system($batch_eug_cmd)==0 , "batch_eugene.pl");
 
 #-----------------------------+
 # TEST PROGRAM OUTPUT         |
 #-----------------------------+
-diag ("Testing gap results ..");
-my $exp_file = "data/exp/HEX2903P03_gaps.gff";
+diag ("Testing batch_eugene results ..");
+my $exp_file = "data/exp/HEX3045G05_eugene.gff";
 
 open (EXPECTED, "<".$exp_file);
-my @gaps_exp = <EXPECTED>;
+my @eugene_exp = <EXPECTED>;
 close (EXPECTED);
 
 # TEST THE THE GFF OUTPUT FILE EXISTS
-my $obs_file = $out_dir."HEX2903P03/gff/HEX2903P03_gaps.gff";
+my $obs_file = $out_dir."HEX3045G05/gff/HEX3045G05_eugene.gff";
 ok ( (-e $obs_file) , "Gaps GFF test files appears to exist") ||
     diag("I expected to see the file\n $obs_file");
 
+# TEST THAT THE RESULTS MEET EXPECTATIONS
 open (OBSERVED, "<".$obs_file);
-my @gaps_obs = <OBSERVED>;
+my @eugene_obs = <OBSERVED>;
 close (OBSERVED);
 
-is_deeply ( \@gaps_obs, \@gaps_exp,
+is_deeply ( \@eugene_obs, \@eugene_exp,
 	    "Gaps GFF file contains correct data");
+
+exit;
