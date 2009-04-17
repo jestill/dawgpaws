@@ -67,7 +67,7 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
-my $do_gff_convert = 0;
+my $do_gff_convert = 1;
 my $do_feat_seq = 0;           # Extract feature sequence data
 
 # Counters/Index Vals
