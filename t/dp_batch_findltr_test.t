@@ -19,6 +19,7 @@ use Test::More tests => 5;
 #-----------------------------+
 # TESTING BINARY DEFINED      |
 #-----------------------------+
+diag("Testing that find_ltr.pl is available");
 my $geneid_bin;
 my $findltr_bin;
 ok ( $findltr_bin = $ENV{FIND_LTR_PATH},
@@ -61,7 +62,7 @@ close (EXPECTED);
 
 # TEST THE THE GFF OUTPUT FILE EXISTS
 my $obs_file = $out_dir."HEX2903P03/gff/HEX2903P03_findltr_Def.gff";
-ok ( (-e $obs_file) , "Find_ltr GFF test files appears to exist") ||
+ok ( (-e $obs_file) , "find_ltr GFF test files appears to exist") ||
     diag("I expected to see the file\n $obs_file");
 
 # TEST THAT THE OUTPUT MATCHES THE EXPECTED RESULT
@@ -70,6 +71,6 @@ my @findltr_obs = <OBSERVED>;
 close (OBSERVED);
 
 is_deeply ( \@findltr_obs, \@findltr_exp,
-	    "geneid GFF file contains correct data");
+	    "find_ltr GFF file contains correct data");
 
 exit;
