@@ -41,7 +41,14 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $indir;
 my $outdir;
 my $file_config;
-my $ltrseq_bin = "LTR_seq";
+
+# LTR SEQ DIR
+
+# This is the dir that will hold the config files
+
+my $ltrseq_dir = $ENV{LTR_SEQ_DIR} || $ENV{HOME};
+
+my $ltrseq_bin = $ENV{LTR_SEQ_BIN} || "LTR_seq";
 
 # Booleans
 my $help = 0;
@@ -56,17 +63,19 @@ my $do_test = 0;
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions("i|indir=s"   => \$indir,
-                    "o|outdir=s"  => \$outdir,
+my $ok = GetOptions("i|indir=s"    => \$indir,
+                    "o|outdir=s"   => \$outdir,
 		    # OPTIONS
-		    "c|config=s"  => \$file_config,
-		    "test"        => \$do_test,
-		    "usage"       => \$show_usage,
-		    "version"     => \$show_version,
-		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,
-		    "verbose"     => \$verbose,
-		    "q|quiet"     => \$quiet,);
+		    "c|config=s"   => \$file_config,
+		    "config-dir=s" => \$ltrseq_dir,
+		    "ltrseq-bin=s" => \$ltrseq_bin,
+		    "test"         => \$do_test,
+		    "usage"        => \$show_usage,
+		    "version"      => \$show_version,
+		    "man"          => \$show_man,
+		    "h|help"       => \$show_help,
+		    "verbose"      => \$verbose,
+		    "q|quiet"      => \$quiet,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -122,6 +131,10 @@ unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
+unless ($ltrseq_dir =~ /\/$/ ) {
+    $ltrseq_dir = $ltrseq_dir."/";
+}
+
 #-----------------------------------------------------------+ 
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+ 
@@ -172,9 +185,10 @@ if ($file_config) {
 	my $count_tmp = @tmpary;
 	
 	if ($count_tmp == 2) {
-	    
 	    $config_opts[$i][0] = $tmpary[0];  # Config name
-	    $config_opts[$i][1] = $tmpary[1];  # Config file path
+	    # The following assumes the full path is in the config file
+	    #$config_opts[$i][1] = $tmpary[1];  # Config file
+	    $config_opts[$i][1] = $ltrseq_dir.$tmpary[1];  # Config file path
 	    $i++;
 	} 
 	elsif ($count_tmp == 1) {
@@ -195,13 +209,14 @@ if ($file_config) {
     } # End of while CONFIG
     close CONFIG;
 }
+
 #-----------------------------+
 # If no config file use the   |
 # default options tag         |
 #-----------------------------+
 else {
     $config_opts[0][0] = "default";   # Config name
-    $config_opts[0][1] = "DEF";       # Tag as default config
+    $config_opts[0][1] = "LTR.cfg";   # Set path to LTR.cfg
 }
 
 #-----------------------------+
@@ -211,9 +226,10 @@ else {
 for my $config_opt (@config_opts) {
     
     my $ltrseq_cfg_file = $config_opt->[1];
-
+    
     unless ($ltrseq_cfg_file =~ "DEF") {
 	unless (-e $ltrseq_cfg_file) {
+	    print "\a";
 	    die "LTR_Seq config file not found at:\n$ltrseq_cfg_file\n";
 	} # End of check to see if the config files exists
     } # End of unless we are using the defualt parameter set
@@ -301,6 +317,9 @@ for my $ind_file (@fasta_files) {
 	# Append config file to command if given
 	unless ($ltrseq_cfg_file =~ "DEF") {
 	    $ltrseq_cmd = $ltrseq_cmd." ".$ltrseq_cfg_file;
+	}
+	else {
+	    $ltrseq_cmd = $ltrseq_cmd." LTR.cfg";
 	}
 	
 	my $ltrseq_outfile = $ltrseq_dir.$name_root."_ltrseq_".
@@ -648,7 +667,7 @@ This documentation refers to program version $Rev$
 
 =head2 Usage
 
-    batch_ltrseq.pl -i in_dir -o out_dir
+    batch_ltrseq.pl -i in_dir -o out_dir [-c config]
 
 =head2 Required Options
 
@@ -700,23 +719,37 @@ This is the name that will be used in the gff file to tag the configuration
 set. For example def for default options or old for an optional set to
 try to finder LTR retrotransposon insertions that are old.
 
-=item * Col. 2 Config File Path
+=item * Col. 2 Config File
 
-Path to the LTR_Seq config file describing the parameter set to use. This file
+LTR_seq config file describing the parameter set to use. This file
 should follow the format used for LTR_Seq config files. If this value is
 set to DEF, then batch_ltrseq.p will run the LTR_seq program with
 default parameters.
+
+The directory that this config file is located in will be specified by
+the LTR_SEQ_DIR environment variable or defined in the command line
+with --config-dir.
 
 =back
 
 An example configuration file is shown below:
 
-    def     DEF
+    def     LTR.cfg
     long    long_ltr.cfg
     old     lod_ltr.cfg
 
 This configuration file would run three sets of parameter files for every
 sequence in the input directory.
+
+=item --config-dir
+
+The directory that the configuration files are located in. This can
+also be specified by the LTR_SEQ_DIR environment variable.
+
+=item --config-bin
+
+The location of the LTR_seq binary. This can also be specified by the
+LTR_SEQ_BIN environment variable.
 
 =item --test
 
@@ -786,7 +819,7 @@ try to finder LTR retrotransposon insertions that are old.
 
 =item * Col. 2 Config File Path
 
-Path to the LTR_Seq config file describing the parameter set to use. This file
+The config file describing the parameter set to use. This file
 should follow the format used for LTR_Seq config files. If this value is
 set to DEF, then batch_ltrseq.p will run the LTR_seq program with
 default parameters.
@@ -891,7 +924,25 @@ An example LTR_seq config file is shown below:
 
 =head2 Environment
 
-This program does not make use of variables set in the user environment.
+The batch_ltrseq.pl program can make use of the following variables
+defined in the user environment.
+
+=over 2
+
+=item LTR_SEQ_DIR
+
+This is the path to the directory that contains the LTR_seq configuration
+files. This can also be specified at the command line using the 
+--config-dir option. If this is not specified, the program will attempt
+to look for the configuration files in the user's home directory.
+
+=item LTR_SEQ_BIN
+
+This is the path to the LTR_Seq binary. If this option is not specified, 
+the batch_ltrseq.pl program will assume that LTR_seq is located in your
+PATH.
+
+=back
 
 =head1 DEPENDENCIES
 
