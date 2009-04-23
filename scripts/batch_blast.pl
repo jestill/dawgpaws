@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/23/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 04/23/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of softmasked fasta files, this will   |
@@ -33,6 +33,7 @@ use Pod::Text;                 # Print POD doc as formatted text file
 use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # Convert a relative path to an abosolute path
+use Bio::SearchIO;             # Parse BLAST output
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -51,6 +52,7 @@ my $show_usage = 0;            # Show program usage command
 my $quiet = 0;                 # Boolean for reduced output to STOUT
 my $test = 0;                  # Run the program in test mode
 my $verbose = 0;               # Run the program in verbose mode
+my $do_gff = 1;                # Try to convert the blast results to gff
 
 # PACKAGE LEVEL SCOPE
 
@@ -67,13 +69,17 @@ my $file_config;               # Path to the Batch blast config file
 my $file_to_blast;             # Path to the file to BLAST, the qry file
 my $file_blast_out;            # Path to BLAST output file
 my $logfile;                   # Path to a logfile to log error info
-my $blast_path = "blastall";   # Path to the NCBI blastall binary
-                               # by default will assume blastall works
-                               # without providing full path
+# Path to the NCBI blastall binary
+my $blast_path = $ENV{DP_BLAST_BIN} || "blastall";
+my $dir_blast_db = $ENV{DP_BLAST_DIR} || 0;
+
+#my $blast_path = "blastall";   # Path to the NCBI blastall binary
+#                               # by default will assume blastall works
+#                               # without providing full path
 
 # Directories
+my $dir_gff_out;               # Dir to hold the GFF output
 my $dir_blast_out;             # Dir to hold the BLAST output for qry file 
-my $dir_blast_db;
 my $indir;                     # Directory containing the seq files to process
 my $outdir;                    # Directory to hold the output
 my $bac_out_dir;               # Dir for each sequnce being masked
@@ -154,8 +160,9 @@ if ( (!$indir) || (!$outdir) || (!$file_config) || (!$dir_blast_db) ) {
 	" command line\n" if (!$outdir);
     print STDERR "ERROR: A configuration file was not specified at the".
 	" command line\n" if (!$file_config);
-    print STDERR "ERROR: A BLAST DB directory was not specified at the".
-	" command line\n" if (!$dir_blast_db);
+    print STDERR "ERROR: The Blast DB directory must be specified".
+	" at the command line to by using the DP_BLAST_DIR variable".
+	" in the user environment." if (!$dir_blast_db);
     print_help ("usage", $0 );
 }
 
@@ -345,7 +352,8 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
     $dir_blast_out = $outdir.$name_root."/blast/";
     unless (-e $dir_blast_out ) {
-	print "Creating output dir\n: $dir_blast_out\n" if $verbose;
+	print STDERR "Creating output dir\n: $dir_blast_out\n" 
+	    if $verbose;
 	mkdir $dir_blast_out ||
 	    die "Could not create the output directory:\n$dir_blast_out";
     }
@@ -353,9 +361,24 @@ for my $ind_file (@fasta_files)
     $file_to_blast = $indir.$ind_file;
 
     #-----------------------------+
+    # CREATE THE DIR TO HOLD      |
+    # THE GFF OUTPUT              |
+    #-----------------------------+
+    if ($do_gff) {
+	$dir_gff_out = $outdir.$name_root."/gff/";
+	unless (-e $dir_gff_out) {
+	    print STDERR "Creating output dir\n:$dir_gff_out"
+		if $verbose;
+	    mkdir $dir_gff_out ||
+		die "Could not create the gff output directory:\n$dir_gff_out";
+	}
+    }
+    
+    #-----------------------------+
     # FOR EACH DB IN THE CONFIG   |
     # FILE                        |
     #-----------------------------+
+    my $gff_count=0;               # Count of the number of gff files
     for my $ind_db (@dbs) {
 	
 	$proc_num++;
@@ -369,7 +392,6 @@ for my $ind_file (@fasta_files)
 	print "| BLAST PROCESS: $proc_num of $count_proc \n" unless $quiet;
 	print "+-----------------------------------------------------------+\n"
 	    if $verbose;
-
 
 	my $file_blast_out = $dir_blast_out.$name_root."_".$ind_db->[4]."."
 	    .$ind_db->[1];
@@ -394,6 +416,25 @@ for my $ind_file (@fasta_files)
 	    system ($blast_cmd);
 	}
 
+	# Convert the result to gff
+	my $gff_out_file = $dir_gff_out.$name_root."_blast.gff";
+	if ($do_gff) {
+	    $gff_count++;
+
+	    my $append_gff;
+	    if ($gff_count == 1) {
+		$append_gff = 0;
+	    }
+	    else {
+		$append_gff = 1;
+	    }
+
+	    blast2gff ( $file_blast_out, 
+			$gff_out_file,
+			$append_gff,
+			$name_root,
+			$ind_db->[2]);
+	}
 
 
     } # End of for each ind_db
@@ -523,6 +564,171 @@ sub test_blast_db {
 	print "The db file is okay at: $db_path\n" if $verbose;
     }
 
+}
+
+sub blast2gff {
+# CONVERT BLAST TO GFF 
+    
+    # seqname - ID to use in the seqname field
+    # blastin - path to the blast input file
+    # gffout  - path to the gff output file
+    # append  - boolean append data to existing file at gff out
+    # bopt    - The type of blast report to parse (0,8,9)
+    my ($blastin, $gffout, $append, $seqname, $bopt ) = @_;
+    my $blastprog;        # Name of the blast program used (blastn, blastx)
+    my $dbname;           # Name of the database blasted
+    my $hitname;          # Name of the hit
+    my $start;            # Start of the feature
+    my $end;              # End of the feature
+    my $strand;           # Strand of the hit
+    my $blast_report;     # The handle for the blast report
+    my $blast_score;      # The score for the blast hit
+
+    my $seq_name_len = length($seqname);
+
+    #-----------------------------+
+    # GET BLAST REPORT            |
+    #-----------------------------+
+    if ($bopt == 8 || $bopt == 9) {
+
+	# PARSE m8 or m9 ALIGNMENTS
+	$blast_report = new Bio::SearchIO ( '-format' => 'blasttable',
+					    '-file'   => $blastin)
+	    || die "Could not open BLAST input file:\n$blastin.\n";
+	
+    }
+    else {
+
+	# PARSE DEFAULT ALIGNMNETS (m0)
+	$blast_report = new Bio::SearchIO ( '-format' => 'blast',
+					    '-file'   => $blastin) 
+	    || die "Could not open BLAST input file:\n$blastin.\n";
+	
+    }
+
+
+    # Open file handle to the gff outfile    
+    if ($append) {
+	open (GFFOUT, ">>$gffout") 
+	    || die "Can not open file:\n $gffout\n";
+    }
+    else {
+	open (GFFOUT, ">$gffout") 
+	    || die "Can not open file:\n $gffout\n";
+    }
+    
+    while (my $blast_result = $blast_report->next_result())
+    {
+	$blastprog = $blast_result->algorithm;
+
+	# FOR m8 output the database name does not work
+	# so I will use the file name as given by blastin
+
+	if ($bopt == 8 || $bopt == 9) { 
+	    $dbname = $blastin;
+
+	    # Since DAWG-PAWS uses a specific naming stragety, I will
+	    # try to extract the database name from the file name
+	    # Basic pattern is 'path_root/file name'_'database name'
+	    # can get the 
+	    if ($dbname =~ m/(.*)\/(.*)\.bln$/ ) {
+		$dbname = $2;
+		$dbname = substr($dbname, $seq_name_len+1 );
+
+	    }
+	    elsif ($dbname =~ m/(.*)\/(.*)\.blx$/ ) {
+		$dbname = $2;
+		$dbname = substr($dbname, $seq_name_len+1);
+	    }
+
+	}
+	else {
+	    $dbname = $blast_result->database_name();
+	}
+
+    	while (my $blast_hit = $blast_result->next_hit())
+	{
+
+	    while (my $blast_hsp = $blast_hit->next_hsp())
+	    {
+
+		my $hitname = $blast_hit->name();
+
+		$strand = $blast_hsp->strand('query');
+		
+		if ($strand =~ "-1") {
+		    $strand = "-";
+		}
+		elsif ($strand =~ "1") {
+		    $strand = "+";
+		}
+		else {
+		    die "Error parsing strand\n";
+		}
+		
+		# Make certain that start coordinate is
+		# less then the end coordinate
+		if ( $blast_hsp->start() < $blast_hsp->end() ) {
+		    $start = $blast_hsp->start();         # Start
+		    $end = $blast_hsp->end();
+		    #$strand = "+";
+		    
+		}
+		else {
+		    #
+		    $start = $blast_hsp->end();         # Start
+		    $end = $blast_hsp->start();
+		    #$strand = "-";
+		}
+
+
+		#-----------------------------+
+		# GET BLAST SCORE             |
+		#-----------------------------+
+		if ($bopt == 8 || $bopt == 9) {
+		    #$blast_score = ".";
+		    # trying bits
+		    $blast_score = $blast_hsp->bits();
+		}
+		else {
+		    $blast_score = $blast_hsp->score();
+		}
+
+		#-----------------------------+
+		# PRINT OUTPUT TO GFF FILE    |
+		# WITH BAC DATA               |
+		#-----------------------------+
+		# Changing BLASTN to the Bac Name appears to allow 
+		# these to be drawn on different levels.
+		print GFFOUT 
+		    "$seqname\t".                     # Seqname
+		    "$blastprog:$dbname\t".           # Source
+		    "exon\t".                         # Feature type name
+		    "$start\t".                       # Start
+		    "$end\t".                         # End
+		    $blast_score."\t".                # Score
+		    "$strand\t".                      # Strand
+		    ".\t".                            # Frame
+		    "$hitname\n";                     # Feature name
+
+
+		# PRINT GFF TO STDERR IF IN VERBOSE MODE
+		if ($verbose) {
+		    print STDERR "\t   SEQ:\t$seqname\n";
+		    print STDERR "\t SOURC:\t$blastprog:$dbname\n";
+		    print STDERR "\t START:\t$start\n";
+		    print STDERR "\t   END:\t$end\n";
+		    print STDERR "\t SCORE:\t".$blast_score."\n";
+		    print STDERR "\tSTRAND:\t$strand\n";
+		    print STDERR "\t   HIT:\t$hitname\n";
+		}
+
+	    } # End of while next hsp
+	} # End of while next hit
+    } # End of while next result
+    
+    close GFFOUT;
+    
 }
 
 1;
@@ -715,6 +921,33 @@ An example config file:
  tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
  tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
 
+=head2 Environment
+
+The following variables in the user environment can be set for
+batch_blast.pl:
+
+=over 2
+
+=item DP_BLAST_BIN
+
+This is the location of the blastall binary that you would like to use 
+for the batch_blast.pl program. If this is not specified at the command
+line the program will assume that the 'blastall' program is located
+in the user's PATH. Alternatively, you can specify the location of the
+blastall program using the --blast-path option at the command line. The
+command line use of --blast-path will override the path set by 
+DP_BLAST_BIN.
+
+=item DP_BLAST_DIR
+
+This is the location of the directory that the compiled blast databases
+are stored in. Alternatively, you can specify the location of this
+directory using the command line option --db-dir. The use of the --db-dir
+option in the command line will override the directory selection set
+by the DP_BLAST_DIR option.
+
+=back
+
 =head1 DEPENDENCIES
 
 =head2 Required Software
@@ -838,3 +1071,6 @@ VERSION: $Rev$
 # 12/05/2007
 # - Added new print_help subfunction
 # - Moved POD documentation to the end
+#
+# 04/23/2009
+# - Added code to convert to gff format
