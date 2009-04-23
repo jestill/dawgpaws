@@ -51,7 +51,8 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 my $indir;
 my $outdir;
 
-my $trf_bin = "trf400.linux.exe";  # The TRF binary file
+# Allowing TRF bin to be defined in environment
+my $trf_bin = $ENV{TRF_BIN} || "trf400.linux.exe";  # The TRF binary file
 
 # BOOLEANS
 my $quiet = 0;
