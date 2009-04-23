@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 04/23/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -73,7 +73,12 @@ my $gff_out_dir;               # Dir for the gff output
 
 # FILE PATHS
 my $logfile;                   # Path to a logfile to log error info
-my $rm_path = "RepeatMasker";  # Full path to the repeatmasker binary
+
+# Full path to the repeatmasker binary
+my $rm_path = $ENV{DP_RM_BIN} || "RepeatMasker";
+# Dir containing the files to mask with
+my $rm_dir = $ENV{DP_RM_DIR} || "0";
+
 my $ap_path;                   # Full path to the apollo program
 my $rm_opt;                    # Repmasker options
 my $rep_db_path;               # Path to an indivual repeat database
@@ -148,6 +153,7 @@ my $ok = GetOptions(
 		    "c|config=s",  => \$config_file,
 		    # ADDITIONAL OPTIONS
 		    "rm-path=s"    => \$rm_path,
+		    "rm-dir=s"     => \$rm_dir,
 		    "ap-path=s",   => \$ap_path,
 		    "logfile=s"    => \$logfile,
 		    "p|num-proc=s" => \$num_proc,
@@ -236,6 +242,10 @@ unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
+unless ($rm_dir =~ /\/$/ ) {
+    $rm_dir = $rm_dir."/";
+}
+
 #-----------------------------+
 # Get the FASTA files from the|
 # directory provided by the   |
@@ -273,6 +283,12 @@ while (<CONFIGFILE>) {
 	if ($num_in_line == 2) {
 	    $mask_libs[$i][0] = $in_line[0];
 	    $mask_libs[$i][1] = $in_line[1];
+
+	    # If a db dir path is given, prepend this
+	    # to the location of the database
+	    unless ($rm_dir =~ 0) {
+		$mask_libs[$i][1] = $rm_dir.$mask_libs[$i][1];
+	    }
 	    
 	    # Only print for debug runs
 	    if ($debug) {
@@ -289,11 +305,17 @@ while (<CONFIGFILE>) {
 	    
 	    $i++;
 	}
-	# Iff three cols then we have additional options
+	# If three cols then we have additional options
 	elsif ($num_in_line == 3) {
 	    $mask_libs[$i][0] = $in_line[0];
 	    $mask_libs[$i][1] = $in_line[1];
 	    $mask_libs[$i][2] = $in_line[2];
+
+	    # If a db dir path is given, prepend this
+	    # to the location of the database
+	    unless ($rm_dir =~ 0) {
+		$mask_libs[$i][1] = $rm_dir.$mask_libs[$i][1];
+	    }
 
 	    $i++;
 	}
@@ -387,7 +409,7 @@ for my $ind_file (@fasta_files)
     # Reset search name to null
     $search_name = "";
     
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
@@ -484,7 +506,8 @@ for my $ind_file (@fasta_files)
 	#$xml_alldb_out = $indir."ALLDB_".$ind_file."game.xml";
 
 	# Renamed 09/11/2007
-	$gff_el_out = $indir.$name_root."_".$rep_db_name.".gff";
+	$gff_el_out = $gff_out_dir.$name_root."_".$rep_db_name.".gff";
+	#$gff_el_out = $indir.$name_root."_".$rep_db_name.".gff";
 	$xml_el_out = $indir.$name_root."_".$rep_db_name.".game.xml"; 
  	$gff_alldb_out = $indir.$name_root."_ALLDB.gff";
 	$xml_alldb_out = $indir.$name_root."_ALLDB.game.xml";
@@ -585,7 +608,7 @@ for my $ind_file (@fasta_files)
 	$repmask_masked_cp = $bac_rep_out_dir.$name_root."_".$rep_db_name.
 	    ".masked.fasta";
 	
-	$repmask_el_cp = $bac_rep_out_dir.$name_root."_".$rep_db_name.
+	$repmask_el_cp = $gff_out_dir.$name_root."_rm_".$rep_db_name.
 	    ".gff";
 	$repmask_xml_el_cp = $bac_rep_out_dir.$name_root."_".$rep_db_name.
 	    ".game.xml"; 
@@ -597,8 +620,6 @@ for my $ind_file (@fasta_files)
 	# These will all be placed in the $outdir
 	$repmask_local_cp = $outdir.$name_root.".masked.fasta";
 	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
 
 	# THE FOLLOWING ADDED 09/28/2006
 	# REmoved 09/11/2007
@@ -649,6 +670,8 @@ for my $ind_file (@fasta_files)
 	    move ( $xml_el_out, $repmask_xml_el_cp ) ||
 		print STDERR $msg;
 	}
+
+
 
     } # End of for LibData
     
@@ -1112,6 +1135,26 @@ that are contained in the contigs.
 
 =back
 
+=head2 Environment
+
+The following options can be set in the user environment:
+
+=over 2
+
+=item DP_RM_BIN
+
+The locatin of the RepeatMasker binary.
+
+=item DP_RM_DIR
+
+The base dir that the RepeatMasker databases for masking are located
+in. This option can also be specified at the command line with the
+--rm-dir option. If this option is not specified in the environment or
+at the command line, then the full path to the individual database
+files must be specified in the configuration file.
+
+=back
+
 =head1 DEPENDENCIES
 
 =head2 Required Software
@@ -1210,7 +1253,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 03/24/2009
+UPDATED: 04/23/2009
 
 VERSION: $Rev$
 
@@ -1364,3 +1407,10 @@ VERSION: $Rev$
 # 02/05/2009
 # - Added the ability to accept a third column of option
 #   arguments in the configuration file
+#
+# 04/23/2009
+# - Now puts the gff results for each individual databse
+#   in the gff dir.
+# - Can use the DP_RM_BIN env var to set location of rm binary
+# - Can use the DP_RM_DIR env var to set location of rm databases
+# - Updated POD to reflect changes
