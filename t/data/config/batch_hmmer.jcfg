@@ -11,7 +11,7 @@
 #     -T T bit threshold
 #     -Z Number of seqs for E-Value calc
 # You MUST include at least the E value option in column three
-dp_test	/home/jestill/svnloc/dawg-paws/trunk/t/data/pfam/	-E 0.00001
+dp_test	hmm_models/	-E 0.00001
 #rice_mite	/home/jestill/projects/HMMData/db/hmm/rice_mite_models/	-E 0.00001
 #rice_mule	/home/jestill/HMMData/db/hmm/rice_mule_models/	-E 0.00001
 #tpase	/home/jestill/HMMData/db/hmm/tpase_models/	-E 0.00001
