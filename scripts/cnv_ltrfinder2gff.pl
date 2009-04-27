@@ -194,6 +194,8 @@ sub ltrfinder2gff {
 	$gff_src = $gff_src.":".$gff_suffix;
     }
 
+    my $print_gff_out = 0;  # Boolean to print out gff data
+
     my $gff_str_out;        # A single out string line of gff out
 
     # LTF FINDER COUTNERS/INDICES
@@ -354,30 +356,23 @@ sub ltrfinder2gff {
 	    
 	}
 	
-	#///////////////////////////////////////
-	# PAY ATTENTION BELOW THIS MAY BE THE
-	# PLACE TO PRINT OUT SAVED GFF DATA
-	#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 	# IN NEW REC, GET ID
 	elsif (m/^\[(.*)\]/) {
 
 	    #-----------------------------+
 	    # PRINT STORED GFF OUTPUT     |
+	    # IF VALUES ARE PRESENT       |
 	    #-----------------------------+
-	    unless ($1 == 1 ) {
-
-		# Two alternatives here
-		# keep appending to gff_lout and then print set
-		# or print line at a time .. currently printing 
-		# a line at a time. JCE 10/02/2007
-
-		if ($seqname) {
-		    $lf_seq_id = $seqname;
-		}
-
-		# FULL SPAN
-		 $gff_str_out = "$lf_seq_id\t". # Seq ID
+	    
+	    # override seq id if one passed 
+	    if ($seqname) {
+		$lf_seq_id = $seqname;
+	    }
+	    
+	    # FULL SPAN
+	    if ($lf_span_start) {
+		$gff_str_out = "$lf_seq_id\t". # Seq ID
 		    "$gff_src\t".                # Source
 		    "LTR_retrotransposon\t".     # Data type
 		    "$lf_span_start\t".          # Start
@@ -386,42 +381,11 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".              # Strand
 		    ".\t".                       # Frame
 		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-		#print STDOUT $gff_str_out;
 		print GFFOUT $gff_str_out;
-
-		if ($has_pbs) {
-		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
-			"$gff_src\t".               # Source
-			"primer_binding_site\t".    # Data type
-			"$lf_pbs_start\t" .         # Start
-			"$lf_pbs_end\t".            # End
-			"$lf_score\t".              # Score
-			"$lf_strand\t".             # Strand
-			".\t".                      # Frame
-			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		}
-
-		
-		if ($has_ppt) {
-		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".    # Seq ID
-			"$gff_src\t".               # Source
-			"RR_tract\t".               # Data type
-			"$lf_ppt_start\t".          # Start
-			"$lf_ppt_end\t".            # End
-			"$lf_score\t".              # Score
-			"$lf_strand\t".             # Strand
-			".\t".                      # Frame
-			"ltr_finder_$lf_ltr_id\n";  # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		}
-
-		
-		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
+	    }
+	    
+	    if ($lf_5ltr_start) {
+		$gff_str_out = "$lf_seq_id\t".  # Seq ID
 		    "$gff_src\t".               # Source
 		    "five_prime_LTR\t".         # Data type
 		    "$lf_5ltr_start\t".         # Start
@@ -430,11 +394,11 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 #print STDOUT $gff_str_out;
-		 print GFFOUT $gff_str_out;
-
-		 $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
+		print GFFOUT $gff_str_out;
+	    }
+	    
+	    if ($lf_3ltr_start) {
+		$gff_str_out = "$lf_seq_id\t".  # Seq ID
 		    "$gff_src\t".               # Source
 		    "three_prime_LTR\t".        # Data type
 		    "$lf_3ltr_start\t".         # Start
@@ -443,175 +407,183 @@ sub ltrfinder2gff {
 		    "$lf_strand\t".             # Strand
 		    ".\t".                      # Frame
 		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-		 #print STDOUT $gff_str_out;
-		 print GFFOUT $gff_str_out;
-
-		if ($has_tsr) {
+		print GFFOUT $gff_str_out;
+	    }
+	    
+	    if ($has_pbs) {
+		$gff_str_out = "$lf_seq_id\t".  # Seq ID
+		    "$gff_src\t".               # Source
+		    "primer_binding_site\t".    # Data type
+		    "$lf_pbs_start\t" .         # Start
+		    "$lf_pbs_end\t".            # End
+		    "$lf_score\t".              # Score
+		    "$lf_strand\t".             # Strand
+		    ".\t".                      # Frame
+		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
+		print GFFOUT $gff_str_out;
+	    }
+	    
+	    
+	    if ($has_ppt) {
+		$gff_str_out = "$lf_seq_id\t".  # Seq ID
+		    "$gff_src\t".               # Source
+		    "RR_tract\t".               # Data type
+		    "$lf_ppt_start\t".          # Start
+		    "$lf_ppt_end\t".            # End
+		    "$lf_score\t".              # Score
+		    "$lf_strand\t".             # Strand
+		    ".\t".                      # Frame
+		    "ltr_finder_$lf_ltr_id\n";  # Retro ID
+		print GFFOUT $gff_str_out;
+	    }
+	    
+	    
+	    if ($has_tsr) {
+		
+		$gff_str_out = "$lf_seq_id\t".   # Seq ID
+		    "$gff_src\t".                # Source
+		    "target_site_duplication\t". # Data type
+		    "$lf_5tsr_start\t".          # Start
+		    "$lf_5tsr_end\t".            # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;	    
+		
+		$gff_str_out = "$lf_seq_id\t".   # Seq ID
+		    "$gff_src\t".                # Source
+		    "target_site_duplication\t". # Data type
+		    "$lf_3tsr_start\t".          # Start
+		    "$lf_3tsr_end\t".            # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+	    }
+	    
+	    
+	    # Integrase Core
+	    if ($has_in_core) {
+		#/////////
+		# NOT SONG
+		#\\\\\\\\\
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".              # Source
+		    "integrase_core_domain\t".  # Data type
+		    "$lf_in_core_dom_start\t".   # Start
+		    "$lf_in_core_dom_end\t".     # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+		#/////////
+		# NOT SONG
+		#\\\\\\\\\
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".              # Source
+		    "integrase_core_orf\t".      # Data type
+		    "$lf_in_core_orf_start\t".   # Start
+		    "$lf_in_core_orf_end\t".     # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+	    } # End of has in_core
+	    
+	    
+	    if ($has_in_cterm) {
+		
+		#/////////
+		# NOT SONG
+		#\\\\\\\\\
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "integrase_cterm_domain\t".  # Data type
+		    "$lf_in_cterm_dom_start\t".  # Start
+		    "$lf_in_cterm_dom_end\t".    # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "integrase_cterm_orf\t".     # Data type
+		    "$lf_in_cterm_orf_start\t".  # Start
+		    "$lf_in_cterm_orf_end\t".    # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
 		    
-		    $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".               # Source
-			"target_site_duplication\t". # Data type
-			"$lf_5tsr_start\t".          # Start
-			"$lf_5tsr_end\t".            # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;	    
-
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".              # Source
-			"target_site_duplication\t". # Data type
-			"$lf_3tsr_start\t".          # Start
-			"$lf_3tsr_end\t".            # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		    
-		}
-
-
-		# Integrase Core
-		if ($has_in_core) {
-		    #/////////
-		    # NOT SONG
-		    #\\\\\\\\\
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".              # Source
-			"integrase_core_domain\t".  # Data type
-			"$lf_in_core_dom_start\t".   # Start
-			"$lf_in_core_dom_end\t".     # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-
-		    #/////////
-		    # NOT SONG
-		    #\\\\\\\\\
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".              # Source
-			"integrase_core_orf\t".      # Data type
-			"$lf_in_core_orf_start\t".   # Start
-			"$lf_in_core_orf_end\t".     # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		    
-		} # End of has in_core
-
-
-		if ($has_in_cterm) {
-
-		    #/////////
-		    # NOT SONG
-		    #\\\\\\\\\
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"integrase_cterm_domain\t".  # Data type
-			"$lf_in_cterm_dom_start\t".  # Start
-			"$lf_in_cterm_dom_end\t".    # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"integrase_cterm_orf\t".     # Data type
-			"$lf_in_cterm_orf_start\t".  # Start
-			"$lf_in_cterm_orf_end\t".    # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		    
-		} # End of has_in_cterm
-
-		if ($has_rh) {
-
-		    #/////////
-		    # NOT SONG
-		    #\\\\\\\\\
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"rnaseh_domain\t".           # Data type
-			"$lf_rh_dom_start\t".        # Start
-			"$lf_rh_dom_end\t".          # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"rnaseh_orf\t".              # Data type
-			"$lf_rh_orf_start\t".        # Start
-			"$lf_rh_orf_end\t".          # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-		    
-		}
-
-		if ($has_rt) {
-
-		    #/////////
-		    # NOT SONG
-		    #\\\\\\\\\
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"rt_domain\t".               # Data type
-			"$lf_rt_dom_start\t".        # Start
-			"$lf_rt_dom_end\t".          # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-
-		    $gff_str_out = "$lf_seq_id\t".     # Seq ID
-			"$gff_src\t".                # Source
-			"rt_orf\t".                  # Data type
-			"$lf_rt_orf_start\t".        # Start
-			"$lf_rt_orf_end\t".          # End
-			"$lf_score\t".               # Score
-			"$lf_strand\t".              # Strand
-			".\t".                       # Frame
-			"ltr_finder_$lf_ltr_id\n";   # Retro ID
-		    #print STDOUT $gff_str_out;
-		    print GFFOUT $gff_str_out;
-
-		} # End of has_reverse_transcriptase
-
-	    } # End of unless this is the first record
-
-
-	    #-----------------------------+
-	    # RESET VARS TO NULL          |
-	    #-----------------------------+
-	    # May not need to reset vars since existence of the vars
-	    # is designated by the do_* variables.
+	    } # End of has_in_cterm
+	    
+	    if ($has_rh) {
+		
+		#/////////
+		# NOT SONG
+		#\\\\\\\\\
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "rnaseh_domain\t".           # Data type
+		    "$lf_rh_dom_start\t".        # Start
+		    "$lf_rh_dom_end\t".          # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "rnaseh_orf\t".              # Data type
+		    "$lf_rh_orf_start\t".        # Start
+		    "$lf_rh_orf_end\t".          # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+	    }
+	    
+	    if ($has_rt) {
+		
+		#/////////
+		# NOT SONG
+		#\\\\\\\\\
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "rt_domain\t".               # Data type
+		    "$lf_rt_dom_start\t".        # Start
+		    "$lf_rt_dom_end\t".          # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+		$gff_str_out = "$lf_seq_id\t".     # Seq ID
+		    "$gff_src\t".                # Source
+		    "rt_orf\t".                  # Data type
+		    "$lf_rt_orf_start\t".        # Start
+		    "$lf_rt_orf_end\t".          # End
+		    "$lf_score\t".               # Score
+		    "$lf_strand\t".              # Strand
+		    ".\t".                       # Frame
+		    "ltr_finder_$lf_ltr_id\n";   # Retro ID
+		print GFFOUT $gff_str_out;
+		
+	    } # End of has_reverse_transcriptase
 	    
 	    #-----------------------------+
 	    # LOAD ID VAR                 |
@@ -776,6 +748,30 @@ sub ltrfinder2gff {
 	elsif (m/^Version    : (.*)/) {
 	    $lf_version = $1;
 	}
+
+
+
+	
+
+
+
+
+	# MOD HERE
+	if ($print_gff_out) {
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	
     }
     
@@ -795,7 +791,6 @@ sub ltrfinder2gff {
 	"$lf_strand\t".              # Strand
 	".\t".                       # Frame
 	"ltr_finder_$lf_ltr_id\n";   # Retro ID
-    #print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     
@@ -809,14 +804,11 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
-    
     if ($has_ppt) {
 	$gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".    # Seq ID
 	    "$gff_src\t".               # Source
 	    "RR_tract\t".               # Data type
 	    "$lf_ppt_start\t".          # Start
@@ -825,13 +817,11 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".             # Strand
 	    ".\t".                      # Frame
 	    "ltr_finder_$lf_ltr_id\n";  # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
     }
     
     
     $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 	"$gff_src\t".               # Source
 	"five_prime_LTR\t".         # Data type
 	"$lf_5ltr_start\t".         # Start
@@ -840,11 +830,9 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    #print STDOUT $gff_str_out;
-    print GFFOUT $gff_str_out;
+     print GFFOUT $gff_str_out;
     
     $gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		print STDOUT "$lf_seq_id\t".    # Seq ID
 	"$gff_src\t".               # Source
 	"three_prime_LTR\t".        # Data type
 	"$lf_3ltr_start\t".         # Start
@@ -853,14 +841,12 @@ sub ltrfinder2gff {
 	"$lf_strand\t".             # Strand
 	".\t".                      # Frame
 	"ltr_finder_$lf_ltr_id\n";  # Retro ID
-    #print STDOUT $gff_str_out;
     print GFFOUT $gff_str_out;
     
     if ($has_tsr) {
 	
 	$gff_str_out = "$lf_seq_id\t".  # Seq ID
-#		    print STDOUT "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
+	    "$gff_src\t".                # Source
 	    "target_site_duplication\t". # Data type
 	    "$lf_5tsr_start\t".          # Start
 	    "$lf_5tsr_end\t".            # End
@@ -868,11 +854,10 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;	    
 	
-	$gff_str_out = "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
+	    "$gff_src\t".                # Source
 	    "target_site_duplication\t". # Data type
 	    "$lf_3tsr_start\t".          # Start
 	    "$lf_3tsr_end\t".            # End
@@ -880,7 +865,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -900,7 +884,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	#/////////
@@ -915,7 +898,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has in_core
@@ -935,7 +917,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -947,7 +928,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_in_cterm
@@ -966,7 +946,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -978,7 +957,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     }
@@ -997,7 +975,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
 	$gff_str_out = "$lf_seq_id\t".     # Seq ID
@@ -1009,7 +986,6 @@ sub ltrfinder2gff {
 	    "$lf_strand\t".              # Strand
 	    ".\t".                       # Frame
 	    "ltr_finder_$lf_ltr_id\n";   # Retro ID
-	#print STDOUT $gff_str_out;
 	print GFFOUT $gff_str_out;
 	
     } # End of has_reverse_transcriptase
@@ -1087,6 +1063,9 @@ sub ltrfinder2gff {
     close GFFOUT;
 
 } # End of ltrfinder2gff subfunction
+
+
+
 
 1;
 __END__
@@ -1313,3 +1292,11 @@ VERSION: $Rev$
 # - Renamed --name to --seqname
 # - Fixed program to accept seqname to override parsed name
 # - Added program
+#
+# 04/27/2009
+# - modified the parser to work with a multiple record fasta
+#   file
+# - This was done by removing the statement where I did not
+#   print output when the ltr_finder id was set to one
+# - I added a logical to check for values, and this will output
+#   GFF only when values are present
