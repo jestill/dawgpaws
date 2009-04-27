@@ -58,7 +58,7 @@ my @bh_params = ();            # Batch hmmer parameters
 
 # Booleans
 my $quiet = 0;
-my $do_gff = 0; 
+my $do_gff = 1; 
 my $test = 0;
 my $verbose = 0;
 my $show_help = 0;
@@ -68,6 +68,8 @@ my $show_version = 0;
 
 # Counters
 my $file_num = 0;
+my $db_parent_dir;
+
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -77,6 +79,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"  => \$outdir,
 		    "c|config=s"  => \$config_file,
 		    # ADDITIONAL OPTIONS
+		    "db-parent=s" => \$db_parent_dir,
 		    "gff"         => \$do_gff,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -144,6 +147,12 @@ unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
+if ($db_parent_dir) {
+    unless ($db_parent_dir =~ /\/$/ ) {
+	$db_parent_dir = $db_parent_dir."/";
+    }
+}
+
 #-----------------------------+
 # CREATE THE OUT DIR          |
 # IF IT DOES NOT EXIST        |
@@ -174,15 +183,20 @@ while (<CONFIG>) {
 	    $bh_params[$i][0] = $in_line[0] || "NULL";  # Name
 	    $bh_params[$i][1] = $in_line[1] || "NULL";  # HMMER model dir
 	    $bh_params[$i][2] = $in_line[2] || "NULL";  # HMMER suffix
+
+	    # Append db_parent dir to dir path if present
+	    if ($db_parent_dir) {
+		$bh_params[$i][1] = $db_parent_dir.$bh_params[$i][1];
+	    }
+
 	    $i++;
 
-	    
 	    if ($verbose) {
 		print STDERR "NAME:\t".$bh_params[$i][0]."\n";
 		print STDERR "DIR:\t".$bh_params[$i][1]."\n";
 		print STDERR "".$bh_params[$i][2]."\n";
 	    } # End of if verbose
-	} 
+	}
 	else {
 	    print "\a";
 	    print STDERR "WARNING: Unexpected number of lines in config".
@@ -227,21 +241,18 @@ if ($num_files == 0) {
 
 my $num_proc_total = $num_files * $num_par_sets;
 
-
 #-----------------------------+
 # RUN hmmsearch FOR EACH OF   |
 # THE FASTA FILES IN THE      |
 # INPUT DIRECTORY             |
 #-----------------------------+
 
-for my $ind_file (@fasta_files)
-{
+for my $ind_file (@fasta_files) {
     
     $file_num++;
     
-    
     # Get root name
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
@@ -427,14 +438,16 @@ sub run_hmmer {
 	die "Can not open the hmm model directory:\n $model_dir\n";
     # The following does not search for the hmm extension
     # and assumes that all files in this directory are hmm models
-    my @models = grep !/^\.\.?$/, readdir MODDIR ;
-    closedir( MODDIR );    
 
+    # The following will only use files with the hmm extension
+    my @models = grep /hmm?$/, readdir MODDIR;
+
+    closedir( MODDIR );    
 
     my $num_models = @models;   # Number of models
     
-    for my $ind_model (@models)
-    {
+    for my $ind_model (@models) {
+	
 	$sub_proc_num++; # Increment the process number
 
 	# Model root name will be used in the naming of files
@@ -446,8 +459,7 @@ sub run_hmmer {
 	    $model_root_name = $1;
 	}
 
- 
-	# HMMER MODEL PATH
+ 	# HMMER MODEL PATH
 	my $model_path = $model_dir.$ind_model;
 	my $out_path = $out_dir.$seq_name."_hmm_".$par_name."_".
 	    $model_root_name.".hmmout";
@@ -480,7 +492,7 @@ sub run_hmmer {
 		print "\n";
 	    }
 	 
-
+	    # Run the hmm command if this is not a test
 	    system ($hmm_cmd) if (!$test);
 
 	}
@@ -747,6 +759,11 @@ command line arguments for hmmsearch.
 =head1 OPTIONS
 
 =over
+
+=item --db-parent
+
+The parent directory that the directories listed in the configuration
+file are located in.
 
 =item --gff
 
@@ -1030,3 +1047,6 @@ VERSION: $Rev$
 # - Updated POD documentation
 # - Added print_help subfunction that extracts help and usage
 #   messages from the POD documentation
+#
+# 04/23/2009
+# - Modified to always produce gff results
