@@ -712,6 +712,8 @@ for my $ind_file (@fasta_files)
 
 close LOG if $logfile;
 
+print STDOUT "\n";
+
 exit;
 
 #-----------------------------------------------------------+
