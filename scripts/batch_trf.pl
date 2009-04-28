@@ -338,6 +338,9 @@ for my $ind_file (@fasta_files) {
 
 }
 
+# The following required to make test harness work
+print STDOUT "\n";
+
 exit 0;
 
 #-----------------------------------------------------------+ 
