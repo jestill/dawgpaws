@@ -70,6 +70,7 @@ my $show_version = 0;
 my $do_gff_convert = 1;
 my $do_fasta_out = 0;          # Create a fasta file with all predicted MITEs
 
+my $findmite_bin = $ENV{FINDMITE_BIN} || "FINDMITE1New.bin";
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -228,7 +229,10 @@ for my $ind_file (@fasta_files) {
     $file_num++;
     
     # Get root file name
-    if ($ind_file =~ m/(.*)\.fasta$/ ) {	    
+    if ($ind_file =~ m/(.*)\.masked\.fasta$/ ) {	    
+	$name_root = "$1";
+    }  
+    elsif ($ind_file =~ m/(.*)\.fasta$/ ) {	    
 	$name_root = "$1";
     }  
     elsif ($ind_file =~ m/(.*)\.fa$/ ) {	    
@@ -299,7 +303,8 @@ for my $ind_file (@fasta_files) {
 	# Then should be made a subfunction that can return true
 	my $fm_in = $indir.$ind_file;
 	my $fm_out = $findmite_dir.$name_root."_".$mite_name.".mite.txt";
-	my $fm_cmd = "FINDMITE1New.bin $fm_in $fm_out";
+#	my $fm_cmd = "FINDMITE1New.bin $fm_in $fm_out";
+	my $fm_cmd = "$findmite_bin $fm_in $fm_out";
 	print "CMD: $fm_cmd\n" if $verbose;
 
 
@@ -632,7 +637,7 @@ sub findmite2gff {
     print GFFOUT 
 	"$gff_seq_id\t".            # Seq name
 	"$gff_source\t".            # Source
-	"MITE\t".                   # Feature type
+	"mite\t".                   # Feature type
 	"$gff_start\t".             # Start
 	"$gff_end\t".               # End
 	".\t".                      # Score
