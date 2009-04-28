@@ -26,12 +26,12 @@ diag("Testing RepeatMasker ENV options ...");
 my $rm_bin;
 if ($ENV{DP_RM_BIN}) {
     ok ( $rm_bin=$ENV{DP_RM_BIN},
-	 "RepeatMasker binary defined in environment as: $rm_bin") 
+	 "RepeatMasker binary defined in environment as: $rm_bin"); 
     }
 else {
     ok ( $rm_bin="RepeatMasker", 
 	 "RepeatMasker binary not defined in environment\n".
-	 "expecting trf in path as: $rm_bin");
+	 "expecting RepeatMasker in path as: $rm_bin");
 }
 
 #-----------------------------+
@@ -83,16 +83,15 @@ close (EXPECTED);
 
 # TEST THE THE GFF OUTPUT FILE EXISTS
 my $obs_file = $out_dir."HEX3045G05/gff/HEX3045G05_rm_TREP9.gff";
-ok ( (-e $obs_file) , "RepeatMasker GFF test files appears to exist") ||
+ok ( (-e $obs_file) , "RepeatMasker GFF test files appear to exist") ||
     diag("I expected to see the file\n $obs_file");
-
 
 # TEST THAT THE OUTPUT MATCHES THE EXPECTED RESULT
 open (OBSERVED, "<".$obs_file);
 my @rm_obs = <OBSERVED>;
 close (OBSERVED);
 
-is_deeply ( \@gff_obs, \@gff_exp,
+is_deeply ( \@rm_obs, \@rm_exp,
 	    "RepeatMasker GFF file contains correct data");
 
 exit;
