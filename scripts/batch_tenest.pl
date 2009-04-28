@@ -65,7 +65,7 @@ my $show_version = 0;
 # TE NEST VARIABLES WITH DEFAULT VALUES
 my $organism_db = "wheat";
 my $home_dir = $ENV{'HOME'};
-my $te_db_dir = "$home_dir/apps/te_nest";
+#my $te_db_dir = "$home_dir/apps/te_nest";
 
 # LOCATION OF TE NEST
 # Look for env variable or assume in PATH
