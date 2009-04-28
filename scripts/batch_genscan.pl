@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 07/31/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 04/28/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the genscan gene prediction program in batch mode.   |
@@ -263,8 +263,15 @@ for my $ind_file (@fasta_files) {
 	    die "Could not create genscan out dir:\n$genscan_dir\n";
     }
     
+    my $gff_dir = $outdir.$name_root."/gff/";
+    unless (-e $gff_dir) {
+	mkdir $gff_dir ||
+	    die "Could not create gff out dir:\n$gff_dir\n";
+    }
+
     my $out_path = $genscan_dir.$name_root.".genscan.out";
-    my $gff_path = $genscan_dir.$name_root.".genscan.gff";
+    #my $gff_path = $genscan_dir.$name_root.".genscan.gff";
+    my $gff_path = $gff_dir.$name_root.".genscan.gff";
 
     my $genscan_cmd = "$genscan_path $lib_path $infile_path -v > $out_path";
 
@@ -722,3 +729,6 @@ VERSION: $Rev$
 # - Changed Version reference to $0 instead of hard coded
 #   program name
 # - Additional updates to POD documentation
+#
+# 04/28/2009
+# - Putting output in gff dir
