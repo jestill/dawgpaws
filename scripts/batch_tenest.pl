@@ -27,7 +27,7 @@
 #       -additional command line options for te_nest
 #
 # NOTE: TENEST Assumes that directories do not end with /
-# 
+#
 
 package DAWGPAWS;
 
@@ -63,10 +63,15 @@ my $show_man = 0;
 my $show_version = 0;
 
 # TE NEST VARIABLES WITH DEFAULT VALUES
-my $organism_db = "maize";
-my $wublast_dir = "/usr/local/genome/wu_blast/";
+my $organism_db = "wheat";
 my $home_dir = $ENV{'HOME'};
 my $te_db_dir = "$home_dir/apps/te_nest";
+
+# LOCATION OF TE NEST
+# Look for env variable or assume in PATH
+my $wublast_dir = $ENV{'DP_WUBLAST_DIR'} || "/usr/local/genome/wu_blast/";
+my $te_nest_bin = $ENV{'TE_NEST_BIN'} || "TEnest.pl";
+my $te_db_dir = $ENV{'TE_NEST_DIR'} || $ENV{'HOME'};
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -77,6 +82,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    # ADDITIONAL OPTIONS
 		    "org=s"        => \$organism_db,
 		    "blast-dir=s"  => \$wublast_dir,
+		    "tenest-bin=s" => \$te_nest_bin,
 		    "tenest-dir=s" => \$te_db_dir,
 		    "q|quiet"      => \$quiet,
 		    "verbose"      => \$verbose,
@@ -124,7 +130,6 @@ if ( (!$indir) || (!$outdir) ) {
         " command line\n" if (!$outdir);
     print_help("full");
 }
-
 
 
 #-----------------------------+
@@ -262,24 +267,22 @@ for my $ind_file (@fasta_files)
     #-----------------------------+
 
     # The following does work
-    # 11/06/2008
+    # 04/28/2009
     # TE NEST COMMAND
-    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".$indir.$ind_file.
+    my $te_nest_cmd = $te_nest_bin." ".$indir.$ind_file.
 	" --org ".$organism_db.
 	" --output ".$tenest_out_dir;
-    
+
+# TO DO: Get the following working    
 # Trying usage as program OPTIONS INFILE
 #    my $te_nest_cmd = $te_db_dir."/TEnest.pl ".
 #	" --output ".$tenest_out_dir.
 #	$indir.$ind_file
-;#	" --org ".$organism_db;
+#	" --org ".$organism_db;
 #	" --blast ".$wublast_dir.
 #	" --current ".$te_db_dir;
 
-    print STDERR "CMD: $te_nest_cmd\n" if $verbose;
-    print STDERR "\n" if $verbose;
-	
-    # RUN THE TE NEST COMMAND
+
     system ($te_nest_cmd);
 
     #-----------------------------+
@@ -287,6 +290,15 @@ for my $ind_file (@fasta_files)
     # GFF FORMAT                  |
     #-----------------------------+
     my $te_nest_result = $tenest_out_dir."/TE_DIR/".$name_root.".LTR";
+
+    # check to see if this file name contains the masked
+    # kludge
+    unless (-e $te_nest_result) {
+	$te_nest_result = $tenest_out_dir."/TE_DIR/".$name_root.
+	    ".masked.LTR";
+    }
+    
+
     my $gff_out_path =  $gff_out_dir.$name_root.".tenest.gff";
     my $do_gff_append = 0;
     my $gff_seqname = $name_root;
@@ -372,7 +384,7 @@ sub tenest2gff {
 
     # Open the BLAST report object
     open (TENESTIN,"<$tenestin")
-	|| die "Could not open TE-NEST input file:\n$tenestin.\n";
+	|| die "Could not open TE-NEST input file:\n$tenestin\n";
     
     # Open file handle to the gff outfile    
     if ($append) {
@@ -967,9 +979,18 @@ Path to the base output directory to place the batch_tenest.pl output.
 
 =over 2
 
+=item --tenest-bin
+
+This is the path of the TEnest.pl program. This option can also be specified
+with the TE_NEST_BIN variable in the user environment. If this option is
+not given in the environment or at the command line, the program
+will assume that TEnest.pl is locate in the user PATH.
+
 =item --org
 
 The organism database to use. The default organism database is maize.
+This can be an organism directory in the TEnest database dir defined by
+TE_NEST_DIR, or this can be the full path to the organism database to use.
 
 =item --blast-dir
 
@@ -1032,8 +1053,40 @@ input directory, but they do not have the *.fasta or *.fa file names.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of configuration files or variables
-set in the user environment.
+=head2 Configuration File
+
+This program does not currently make use of a configuration file.
+
+=head2 Environment Options
+
+This program makes use of the following options in the user environment.
+
+=over 2
+
+=item TE_NEST_BIN
+
+This is path of the location of the TEnest.pl program. This option can
+also be specified using the tenest-bin option at the command line. If this
+is not specified in the environment or 
+
+=item TE_NEST_DIR
+
+This is the base path of the directory containing the subdirectories 
+that have the organism specific directories of TE_NEST databases for
+TE annotation with the TE nest program. This option can also be specified
+with the --tenest-dir at the command line. If this option is not given
+at the command line or using the TE_NEST_DIR variable in the environment,
+the program will expect these datbase files to be located in the 
+home directory.
+
+=item DP_WUBLAST_DIR
+
+The location of the wublast directory on your current machine. This option
+can also be specified at the command line with the --blast-dir option.
+If this option is not specified at the command line, the program will assume
+that the blast directory is located at '/use/local/genome/wu_blast'.
+
+=back
 
 =head1 DEPENDENCIES
 
