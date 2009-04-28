@@ -25,7 +25,7 @@ diag("Testing trf ENV options ...");
 my $trf_bin;
 if ($ENV{TRF_BIN}) {
     ok ( $trf_bin=$ENV{TRF_BIN},
-	 "trf binary defined in environment as: $trf_bin") 
+	 "trf binary defined in environment as: $trf_bin");
     }
 else {
     ok ( $trf_bin="trf400.linux.exe", 
@@ -85,6 +85,6 @@ my @trf_obs = <OBSERVED>;
 close (OBSERVED);
 
 is_deeply ( \@trf_obs, \@trf_exp,
-	    "ltr_finder GFF file contains correct data");
+	    "trf GFF file contains correct data");
 
 exit;
