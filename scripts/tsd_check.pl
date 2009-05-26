@@ -211,7 +211,6 @@ foreach $TSDLen (@TSDLens) {
     $tmp_num_tsd++;
 }
 print OUTFILE "\n";
-exit;
 
 #-----------------------------+
 # FOR EACH SEQUENCE RECORD    |
@@ -467,7 +466,7 @@ exit;
 # LOAD BAC ANNOTATION DATA    |
 #-----------------------------+
 # This should be in tab delim gff format.
-sub LoadAnnot  {
+sub LoadAnnot {
     my $GffFile = $_[0];
     my (@line, $SeqName, $Source, $Feature, $Start, $End);
     my ($Score, $Strand, $Frame);
@@ -477,6 +476,7 @@ sub LoadAnnot  {
     while (<INFILE>) {
 
 	# Get in from tab delim text file 
+	chomp;         # Get rid of newline character
 	my @line = split(/\t/, $_); 
 	my $Seqname = $line[0];
 	my $Source = $line[1];
@@ -487,7 +487,7 @@ sub LoadAnnot  {
 	my $Strand = $line[6];
 	my $Frame = $line[7];
 	my $Attribute = $line[8]; # Gene name column
-	chomp $Attribute;         # Get rid of newline character
+
 
 	# Can get rid of comment below to show the loading
 	# of the individual features
