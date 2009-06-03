@@ -60,6 +60,10 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_copy = 0;
 my $do_seq_data = 0;          # Create files in outdir with sequence data
+my $flank_len;                # Extract flanking sequence of this length
+                              # This will be a manual flanking sequence length
+                              # outside of what LTR_struc does
+my $flank_out_file;           # File to place all of the flaking sequence data
 
 my $program = "LTR_Struc";
 my $parameter;
@@ -78,6 +82,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "c|copy"        => \$do_copy,
 		    "q|quiet"       => \$quiet,
 		    "s|seq-data"    => \$do_seq_data,
+		    "flank-len=s"   => \$flank_len,
+		    "fl-fasta=s"    => \$flank_out_file,
 		    "verbose"       => \$verbose,
 		    # ADDITIONAL INFORMATION
 		    "usage"         => \$show_usage,
@@ -160,7 +166,7 @@ unless (-e $outdir) {
 #-----------------------------+
 opendir( DIR, $indir ) 
     || die "Can't open directory:\n$indir"; 
-my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+my @fasta_files = grep /\.txt$|\.fasta$|\.fa$/, readdir DIR ;
 closedir( DIR );
 my $num_fasta_files = @fasta_files;
 
@@ -211,6 +217,9 @@ for my $ind_fasta_file (@fasta_files) {
 	$name_root = "$1";
     }  
     elsif ($ind_fasta_file =~ m/(.*)\.fa$/ ) {	    
+	$name_root = "$1";
+    } 
+    elsif ($ind_fasta_file =~ m/(.*)\.txt$/ ) {	    
 	$name_root = "$1";
     } 
     else {
@@ -342,7 +351,8 @@ sub ltrstruc2gff {
     }
 
     # FASTA RELATED VARS
-    my $qry_seq;
+    my $qry_seq;        # Full string of the query sequence
+    my $qry_seq_len;    # Length of the query sequence
     
     # Counters
     my $ltr5_blank_count = 0;
@@ -363,8 +373,8 @@ sub ltrstruc2gff {
     my $ls_3dinuc;       # 3' dinucleotide sequence
     my $ls_5tsr_seq;     # 5' Target site rep sequence
     my $ls_3tsr_seq;     # 3' Target site rep sequence
-    my $ls_5flank_seq;   # 5' Flanking sequence
-    my $ls_3flank_seq;   # 3' Flanking sequence
+    my $ls_5flank_seq;   # 5' Flanking sequence from LTR_Struc
+    my $ls_3flank_seq;   # 3' Flanking sequence from LTR_Struc
     my $ls_pbs_seq;      # Primer Binding Site Sequence
     my $ls_ppt_seq;      # Polypuring Tract sequence
     my $ls_5id_seq;
@@ -451,6 +461,7 @@ sub ltrstruc2gff {
 	}
     }
     close (INFASTA);
+    $qry_seq_len = length($qry_seq);
     
     #-----------------------------+
     # GET DATA FROM REPORT FILE   |
@@ -460,6 +471,20 @@ sub ltrstruc2gff {
 
     while (<REPIN>) {
 	chomp;
+
+
+#	# APPEND SEQUNE
+#	if ($in_complete_seq == 1) {
+#	    #print STDERR $_."\n";
+#	    print STDERR "READING: ".$_;
+#	    $ls_full_retro_seq = $ls_full_retro_seq.$_;
+#	}
+
+
+	#-----------------------------+
+	# FLAG LOCATION IN FILE       |
+	#-----------------------------+
+	# As reading through the report file, flag where we are
 	if ($in_rt_frame_1) {
 
 	}
@@ -570,6 +595,12 @@ sub ltrstruc2gff {
 	elsif (m/LTRS:/) {
 	    $in_5ltr = 1;
 	}
+
+
+
+
+
+
     }
 
     close (REPIN);
@@ -582,6 +613,89 @@ sub ltrstruc2gff {
 
     $full_retro_start = index($qry_seq,$ls_full_retro_seq) + 1;
     $full_retro_end = $full_retro_start + $ls_retro_len;
+
+
+    #-----------------------------+
+    # FLANKING SEQ COORDINATES    |
+    #-----------------------------+
+    # This will extract the sequence context in the genome if desired
+    my $flank_5_start;
+    my $flank_5_end;
+    my $flank_5_seq;
+    my $flank_3_start;
+    my $flank_3_end;
+    my $flank_3_seq;
+    my $has_5_flank = 0;
+    my $has_3_flank = 0;
+    my $flank_5_len;
+    my $flank_3_len;
+
+    if ($flank_len) {
+
+	$has_5_flank = 1;
+	$has_3_flank = 1;
+
+	#$flank_5_len = $flank_len;
+	#$flank_3_len = $flank_len;
+
+	$flank_5_end = $full_retro_start - 1;
+	$flank_5_start = $flank_5_end - $flank_len;
+	$flank_3_start = $full_retro_end;
+	$flank_3_end = $flank_3_start + $flank_len;
+	
+
+	# Reset values if outside of the bounds of the query sequence
+	if ($flank_5_start < 1) {
+	    $flank_5_start =1;
+	}
+	# If the end is outside of the bounds of the query genome
+	# sequence, then the LTR retro starts at one and there
+	# is not 5 prime flanking sequence
+	if ($flank_5_end <1) {
+	    $has_5_flank = 0;
+	}
+
+	# Reset to seq boundary if at the end of the contig
+	if ($flank_3_end > $qry_seq_len ) {
+	    $flank_3_end = $qry_seq_len - 1;
+	}
+
+	my $max_flank_3_start = $qry_seq_len - 1;
+	if ($flank_3_start > $max_flank_3_start) {
+	    $has_3_flank = 0;
+	}
+
+	$flank_5_len = $flank_5_end - $flank_5_start;
+	$flank_3_len = $flank_3_end - $flank_3_start;
+	
+	if ($has_5_flank) {
+	    $flank_5_seq = substr ( $qry_seq, $flank_5_start, $flank_5_len);
+	}
+
+	if ($has_3_flank) {
+	    $flank_3_seq = substr ( $qry_seq, $flank_3_start, $flank_3_len);
+	}
+
+	
+	if ($verbose) {	    
+	    print STDERR "\n\t\t===========================\n";
+	    print STDERR "\t\tFLANKING SEQUENCE RESULTS:\n";
+	    print STDERR "\t\tflank len:$flank_len\n";
+	    if ($has_5_flank) {
+		#print STDERR "\t\tflank_5_true\n";
+		print STDERR "\t\tflank_5_start: $flank_5_start\n";
+		print STDERR "\t\tflank_5_end: $flank_5_end\n";
+		print STDERR "\t\tobs_flank_5_len: ".length($flank_5_seq)."\n";
+	    }
+	    if ($has_3_flank) {
+		print STDERR "\t\tflank_3_start: $flank_3_start\n";
+		print STDERR "\t\tflank_3_end: $flank_3_end\n";
+		print STDERR "\t\tobs_flank_3_len: ".length($flank_3_seq)."\n";
+	    }
+	    print STDERR "\n\t\t===========================\n";
+	}
+
+    }
     
     # The following will have a problem on 100% identical LTRs
     # however, telling the search to start at the end of the
@@ -667,6 +781,30 @@ sub ltrstruc2gff {
 	".\t".                     # Frame
 	"$gff_result_id\n";        # Retro Id
 
+    if ($has_5_flank) {
+	print GFFOUT "$name_root\t".   # Seq ID
+	    "$source\t".               # Source
+	    "LTR_five_prime_flanking_".$flank_len."bp\t".
+	    "$flank_5_start\t".
+	    "$flank_5_end\t".
+	    "$ls_score\t".
+	    "$ls_orientation\t".
+	    ".\t".
+	    "$gff_result_id\n";        # Retro Id
+    }
+    
+    if ($has_3_flank) {
+	print GFFOUT "$name_root\t".   # Seq ID
+	    "$source\t".               # Source
+	    "LTR_three_prime_flanking_".$flank_len."bp\t".
+	    "$flank_3_start\t".
+	    "$flank_3_end\t".
+	    "$ls_score\t".
+	    "$ls_orientation\t".
+	    ".\t".
+	    "$gff_result_id\n";        # Retro Id
+    }
+
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"primer_binding_site\t".   # SO:0005850
@@ -743,6 +881,30 @@ sub ltrstruc2gff {
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
 	"$gff_result_id\n";        # Retro Id
+
+    if ($has_5_flank) {
+	print STDOUT "$name_root\t".   # Seq ID
+	    "$source\t".               # Source
+	    "LTR_five_prime_flanking_".$flank_len."bp\t".
+	    "$flank_5_start\t".
+	    "$flank_5_end\t".
+	    "$ls_score\t".
+	    "$ls_orientation\t".
+	    ".\t".
+	    "$gff_result_id\n";        # Retro Id
+    }
+    
+    if ($has_3_flank) {
+	print STDOUT "$name_root\t".   # Seq ID
+	    "$source\t".               # Source
+	    "LTR_three_prime_flanking_".$flank_len."bp\t".
+	    "$flank_3_start\t".
+	    "$flank_3_end\t".
+	    "$ls_score\t".
+	    "$ls_orientation\t".
+	    ".\t".
+	    "$gff_result_id\n";        # Retro Id
+    }
 
     print STDOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
@@ -872,11 +1034,61 @@ sub ltrstruc2gff {
     }
 
     #-----------------------------+
+    # PRINT LTR FLANKING DATA     |
+    # TO SEPARATE FILE            |
+    #-----------------------------+
+    # This will open and append to existing data
+    if ($flank_out_file) {
+	
+	open (ALLFLANK, ">>$flank_out_file" ) ||
+	    die "Can not open flank file:$flank_out_file\n";
+	if ($has_3_flank) {
+	    print ALLFLANK ">".$name_root."_".$gff_result_id.
+		"|LTR_three_prime_flanking_".$flank_len."bp\n";
+	    print ALLFLANK $flank_3_seq."\n";
+	}
+	if ($has_5_flank) {
+	    print ALLFLANK ">".$name_root."_".$gff_result_id.
+		"|LTR_five_prime_flanking_".$flank_len."bp\n";
+	    print ALLFLANK $flank_5_seq."\n";
+	}
+	close (ALLFLANK)
+
+    }
+
+    #-----------------------------+
     # PRINT SEQ DATA              |
     #-----------------------------+
     if ($print_seq_data) {
 	
 	# This uses the global $outdir variable
+
+	#-----------------------------+
+	# 5' Flanking Sequence        |
+	#-----------------------------+
+	if ($has_5_flank) {
+	    my $ltr5_flank_path = $outdir."flank5_ltr_struc.fasta";
+	    open (LTR5FLANK, ">>$ltr5_flank_path") ||
+		die "Can not open: $ltr5_flank_path\n";
+	    print LTR5FLANK ">".$name_root."_".$gff_result_id.
+		"|LTR_five_prime_flanking_".$flank_len."bp\n";
+	    print LTR5FLANK $flank_5_seq."\n";
+	    close (LTR5FLANK);
+	}
+	
+
+	#-----------------------------+
+	# 3' Flanking Sequence        |
+	#-----------------------------+
+	if ($has_3_flank) {
+	    my $ltr3_flank_path = $outdir."flank3_ltr_struc.fasta";
+	    open (LTR3FLANK, ">>$ltr3_flank_path") ||
+		die "Can not open: $ltr3_flank_path\n";
+	    print LTR3FLANK ">".$name_root."_".$gff_result_id.
+		"|LTR_three_prime_flanking_".$flank_len."bp\n";
+	    print LTR3FLANK $flank_3_seq."\n";
+	    close (LTR3FLANK);
+	}
 
 	#-----------------------------+
 	# 5' LTR                      |
@@ -1245,3 +1457,11 @@ VERSION: $Rev$
 # - Added support for masked.fasta in seq name
 # - Added support for the use of lowercase masked fasta files
 #   by making the input of the Fasta file use uc()
+#
+# 06/02/2009
+# - Added support for txt extenstion in the directory
+#   with the fasta files 
+# - Added ability to generate the flanking sequences of a given
+#   length to be able to get the full sequence context
+# - Added option to generate a single sequence file of the
+#   flanking sequence if so desired 
