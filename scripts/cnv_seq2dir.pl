@@ -139,7 +139,12 @@ $seq_num = 1;
 while (my $inseq = $seq_in->next_seq) {
 
     my $seq_id = $inseq->primary_id();
-    
+
+    # Replace characters that do not work for file names
+    $seq_file_name = $seq_id;
+    $seq_file_name =~ s/\#/\_/;
+    $seq_file_name =~ s/\//\_/;
+
     # Pad number with zeros so that the total length of the 
     # string is 7 characaters (ie. 0000012)
 
@@ -159,7 +164,8 @@ while (my $inseq = $seq_in->next_seq) {
 	$out_file_path = $outdir.$root_name."_".$num.".fasta";
     }
     else {
-	$out_file_path = $outdir.$seq_id.".fasta";
+#	$out_file_path = $outdir.$seq_id.".fasta";
+	$out_file_path = $outdir.$seq_file_name.".fasta";
     }
 
     my $seq_out = Bio::SeqIO->new('-file' => ">$out_file_path",
