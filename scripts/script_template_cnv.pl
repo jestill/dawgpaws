@@ -187,8 +187,11 @@ This documentation refers to program version 0.1
 
 =head1 SYNOPSIS
 
-  USAGE:
+=head2 Usage
+
     Name.pl -i InFile -o OutFile
+
+=head2 Required Arguments
 
     --infile        # Path to the input file
     --outfie        # Path to the output file
@@ -197,9 +200,7 @@ This documentation refers to program version 0.1
 
 This is what the program does
 
-=head1 COMMAND LINE ARGUMENTS
-
-=head2 Required Arguments
+=head1 REQUIRED ARGUMENTS
 
 =over 2
 
@@ -213,7 +214,7 @@ Path of the output file.
 
 =back
 
-=head1 Additional Options
+=head1 OPTIONS
 
 =over 2
 
@@ -240,13 +241,24 @@ Run the program with minimal output.
 
 =back
 
+=head1 EXAMPLES
+
+The following are examples of how to use this script
+
+=head2 Typical Use
+
+This is a typcial use case.
+
 =head1 DIAGNOSTICS
 
-The list of error messages that can be generated,
-explanation of the problem
-one or more causes
-suggested remedies
-list exit status associated with each error
+=over 2
+
+=item * Expecting input from STDIN
+
+If you see this message, it may indicate that you did not properly specify
+the input sequence with -i or --infile flag. 
+
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -261,6 +273,17 @@ Other modules or software that the program is dependent on.
 =head1 BUGS AND LIMITATIONS
 
 Any known bugs and limitations will be listed here.
+
+=head1 REFERENCE
+
+A manuscript is being submitted describing the DAWGPAWS program. 
+Until this manuscript is published, please refer to the DAWGPAWS 
+SourceForge website when describing your use of this program:
+
+JC Estill and JL Bennetzen. 2009. 
+The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes.
+http://dawgpaws.sourceforge.net/
 
 =head1 LICENSE
 
