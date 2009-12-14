@@ -22,7 +22,7 @@
 # USAGE:                                                    |
 #  batch_bl2seq.pl -i indir  -o summary_file.txt            |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 #                                                           |
 # LICENSE:                                                  |
@@ -124,13 +124,14 @@ if ($show_version) {
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if ( (!$indir) || (!$outfile) ) {
+# Output file is not required, will print to STDERR if not specified
+if ( (!$indir) ) {
     print "\a";
     print STDERR "\n";
     print STDERR "ERROR: An input directory was not specified at the".
 	" command line\n" if (!$indir);
-    print STDERR "ERROR: An output file bust be specified at the".
-	" command line\n" if (!$outfile);
+#    print STDERR "ERROR: An output file bust be specified at the".
+#	" command line\n" if (!$outfile);
     print_help ("usage", $0 );
 }
 
@@ -242,12 +243,20 @@ for my $file_i (@fasta_files) {
 		print STDERR "$file_i\t$file_j\t$score_val\n" if $verbose;
 
 		# Load the result to the score matrix
-		$bitscore_matrix[$i_num][$j_num] = int($score_val);
-
-		# Remove the blast output file
-		if ($do_clean) {
-		    unlink $bln_outfile;
+		# Use zero if theree is not a score value
+		if ($score_val =~ "NULL" ) {
+		    $bitscore_matrix[$i_num][$j_num] = 0;
 		}
+		else {
+		    $bitscore_matrix[$i_num][$j_num] = int($score_val);
+		}
+		
+# TEMP REMOVE THE DO CLEAN OPTIONS, seq_id not currently defined
+		# Remove the blast output file
+#		if ($do_clean) {
+#		    unlink $bln_outfile;
+#		}	$out_file_path = $outdir.$seq_id.".fasta";
+
 	    } # End of process the bl2seq output
 
 	}
@@ -453,7 +462,7 @@ sub blseq2score {
 	}
     }
 
-    return $bitscore || "NULL";
+    return $bitscore || "0";
 
 }
 
