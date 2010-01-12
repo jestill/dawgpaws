@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 01/31/2009                                       |
-# UPDATED: 03/27/2009                                       |
+# UPDATED: 01/11/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert output from fgenesh to the gff format.           |
@@ -44,6 +44,9 @@ use Bio::Tools::Fgenesh;
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
+
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
@@ -64,7 +67,7 @@ my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 my $append = 0;
 my $test = 0;
-my $strip_html = 0;               # Attempt to strip html
+my $strip_html = 0;               # Strip html tags from text file
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -73,6 +76,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "p|param=s"   => \$param,
 		    "program=s"   => \$prog,
 		    # Allow name in addition to seqname
@@ -88,7 +92,24 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
 
-# MAY NEED TO ITERATE ACROSS THE FILE AND GET RID OF COPYWRITE STATEMENT
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -208,6 +229,11 @@ sub fgenesh2gff {
 
     my ($source, $fgenesh_in, $gff_out, $seq_id, $src_suffix, $do_append ) = @_;
 
+    my $attribute;
+
+    # Making this $do_gff3 for now
+    my $do_gff3 = 1;
+
     #-----------------------------+
     # OPEN THE FGENESH INFILE     |
     #-----------------------------+
@@ -239,6 +265,10 @@ sub fgenesh2gff {
 	    die "Can not print to STDOUT\n";
     }
 
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
     #-----------------------------+
     # SET PROGRAM SOURCE          |
     #-----------------------------+
@@ -250,9 +280,14 @@ sub fgenesh2gff {
     }
 
     my $gene_num = 0;
+
     while (my $gene = $fgenesh_result->next_prediction()) {
 
-	$gene_num++;
+	$gene_num++;     
+	my $gene_id = sprintf("%05d", $gene_num); # Pad the gene number
+	my $gene_name = "Fgenesh_gene_".$gene_id."\n";
+	$gene_id = "gene".$gene_id;
+
 	#-----------------------------+
 	# SET SEQUENCE ID             |
 	#-----------------------------+
@@ -265,16 +300,111 @@ sub fgenesh2gff {
 	    }
 	}
 
+	# NOTE:
 	# $gene is an instance of Bio::Tools::Prediction::Gene, which inherits
 	# off Bio::SeqFeature::Gene::Transcript.
 	#
 	# $gene->exons() returns an array of 
 	# Bio::Tools::Prediction::Exon objects
 	# all exons:
+
+	#-----------------------------+
+	# IF GFF3 PRINT PARENT GENE   |
+	# AND TRANSCRIPT INFORMATION  |
+	#-----------------------------+
+
+	if ($gff_ver =~ "GFF3") {
+
+	    #-----------------------------+
+	    # GENE                        |
+            #-----------------------------+
+
+	    $attribute = "ID=".$source."_".$gene_id;
+	    #$gene_id;
+#	    my @exons_ordered = $gene->exons_ordered();
+
+	    # Get gene start and end
+	    my $gene_start = $gene->start();
+	    my $gene_end = $gene->end();
+	    if ($gene_start > $gene_end) {
+		$gene_end =  $gene->start();
+		$gene_start = $gene->end();
+	    }
+
+	    # Get gene score
+	    my $gene_score;
+	    if ($gene->score()) {
+		$gene_score = $gene->score();
+	    }
+	    else {
+		$gene_score = ".";
+	    }
+
+	    # Get gene strand
+	    my $gene_strand = $gene->strand()."\t";
+	    if ($gene_strand =~ "-1") {
+		$gene_strand = "-";
+	    }
+	    else {
+		$gene_strand = "+";
+	    }
+
+	    print GFFOUT $seq_id."\t".     # Seqname
+		$source."\t".              # Source
+		"gene\t".                  #feature
+		"$gene_start\t".           # start
+		"$gene_end\t".             # end
+		"$gene_score\t".           # score
+		"$gene_strand\t".      # strand
+		".\t".                     # frame
+		$attribute.                # attribute
+		"\n";
+
+#	    #-----------------------------+
+#	    # TRANSCRIPT
+#	    #-----------------------------+
+#	    #my @transcripts = $gene->transcripts();
+#	    my @promoters = $gene->promoters();
+#	    my @utr_5 = $gene->utrs('utr5prime');
+#	    my @utr_3 = $gene->utrs('utr3prime');
+#
+#	    # Poly a is returning a single base
+#	    my $poly_a_site = $gene->poly_A_site;
+#	    my $poly_a_start = $poly_a_site->start();
+#	    my $poly_a_end = $poly_a_site->end();
+#	    if ($poly_a_site) {
+#		print STDERR "polya".$poly_a_start."-".$poly_a_end."\n";
+#	    }
+#	    foreach my $ind_utr_5 (@utr_5) {
+#		print STDERR "YUP\n\n";
+#	    }
+#	    foreach my $promoter (@promoters) {
+#		print STDERR "Prom\t".
+#		    $promoter->start()."\t".
+#		    $promoter->end()."\t".
+#		    "\n;"
+#	    }
+#	    foreach my $poly_a_site (@polya_sites) {
+#		print STDERR "polya\n";
+#	    }
+#	    print STDERR ;
+
+	}
+
+
+	#-----------------------------+
+	# EXONS                       |
+	#-----------------------------+
+	# Exons will be directly assigned to the gene as the parent
 	my @exon_arr = $gene->exons();
 	
-
+	my $exon_num = 0;
 	foreach my $ind_exon (@exon_arr) {
+
+	    $exon_num++;
+	    my $exon_id = sprintf("%05d", $exon_num); # Pad the exon number
+	    $exon_id = "exon".$exon_id;
+#	    $exon_id = 
 	    #print STDERR $ind_exon;
 #	    if ($ind_exon->is_coding()) {
 #		print STDERR "coding\t";
@@ -298,36 +428,36 @@ sub fgenesh2gff {
 	    #-----------------------------+
 	    my $start = $ind_exon->start();
 	    my $end = $ind_exon->end();
-
 	    if ($start > $end) {
 		$end =  $ind_exon->start();
 		$start = $ind_exon->end();
 	    }
 
 	    #-----------------------------+
-	    # PRINT GFF OUTPUT            |
+	    # START GFF3 WORK HERE        |
 	    #-----------------------------+
-	    # The following prints one line at a time
-	    #print GFFOUT $seq_id."\t";     # Seqname
-	    #print GFFOUT $source."\t";     # Source
-	    #print GFFOUT "exon\t";         #feature
-	    #print GFFOUT $start."\t";      # start
-	    #print GFFOUT $end."\t";        # end
-	    #print GFFOUT $ind_exon->score()."\t";  # score
-	    #print GFFOUT $strand."\t";       # strand
-	    #print GFFOUT ".\t";              # frame
-	    #print GFFOUT "gene_".$gene_num;  # attribute
-	    #print GFFOUT "\n";
+	    my $attribute;
+	    my $feature;
+
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$source."_".$gene_id."_".$exon_id.
+		    "\;Parent=".$gene_id;
+		$feature = "exon";
+	    }
+	    else {
+		$feature = "exon";
+		$attribute = "gene_".$gene_num;
+	    }
 
 	    print GFFOUT $seq_id."\t".     # Seqname
-		$source."\t".     # Source
-		"exon\t".         #feature
-		$start."\t".      # start
-		$end."\t".        # end
-		$ind_exon->score()."\t".  # score
-		$strand."\t".       # strand
-		".\t".              # frame
-		"gene_".$gene_num.  # attribute
+		$source."\t".              # Source
+		$feature."\t".             #feature
+		$start."\t".               # start
+		$end."\t".                 # end
+		$ind_exon->score()."\t".   # score
+		$strand."\t".              # strand
+		".\t".                     # frame
+		$attribute.                # attribute
 		"\n";
 
 
@@ -481,6 +611,14 @@ is not specified, the program will write output to STDOUT.
 
 =over 2
 
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
+
 =item --html
 
 Use this to convert the output from the softberry website if you
@@ -606,6 +744,12 @@ This will result in a GFF file like the following:
 This will allow you to later distinguish between the result for parameter
 set one and the parameter set two results.
 
+=item Set GFF3 as the GFF3 version to output
+
+The gff-ver option can be used to set the GFF version that will be
+used for output. The command line option will always overried the option
+defined in the user environment. 
+
 =item Accepting Input from STDIN
 
 It is often useful in working at the unix command line to pipe the output 
@@ -687,8 +831,15 @@ result as a normal text file before converting to GFF format.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of a configuartion file or varaibles
-defined in the user's environment.
+=over 2
+
+=item DP_GFF
+
+The DP_GFF variable can be defined in the user environment to set
+the default GFF version output. Valid settings are 'gff2' or
+'back'.
+
+=gff3
 
 =head1 DEPENDENCIES
 
@@ -795,3 +946,12 @@ VERSION: $Rev$
 # - Working on adding code to deal with (c) statement
 # - Added --program option
 # - Renamed --name option to --seqname
+#
+# 01/12/2010
+# - Added option for GFF3 output, this can accept the
+#   desired version from the command line with 'gff-ver' or
+#   as defined in the user environment with DP_GFF.
+#   The default version is GFF2 if not specified at the command
+#   line or the user environment.
+# - This currently sets exon as the child of gene.
+# - Updated POD for the changes
