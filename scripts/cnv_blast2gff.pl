@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 01/31/2009                                       |
+# UPDATED: 01/12/2010                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert blast output to a Apollo compatible gff file.    |
@@ -44,6 +44,9 @@ use File::Spec;                # Convert a relative path to an abosolute path
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
+
 #-----------------------------+
 # LOCAL VARIABLES             |
 #-----------------------------+
@@ -79,6 +82,7 @@ my $ok = GetOptions(# REQUIRED
                     "o|outfile=s"  => \$outfile,
 		    "n|s|seqname|name=s"  => \$qry_name,
 		    # OPTIONS
+		    "gff-ver=s"    => \$gff_ver,
 		    "f|feature=s"  => \$feature_type,
 		    "p|program=s"  => \$blast_program,
 		    "m|align=s"    => \$blast_alignment,
@@ -94,6 +98,25 @@ my $ok = GetOptions(# REQUIRED
 		    "h|help"       => \$show_help,
 		    "q|quiet"      => \$quiet,);
  
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
@@ -219,6 +242,10 @@ sub blast2gff {
 	    die "Can not print to STDOUT\n";
     }
     
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
     while (my $blast_result = $blast_report->next_result())
     {
 
@@ -230,13 +257,18 @@ sub blast2gff {
     	while (my $blast_hit = $blast_result->next_hit())
 	{
 
+	    my $hsp_num = 0;
 	    while (my $blast_hsp = $blast_hit->next_hsp())
 	    {
 
+		$hsp_num++;
+		my $hsp_id = sprintf("%04d", $hsp_num);
 		my $hitname = $blast_hit->name();
 
+		#-----------------------------+
+		# GET STRAND                  |
+		#-----------------------------+
 		$strand = $blast_hsp->strand('query');
-		
 		if ($strand =~ "-1") {
 		    $strand = "-";
 		}
@@ -248,7 +280,7 @@ sub blast2gff {
 		}
 		
 		#-----------------------------+
-		# SET START AND END           |
+		# GET QRY START AND END       |
 		#-----------------------------+
 		# Make certain that start coordinate is
 		# less then the end coordinate
@@ -257,10 +289,15 @@ sub blast2gff {
 		    $end = $blast_hsp->end();
 		}
 		else {
-		    #
 		    $start = $blast_hsp->end();
 		    $end = $blast_hsp->start();
 		}
+
+		#-----------------------------+
+		# GET HIT START AND END       |
+		#-----------------------------+
+		my $hit_start = $blast_hsp->start('hit');
+		my $hit_end = $blast_hsp->end('hit');
 
 		#-----------------------------+
 		# GET ALGORITHM IF UNKNOWN    |
@@ -286,9 +323,12 @@ sub blast2gff {
 		    $source = $source.":".$suffix;
 		}
 		elsif ($blast_result->database_name()) {
-		    $source = $source.":".$blast_result->database_name();
+		    # Remove trailing white space from db name
+		    my $blast_db = $blast_result->database_name();
+		    $blast_db =~ s/\s+$//;
+		    $source = $source.":".$blast_db;
+		    #$source = $source.":".$blast_result->database_name();
 		}
-
 
 		#-----------------------------+
 		# GET SEQNAME IF NOT PROVIDED |
@@ -305,20 +345,44 @@ sub blast2gff {
 			$seqname = "seq";
 		    }
 		}
+
+		#-----------------------------+
+		# Set attribute               |
+		#-----------------------------+
+		# TO DO: May need to sanitize the hitname to avoid
+		# use of prohibted characters in GFF3!
+		#    ;  (semicolon)
+                #    =  (equals)
+                #    %  (percent)
+                #    &  (ampersand)
+                #    ,  (comma)
+		# May need to be escaped with URL escaping conventions
+		my $attribute;
+		if ($gff_ver =~ "GFF3") {
+		    $feature = "match_part";
+		    $attribute = "ID=".$source."_".$hitname."_".
+			"hsp".$hsp_id.";".
+			"Name=".$hitname.";".
+			"Target=".$hitname." ".
+			$hit_start." ".$hit_end;
+		}
+		else {
+		    $attribute = $hitname;
+		}
 		
 		#-----------------------------+
 		# PRINT OUTPUT TO GFF FILE    |
-		# WITH BAC DATA               |
 		#-----------------------------+
-		print GFFOUT "$seqname\t".                   # Seqname
-		    "$source\t".                             # Source
-		    "$feature\t".                            # Feature type name
-		    "$start\t".                              # Start
-		    "$end\t".                                # End
-		    $blast_hsp->score()."\t".                # Score
-		    "$strand\t".                             # Strand
-		    ".\t".                                   # Frame
-		    "$hitname\n";                            # Feature name
+		print GFFOUT "$seqname\t".           # Seqname
+		    "$source\t".                     # Source
+		    "$feature\t".                    # Feature type name
+		    "$start\t".                      # Start
+		    "$end\t".                        # End
+		    $blast_hsp->score()."\t".        # Score
+		    "$strand\t".                     # Strand
+		    ".\t".                           # Frame
+		    $attribute.                      # Attribute
+		    "\n";                            # newline
 
 	    } # End of while next hsp
 	} # End of while next hit
@@ -442,6 +506,14 @@ will write output to STDOUT.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
 
 =item -s,--seqname
 
@@ -620,8 +692,15 @@ the input sequence with -i or --infile flag.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of a configuration file or any
-variables set in the user's environment.
+=over 2
+
+=item DP_GFF
+
+The DP_GFF variable can be defined in the user environment to set
+the default GFF version output. Valid settings are 'gff2' or
+'gff3'.
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -724,7 +803,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/06/2007
 
-UPDATED: 01/31/2009
+UPDATED: 01/12/2010
 
 VERSION: $Rev$
 
@@ -757,3 +836,8 @@ VERSION: $Rev$
 # 03/30/2009
 # -added -s and --seqname
 # -added support for --feature, kept exon as default
+# 01/12/2010
+# - Added support for GFF3 output format
+# - Updated POD code to include changes
+# - Still need to add code to sanitize hit names for
+#   illegal characters
