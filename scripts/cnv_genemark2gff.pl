@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 10/30/2007                                       |
-# UPDATED: 03/27/2009                                       |
+# UPDATED: 01/12/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the genemark.hmm gene prediction    |
@@ -46,6 +46,9 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #//////////////////////
 my $file_num_max = 1;
 #\\\\\\\\\\\\\\\\\\\\\\
+
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------------------------------------+
 # VARIABLE SCOPE                                            |
@@ -95,6 +98,7 @@ my $ok = GetOptions(
 		    "i|infile=s"   => \$infile,
                     "o|outfile=s"  => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"    => \$gff_ver,
 		    "program=s"    => \$src_prog, 
 		    "seqname=s"    => \$src_seq,
                     "parameter=s"  => \$param,
@@ -107,6 +111,25 @@ my $ok = GetOptions(
 		    "man"          => \$show_man,
 		    "h|help"       => \$show_help,
 		    "q|quiet"      => \$quiet,);
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -146,12 +169,28 @@ sub genemark_to_gff {
     my ($gm_src_seq, $gm_src_prog, $gm_in_path, $gff_out_path, 
 	$parameter) = @_;
 
+    my $attribute;
+    my $source = $gm_src_prog;
+
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
     if ($gff_out_path) {
 	open (GFFOUT, ">$gff_out_path") ||
 	    die "ERROR: Can not output gff output file:\n$gff_out_path\n"
     }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
 
-    # OPEN THE GENEMARK INFILE
+    #-----------------------------+
+    # OPEN THE GENEMARK INFILE    |
+    #-----------------------------+
     my $gm_obj;
     if ($gm_in_path) {
 	$gm_obj = Bio::Tools::Genemark->new(-file => $gm_in_path);
@@ -164,27 +203,101 @@ sub genemark_to_gff {
 	$gm_src_prog = $gm_src_prog.":".$parameter;
     }
 
-    # OPEN THE GFF OUTFILE
     my $rna_count = 0;
+    my $gene_num = 0;
+
     while(my $gene = $gm_obj->next_prediction()) {
        
+	$gene_num++;     
+	my $gene_id = sprintf("%05d", $gene_num); # Pad the gene number
+	my $gene_name = $gm_src_prog."_gene_".$gene_id."\n";
+	$gene_id = "gene".$gene_id;
+
+	# The following is a duplicate of gene_num
 	$rna_count++;
-	# Change the following padding if expecting more then
-	# 9999 predictions in the contig
-	my $rna_id = sprintf("%04d", $rna_count);
+	my $rna_id = sprintf("%05d", $rna_count);
+	# End duplicate
 
 	my @exon_ary = $gene->exons();
+
 	my $num_exon = @exon_ary;
 
-	#print STDERR "SEQNAME".$gm_obj->_seqname()."\n";
+	#-----------------------------+
+	# Gene span for GFF3          |
+	#-----------------------------+
+	if ($gff_ver =~ "GFF3") {
 
-	for my $ind_gene (@exon_ary) {
+	    #-----------------------------+
+	    # GENE                        |
+            #-----------------------------+
+	    $attribute = "ID=".$source."_".$gene_id;
+
+	    # Get gene start and end
+	    my $gene_start = $gene->start();
+	    my $gene_end = $gene->end();
+	    if ($gene_start > $gene_end) {
+		$gene_end =  $gene->start();
+		$gene_start = $gene->end();
+	    }
+
+	    # Get gene score
+	    my $gene_score;
+	    if ($gene->score()) {
+		$gene_score = $gene->score();
+	    }
+	    else {
+		$gene_score = ".";
+	    }
+
+	    # Get gene strand
+	    my $gene_strand = $gene->strand()."\t";
+	    if ($gene_strand =~ "-1") {
+		$gene_strand = "-";
+	    }
+	    else {
+		$gene_strand = "+";
+	    }
+
+	    print GFFOUT  $gm_src_seq."\t".     # Seqname
+		$source."\t".                   # Source
+		"gene\t".                       #feature
+		"$gene_start\t".                # start
+		"$gene_end\t".                  # end
+		"$gene_score\t".                # score
+		"$gene_strand\t".               # strand
+		".\t".                          # frame
+		$attribute.                     # attribute
+		"\n";
+
+	}
+
+	#-----------------------------+
+	# EXONS                       |
+	#-----------------------------+
+	my $exon_num = 0;
+	for my $ind_exon (@exon_ary) {
 	    
-	    my $start = $ind_gene->start;
-	    my $end = $ind_gene->end;
-	    my $strand = $ind_gene->strand;
+	    $exon_num++;
+	    my $exon_id = sprintf("%05d", $exon_num); # Pad the exon number
+	    $exon_id = "exon".$exon_id;
+
+	    # Set Feature
 	    my $feature = "exon";
 
+	    #-----------------------------+
+	    # GET START AND END           |
+	    #-----------------------------+
+	    my $start = $ind_exon->start;
+	    my $end = $ind_exon->end;
+	    my $strand = $ind_exon->strand;
+	    if ($start > $end) {
+		$end =  $ind_exon->start();
+		$start = $ind_exon->end();
+	    }
+
+	    #-----------------------------+
+	    # FORMAT STRAND               |
+	    #-----------------------------+
 	    if ($strand =~ '-1') {
 		$strand = "-"; 
 	    }
@@ -195,40 +308,49 @@ sub genemark_to_gff {
 		$strand = ".";
 	    }
 
+	    #-----------------------------+
+	    # GET SCORE                   |
+	    #-----------------------------+
+	    # It does not look like a score is assigned
+	    # but will put this here in case one shows up
+	    # in the future
+	    my $score = $ind_exon->score() || ".";
+
+	    #-----------------------------+
+	    # SET ATTRIBUTE               |
+	    #-----------------------------+
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$source."_".$gene_id."_".$exon_id.
+		    "\;Parent=".$source."_".$gene_id;
+	    }
+	    else {
+		$attribute = $gene_id;
+	    }
+
+	    #-----------------------------+
+	    # GET FRAME
+	    #-----------------------------+
+	    #my $frame = $ind_exon->frame();
+	    my $frame = ".";
 
 	    #-----------------------------+
 	    # PRINT GFF OUTPUT            |
 	    #-----------------------------+
 	    # The following produces output for Apollo
-	    if ($gff_out_path) {
-		# PRINT TO THE GFF FILEHANDLE
-		print GFFOUT $gm_src_seq."\t".   # seq name
-		    $gm_src_prog."\t".    # source
-		    $feature."\t".             # feature
-		    $start."\t".          # start
-		    $end."\t".            # end
-		    ".\t".                # score
-		    $strand."\t".         # strand
-		    ".\t".                # frame
-		    "RNA$rna_id\n";       # attribute		
-	    }
-	    else {
-		# PRINT TO STDOUT IF NO OUTFILE GIVEN
-		print STDOUT $gm_src_seq."\t".   # seq name
-		    $gm_src_prog."\t".    # source
-		    $feature."\t".             # feature
-		    $start."\t".          # start
-		    $end."\t".            # end
-		    ".\t".                # score
-		    $strand."\t".         # strand
-		    ".\t".                # frame
-		    "RNA$rna_id\n";       # attribute
-	    }
-	    
+	    print GFFOUT $gm_src_seq."\t".   # seq name
+		$gm_src_prog."\t".           # source
+		$feature."\t".               # feature
+		$start."\t".                 # start
+		$end."\t".                   # end
+		$score."\t".                 # score
+		$strand."\t".                # strand
+		$frame."\t".                 # frame
+		$attribute.                  # attribute		
+		"\n";      
 
-	}
+	} # End of for each exon
 
-    }
+    } # End of for each gene model
 
     $gm_obj->close();
 
@@ -353,6 +475,14 @@ will write the gff file to standard output.
 
 =over 2
 
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
+
 =item --seqname
 
 This is the value listed as the source sequence in the gff output file. While
@@ -470,8 +600,15 @@ The error messages that can be generated will be listed here.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of a configuration file or any variables set
-in the user environment.
+=over 2
+
+=item DP_GFF
+
+The DP_GFF variable can be defined in the user environment to set
+the default GFF version output. Valid settings are 'gff2' or
+'gff3'.
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -556,7 +693,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/30/2007
 
-UPDATED: 03/24/2009
+UPDATED: 01/12/2010
 
 VERSION: $Rev$
 
@@ -580,3 +717,9 @@ VERSION: $Rev$
 # 03/27/2009
 # - Renamed --src-seq to --seqname
 # - Fixed bug where every gene model was being placed in the positive strand
+# 01/12/2010
+# - Added option for gff3 output
+# - Using a program name for the source that can have a suffix for the
+# - Added default printing to STDOUT if gffout not defined
+# - Modified gene id for the gff2 version
+# - Updated POD to take these changes into account
