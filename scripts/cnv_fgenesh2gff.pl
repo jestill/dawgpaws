@@ -231,9 +231,6 @@ sub fgenesh2gff {
 
     my $attribute;
 
-    # Making this $do_gff3 for now
-    my $do_gff3 = 1;
-
     #-----------------------------+
     # OPEN THE FGENESH INFILE     |
     #-----------------------------+
@@ -748,7 +745,11 @@ set one and the parameter set two results.
 
 The gff-ver option can be used to set the GFF version that will be
 used for output. The command line option will always overried the option
-defined in the user environment. 
+defined in the user environment. For example:
+
+    cnv_fgenesh2gff.pl -i result.txt -o result.gff --gff-ver gff3
+
+will produce outout in GFF3 format.
 
 =item Accepting Input from STDIN
 
@@ -837,9 +838,9 @@ result as a normal text file before converting to GFF format.
 
 The DP_GFF variable can be defined in the user environment to set
 the default GFF version output. Valid settings are 'gff2' or
-'back'.
+'gff3'.
 
-=gff3
+=back
 
 =head1 DEPENDENCIES
 
@@ -924,7 +925,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 01/31/2009
 
-UPDATED: 03/24/2009
+UPDATED: 01/12/2010
 
 VERSION: $Rev$
 
