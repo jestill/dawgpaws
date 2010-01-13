@@ -253,21 +253,91 @@ sub blast2gff {
 	# 01/30/2009
 	$blastprog = $blast_result->algorithm;
 	#$dbname = $blast_result->database_name();
+	
+	#-----------------------------+
+	# GET SEQNAME IF NOT PROVIDED |
+	#-----------------------------+
+	# First attempt to extract from blast report
+	# otherwise use 'seq' as the indentifier.
+	# For multiple query sequence, this will use
+	# the same identifier for all
+	unless ($seqname) {
+	    if ($blast_result->query_name) {
+		$seqname = $blast_result->query_name();
+	    }
+	    else {
+		$seqname = "seq";
+	    }
+	}
+	# Remove prohibited characters
+	if ($gff_ver =~ "GFF3") {
+	    $seqname = seqid_encode($seqname);
+	}
+
+	#-----------------------------+
+	# GET ALGORITHM IF UNKNOWN    |
+	#-----------------------------+
+	# This attempts to get the algorithm from the
+	# blast report, otherwise the generic 'blast' is used
+	unless ($prog) {
+	    if ($blast_result->algorithm) {
+		$prog = $blast_result->algorithm;
+	    }
+	    else {
+		$prog = "blast";
+	    }
+	}
+	# Sanitize program name
+	if ($gff_ver =~ "GFF3") {
+	    $prog = gff3_encode($prog);		
+	}
+	
+        #-----------------------------+
+	# APPEND DB IDENTIFIER        |
+	#-----------------------------+
+	# Providing a suffix at the command line will override
+	# the name provided in the blast report
+	my $source = $prog;
+	my $blast_db;
+	if ($suffix) {
+	    if ($gff_ver =~ "GFF3") {
+		$suffix = gff3_encode($suffix);
+	    }
+	    $source = $source.":".$suffix;
+	}
+	elsif ($blast_result->database_name()) {
+	    # Remove trailing white space from db name
+	    $blast_db = $blast_result->database_name();
+	    # Trim trailing white space
+	    $blast_db =~ s/\s+$//;
+	    if ($gff_ver =~ "GFF3") {
+		$blast_db = gff3_encode($blast_db);
+	    }
+	    $source = $source.":".$blast_db;
+	}
 
     	while (my $blast_hit = $blast_result->next_hit())
 	{
 
+	    my $hitname = $blast_hit->name();	    
+	    if ($gff_ver =~ "GFF3") {
+		$hitname = gff3_encode($hitname);
+	    }
+
 	    my $hsp_num = 0;
+
 	    while (my $blast_hsp = $blast_hit->next_hsp())
 	    {
 
 		$hsp_num++;
 		my $hsp_id = sprintf("%04d", $hsp_num);
-		my $hitname = $blast_hit->name();
+
+
 
 		#-----------------------------+
 		# GET STRAND                  |
 		#-----------------------------+
+		# NOTE: This defaults to positive strand!!
 		$strand = $blast_hsp->strand('query');
 		if ($strand =~ "-1") {
 		    $strand = "-";
@@ -296,72 +366,28 @@ sub blast2gff {
 		#-----------------------------+
 		# GET HIT START AND END       |
 		#-----------------------------+
-		my $hit_start = $blast_hsp->start('hit');
-		my $hit_end = $blast_hsp->end('hit');
-
-		#-----------------------------+
-		# GET ALGORITHM IF UNKNOWN    |
-		#-----------------------------+
-		# This attempts to get the algorithm from the
-		# blast report, otherwise the generic 'blast' is used
-		unless ($prog) {
-		    if ($blast_hit->algorithm) {
-			$prog = $blast_hit->algorithm;
-		    }
-		    else {
-			$prog = "blast";
-		    }
+		my $hit_start;
+		my $hit_end;
+		if ( $blast_hsp->start('hit') < $blast_hsp->end('hit') ) {
+		    $hit_start = $blast_hsp->start('hit');
+		    $hit_end = $blast_hsp->end('hit');
+		}
+		else {
+		    $hit_start = $blast_hsp->end('hit');
+		    $hit_end = $blast_hsp->start('hit');
 		}
 
-		#-----------------------------+
-		# APPEND DB IDENTIFIER        |
-		#-----------------------------+
-		# Providing a suffix at the command line will override
-		# the name provided in the blast report
-		my $source = $prog;
-		if ($suffix) {
-		    $source = $source.":".$suffix;
-		}
-		elsif ($blast_result->database_name()) {
-		    # Remove trailing white space from db name
-		    my $blast_db = $blast_result->database_name();
-		    $blast_db =~ s/\s+$//;
-		    $source = $source.":".$blast_db;
-		    #$source = $source.":".$blast_result->database_name();
-		}
-
-		#-----------------------------+
-		# GET SEQNAME IF NOT PROVIDED |
-		#-----------------------------+
-		# First attempt to extract from blast report
-		# otherwise use 'seq' as the indentifier.
-		# For multiple query sequence, this will use
-		# the same identifier for all
-		unless ($seqname) {
-		    if ($blast_result->query_name) {
-			$seqname = $blast_result->query_name();
-		    }
-		    else {
-			$seqname = "seq";
-		    }
-		}
 
 		#-----------------------------+
 		# Set attribute               |
 		#-----------------------------+
-		# TO DO: May need to sanitize the hitname to avoid
-		# use of prohibted characters in GFF3!
-		#    ;  (semicolon)
-                #    =  (equals)
-                #    %  (percent)
-                #    &  (ampersand)
-                #    ,  (comma)
-		# May need to be escaped with URL escaping conventions
 		my $attribute;
 		if ($gff_ver =~ "GFF3") {
-		    $feature = "match_part";
-		    $attribute = "ID=".$source."_".$hitname."_".
-			"hsp".$hsp_id.";".
+		    # ESCAPE PROHIBITED CHARACTERS
+		    $feature = "match"; 
+		    $attribute = "ID=".$source."_".$hitname.
+#			"_"."hsp".$hsp_id.";".
+			";".
 			"Name=".$hitname.";".
 			"Target=".$hitname." ".
 			$hit_start." ".$hit_end;
@@ -453,6 +479,22 @@ sub print_help {
 
     exit 0;
    
+}
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
 }
 
 =head1 NAME
@@ -841,3 +883,10 @@ VERSION: $Rev$
 # - Updated POD code to include changes
 # - Still need to add code to sanitize hit names for
 #   illegal characters
+# 01/13/2010
+# - Added encode subfunctions to sanitize names
+#    *seqid_encode
+#    *attribute_encode
+# - Moved some variable definitions to within the 
+#   'for each blast_result' loop to speed things up
+# - For GFF3 set 3rd col to match instead of exon
