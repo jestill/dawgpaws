@@ -1,0 +1,71 @@
+! DAWGPAWS OBO File
+! 01/14/2010
+! Modified from 
+! This OBO file is an extension to the SO OBO file
+! It is used by Apollo to map SO terms to Apollo datatypes
+! For each extended SO term, a relationship of "uses_java_class"
+! links to the appropriate Apollo term
+! For each Apollo term, the name is the appropriate Apollo Java class
+! to load at runtime
+
+format-version: 1.2
+subsetdef: Apollo "Apollo Genome Annotation and Curation Tool"
+
+[Term]
+id: SO:0000704
+relationship: uses_java_class Apollo:gene
+
+[Term]
+id: Apollo:gene
+name: apollo.datamodel.AnnotatedFeature
+
+[Term]
+id: SO:0000673
+relationship: uses_java_class Apollo:transcript
+
+[Term]
+id: Apollo:transcript
+name: apollo.datamodel.Transcript
+
+[Term]
+id: SO:0000147
+relationship: uses_java_class Apollo:exon
+
+[Term]
+id: Apollo:exon
+name: apollo.datamodel.Exon
+
+[Term]
+id: SO:0000316
+relationship: uses_java_class Apollo:CDS
+
+[Term]
+id: Apollo:CDS
+name: apollo.datamodel.AnnotatedFeature
+
+[Term]
+id: SO:0000343
+relationship: uses_java_class Apollo:match
+
+[Term]
+id: Apollo:match
+name: apollo.datamodel.FeatureSet
+
+! The following will show links among same named
+![Term]
+!id: Apollo:match
+!name: apollo.datamodel.SeqFeature
+
+[Term]
+id: SO:0000039
+relationship: uses_java_class Apollo:match_part
+
+[Term]
+id: Apollo:match_part
+name: apollo.datamodel.SeqFeature
+
+[Typedef]
+id: uses_java_class
+name: uses_java_class
+comment: property mapping a SO identifier to an equivalent Apollo class
+is_metadata_tag: true
