@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 01/12/2010                                       |
+# UPDATED: 01/14/2010                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert blast output to a Apollo compatible gff file.    |
@@ -58,7 +58,7 @@ my $min_len;
 my $qry_name;
 my $infile;                     # Default to STDIN if not given
 my $outfile;                    # Default to STDOUT if not given
-my $blast_program = "blast";
+my $blast_program;
 my $blast_alignment = 0;        # Alternatives include 8 and 9
 my $param;
 my $feature_type = "exon";
@@ -381,10 +381,8 @@ sub blast2gff {
 		#-----------------------------+
 		my $attribute;
 		if ($gff_ver =~ "GFF3") {
-		    # ESCAPE PROHIBITED CHARACTERS
 		    $feature = "match_part"; 
 		    $attribute = "ID=".$source."_".$hitname.
-#			"_"."hsp".$hsp_id.";".
 			";".
 			"Name=".$hitname.";".
 			"Target=".$hitname." ".
@@ -655,7 +653,12 @@ set of commands:
   cnv_blast2gff.pl blast_result03.bln >> combined_results.gff
 
 This will combined the blast results from the 01, 02 and 03 search into
-a single gff file named combined_results.gff
+a single gff file named combined_results.gff. 
+Alternatively if the blast results are in the default format 
+(not tab delimited -m8/m9), this can also be done by taking advantage
+of the STDIN stream:
+
+  cat *.bln | cnv_blast2gff.pl > combined_results.gff
 
 =head2 Specify the Sequence ID with --name
 
@@ -891,3 +894,8 @@ VERSION: $Rev$
 # 01/14/2010
 # - Modified match to match_part. This will allow parts
 #   to be joined as single molecules in Apollo
+# - Updated examples to show using cat to combine results
+#   for conversion using the STDIN stream.
+# - Fixed bug where $prog was not being set to the 
+#   BLAST algorithm.
+
