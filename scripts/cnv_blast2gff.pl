@@ -332,8 +332,6 @@ sub blast2gff {
 		$hsp_num++;
 		my $hsp_id = sprintf("%04d", $hsp_num);
 
-
-
 		#-----------------------------+
 		# GET STRAND                  |
 		#-----------------------------+
@@ -384,7 +382,7 @@ sub blast2gff {
 		my $attribute;
 		if ($gff_ver =~ "GFF3") {
 		    # ESCAPE PROHIBITED CHARACTERS
-		    $feature = "match"; 
+		    $feature = "match_part"; 
 		    $attribute = "ID=".$source."_".$hitname.
 #			"_"."hsp".$hsp_id.";".
 			";".
@@ -890,3 +888,6 @@ VERSION: $Rev$
 # - Moved some variable definitions to within the 
 #   'for each blast_result' loop to speed things up
 # - For GFF3 set 3rd col to match instead of exon
+# 01/14/2010
+# - Modified match to match_part. This will allow parts
+#   to be joined as single molecules in Apollo
