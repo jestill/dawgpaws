@@ -17,7 +17,7 @@
 #  the current working directory that is given the same     |
 #  name as the outfile prefix.                              |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                      |
 #                                                           |
 # Usage:                                                    |
 #                                                           |
