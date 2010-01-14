@@ -19,6 +19,7 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+# minor modification
 
 #-----------------------------+
 # INCLUDES                    |
