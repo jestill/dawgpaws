@@ -438,7 +438,7 @@ sub fgenesh2gff {
 
 	    if ($gff_ver =~ "GFF3") {
 		$attribute = "ID=".$source."_".$gene_id."_".$exon_id.
-		    "\;Parent=".$gene_id;
+		    "\;Parent=".$source."_".$gene_id;
 		$feature = "exon";
 	    }
 	    else {
