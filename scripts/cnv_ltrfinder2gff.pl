@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 01/29/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -42,6 +42,9 @@ use File::Copy;                # Copy files
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
+
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
@@ -68,6 +71,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "p|param=s"   => \$param,
 		    "program=s"   => \$program,
 		    "s|seqname=s" => \$seqname,
@@ -103,6 +107,25 @@ if ($show_version) {
     print "\ncnv_ltrfinder2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------------------------------------+
@@ -187,6 +210,20 @@ sub ltrfinder2gff {
     # the user is referring to the assembly
     # MAY WANT TO ALLOW FOR USING THE $ls_seq_id
     my ($gff_src, $seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
+
+
+    #////////////////////////////////////////
+    #////////////////////////////////////////
+    #////////////////////////////////////////
+    # ltr finder results as an array
+    # new 01/28/2010
+    my @ltr_results;
+    # Starting i at -1 so that increments start at 0
+    my $i = -1;
+    my $j = -1;
+    #////////////////////////////////////////
+    #////////////////////////////////////////
+    #////////////////////////////////////////
     
     # The gff src id
     #my $gff_src = "ltr_finder";
@@ -206,9 +243,7 @@ sub ltrfinder2gff {
     my $in_ltr_align = 0;    # Details of the LTR alignment
     my $in_pbs_align = 0;
     my $in_ppt;
-
     
-    #
     my $lf_prog_name;             # LTR Finder program name
     my $lf_seq_id;                # Seq id
     my $lf_seq_len;               # Sequence length
@@ -313,7 +348,7 @@ sub ltrfinder2gff {
     #-----------------------------+
     # OPEN GFF OUTFILE            |
     #-----------------------------+
-    # Default to STDOUT if no arguemtn given
+    # Default to STDOUT if no argument given
     if ($gffout) {
 	if ($do_append) {
 	    open (GFFOUT, ">>$gffout") ||
@@ -343,14 +378,10 @@ sub ltrfinder2gff {
 	    die "Can not accept input from standard input.\n";
     }
 
+
+    
     while (<INFILE>) {
 	chomp;
-        #    print $_."\n";
-	
-	
-	# CHECK BOOLEANS
-	
-	
 	# 
 	if (m/Nothing Header(.*)/) {
 	    
@@ -365,6 +396,10 @@ sub ltrfinder2gff {
 	    # IF VALUES ARE PRESENT       |
 	    #-----------------------------+
 	    
+	    # Increment $I and initialize j for protein domains
+	    $i++;
+	    $j = -1;
+
 	    # override seq id if one passed 
 	    if ($seqname) {
 		$lf_seq_id = $seqname;
@@ -589,13 +624,18 @@ sub ltrfinder2gff {
 	    # LOAD ID VAR                 |
 	    #-----------------------------+
 	    $lf_ltr_id = $1;
+	    $ltr_results[$i]{lf_ltr_id} = $1;
+
 
 	}
 	
 	# SEQ ID AND LENGTH
 	elsif (m/>Sequence: (.*) Len:(.*)/){
+	    # Incrmenting here would be the number of contigs that are being processed
+
 	    $lf_seq_id = $1;
 	    $lf_seq_len = $2;
+
 	}
 	
 	# SPAN LOCATION, LENGTH, AND STRAND
@@ -604,12 +644,22 @@ sub ltrfinder2gff {
 	    $lf_span_end = $2;
 	    $lf_length = $3;
 	    $lf_strand = $4;
+
+	    $ltr_results[$i]{lf_span_start} = $1;
+	    $ltr_results[$i]{lf_span_end} = $2;
+	    $ltr_results[$i]{lf_length} = $3;
+	    $ltr_results[$i]{lf_strand} = $4;
+	    $ltr_results[$i]{lf_seq_id} = $lf_seq_id;
+
 	}
 	
 	# SCORE SIMILARITY
 	elsif (m/^Score    : (.*) \[LTR region similarity:(.*)\]/){
 	    $lf_score = $1;
 	    $lf_ltr_similarity = $2;
+	    
+	    $ltr_results[$i]{lf_score} = $1;
+	    $ltr_results[$i]{lf_ltr_similarity} = $2;
 	}
 	
 	# STATUS SET
@@ -631,6 +681,10 @@ sub ltrfinder2gff {
 	
 	# 5' LTR
 	elsif (m/^5\'-LTR   : (\d*) - (\d*) Len: (\d*)/){
+
+	    $ltr_results[$i]{lf_5ltr_start} = $1;
+	    $ltr_results[$i]{lf_5ltr_end} = $2;
+	    $ltr_results[$i]{lf_5ltr_len} = $3;
 	    $lf_5ltr_start = $1;
 	    $lf_5ltr_end = $2;
 	    $lf_5ltr_len = $3;
@@ -638,6 +692,9 @@ sub ltrfinder2gff {
 	
 	# 3' LTR
 	elsif (m/^3\'-LTR   : (\d*) - (\d*) Len: (\d*)/){
+	    $ltr_results[$i]{lf_3ltr_start} = $1;
+	    $ltr_results[$i]{lf_3ltr_end} = $2;
+	    $ltr_results[$i]{lf_3ltr_len} = $3;
 	    $lf_3ltr_start = $1;
 	    $lf_3ltr_end = $2;
 	    $lf_3ltr_len = $3;
@@ -645,6 +702,11 @@ sub ltrfinder2gff {
 	
     # TARGET SITE REPLICATION
 	elsif (m/TSR      : (\d*) - (\d*) , (\d*) - (\d*) \[(.*)\]/){
+	    $ltr_results[$i]{lf_5tsr_start} = $1;
+	    $ltr_results[$i]{lf_5tsr_end} = $2;
+	    $ltr_results[$i]{lf_3tsr_start} = $3;
+	    $ltr_results[$i]{lf_3tsr_end} = $4;
+
 	    $lf_5tsr_start = $1;
 	    $lf_5tsr_end = $2;
 	    $lf_3tsr_start = $3;
@@ -654,12 +716,20 @@ sub ltrfinder2gff {
 	
 	# SHARPNESS METRIC
 	elsif (m/^Sharpness: (.*),(.*)/){
+	    $ltr_results[$i]{lf_sharp5} = $1;
+	    $ltr_results[$i]{lf_sharp_3} = $2;
 	    $lf_sharp_5 = $1;
 	    $lf_sharp_3 = $2;
 	}
 	
 	# PBS
 	elsif (m/PBS   : \[(\d*)\/(\d*)\] (\d*) - (\d*) \((.*)\)/) {
+	    $ltr_results[$i]{lf_pbs_num_match} = $1;
+	    $ltr_results[$i]{lf_pbs_aln_len} = $2;
+	    $ltr_results[$i]{lf_pbs_start} = $3;
+	    $ltr_results[$i]{lf_pbs_end} = $4;
+	    $ltr_results[$i]{lf_pbs_trna} = $5;
+
 	    $lf_pbs_num_match = $1;
 	    $lf_pbs_aln_len = $2;
 	    $lf_pbs_start = $3;
@@ -669,6 +739,10 @@ sub ltrfinder2gff {
 	
 	# PPT
 	elsif (m/PPT   : \[(\d*)\/(\d*)\] (\d*) - (\d*)/) {
+	    $ltr_results[$i]{lf_ppt_num_match} = $1;
+	    $ltr_results[$i]{lf_ppt_aln_len} = $2;
+	    $ltr_results[$i]{lf_ppt_start} = $3;
+	    $ltr_results[$i]{lf_ppt_end} = $4;
 	    $lf_ppt_num_match = $1;
 	    $lf_ppt_aln_len = $2;
 	    $lf_ppt_start = $3;
@@ -687,36 +761,59 @@ sub ltrfinder2gff {
 	    $lf_domain_orf_start = $3;
 	    $lf_domain_orf_end = $4;
 	    $lf_domain_name = $5;
-	    
+
+
+
+
+
+
+	    #///////////////////////////
+	    # PUSH ALL DOMAIN DATA TO HREF
+	    #//////////////////////////
+	    # Increment a $j to hold this?
+	    $j++;
+	    #push ($ltr_results[$i]{lf_dom}[$j],
+		#  { 'lf_dom_start' => $1,
+		#    'lf_dom_end' => $2,
+		#    'lf_dom_name' => $3
+		#  }
+		#);
+	    $ltr_results[$i]{lf_dom}[$j]{lf_dom_start} = $1;
+	    $ltr_results[$i]{lf_dom}[$j]{lf_dom_end} = $2;
+	    $ltr_results[$i]{lf_dom}[$j]{lf_dom_name} = $5;
+
 	    # Temp while I work with this data
 	    #print "DOMAIN:".$lf_domain_name."\n";
 	    
 	    if ($lf_domain_name =~ 'IN \(core\)') {
-		
 		$lf_in_core_dom_start = $lf_domain_dom_start;
 		$lf_in_core_dom_end = $lf_domain_dom_end;
 		$lf_in_core_orf_start = $lf_domain_orf_start;
 		$lf_in_core_orf_end = $lf_domain_orf_end;
-		
-		# Temp while debug
-		# This is to check the regexp vars can be fetched here
-		#print "\tDom Start: $lf_in_core_dom_start\n";
-		#print "\tDom End:   $lf_in_core_dom_end\n";
-		#print "\tOrf Start: $lf_in_core_orf_start\n";
-		#print "\tOrf End:   $lf_in_core_orf_end\n";
-		
+		$ltr_results[$i]{lf_in_core_dom_start} = $lf_domain_dom_start;
+		$ltr_results[$i]{lf_in_core_dom_end} = $lf_domain_dom_end;
+		$ltr_results[$i]{lf_in_core_orf_start} = $lf_domain_orf_start;
+		$ltr_results[$i]{lf_in_core_orf_end} = $lf_domain_orf_end;
 	    }
 	    elsif ($lf_domain_name =~ 'IN \(c-term\)') {
 		$lf_in_cterm_dom_start = $lf_domain_dom_start;
 		$lf_in_cterm_dom_end = $lf_domain_dom_end;
 		$lf_in_cterm_orf_start = $lf_domain_orf_start;
 		$lf_in_cterm_orf_end = $lf_domain_orf_end;
+		$ltr_results[$i]{lf_cterm_core_dom_start} = $lf_domain_dom_start;
+		$ltr_results[$i]{lf_cterm_core_dom_end} = $lf_domain_dom_end;
+		$ltr_results[$i]{lf_cterm_core_orf_start} = $lf_domain_orf_start;
+		$ltr_results[$i]{lf_cterm_core_orf_end} = $lf_domain_orf_end;
 	    }
 	    elsif ($lf_domain_name =~ 'RH') {
 		$lf_rh_dom_start = $lf_domain_dom_start;
 		$lf_rh_dom_end = $lf_domain_dom_end;
 		$lf_rh_orf_start = $lf_domain_orf_start;
 		$lf_rh_orf_end = $lf_domain_orf_end;
+		$ltr_results[$i]{lf_rh_core_dom_start} = $lf_domain_dom_start;
+		$ltr_results[$i]{lf_rh_core_dom_end} = $lf_domain_dom_end;
+		$ltr_results[$i]{lf_rh_core_orf_start} = $lf_domain_orf_start;
+		$ltr_results[$i]{lf_rh_core_orf_end} = $lf_domain_orf_end;
 	    }
 	    elsif ($lf_domain_name =~ 'RT') {
 		
@@ -724,6 +821,10 @@ sub ltrfinder2gff {
 		$lf_rt_dom_end = $lf_domain_dom_end;
 		$lf_rt_orf_start = $lf_domain_orf_start;
 		$lf_rt_orf_end = $lf_domain_orf_end;  
+		$ltr_results[$i]{lf_rt_core_dom_start} = $lf_domain_dom_start;
+		$ltr_results[$i]{lf_rt_core_dom_end} = $lf_domain_dom_end;
+		$ltr_results[$i]{lf_rt_core_orf_start} = $lf_domain_orf_start;
+		$ltr_results[$i]{lf_rt_core_orf_end} = $lf_domain_orf_end;
 		
 	    }
 	    else {
@@ -742,17 +843,14 @@ sub ltrfinder2gff {
 	# PROGRAM NAME
 	elsif (m/^Program    : (.*)/) {
 	    $lf_prog_name = $1;
+#	    $ltr_results[$i]{program} = $1;
 	}
 	
 	# PROGRAM VERSION
 	elsif (m/^Version    : (.*)/) {
 	    $lf_version = $1;
+#	    $ltr_results[$i]{lf_version} = $1;
 	}
-
-
-
-	
-
 
 
 
@@ -762,21 +860,10 @@ sub ltrfinder2gff {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-	
     }
     
     close INFILE;
-    
+
     #-----------------------------+
     # PRINT LAST GFFOUT           |
     #-----------------------------+
@@ -845,7 +932,7 @@ sub ltrfinder2gff {
     
     if ($has_tsr) {
 	
-	$gff_str_out = "$lf_seq_id\t".  # Seq ID
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
 	    "$gff_src\t".                # Source
 	    "target_site_duplication\t". # Data type
 	    "$lf_5tsr_start\t".          # Start
@@ -875,9 +962,9 @@ sub ltrfinder2gff {
 	#/////////
 	# NOT SONG
 	#\\\\\\\\\
-	$gff_str_out = "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
-	    "integrase_core_domain\t".  # Data type
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
+	    "$gff_src\t".                # Source
+	    "integrase_core_domain\t".   # Data type
 	    "$lf_in_core_dom_start\t".   # Start
 	    "$lf_in_core_dom_end\t".     # End
 	    "$lf_score\t".               # Score
@@ -889,8 +976,8 @@ sub ltrfinder2gff {
 	#/////////
 	# NOT SONG
 	#\\\\\\\\\
-	$gff_str_out = "$lf_seq_id\t".     # Seq ID
-	    "$gff_src\t".              # Source
+	$gff_str_out = "$lf_seq_id\t".   # Seq ID
+	    "$gff_src\t".                # Source
 	    "integrase_core_orf\t".      # Data type
 	    "$lf_in_core_orf_start\t".   # Start
 	    "$lf_in_core_orf_end\t".     # End
@@ -1060,11 +1147,167 @@ sub ltrfinder2gff {
 	print STDERR "RH\n" if $has_rh;
     }
     
+
+    #-----------------------------------------------------------+
+    # PRINT OUTPUT FROM THE ARRAY OF HASHES                     |
+    #-----------------------------------------------------------+
+    for my $href ( @ltr_results ) {
+
+	#-----------------------------+
+	# LTR retrotransposon span    |
+	#-----------------------------+
+	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+	    "$gff_src\t".                          # Source
+	    "LTR_retrotransposon\t".               # Data type
+	    $href->{lf_span_start}."\t".           # Start
+	    $href->{lf_span_end}."\t".             # End
+	    $href->{lf_score}."\t".                # Score
+	    $href->{lf_strand}."\t".               # Strand
+	    ".\t".                                 # Frame
+	    "ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	print STDOUT $gff_str_out;
+
+	#-----------------------------+
+	# 5 Prime LTR                 |
+	#-----------------------------+
+	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+	    "$gff_src\t".                          # Source
+	    "five_prime_LTR\t".                    # Data type
+	    $href->{lf_5ltr_start}."\t".           # Start
+	    $href->{lf_5ltr_end}."\t".             # End
+	    $href->{lf_score}."\t".                # Score
+	    $href->{lf_strand}."\t".               # Strand
+	    ".\t".                                 # Frame
+	    "ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	print STDOUT $gff_str_out;
+
+
+	#-----------------------------+
+	# 3 Prime LTR                 |
+	#-----------------------------+
+	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+	    "$gff_src\t".                          # Source
+	    "three_prime_LTR\t".                   # Data type
+	    $href->{lf_3ltr_start}."\t".           # Start
+	    $href->{lf_3ltr_end}."\t".             # End
+	    $href->{lf_score}."\t".                # Score
+	    $href->{lf_strand}."\t".               # Strand
+	    ".\t".                                 # Frame
+	    "ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	print STDOUT $gff_str_out;
+
+	#-----------------------------+
+	# PRIMER BINDING SITE         |
+	#-----------------------------+
+	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+	    "$gff_src\t".                          # Source
+	    "primer_binding_site\t".                   # Data type
+	    $href->{lf_pbs_start}."\t".           # Start
+	    $href->{lf_pbs_end}."\t".             # End
+	    $href->{lf_score}."\t".                # Score
+	    $href->{lf_strand}."\t".               # Strand
+	    ".\t".                                 # Frame
+	    "ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	print STDOUT $gff_str_out;
+
+	#-----------------------------+
+	# RR_tract                    |
+	#-----------------------------+
+	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+	    "$gff_src\t".                          # Source
+	    "RR_tract    \t".                   # Data type
+	    $href->{lf_ppt_start}."\t".           # Start
+	    $href->{lf_ppt_end}."\t".             # End
+	    $href->{lf_score}."\t".                # Score
+	    $href->{lf_strand}."\t".               # Strand
+	    ".\t".                                 # Frame
+#	    "ltr_finder_$lf_ltr_id\n";             # Retro ID
+	    "ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	print STDOUT $gff_str_out;
+
+	#-----------------------------+
+	# 5' TSD                      |
+	#-----------------------------+
+	if ( $href->{lf_5tsr_start}) {
+	    $gff_str_out = $href->{lf_seq_id}."\t".   # Seq ID
+		"$gff_src\t".                         # Source
+		"target_site_duplication\t".          # Data type
+		$href->{lf_5tsr_start}."\t".           # Start
+		$href->{lf_5tsr_end}."\t".             # End
+		$href->{lf_score}."\t".               # Score
+		$href->{lf_strand}."\t".              # Strand
+		".\t".                                # Frame
+		"ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	    print STDOUT $gff_str_out;
+	}
+
+	#-----------------------------+
+	# 3' TSD                      |
+	#-----------------------------+
+	if ( $href->{lf_3tsr_start}) {
+	    $gff_str_out = $href->{lf_seq_id}."\t".   # Seq ID
+		"$gff_src\t".                         # Source
+		"target_site_duplication\t".          # Data type
+		$href->{lf_3tsr_start}."\t".          # Start
+		$href->{lf_3tsr_end}."\t".            # End
+		$href->{lf_score}."\t".               # Score
+		$href->{lf_strand}."\t".              # Strand
+		".\t".                                # Frame
+		"ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	    print STDOUT $gff_str_out;
+	}
+
+	#-----------------------------+
+	# PROTEIN REGIONS             |
+	#-----------------------------+
+
+	# If the protein hash contains data
+	# For every protein domain found, print the output
+	# NOTE: It is possible that ltr_finder will print this 
+	#       for every domain in its search database.
+	
+	#/////////////////////////
+
+
+	for my $dom ( @{ $href->{lf_dom} } ) {
+	    # The following will just print the name
+	    $gff_str_out = $href->{lf_seq_id}."\t".   # Seq ID
+		"$gff_src\t".                         # Source
+		$dom->{lf_dom_name}."\t".          # Data type
+		$dom->{lf_dom_start}."\t".          # Start
+		$dom->{lf_dom_end}."\t".            # End
+		$href->{lf_score}."\t".               # Score
+		$href->{lf_strand}."\t".              # Strand
+		".\t".                                # Frame
+		"ltr_finder_".$href->{lf_ltr_id}."\n"; # Retro ID
+	    print STDOUT $gff_str_out;
+
+	}
+
+
+    }
+
     close GFFOUT;
+
 
 } # End of ltrfinder2gff subfunction
 
 
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
 
 
 1;
@@ -1117,6 +1360,14 @@ the program will write output to STDOUT.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item -n,--name
 
@@ -1175,8 +1426,15 @@ expect to receive intput from standard input.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not make use of a configuartion file or variables set 
-in the user's environment.
+=over 2
+
+=item DP_GFF
+
+The DP_GFF variable can be defined in the user environment to set
+the default GFF version output. Valid settings are 'gff2' or
+'gff3'.
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -1229,14 +1487,12 @@ program has not been tested with the results from the LTR_FINDER web site.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -1255,7 +1511,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/14/2007
 
-UPDATED: 03/24/2009
+UPDATED: 01/14/2010
 
 VERSION: $Rev$
 
@@ -1300,3 +1556,11 @@ VERSION: $Rev$
 #   print output when the ltr_finder id was set to one
 # - I added a logical to check for values, and this will output
 #   GFF only when values are present
+# 01/14/2010
+# - Added sufunctions for encoding GFF3
+#   *seqid_encode
+#   *gff3_encode
+# 01/28/2010
+# - Loading variabls to array of hashes
+# 01/29/2010
+# - Reporting data from array of hashes
