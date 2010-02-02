@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/13/2007                                       |
-# UPDATED: 01/29/2009                                       |
+# UPDATED: 02/02/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts output from the find_ltr.pl program to gff      |
@@ -44,6 +44,9 @@ use File::Copy;                # Copy files
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
 
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
+
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
@@ -70,6 +73,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "s|seqname=s" => \$inseqname,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "program=s"   => \$program,
 		    "p|param=s"   => \$findltr_suffix,
 		    "append"      => \$do_gff_append,
@@ -81,6 +85,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
 
+my $param = $findltr_suffix;
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -245,6 +250,10 @@ sub findltr2gff {
 	    die "Can not print to STDOUT\n";
     }
 
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+    
     # Append parameter name if passed
     if ($gff_suffix) {
 	$gff_source = $gff_source.":".$gff_suffix;
@@ -263,6 +272,7 @@ sub findltr2gff {
 	if ($num_in == 10) {
 
 	    $findltr_num++;
+	    my $model_num = sprintf("%04d", $findltr_num);
 
 	    $findltr_id = $in_split[0];
 	    $ltr5_start = $in_split[1];
@@ -278,9 +288,31 @@ sub findltr2gff {
 	    $mid_start = $ltr5_end + 1;
 	    $mid_end = $ltr3_start - 1;   
 
-	    $findltr_name = $seqname."_findltr_"."".$findltr_id;
+	    $findltr_name = "findltr";
 	    
+	    my $attribute = $findltr_name."_".$findltr_id;
+
 	    # FULL LTR Retrotransposon Span
+	    if ($gff_ver =~ "GFF3") {
+		if ($param) {
+		    $attribute = "findltr".
+			"_par".$param.
+			"_model".$model_num;
+		}
+		else {
+		    $attribute = "findltr".
+			"_model".$model_num;
+		}
+
+		$seqname = seqid_encode( $seqname );
+	    }
+	    my $parent_id = $attribute;
+
+
+	    # LTR Retrotransposon
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id;
+	    }
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
 		"LTR_retrotransposon\t".
@@ -289,9 +321,15 @@ sub findltr2gff {
 		".\t".                 # Score, Could use $ltr_similarity
 		"$ltr_strand\t".         # Strand
 		".\t".                 # Frame
-		"$findltr_name\n";     # Features (name)
+		$attribute.
+		"\n";
 
 	    # 5'LTR
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id."_five_prime_LTR".
+		    ";Name=Five Prime LTR".
+		    ";Parent=".$parent_id;
+	    }
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
 		"five_prime_LTR\t".
@@ -300,9 +338,15 @@ sub findltr2gff {
 		".\t".                 # Score, Could use $ltr_similarity
 		"$ltr_strand\t".         # Strand
 		".\t".                 # Frame
-		"$findltr_name\n";     # Features (name)
+		$attribute.
+		"\n";     # Features (name)
 
 	    # 3'LTR
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id."_three_prime_LTR".
+		    ";Name=Three Prime LTR".
+		    ";Parent=".$parent_id;
+	    }
 	    print GFFOUT "$seqname\t". # Name of sequence
 		"$gff_source\t".       # Source
 		"three_prime_LTR\t".
@@ -311,7 +355,8 @@ sub findltr2gff {
 		".\t".                 # Score, Could use $ltr_similarity
 		"$ltr_strand\t".         # Strand
 		".\t".                 # Frame
-		"$findltr_name\n";     # Features (name)
+		$attribute.
+		"\n";                 # Features (name)
 
 	} # End of if num_in is 10
 
@@ -319,6 +364,24 @@ sub findltr2gff {
 
 
 } # End of findltr2gff
+
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
 
 =head1 NAME
 
@@ -372,6 +435,14 @@ the program will write output to STDOUT.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item --program
 
@@ -502,7 +573,7 @@ WARRANTY. USE AT YOUR OWN RISK.
 
 STARTED: 09/13/2007
 
-UPDATED: 01/29/2009
+UPDATED: 02/02/2010
 
 VERSION: $Rev$
 
@@ -524,4 +595,5 @@ VERSION: $Rev$
 # -Dropped required variables (infile,outfile,seqname
 #  replaced with STDIN,STDOUT and seq
 # -Replaced exon if gff names with names of objects
-
+# 02/01/2010
+# - Adding options for GFF3 as gff-ver
