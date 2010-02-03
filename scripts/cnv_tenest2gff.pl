@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 04/03/2009                                       |
+# UPDATED: 02/02/2010
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert TE Nest output to gff file format.               |
@@ -24,6 +24,10 @@
 #    - non-LTR
 #    - pair-LTR
 #  Allow override of this name using --feature
+
+# May need to load entire report to hash and then print to GFFOUT
+# when finished, this will be necessary to get the spans for intertwined
+# LTR retrotransposons.
 
 package DAWGPAWS;
 
@@ -46,6 +50,9 @@ use File::Copy;                # Copy files
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # LOCAL VARIABLES             |
@@ -76,6 +83,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    "n|s|seqname|name=s"  => \$seqname,
 		    # OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "feature=s"   => \$feature_type,
 		    "program=s"   => \$program,
 		    "p|param=s"   => \$param_name,
@@ -113,6 +121,25 @@ if ($show_version) {
     exit;
 }
 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
@@ -146,10 +173,12 @@ sub tenest2gff {
 
     my $i;                # Array index val
     my $j;                # Array index val
+    my $k;                # Array index val, used for coordinates hash
 
-    unless ($seqname) {
-	$seqname = "seq";
-    }
+    # Data will be stored in an array of hashes
+    my @ltr_results;
+    my $t=-1;              # Array index for ltr_results ,, te_number
+
 
     # Initialize counters
     my $numfrag = 0;
@@ -229,6 +258,9 @@ sub tenest2gff {
 	    die "Can not print to STDOUT\n";
     }
     
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
 
     # SET THE SOURCE
     # This allows for the specification of the paramater set in the
@@ -238,8 +270,21 @@ sub tenest2gff {
 	$source = $source.":".$param_set;
     }
 
+
+    my $inline = 0;
     while (<TENESTIN>) {
 	chomp;                   # Remove line endings
+	$inline++;
+
+
+	# 
+	if ($inline == 2) {
+	    unless ($seqname) {
+		$seqname = $_;
+	    }
+	}
+
+
 	my @te_data = split;   # Split by spaces
 	
 	# set feature to default type
@@ -277,6 +322,8 @@ sub tenest2gff {
 	    #
 	    my @sol_coords = ();
 	    $j = 0;
+	    $k = 0;
+
 	    for ($i=1; $i<$num_te_data; $i++) {
 		$j++;
 		$sol_coords[$j] = $te_data[$i];
@@ -295,24 +342,86 @@ sub tenest2gff {
 		    #-----------------------------+
 		    # SOLO LTR                    |
 		    #-----------------------------+
+		    my $attribute;
+
+
 		    if ($feature_type) {
 			$feature = $feature_type;
 		    }
 		    else {
-			$feature = "LTR_retrotransposon";
+			$feature = "solo_LTR";
 		    }
 
-		    print GFFOUT 
-			"$seqname\t".                # Seqname
-			"$source\t".                 # Source
-			"$feature\t".                # Feature type name
-			$sol_coords[1]."\t".         # Start
-			$sol_coords[2]."\t".         # End
-			".\t".                       # Score
-			".\t".                 # Strand
-			".\t".                       # Frame
-			"$sol_name\n";                # Feature name
-		    
+		    #-----------------------------+
+		    # Add data to coords list     |
+		    #-----------------------------+
+		    $ltr_results[$t]{coords}[$k]{seq_start} = $sol_coords[1];
+		    $ltr_results[$t]{coords}[$k]{seq_end} = $sol_coords[2];
+		    $ltr_results[$t]{coords}[$k]{te_start} = $sol_coords[3];
+		    $ltr_results[$t]{coords}[$k]{te_end} = $sol_coords[4];
+		    $k++;
+
+
+#
+#
+#
+#		    if ($gff_ver =~ "GFF3") {
+#			
+#			# SOLO LTR RETRO SPAN         
+#			$attribute = "ID=".$sol_name."_span".
+#			    ";Alias=".$sol_type.
+#			    ";Name=Solo LTR Span";
+#			$feature = "LTR_retrotransposon";
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    $sol_coords[1]."\t".         # Start
+#			    $sol_coords[2]."\t".         # End
+#			    ".\t".                       # Score
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    $attribute.
+#			    "\n";
+#
+#			# SOLO LTR
+#			$attribute = "ID=".$sol_name."_ltr;Name=Solo LTR".
+#			    ";Alias=".$sol_type.
+#			    ";Parent=".$sol_name."_span";
+#			$feature = "solo_LTR";
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    $sol_coords[1]."\t".         # Start
+#			    $sol_coords[2]."\t".         # End
+#			    ".\t".                       # Score
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    $attribute.
+#			    "\n";
+#			
+#
+#		    }
+#		    else {
+#			$attribute = $sol_name;
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    $sol_coords[1]."\t".         # Start
+#			    $sol_coords[2]."\t".         # End
+#			    ".\t".                       # Score
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    $attribute.
+#			    "\n";
+#		    }
+#
+
+
+
+
 		    $j = 0;
 		    #$sol_coords=();
 
@@ -324,6 +433,17 @@ sub tenest2gff {
 	# ADDITIONAL PAIR DATA        |
 	#-----------------------------+
 	elsif ($in_pair) {
+
+	    # Positions for LTR
+	    my $l_start;
+	    my $l_end;
+	    my $r_start;
+	    my $r_end;
+	    my $m_start;
+	    my $m_end;
+	    
+	    # Is possible that 
+
 
 	    # IS BSR Substitution rate ?
 
@@ -346,6 +466,7 @@ sub tenest2gff {
 
 		my @l_pair_coords = ();
 		$j = 0;
+		$k = 0;
 		for ($i=2; $i<$num_te_data; $i++) {
 		    $j++;
 		    $l_pair_coords[$j] = $te_data[$i];
@@ -356,9 +477,20 @@ sub tenest2gff {
 		    
 		    if ($j == 4) {
 			
-			my $l_start;
-			my $l_end;
-			
+			#-----------------------------+
+			# Add data to coords list     |
+			#-----------------------------+
+			$ltr_results[$t]{coords_l}[$k]{seq_start} = 
+			    $l_pair_coords[1] || "UNK";
+			$ltr_results[$t]{coords_l}[$k]{seq_end} = 
+			    $l_pair_coords[2] || "UNK";
+			$ltr_results[$t]{coords_l}[$k]{te_start} = 
+			    $l_pair_coords[3] || "UNK";
+			$ltr_results[$t]{coords_l}[$k]{te_end} = 
+			    $l_pair_coords[4] || "UNK";
+			$k++;
+
+
 			# Make start less then end
 			if ($l_pair_coords[1] < $l_pair_coords[2]) {
 			    $l_start = $l_pair_coords[1];
@@ -377,26 +509,29 @@ sub tenest2gff {
 			#-----------------------------+
 			# LEFT LTR                    |
 			#-----------------------------+
-			if ($feature_type) {
-			    $feature = $feature_type;
-			}
-			else {
-			    $feature = "five_prime_LTR_component";
-			}
-
-			print GFFOUT 
-			    "$seqname\t".                # Seqname
-			    "$source\t".                 # Source
-			    "$feature\t".                # Feature type name
-			    "$l_start\t".                # Start
-			    "$l_end\t".                  # End
-			    ".\t".                       # Score
-			    ".\t".                       # Strand
-			    ".\t".                       # Frame
-			    "$pair_name\n";              # Feature name
+#			if ($feature_type) {
+#			    $feature = $feature_type;
+#			}
+#			else {
+#			    $feature = "five_prime_LTR_component";
+#			}
+#
+#
+#			if ($gff_ver =~ "GFF3") {
+#			}
+#
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    "$l_start\t".                # Start
+#			    "$l_end\t".                  # End
+#			    ".\t".                       # Score
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    "$pair_name\n";              # Feature name
 			
 			$j = 0;
-			#$sol_coords=();
 			
 		    } # End of if $j==4
 		} # End of for $i
@@ -418,6 +553,7 @@ sub tenest2gff {
 
 		my @r_pair_coords = ();
 		$j = 0;
+		$k = 0;
 		for ($i=2; $i<$num_te_data; $i++) {
 		    $j++;
 		    $r_pair_coords[$j] = $te_data[$i];
@@ -428,9 +564,16 @@ sub tenest2gff {
 
 		    if ($j == 4) {
 			
-			my $r_start;
-			my $r_end;
-			
+			$ltr_results[$t]{coords_r}[$k]{seq_start} = 
+			    $r_pair_coords[1];
+			$ltr_results[$t]{coords_r}[$k]{seq_end} = 
+			    $r_pair_coords[2];
+			$ltr_results[$t]{coords_r}[$k]{te_start} = 
+			    $r_pair_coords[3];
+			$ltr_results[$t]{coords_r}[$k]{te_end} = 
+			    $r_pair_coords[4];
+			$k++;
+
 			# Make start less then end
 			if ($r_pair_coords[1] < $r_pair_coords[2]) {
 			    $r_start = $r_pair_coords[1];
@@ -449,24 +592,24 @@ sub tenest2gff {
 			#-----------------------------+
 			# RIGHT LTR                   |
 			#-----------------------------+
-			if ($feature_type) {
-			    $feature = $feature_type;
-			}
-			else {
-			    $feature = "three_prime_LTR_component";
-			}
-
-			print GFFOUT 
-			    "$seqname\t".                # Seqname
-			    "$source\t".                 # Source
-			    "$feature\t".                # Feature type name
-			    "$r_start\t".                # Start
-			    "$r_end\t".                  # End
-			    ".\t".                       # Score
-			    # $pair_dir may give strand
-			    ".\t".                       # Strand
-			    ".\t".                       # Frame
-			    "$pair_name\n";              # Feature name
+#			if ($feature_type) {
+#			    $feature = $feature_type;
+#			}
+#			else {
+#			    $feature = "three_prime_LTR_component";
+#			}
+#
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    "$r_start\t".                # Start
+#			    "$r_end\t".                  # End
+#			    ".\t".                       # Score
+#			    # $pair_dir may give strand
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    "$pair_name\n";              # Feature name
 			
 			$j = 0;
 			#$sol_coords=();
@@ -490,6 +633,7 @@ sub tenest2gff {
 
 		my @m_pair_coords = ();
 		$j = 0;
+		$k = 0;
 		for ($i=2; $i<$num_te_data; $i++) {
 		    $j++;
 		    $m_pair_coords[$j] = $te_data[$i];
@@ -500,9 +644,20 @@ sub tenest2gff {
 
 		    if ($j == 4) {
 			
-			my $m_start;
-			my $m_end;
+			#my $m_start;
+			#my $m_end;
 			
+			$ltr_results[$t]{coords_m}[$k]{seq_start} = 
+			    $m_pair_coords[1];
+			$ltr_results[$t]{coords_m}[$k]{seq_end} = 
+			    $m_pair_coords[2];
+			$ltr_results[$t]{coords_m}[$k]{te_start} = 
+			    $m_pair_coords[3];
+			$ltr_results[$t]{coords_m}[$k]{te_end} = 
+			    $m_pair_coords[4];
+			$k++;
+
+
 			# Make start less then end
 			if ($m_pair_coords[1] < $m_pair_coords[2]) {
 			    $m_start = $m_pair_coords[1];
@@ -513,7 +668,7 @@ sub tenest2gff {
 			    $m_end = $m_pair_coords[1];
 			}
 
-			# Appending sol_num to sol type will give a
+			# Appending pari_num to pair type will give a
 			# unique name for every occurrence in the gff file
 			my $pair_name = "pair_".$pair_type."_".$pair_number;
 			# Print output to gff file
@@ -521,24 +676,24 @@ sub tenest2gff {
 			#-----------------------------+
 			# MIDDLE OF LTR RETRO         |
 			#-----------------------------+
-			if ($feature_type) {
-			    $feature = $feature_type;
-			}
-			else {
-			    $feature = "LTR_retrotransposon";
-			}
-
-			print GFFOUT 
-			    "$seqname\t".                # Seqname
-			    "$source\t".                 # Source
-			    "$feature\t".                # Feature type name
-			    "$m_start\t".                # Start
-			    "$m_end\t".                  # End
-			    ".\t".                       # Score
-			    # $pair_dir may give strand
-			    ".\t".                       # Strand
-			    ".\t".                       # Frame
-			    "$pair_name\n";              # Feature name
+#			if ($feature_type) {
+#			    $feature = $feature_type;
+#			}
+#			else {
+#			    $feature = "LTR_retrotransposon";
+#			}
+#
+#			print GFFOUT 
+#			    "$seqname\t".                # Seqname
+#			    "$source\t".                 # Source
+#			    "$feature\t".                # Feature type name
+#			    "$m_start\t".                # Start
+#			    "$m_end\t".                  # End
+#			    ".\t".                       # Score
+#			    # $pair_dir may give strand
+#			    ".\t".                       # Strand
+#			    ".\t".                       # Frame
+#			    "$pair_name\n";              # Feature name
 			
 			$j = 0;
 			
@@ -579,6 +734,8 @@ sub tenest2gff {
 	    #
 	    my @frag_coords = ();
 	    $j = 0;
+	    $k = 0;
+
 	    for ($i=1; $i<$num_te_data; $i++) {
 		$j++;
 		$frag_coords[$j] = $te_data[$i];
@@ -589,36 +746,48 @@ sub tenest2gff {
 
 		if ($j == 4) {
 
+		    # These data exist in sets of four. So when J is four we are 
+
 		    # Appending sol_num to sol type will give a
 		    # unique name for every occurrence in the gff file
 		    my $frag_name = "frag_".$frag_type."_".$frag_number;
 		    # Print output to gff file
 
 		    #-----------------------------+
-		    # LTR FRAGMENT                |
+		    # Add data to coords list     |
 		    #-----------------------------+
-		    if ($feature_type) {
-			$feature = $feature_type;
-		    }
-		    else {
-			$feature = "LTR_retrotransposon";
-		    }
+		    $ltr_results[$t]{coords}[$k]{seq_start} = $frag_coords[1];
+		    $ltr_results[$t]{coords}[$k]{seq_end} = $frag_coords[2];
+		    $ltr_results[$t]{coords}[$k]{te_start} = $frag_coords[3];
+		    $ltr_results[$t]{coords}[$k]{te_end} = $frag_coords[4];
+		    $k++;
 
-		    print GFFOUT 
-			"$seqname\t".                # Seqname
-			"$source\t".                 # Source
-			"$feature\t".                 # Feature type name
-			$frag_coords[1]."\t".         # Start
-			$frag_coords[2]."\t".         # End
-			".\t".                       # Score
-			# $sol_dir may give strand
-			".\t".                 # Strand
-			".\t".                       # Frame
-			"$frag_name\n";                # Feature name
+#		    #-----------------------------+
+#		    # LTR FRAGMENT                |
+#		    #-----------------------------+
+#		    if ($feature_type) {
+#			$feature = $feature_type;
+#		    }
+#		    else {
+#			$feature = "LTR_retrotransposon";
+#		    }
+#
+#		    print GFFOUT 
+#			"$seqname\t".                # Seqname
+#			"$source\t".                 # Source
+#			"$feature\t".                 # Feature type name
+#			$frag_coords[1]."\t".         # Start
+#			$frag_coords[2]."\t".         # End
+#			".\t".                       # Score
+#			# $sol_dir may give strand
+#			".\t".                 # Strand
+#			".\t".                       # Frame
+#			"$frag_name\n";                # Feature name
 		    
 		    $j = 0;
 
 		} # End of if $j==4
+
 	    } # End of for $i
 
 	} # End of $in_frag
@@ -642,7 +811,9 @@ sub tenest2gff {
 	    # 1,2,3,4 is seq_start, seq_end, te_start, te_end
 	    #
 	    my @nltr_coords = ();
+	    $k = 0;
 	    $j = 0;
+
 	    for ($i=1; $i<$num_te_data; $i++) {
 		$j++;
 		$nltr_coords[$j] = $te_data[$i];
@@ -659,26 +830,35 @@ sub tenest2gff {
 		    # Print output to gff file
 
 		    #-----------------------------+
+		    # Add data to coords list     |
+		    #-----------------------------+
+		    $ltr_results[$t]{coords}[$k]{seq_start} = $nltr_coords[1];
+		    $ltr_results[$t]{coords}[$k]{seq_end} = $nltr_coords[2];
+		    $ltr_results[$t]{coords}[$k]{te_start} = $nltr_coords[3];
+		    $ltr_results[$t]{coords}[$k]{te_end} = $nltr_coords[4];
+		    $k++;
+
+		    #-----------------------------+
 		    # TRANSPOSABLE ELEMENT        |
 		    #-----------------------------+
-		    if ($feature_type) {
-			$feature = $feature_type;
-		    }
-		    else {
-			$feature = "transposable_element";
-		    }
-
-		    print GFFOUT 
-			"$seqname\t".                # Seqname
-			"$source\t".                 # Source
-			"$feature\t".                 # Feature type name
-			$nltr_coords[1]."\t".         # Start
-			$nltr_coords[2]."\t".         # End
-			".\t".                       # Score
-			# $sol_dir may give strand
-			".\t".                 # Strand
-			".\t".                       # Frame
-			"$nltr_name\n";                # Feature name
+#		    if ($feature_type) {
+#			$feature = $feature_type;
+#		    }
+#		    else {
+#			$feature = "transposable_element";
+#		    }
+#
+#		    print GFFOUT 
+#			"$seqname\t".                # Seqname
+#			"$source\t".                 # Source
+#			"$feature\t".                 # Feature type name
+#			$nltr_coords[1]."\t".         # Start
+#			$nltr_coords[2]."\t".         # End
+#			".\t".                       # Score
+#			# $sol_dir may give strand
+#			".\t".                 # Strand
+#			".\t".                       # Frame
+#			"$nltr_name\n";                # Feature name
 		    
 		    $j = 0;
 
@@ -695,10 +875,12 @@ sub tenest2gff {
 	# SOLO                        |
 	#-----------------------------+
 	if ($te_data[0] =~ 'SOLO') {
+	    $t++;                      # Increment te index
 	    $numsolo++;
 	    $in_solo = 1;              # Flip boolean to true
 
-	    #$sol_entry = $te_data[0]; 
+	    $ltr_results[$t]{type}= "solo";
+
 	    $sol_number = $te_data[1];
 	    $sol_type = $te_data[2];
 	    $sol_dir = $te_data[3];
@@ -706,22 +888,41 @@ sub tenest2gff {
 	    $sol_nest_order = $te_data[5];
 	    $sol_nest_level = $te_data[6];
 
+	    # For hash
+	    $ltr_results[$t]{te_num}= $te_data[1];
+	    $ltr_results[$t]{family}= $te_data[2];
+	    $ltr_results[$t]{direction} =  $te_data[3];
+	    $ltr_results[$t]{nest_group} =  $te_data[4];
+	    $ltr_results[$t]{nest_order} =  $te_data[5];
+	    $ltr_results[$t]{nest_level} =  $te_data[6];
+
 	}
 
 	#-----------------------------+
 	# PAIR                        |
 	#-----------------------------+
 	elsif ($te_data[0] =~ 'PAIR') {
+	    $t++;                      # Increment te index
 	    $numpair++;
 	    $in_pair = 1;              # Flip boolean to true
 
+	    $ltr_results[$t]{type}= "pair";
+
 	    $pair_number = $te_data[1];
 	    $pair_type = $te_data[2];
-	    $pair_dir = $te_data[3]; 
+	    $pair_dir = $te_data[3];
 	    $pair_bsr = $te_data[4];
 	    $pair_nest_group = $te_data[5];
 	    $pair_nest_order = $te_data[6]; 
 	    $pair_nest_level = $te_data[7];
+
+	    $ltr_results[$t]{te_num}= $te_data[1];
+	    $ltr_results[$t]{family}= $te_data[2];
+	    $ltr_results[$t]{direction} =  $te_data[3];
+	    $ltr_results[$t]{bsr} =  $te_data[4];
+	    $ltr_results[$t]{nest_group} =  $te_data[5];
+	    $ltr_results[$t]{nest_order} =  $te_data[6];
+	    $ltr_results[$t]{nest_level} =  $te_data[7];
 
 	}
 
@@ -729,8 +930,11 @@ sub tenest2gff {
 	# FRAG                        |
 	#-----------------------------+
 	elsif ($te_data[0] =~ 'FRAG') {
+	    $t++;                      # Increment te index
 	    $numfrag++;
 	    $in_frag = 1;              # Flip boolean to true
+
+	    $ltr_results[$t]{type}= "frag";
 
 	    $frag_number = $te_data[1]; 
 	    $frag_type = $te_data[2]; 
@@ -739,12 +943,20 @@ sub tenest2gff {
 	    $frag_nest_order = $te_data[5]; 
 	    $frag_nest_level = $te_data[6];
 
+	    $ltr_results[$t]{te_num}= $te_data[1];
+	    $ltr_results[$t]{family}= $te_data[2];
+	    $ltr_results[$t]{direction} =  $te_data[3];
+	    $ltr_results[$t]{nest_group} =  $te_data[4];
+	    $ltr_results[$t]{nest_order} =  $te_data[5];
+	    $ltr_results[$t]{nest_level} =  $te_data[6];
+
 	}
 	
 	#-----------------------------+
 	# NLTR                        |
 	#-----------------------------+
 	elsif ($te_data[0] =~ 'NLTR') {
+	    $t++;                      # Increment te index
 	    $numnltr++;
 	    $in_nltr = 1;              # Flip boolean to true
 
@@ -755,6 +967,14 @@ sub tenest2gff {
 	    $nltr_nest_group = $te_data[4]; 
 	    $nltr_nest_order = $te_data[5]; 
 	    $nltr_nest_level = $te_data[6];
+
+	    $ltr_results[$t]{type}= "nltr";
+	    $ltr_results[$t]{te_num}= $te_data[1];
+	    $ltr_results[$t]{family}= $te_data[2];
+	    $ltr_results[$t]{direction} =  $te_data[3];
+	    $ltr_results[$t]{nest_group} =  $te_data[4];
+	    $ltr_results[$t]{nest_order} =  $te_data[5];
+	    $ltr_results[$t]{nest_level} =  $te_data[6];
 
 	}
 
@@ -770,8 +990,156 @@ sub tenest2gff {
 	print STDERR "NUM NLTR:\t$numnltr\n";
     }
 
+
+    #-----------------------------------------------------------+
+    # PRINT HASH RESULTS                                        |
+    #-----------------------------------------------------------+
+    for my $href ( @ltr_results ) {
+	
+	#-----------------------------+
+	# SET STRAND                  |
+	#-----------------------------+
+	if ( $href->{direction} == 1) {
+	    $strand = "-";
+	}		
+	elsif ( $href->{direction} == 0) {
+	    $strand = "+";
+	}
+	else {
+	    $strand = "?";
+	}
+
+	#-----------------------------+
+	# SET FEATURE TYPE            |
+	#-----------------------------+
+	my $parent_feature;
+	my $attribute;
+	my $parent_id;
+	if ($href->{type} =~ "solo") {
+	    $parent_feature = "LTR_retrotransposon";
+	    $feature = "solo_LTR";
+	}
+	elsif  ($href->{type} =~ "pair") {
+	    $feature = "LTR_retrotransposon";
+	    $parent_feature = "LTR_retrotransposon";
+	    
+	}
+	elsif  ($href->{type} =~ "frag") {
+	    $feature = "LTR_retrotransposon";
+	    $parent_feature = "LTR_retrotransposon";
+	    
+	}
+	elsif  ($href->{type} =~ "nltr") {
+	    $feature = "transposable_element";
+	}
+	else {
+	    print "\a";
+	    print STDERR "WARNING: Unrecognized feature type".
+		$href->{type}."\n";
+	}
+
+	#-----------------------------+
+	# SET ATTRIBUTE               |
+	#-----------------------------+
+	if ($gff_ver =~ "GFF3") {
+#		$attribute = "ID=".$parent_id;
+	    $attribute = $href->{type}."_".
+		$href->{family}."_".
+		$href->{te_num};
+	} else {
+	    $attribute = $href->{type}."_".
+		$href->{family}."_".
+		$href->{te_num};
+	}
+	
+
+	#-----------------------------+
+	# PAIRED LTR RETRO DATA       |
+	#-----------------------------+
+	if ($href->{type} =~ "pair") {
+	    #print STDERR"\tBSR : ".$href->{bsr}."\n";
+
+	    # Left LTR coordinates
+	    for my $l_coords ( @{ $href->{coords_l} } ) {
+		$feature = "five_prime_LTR";
+		print GFFOUT
+		    "$seqname\t".                  # Seqname
+		    "$source\t".                   # Source
+		    "$feature\t".                  # Feature type name
+		    $l_coords->{seq_start}."\t".   # Start
+		    $l_coords->{seq_end}."\t".     # End
+		    ".\t".                         # Score
+		    $strand."\t".                  # Strand
+		    ".\t".                         # Frame
+		    $attribute.
+		    "\n";
+
+	    }
+
+	    # Middle LTR coordinates
+	    for my $m_coords ( @{ $href->{coords_m} } ) {
+		# need something akin to LTR_retrotransposon part
+		$feature = "LTR_retrotransposon";
+		print GFFOUT
+		    "$seqname\t".                  # Seqname
+		    "$source\t".                   # Source
+		    "$feature\t".                  # Feature type name
+		    $m_coords->{seq_start}."\t".   # Start
+		    $m_coords->{seq_end}."\t".     # End
+		    ".\t".                         # Score
+		    $strand."\t".                  # Strand
+		    ".\t".                         # Frame
+		    $attribute.
+		    "\n";
+	    }
+
+	    # RIGHT LTR coordinates
+	    for my $r_coords ( @{ $href->{coords_r} } ) {
+		$feature = "three_prime_LTR";
+		print GFFOUT
+		    "$seqname\t".                  # Seqname
+		    "$source\t".                   # Source
+		    "$feature\t".                  # Feature type name
+		    $r_coords->{seq_start}."\t".   # Start
+		    $r_coords->{seq_end}."\t".     # End
+		    ".\t".                         # Score
+		    $strand."\t".                  # Strand
+		    ".\t".                         # Frame
+		    $attribute.
+		    "\n";
+	    }
+
+	}
+
+	#-----------------------------+
+	# FEATURES OTHER THAN PAIRED  |
+	# LTR RETROS                  |
+	#-----------------------------+
+	else {
+
+	    for my $coords ( @{ $href->{coords} } ) {
+
+		print GFFOUT
+		    "$seqname\t".                  # Seqname
+		    "$source\t".                   # Source
+		    "$feature\t".                  # Feature type name
+		    $coords->{seq_start}."\t".     # Start
+		    $coords->{seq_end}."\t".       # End
+		    ".\t".                         # Score
+		    $strand."\t".                  # Strand
+		    ".\t".                         # Frame
+		    $attribute.
+		    "\n";
+	    }
+
+
+	}
+
+    }
+
     close GFFOUT;
-    
+
+
 }
 
 sub print_help {
@@ -837,6 +1205,21 @@ sub print_help {
    
 }
 
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
 
 1;
 __END__
@@ -891,6 +1274,14 @@ the program will write output to STDOUT.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item -s,--seqname
 
@@ -990,14 +1381,18 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+You should refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS pipeline for the annotation of genes and transposable 
+elements in plant genomes." Plant Methods. 5:8.
+
+as well as the TEnest program described in Plant Physiology:
+
+BA Kronmiller and RP Wise .2008. 
+"TEnest: Automated chronological annotation and visualization of nested 
+plant transposable elements." Plant Physiology. 146(1): 45-59.
 
 =head1 LICENSE
 
@@ -1018,7 +1413,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/27/2007
 
-UPDATED: 03/24/2009
+UPDATED: 02/02/2010
 
 VERSION: $Rev$
 
@@ -1052,3 +1447,8 @@ VERSION: $Rev$
 # -Fixed name col for non_ltrs, these were previously mislabeled
 #  as fragments of LTRs
 #
+# 02/02/2010
+# - Adding option for GFF3 output
+# 02/03/2010
+# - Fetch sequence name from the *LTR file
+# - Adding parsed data to @ltr_results array of hashes
