@@ -909,7 +909,10 @@ sub ltrfinder2gff {
 		$attribute = "ID=".$parent_id.$dom->{lf_dom_name_short}.
 		    ";Name=".$dom->{lf_dom_name_norm}.
 		    ";Parent=".$parent_id;
-		$type = "polypeptide_domain";
+		#$type = "polypeptide_domain";
+		$type = "transposable_element_gene";
+		# It may be necessary to first define a "gene" and
+		# then set domains..
 	    }
 
 	    $gff_str_out = $href->{lf_seq_id}."\t".   # Seq ID
