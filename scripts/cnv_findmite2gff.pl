@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 08/31/2007                                       |
-# UPDATED: 02/03/2009                                       |
+# UPDATED: 02/26/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Parses findmite results to a gff file. Assigns unique    |
@@ -40,6 +40,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -68,7 +70,8 @@ my $fasta_append = 0;
 my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "i|infile=s"    => \$infile,
                     "o|outfile=s"   => \$outfile,
-		    # ADDITIONAL OPTIONS
+		    # OPTIONS
+		    "gff-ver=s"     => \$gff_ver,
 		    "n|name=s"      => \$seqname,
 		    "p|param=s"     => \$param,
 		    "program=s"     => \$prog,
@@ -106,6 +109,25 @@ if ($show_version) {
     print "\nbatch_mask.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------------------------------------+
@@ -300,15 +322,23 @@ sub findmite2gff {
 		    #-----------------------------+
 		    # PRINT TO GFF FILE           |
 		    #-----------------------------+
+		    my $attribute;
+		    if ($gff_ver =~ "GFF3") {
+			$attribute = "ID=".$gff_name;
+		    }
+		    else {
+			$attribute = $gff_name
+		    }
+
 		    print GFFOUT "$gff_seq_id\t".   # Seq name
 			"$gff_source\t".            # Source
-			"mite\t".                   # Feature type
+			"MITE\t".                   # Feature type
 			"$gff_start\t".             # Start
 			"$gff_end\t".               # End
 			".\t".                      # Score
 			"+\t".                      # Strand
 			".\t".                      # Frame
-			"$gff_name\n";              # Feature name
+			"$attribute\n";              # Feature name
 
 		    #-----------------------------+
 		    # PRINT MITE TO FASTA FILE    |
@@ -448,18 +478,39 @@ sub findmite2gff {
     $gff_start = $mite_start;
     $gff_end = $mite_end;
     
+
+
+    my $attribute;
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$gff_name;
+    }
+    else {
+	$attribute = $gff_name
+    }
+    
     print GFFOUT "$gff_seq_id\t".   # Seq name
 	"$gff_source\t".            # Source
-	"mite\t".                   # Feature type
+	"MITE\t".                   # Feature type
 	"$gff_start\t".             # Start
 	"$gff_end\t".               # End
 	".\t".                      # Score
 	"+\t".                      # Strand
 	".\t".                      # Frame
-	"$gff_name\n";              # Feature name
+	"$attribute\n";              # Feature name
 
-    # END REDUNDANT CUT AND COPY
-    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+#    print GFFOUT "$gff_seq_id\t".   # Seq name
+#	"$gff_source\t".            # Source
+#	"MITE\t".                   # Feature type
+#	"$gff_start\t".             # Start
+#	"$gff_end\t".               # End
+#	".\t".                      # Score
+#	"+\t".                      # Strand
+#	".\t".                      # Frame
+#	"$gff_name\n";              # Feature name
+#
+#    # END REDUNDANT CUT AND COPY
+#    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     #-----------------------------+
     # PRINT MITE TO FASTA FILE    |
@@ -744,7 +795,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/30/2007
 
-UPDATED: 02/03/2009
+UPDATED: 02/26/2010
 
 VERSION: $Rev$
 
@@ -769,3 +820,6 @@ VERSION: $Rev$
 #   -p, --param option
 # - Added support for specifying program source with the
 #   --program option
+# 02/26/2010
+# - Added option for GFF3 format
+# - Changed type from mite to SO compliant MITE
