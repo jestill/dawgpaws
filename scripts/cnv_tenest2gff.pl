@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/27/2007                                       |
-# UPDATED: 02/02/2010
+# UPDATED: 02/03/2010                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 #  Convert TE Nest output to gff file format.               |
@@ -24,10 +24,6 @@
 #    - non-LTR
 #    - pair-LTR
 #  Allow override of this name using --feature
-
-# May need to load entire report to hash and then print to GFFOUT
-# when finished, this will be necessary to get the spans for intertwined
-# LTR retrotransposons.
 
 package DAWGPAWS;
 
@@ -650,6 +646,10 @@ sub tenest2gff {
     #-----------------------------------------------------------+
     # PRINT HASH RESULTS                                        |
     #-----------------------------------------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$seqname = seqid_encode($seqname);
+    }
+    
     for my $href ( @ltr_results ) {
 	
 	#-----------------------------+
@@ -665,11 +665,13 @@ sub tenest2gff {
 	    $strand = "?";
 	}
 
+
 	#-----------------------------+
 	# SET FEATURE TYPE            |
 	#-----------------------------+
 	my $parent_feature;
 	my $attribute;
+	my $te_id;                      #  The base unique ID for the TE 
 	my $parent_id;
 	if ($href->{type} =~ "solo") {
 	    $parent_feature = "LTR_retrotransposon";
@@ -695,19 +697,27 @@ sub tenest2gff {
 	}
 
 	#-----------------------------+
-	# SET ATTRIBUTE               |
+	# TE ID                       |
 	#-----------------------------+
-	if ($gff_ver =~ "GFF3") {
-#		$attribute = "ID=".$parent_id;
-	    $attribute = $href->{type}."_".
-		$href->{family}."_".
-		$href->{te_num};
-	} else {
-	    $attribute = $href->{type}."_".
-		$href->{family}."_".
-		$href->{te_num};
-	}
-	
+	$te_id =  $href->{type}."_".
+	    $href->{family}."_".
+	    $href->{te_num};
+	# Temp definition of attribute
+	$attribute = $te_id;
+#	if ($gff_ver =~ "GFF3") {
+#
+#	    $parent_id = $href->{type}."_".
+#		$href->{family}."_".
+#		$href->{te_num};
+#	    $attribute = $parent_id;
+#
+#	} else {
+#
+#	    $attribute = $href->{type}."_".
+#		$href->{family}."_".
+#		$href->{te_num};
+#
+#	}
 
 	#-----------------------------+
 	# PAIRED LTR RETRO DATA       |
@@ -717,52 +727,196 @@ sub tenest2gff {
 
 	    # Left LTR coordinates
 	    for my $l_coords ( @{ $href->{coords_l} } ) {
-		$feature = "five_prime_LTR";
-		print GFFOUT
-		    "$seqname\t".                  # Seqname
-		    "$source\t".                   # Source
-		    "$feature\t".                  # Feature type name
-		    $l_coords->{seq_start}."\t".   # Start
-		    $l_coords->{seq_end}."\t".     # End
-		    ".\t".                         # Score
-		    $strand."\t".                  # Strand
-		    ".\t".                         # Frame
-		    $attribute.
-		    "\n";
+
+		#////////////////////////////////////////////////
+		#////////////////////////////////////////////////
+		# TO DO
+		# MAY NEED CODE TO RENAME FIVE AND THREE PRIME BASED ON STRAND
+		# DEPENDING ON HOW LEFT AND RIGHT ARE DEFINED IN
+		# TENEST
+		#////////////////////////////////////////////////
+		#////////////////////////////////////////////////
+
+		if ($gff_ver =~ "GFF3") {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = "ID=".$te_id.
+			"; Name=".$href->{family};
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$l_coords->{seq_start}."\t".   # Start
+			$l_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		    $feature = "five_prime_LTR";
+		    $attribute = "ID=".$te_id."_five_prime_LTR;".
+			"Parent=".$te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$l_coords->{seq_start}."\t".   # Start
+			$l_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+		    
+		}
+		else {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = $te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$l_coords->{seq_start}."\t".   # Start
+			$l_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		}
+		
 
 	    }
 
 	    # Middle LTR coordinates
 	    for my $m_coords ( @{ $href->{coords_m} } ) {
-		# need something akin to LTR_retrotransposon part
-		$feature = "LTR_retrotransposon";
-		print GFFOUT
-		    "$seqname\t".                  # Seqname
-		    "$source\t".                   # Source
-		    "$feature\t".                  # Feature type name
-		    $m_coords->{seq_start}."\t".   # Start
-		    $m_coords->{seq_end}."\t".     # End
-		    ".\t".                         # Score
-		    $strand."\t".                  # Strand
-		    ".\t".                         # Frame
-		    $attribute.
-		    "\n";
+
+
+
+		if ($gff_ver =~ "GFF3") {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = "ID=".$te_id.
+			"; Name=".$href->{family};
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$m_coords->{seq_start}."\t".   # Start
+			$m_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+		    
+		}
+		else {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = $te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$m_coords->{seq_start}."\t".   # Start
+			$m_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		}
+
+
+
+#		# need something akin to LTR_retrotransposon part
+#		$feature = "LTR_retrotransposon";
+#		print GFFOUT
+#		    "$seqname\t".                  # Seqname
+#		    "$source\t".                   # Source
+#		    "$feature\t".                  # Feature type name
+#		    $m_coords->{seq_start}."\t".   # Start
+#		    $m_coords->{seq_end}."\t".     # End
+#		    ".\t".                         # Score
+#		    $strand."\t".                  # Strand
+#		    ".\t".                         # Frame
+#		    $attribute.
+#		    "\n";
 	    }
 
 	    # RIGHT LTR coordinates
 	    for my $r_coords ( @{ $href->{coords_r} } ) {
-		$feature = "three_prime_LTR";
-		print GFFOUT
-		    "$seqname\t".                  # Seqname
-		    "$source\t".                   # Source
-		    "$feature\t".                  # Feature type name
-		    $r_coords->{seq_start}."\t".   # Start
-		    $r_coords->{seq_end}."\t".     # End
-		    ".\t".                         # Score
-		    $strand."\t".                  # Strand
-		    ".\t".                         # Frame
-		    $attribute.
-		    "\n";
+
+		if ($gff_ver =~ "GFF3") {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = "ID=".$te_id.
+			"; Name=".$href->{family};
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$r_coords->{seq_start}."\t".   # Start
+			$r_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		    $feature = "three_prime_LTR";
+		    $attribute = "ID=".$te_id."_three_prime_LTR;".
+			"Parent=".$te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$r_coords->{seq_start}."\t".   # Start
+			$r_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+		    
+		}
+		else {
+		    
+		    $feature = "LTR_retrotransposon";
+		    $attribute = $te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$r_coords->{seq_start}."\t".   # Start
+			$r_coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		}
+
+
+
+#		$feature = "three_prime_LTR";
+#		print GFFOUT
+#		    "$seqname\t".                  # Seqname
+#		    "$source\t".                   # Source
+#		    "$feature\t".                  # Feature type name
+#		    $r_coords->{seq_start}."\t".   # Start
+#		    $r_coords->{seq_end}."\t".     # End
+#		    ".\t".                         # Score
+#		    $strand."\t".                  # Strand
+#		    ".\t".                         # Frame
+#		    $attribute.
+#		    "\n";
 	    }
 
 	}
@@ -773,19 +927,75 @@ sub tenest2gff {
 	#-----------------------------+
 	else {
 
+#	    # For GFF3 may need print the parent span
+#	    if ($gff_ver =~ "GFF3") {
+#		# Get minimum of the span
+#
+#		# Get maximum of the span
+#		
+#		print GFFOUT
+#		    "$seqname\t".                  # Seqname
+#		    "$source\t".                   # Source
+#		    "$feature\t".                  # Feature type name
+#		    $coords->{seq_start}."\t".     # Start
+#		    $coords->{seq_end}."\t".       # End
+#		    ".\t".                         # Score
+#		    $strand."\t".                  # Strand
+#		    ".\t".                         # Frame
+#		    $attribute.
+#		    "\n";
+#	    }
+
 	    for my $coords ( @{ $href->{coords} } ) {
 
-		print GFFOUT
-		    "$seqname\t".                  # Seqname
-		    "$source\t".                   # Source
-		    "$feature\t".                  # Feature type name
-		    $coords->{seq_start}."\t".     # Start
-		    $coords->{seq_end}."\t".       # End
-		    ".\t".                         # Score
-		    $strand."\t".                  # Strand
-		    ".\t".                         # Frame
-		    $attribute.
-		    "\n";
+
+
+		if ($gff_ver =~ "GFF3") {
+		    
+		    $attribute = "ID=".$te_id.
+			"; Name=".$href->{family};
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$coords->{seq_start}."\t".   # Start
+			$coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		}
+		else {
+		    
+		    $attribute = $te_id;
+		    print GFFOUT
+			"$seqname\t".                  # Seqname
+			"$source\t".                   # Source
+			"$feature\t".                  # Feature type name
+			$coords->{seq_start}."\t".   # Start
+			$coords->{seq_end}."\t".     # End
+			".\t".                         # Score
+			$strand."\t".                  # Strand
+			".\t".                         # Frame
+			$attribute.
+			"\n";
+
+		}
+
+#		print GFFOUT
+#		    "$seqname\t".                  # Seqname
+#		    "$source\t".                   # Source
+#		    "$feature\t".                  # Feature type name
+#		    $coords->{seq_start}."\t".     # Start
+#		    $coords->{seq_end}."\t".       # End
+#		    ".\t".                         # Score
+#		    $strand."\t".                  # Strand
+#		    ".\t".                         # Frame
+#		    $attribute.
+#		    "\n";
+
 	    }
 
 
@@ -1109,3 +1319,4 @@ VERSION: $Rev$
 # - Fetch sequence name from the *LTR file
 # - Adding parsed data to @ltr_results array of hashes
 # - Removed redundant code
+# 02/17/2010
