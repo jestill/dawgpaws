@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/25/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/02/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert *rpt.txt output files from LTR_STRUC to          |
@@ -41,6 +41,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -52,6 +54,7 @@ my $outdir;
 my $repdir;
 
 # Booleans
+my $do_gff3_out = 0;
 my $quiet = 0;
 my $verbose = 0;
 my $show_help = 0;
@@ -63,6 +66,7 @@ my $do_seq_data = 0;          # Create files in outdir with sequence data
 my $flank_len;                # Extract flanking sequence of this length
                               # This will be a manual flanking sequence length
                               # outside of what LTR_struc does
+#
 my $flank_out_file;           # File to place all of the flaking sequence data
 
 my $program = "LTR_Struc";
@@ -77,6 +81,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"    => \$outdir,
 		    "r|results=s"   => \$repdir,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"     => \$gff_ver,
 		    "param=s"       => \$parameter,
 		    "program=s"     => \$program,
 		    "c|copy"        => \$do_copy,
@@ -85,6 +90,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "flank-len=s"   => \$flank_len,
 		    "fl-fasta=s"    => \$flank_out_file,
 		    "verbose"       => \$verbose,
+		    "gff3"          => \$do_gff3_out,
 		    # ADDITIONAL INFORMATION
 		    "usage"         => \$show_usage,
 		    "version"       => \$show_version,
@@ -113,6 +119,25 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -233,6 +258,7 @@ for my $ind_fasta_file (@fasta_files) {
 	" $num_fasta_files\n";
 	print STDERR "--------------------------------------------------\n";
     }
+
     #-----------------------------+
     # CREATE ROOT NAME DIR        |
     #-----------------------------+
@@ -437,15 +463,27 @@ sub ltrstruc2gff {
     #-----------------------------+
     # OPEN GFF OUTPUT FILE        |
     #-----------------------------+
-    if ($gff_append) {
-	open (GFFOUT, ">>$gff_out") ||
-	    die "ERROR: Could not open gff output file:\b$gff_out\n";
+    if ($gff_out) {
+	if ($gff_append) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Could not open gff output file:\b$gff_out\n";
+	}
+	else 
+	{
+	    open (GFFOUT, ">$gff_out") ||
+		die "ERROR: Could not open gff output file:\n$gff_out\n";
+	    # Add GFF3 header
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	    
+	}
     }
-    else 
-    {
-	open (GFFOUT, ">$gff_out") ||
-	    die "ERROR: Could not open gff output file:\n$gff_out\n";
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
     }
+
     
     #-----------------------------+
     # LOAD FASTA SEQUENCE         |
@@ -771,6 +809,15 @@ sub ltrstruc2gff {
     # Data type follows SONG
     # http://song.cvs.sourceforge.net/*checkout*/song/ontology/so.obo
     my $gff_result_id = "ltr_struc_".$ls_id_num;
+    my $attribute = $gff_result_id;
+    my $parent_id = $gff_result_id;
+
+    #-----------------------------+
+    # LTR Retrotransposon Span
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id;
+    }
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"LTR_retrotransposon\t".   # Data type, has to be exon for APOLLO
@@ -779,32 +826,54 @@ sub ltrstruc2gff {
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+	"$attribute\n";        # Retro Id
 
     if ($has_5_flank) {
+	if ($gff_ver =~ "GFF3") {
+	    $attribute = "ID=".$parent_id."_five_prime_flanking".
+		";Name=".$flank_5_seq.
+		";Parent=".$parent_id;
+	}
 	print GFFOUT "$name_root\t".   # Seq ID
 	    "$source\t".               # Source
-	    "LTR_five_prime_flanking_".$flank_len."bp\t".
+	    "five_prime_flanking_region\t".
+#	    "transposable_element_flanking_region\t".
+#	    "LTR_five_prime_flanking_".$flank_len."bp\t".
 	    "$flank_5_start\t".
 	    "$flank_5_end\t".
 	    "$ls_score\t".
 	    "$ls_orientation\t".
 	    ".\t".
-	    "$gff_result_id\n";        # Retro Id
+	    "$attribute\n";        # Retro Id
     }
     
     if ($has_3_flank) {
+	if ($gff_ver =~ "GFF3") {
+	    $attribute = "ID=".$parent_id."_three_prime_flanking".
+		";Name=".$flank_3_seq.
+		";Parent=".$parent_id;
+	}
 	print GFFOUT "$name_root\t".   # Seq ID
 	    "$source\t".               # Source
-	    "LTR_three_prime_flanking_".$flank_len."bp\t".
+	    "three_prime_flanking_region\t".
+#	    "transposable_element_flanking_region\t".
+#	    "LTR_three_prime_flanking_".$flank_len."bp\t".
 	    "$flank_3_start\t".
 	    "$flank_3_end\t".
 	    "$ls_score\t".
 	    "$ls_orientation\t".
 	    ".\t".
-	    "$gff_result_id\n";        # Retro Id
+	    "$attribute\n";        # Retro Id
     }
 
+    #-----------------------------+
+    # PRIMER BINDING SITE         |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_primer_binding_site".
+	    ";Name=PBS".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"primer_binding_site\t".   # SO:0005850
@@ -813,8 +882,16 @@ sub ltrstruc2gff {
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+	"$attribute\n";            # Retro Id
 
+    #-----------------------------+
+    # POLYPURINE TRACT            |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_RR_tract".
+	    ";Name=PBS".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"RR_tract\t".              # SO:0000435 
@@ -823,8 +900,16 @@ sub ltrstruc2gff {
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+	"$attribute\n";            # Retro Id
 
+    #-----------------------------+
+    # FIVE PRIME LTR              |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_five_prime_LTR".
+	    ";Name=Five Prime LTR".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"five_prime_LTR\t".        # SO:0000425
@@ -833,8 +918,16 @@ sub ltrstruc2gff {
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+	"$attribute\n";            # Retro Id
 
+    #-----------------------------+
+    # THREE PRIME LTR             |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_three_prime_LTR".
+	    ";Name=Three Prime LTR".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".   # Seq ID
 	"$source\t".               # Source
 	"three_prime_LTR\t".       # SO:0000426  
@@ -843,8 +936,16 @@ sub ltrstruc2gff {
 	"$ls_score\t".             # Score
 	"$ls_orientation\t".       # Strand
 	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
+	"$attribute\n";            # Retro Id
 
+    #-----------------------------+
+    # 5' TSD                      |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_tsd5".
+	    ";Name=Target Site Duplication".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".     # Seq ID
 	"$source\t".                 # Source
 	"target_site_duplication\t". # SO:0000434
@@ -853,8 +954,16 @@ sub ltrstruc2gff {
 	"$ls_score\t".               # Score
 	"$ls_orientation\t".         # Strand
 	".\t".                       # Frame
-	"$gff_result_id\n";          # Retro Id
+	"$attribute\n";            # Retro Id
 
+    #-----------------------------+
+    # 3' TSD                      |
+    #-----------------------------+
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$parent_id."_tsd3".
+	    ";Name=Target Site Duplication".
+	    ";Parent=".$parent_id;
+    }
     print GFFOUT "$name_root\t".     # Seq ID
 	"$source\t".                 # Source
 	"target_site_duplication\t". # SO:0000434
@@ -863,108 +972,107 @@ sub ltrstruc2gff {
 	"$ls_score\t".               # Score
 	"$ls_orientation\t".         # Strand
 	".\t".                       # Frame
-	"$gff_result_id\n";          # Retro Id
+	"$attribute\n";            # Retro Id
 
-
-    #-----------------------------+
-    # PRINT TO STDOUT             |
-    #-----------------------------+
-    # This allows for an easy way to send the results to a single file
-    # that contains all of the LTR_Struc results
-
-    print STDOUT "$name_root\t".   # Seq ID
-	"$source\t".               # Source
-	"LTR_retrotransposon\t".   # Data type, has to be exon for APOLLO
-	"$gff_full_retro_start\t". # Start
-	"$gff_full_retro_end\t".   # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
-
-    if ($has_5_flank) {
-	print STDOUT "$name_root\t".   # Seq ID
-	    "$source\t".               # Source
-	    "LTR_five_prime_flanking_".$flank_len."bp\t".
-	    "$flank_5_start\t".
-	    "$flank_5_end\t".
-	    "$ls_score\t".
-	    "$ls_orientation\t".
-	    ".\t".
-	    "$gff_result_id\n";        # Retro Id
-    }
-    
-    if ($has_3_flank) {
-	print STDOUT "$name_root\t".   # Seq ID
-	    "$source\t".               # Source
-	    "LTR_three_prime_flanking_".$flank_len."bp\t".
-	    "$flank_3_start\t".
-	    "$flank_3_end\t".
-	    "$ls_score\t".
-	    "$ls_orientation\t".
-	    ".\t".
-	    "$gff_result_id\n";        # Retro Id
-    }
-
-    print STDOUT "$name_root\t".   # Seq ID
-	"$source\t".               # Source
-	"primer_binding_site\t".   # SO:0005850
-	"$gff_pbs_start\t".        # Start
-	"$gff_pbs_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
-
-    print STDOUT "$name_root\t".   # Seq ID
-	"$source\t".               # Source
-	"RR_tract\t".              # SO:0000435 
-	"$gff_ppt_start\t".        # Start
-	"$gff_ppt_end\t".          # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
-
-    print STDOUT "$name_root\t".   # Seq ID
-	"$source\t".               # Source
-	"five_prime_LTR\t".        # SO:0000425
-	"$gff_ltr5_start\t".       # Start
-	"$gff_ltr5_end\t".         # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
-
-    print STDOUT "$name_root\t".   # Seq ID
-	"$source\t".               # Source
-	"three_prime_LTR\t".       # SO:0000426  
-	"$gff_ltr3_start\t".       # Start
-	"$gff_ltr3_end\t".         # End
-	"$ls_score\t".             # Score
-	"$ls_orientation\t".       # Strand
-	".\t".                     # Frame
-	"$gff_result_id\n";        # Retro Id
-
-    print STDOUT "$name_root\t".     # Seq ID
-	"$source\t".                 # Source
-	"target_site_duplication\t". # SO:0000434
-	"$gff_5tsr_start\t".         # Start
-	"$gff_5tsr_end\t".           # End
-	"$ls_score\t".               # Score
-	"$ls_orientation\t".         # Strand
-	".\t".                       # Frame
-	"$gff_result_id\n";          # Retro Id
-
-    print STDOUT "$name_root\t".     # Seq ID
-	"$source\t".               # Source
-	"target_site_duplication\t". # SO:0000434
-	"$gff_3tsr_start\t".         # Start
-	"$gff_3tsr_end\t".           # End
-	"$ls_score\t".               # Score
-	"$ls_orientation\t".         # Strand
-	".\t".                       # Frame
-	"$gff_result_id\n";          # Retro Id
+#    #-----------------------------+
+#    # PRINT TO STDOUT             |
+#    #-----------------------------+
+#    # This allows for an easy way to send the results to a single file
+#    # that contains all of the LTR_Struc results
+#
+#    print STDOUT "$name_root\t".   # Seq ID
+#	"$source\t".               # Source
+#	"LTR_retrotransposon\t".   # Data type, has to be exon for APOLLO
+#	"$gff_full_retro_start\t". # Start
+#	"$gff_full_retro_end\t".   # End
+#	"$ls_score\t".             # Score
+#	"$ls_orientation\t".       # Strand
+#	".\t".                     # Frame
+#	"$gff_result_id\n";        # Retro Id
+#
+#    if ($has_5_flank) {
+#	print STDOUT "$name_root\t".   # Seq ID
+#	    "$source\t".               # Source
+#	    "LTR_five_prime_flanking_".$flank_len."bp\t".
+#	    "$flank_5_start\t".
+#	    "$flank_5_end\t".
+#	    "$ls_score\t".
+#	    "$ls_orientation\t".
+#	    ".\t".
+#	    "$gff_result_id\n";        # Retro Id
+#    }
+#    
+#    if ($has_3_flank) {
+#	print STDOUT "$name_root\t".   # Seq ID
+#	    "$source\t".               # Source
+#	    "LTR_three_prime_flanking_".$flank_len."bp\t".
+#	    "$flank_3_start\t".
+#	    "$flank_3_end\t".
+#	    "$ls_score\t".
+#	    "$ls_orientation\t".
+#	    ".\t".
+#	    "$gff_result_id\n";        # Retro Id
+#    }
+#
+#    print STDOUT "$name_root\t".   # Seq ID
+#	"$source\t".               # Source
+#	"primer_binding_site\t".   # SO:0005850
+#	"$gff_pbs_start\t".        # Start
+#	"$gff_pbs_end\t".          # End
+#	"$ls_score\t".             # Score
+#	"$ls_orientation\t".       # Strand
+#	".\t".                     # Frame
+#	"$gff_result_id\n";        # Retro Id
+#
+#    print STDOUT "$name_root\t".   # Seq ID
+#	"$source\t".               # Source
+#	"RR_tract\t".              # SO:0000435 
+#	"$gff_ppt_start\t".        # Start
+#	"$gff_ppt_end\t".          # End
+#	"$ls_score\t".             # Score
+#	"$ls_orientation\t".       # Strand
+#	".\t".                     # Frame
+#	"$gff_result_id\n";        # Retro Id
+#
+#    print STDOUT "$name_root\t".   # Seq ID
+#	"$source\t".               # Source
+#	"five_prime_LTR\t".        # SO:0000425
+#	"$gff_ltr5_start\t".       # Start
+#	"$gff_ltr5_end\t".         # End
+#	"$ls_score\t".             # Score
+#	"$ls_orientation\t".       # Strand
+#	".\t".                     # Frame
+#	"$gff_result_id\n";        # Retro Id
+#
+#    print STDOUT "$name_root\t".   # Seq ID
+#	"$source\t".               # Source
+#	"three_prime_LTR\t".       # SO:0000426  
+#	"$gff_ltr3_start\t".       # Start
+#	"$gff_ltr3_end\t".         # End
+#	"$ls_score\t".             # Score
+#	"$ls_orientation\t".       # Strand
+#	".\t".                     # Frame
+#	"$gff_result_id\n";        # Retro Id
+#
+#    print STDOUT "$name_root\t".     # Seq ID
+#	"$source\t".                 # Source
+#	"target_site_duplication\t". # SO:0000434
+#	"$gff_5tsr_start\t".         # Start
+#	"$gff_5tsr_end\t".           # End
+#	"$ls_score\t".               # Score
+#	"$ls_orientation\t".         # Strand
+#	".\t".                       # Frame
+#	"$gff_result_id\n";          # Retro Id
+#
+#    print STDOUT "$name_root\t".     # Seq ID
+#	"$source\t".               # Source
+#	"target_site_duplication\t". # SO:0000434
+#	"$gff_3tsr_start\t".         # Start
+#	"$gff_3tsr_end\t".           # End
+#	"$ls_score\t".               # Score
+#	"$ls_orientation\t".         # Strand
+#	".\t".                       # Frame
+#	"$gff_result_id\n";          # Retro Id
 
 
     #-----------------------------+
@@ -1218,6 +1326,23 @@ sub print_help {
 }
 
 
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+
 1;
 __END__
 
@@ -1417,7 +1542,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/25/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/02/2010
 
 VERSION: $Rev$
 
@@ -1465,3 +1590,13 @@ VERSION: $Rev$
 #   length to be able to get the full sequence context
 # - Added option to generate a single sequence file of the
 #   flanking sequence if so desired 
+#
+# 09/25/2009
+# - Working out adding gff3 output, from code submitted by Ross Crowhurst
+# 03/02/2010
+# - Added support for output to STDOUT when gffout is not specified
+# - Removing automatic output to STDOUT in addition to GFFOUT output
+# - Example tests:
+#  cnv_ltrstruc2gff.pl -i ltr_struc_in/ -o /Users/jestill/ltr_struc_test/ -r ltr_struc/
+#  cnv_ltrstruc2gff.pl -i ltr_struc_in/ -o /Users/jestill/ltr_struc_test/ -r ltr_struc/ --flank-len 10 --gff-ver gff2
+# - Added support for GFF3 format output
