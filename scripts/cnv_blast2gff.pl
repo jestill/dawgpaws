@@ -820,14 +820,12 @@ http://sourceforge.net/tracker/?group_id=204962
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
