@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/03/2007                                       |
-# UPDATED: 03/30/2009                                       |
+# UPDATED: 03/02/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts LTR_seq output to gff file format.              |
@@ -38,6 +38,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -67,6 +69,7 @@ my $ok = GetOptions(# Required options
                     "o|outfile=s"   => \$outfile,
 		    "s|seqname=s"   => \$inseqname,
 		    # Additional Optons
+		    "gff-ver=s"     => \$gff_ver,
 		    "program=s"     => \$program,
 		    "param=s"       => \$parameter,
 		    #"f|fastafile=s" => \$infasta,
@@ -111,6 +114,25 @@ if ( (!$inseqname) ) {
     print STDERR "ERROR: A sequence name was not specified at the".
 	" command line\n" if (!$inseqname);
     print_help ("usage", $0 );
+}
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------------------------------------+ 
@@ -337,8 +359,15 @@ sub ltrseq2gff {
 		#-----------------------------+
 		# PRINT TO GFF OUTPUT FILE    |
 		#-----------------------------+
+		my $attribute = $ltrseq_name;
+		my $parent_id = $ltrseq_name;
 
+		#-----------------------------+
 		# LTR RETRO PREDICTION SPAN
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id;
+		}
 		print GFFOUT "$seqname\t".     # Name of sequence
 		    "$source\t".               # Source
 		    "LTR_retrotransposon\t".   # Feature, exon for Apollo
@@ -347,9 +376,16 @@ sub ltrseq2gff {
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
-		    "$ltrseq_name\n";          # Features (Name)
+		    "$attribute\n";          # Features (Name)
 		
-		# 5' LTR
+		#-----------------------------+
+		# 5' LTR                      |
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id."_five_prime_LTR".
+			";Name=Five Prime LTR".
+			";Parent=".$parent_id;
+		}
 		print GFFOUT "$seqname\t".     # Name of sequence
 		    "$source\t".               # Source
 		    "five_prime_LTR\t".        # Feature, exon for Apollo
@@ -358,9 +394,16 @@ sub ltrseq2gff {
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
-		    "$ltrseq_name\n";          # Features (Name)
+		    "$attribute\n";          # Features (Name)
 
-		# 3' LTR
+		#-----------------------------+
+		# 3' LTR                      |
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id."_three_prime_LTR".
+			";Name=Three Prime LTR".
+			";Parent=".$parent_id;
+		}
 		print GFFOUT "$seqname\t".     # Name of sequence
 		    "$source\t".               # Source
 		    "three_prime_LTR\t".       # Feature, exon for Apollo
@@ -369,7 +412,7 @@ sub ltrseq2gff {
 		    "$ltr_conf\t".             # Score, LTR Confidence Score
 		    ".\t".                     # Strand
 		    ".\t".                     # Frame
-		    "$ltrseq_name\n";          # Features (Name)
+		    "$attribute\n";          # Features (Name)
 	    }
 
 
@@ -424,6 +467,21 @@ sub print_help {
     exit;
 }
 
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
 
 
 =head1 NAME
@@ -476,6 +534,14 @@ used to write to the first column of the GFF output file.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item --append
 
@@ -657,3 +723,5 @@ VERSION: $Rev$
 #   three_prime_LTR, and five_prime_LTR
 # - Fixed error where vals starting at zero were 
 #   set to null
+# 03/02/2010
+# - Added GFF3 format output
