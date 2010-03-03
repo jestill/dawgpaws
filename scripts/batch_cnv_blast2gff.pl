@@ -7,7 +7,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/06/2006                                       |
-# UPDATED: 08/05/2008                                       |
+# UPDATED: 03/02/2010                                       |
 #                                                           |  
 # DESCRIPTION:                                              | 
 # Convert blast output to a Apollo compatible gff file.     |
@@ -36,6 +36,8 @@ use File::Spec;                # To convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -83,6 +85,7 @@ my $ok = GetOptions(# REQUIRED
 		    "b|blast-opt=s" => \$blast_opt,  # Has default
 		    # OPTIONS
 		    "logfile=s"     => \$logfile,
+		    "gff-ver=s"     => \$gff_ver,
 		    # BOOLEANS
 		    "verbose"       => \$verbose,
 		    "append"        => \$do_append,
@@ -114,6 +117,25 @@ if ($show_man) {
     # User perldoc to generate the man documentation.
     system("perldoc $0");
     exit($ok ? 0 : 2);
+}
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -385,6 +407,10 @@ sub print_help {
 }
 
 
+
+# REMOVING THE FOLLOWING FOR THE bast2gff function 
+# that is GFF3 capable
+
 sub blast2gff {
 # CONVERT BLAST TO GFF 
     
@@ -402,6 +428,14 @@ sub blast2gff {
     my $strand;           # Strand of the hit
     my $blast_report;     # The handle for the blast report
     my $blast_score;      # The score for the blast hit
+
+    # Temp change feature from exon to the more approprate 'match'
+    my $feature = "match";
+
+    # Remove prohibited characters
+    if ($gff_ver =~ "GFF3") {
+	$seqname = seqid_encode($seqname);
+    }
 
     my $seq_name_len = length($seqname);
 
@@ -425,15 +459,23 @@ sub blast2gff {
 	
     }
 
-
-    # Open file handle to the gff outfile    
-    if ($append) {
-	open (GFFOUT, ">>$gffout") 
-	    || die "Can not open file:\n $gffout\n";
+    #-----------------------------+
+    # OPEN GFF OUTFILE            |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gffout) {
+	if ($append) {
+	    open (GFFOUT, ">>$gffout") 
+		|| die "Can not open file:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT, ">$gffout") 
+		|| die "Can not open file:\n $gffout\n";
+	}
     }
     else {
-	open (GFFOUT, ">$gffout") 
-	    || die "Can not open file:\n $gffout\n";
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
     }
     
     while (my $blast_result = $blast_report->next_result())
@@ -465,6 +507,12 @@ sub blast2gff {
 	    $dbname = $blast_result->database_name();
 	}
 
+	# remove trailing white space
+	$dbname =~ s/\s+$//;
+	if ($gff_ver =~ "GFF3") {
+	    $dbname = gff3_encode($dbname);
+	}
+
     	while (my $blast_hit = $blast_result->next_hit())
 	{
 
@@ -472,7 +520,10 @@ sub blast2gff {
 	    {
 
 		my $hitname = $blast_hit->name();
-
+		if ($gff_ver =~ "GFF3") {
+		    $hitname = gff3_encode($hitname);
+		}
+		
 		$strand = $blast_hsp->strand('query');
 		
 		if ($strand =~ "-1") {
@@ -484,22 +535,34 @@ sub blast2gff {
 		else {
 		    die "Error parsing strand\n";
 		}
-		
+
+		#-----------------------------+
+		# GET QRY START AND END       |
+		#-----------------------------+
 		# Make certain that start coordinate is
 		# less then the end coordinate
 		if ( $blast_hsp->start() < $blast_hsp->end() ) {
-		    $start = $blast_hsp->start();         # Start
+		    $start = $blast_hsp->start();
 		    $end = $blast_hsp->end();
-		    #$strand = "+";
-		    
 		}
 		else {
-		    #
-		    $start = $blast_hsp->end();         # Start
+		    $start = $blast_hsp->end();
 		    $end = $blast_hsp->start();
-		    #$strand = "-";
 		}
-
+		
+		#-----------------------------+
+		# GET HIT START AND END       |
+		#-----------------------------+
+		my $hit_start;
+		my $hit_end;
+		if ( $blast_hsp->start('hit') < $blast_hsp->end('hit') ) {
+		    $hit_start = $blast_hsp->start('hit');
+		    $hit_end = $blast_hsp->end('hit');
+		}
+		else {
+		    $hit_start = $blast_hsp->end('hit');
+		    $hit_end = $blast_hsp->start('hit');
+		}
 
 		#-----------------------------+
 		# GET BLAST SCORE             |
@@ -519,17 +582,35 @@ sub blast2gff {
 		#-----------------------------+
 		# Changing BLASTN to the Bac Name appears to allow 
 		# these to be drawn on different levels.
+		#-----------------------------+
+		# Set attribute               |
+		#-----------------------------+
+		my $attribute;
+		#my $feature;
+		my $source = $blastprog.":".$dbname;   
+		if ($gff_ver =~ "GFF3") {
+		    $feature = "match_part"; 
+		    $source =~ s/\s+$source//;
+		    $attribute = "ID=".$source."_".$hitname.
+			";".
+			"Name=".$hitname.";".
+			"Target=".$hitname." ".
+			$hit_start." ".$hit_end;
+		}
+		else {
+		    $attribute = $hitname;
+		}
+
 		print GFFOUT 
 		    "$seqname\t".                            # Seqname
-		    "$blastprog:$dbname\t".                  # Source
-		    "exon\t".                                # Feature type name
+		    $blastprog.":".$dbname."\t".                  # Source
+		    "$feature\t".                            # Feature type name
 		    "$start\t".                              # Start
 		    "$end\t".                                # End
 		    $blast_score."\t".                       # Score
 		    "$strand\t".                             # Strand
 		    ".\t".                                   # Frame
-		    "$hitname\n";                            # Feature name
-
+		    "$attribute\n";                          # Feature name
 
 		# PRINT GFF TO STDERR IF IN VERBOSE MODE
 		if ($verbose) {
@@ -549,6 +630,36 @@ sub blast2gff {
     close GFFOUT;
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
 
 1;
 __END__
@@ -736,7 +847,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/06/2007
 
-UPDATED: 08/05/2008
+UPDATED: 03/02/2010
 
 VERSION: $Rev$
 
@@ -785,3 +896,8 @@ VERSION: $Rev$
 #     10 ASN, text
 #     11 ASN, binary [Integer]
 #  Currently only 8,9 and 0 are implemented. 
+#
+# 03/02/2010
+# - Adding support for GFF3 format output
+# 03/03/2010
+# - Finalized support for GFF3 format output
