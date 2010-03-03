@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/23/2007                                       |
-# UPDATED: 04/23/2009                                       |
+# UPDATED: 03/03/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of softmasked fasta files, this will   |
@@ -20,6 +20,11 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+#
+# TO DO: use of --feature at command line overrides the
+#        match_part feature type
+
+package DAWGPAWS;
 
 #-----------------------------+
 # INCLUDES                    |
@@ -39,6 +44,8 @@ use Bio::SearchIO;             # Parse BLAST output
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -92,16 +99,28 @@ my $name_root;                 # Root name to be used for output etc
 my @dbs;                       # Information for databases
                                # 2d Array filled from the config file
 
+# Options added 03/03/2010
+my $feature_type = "exon";
+
+# The following not currently used        - 03/03/2010
+# but available for future implementation
+my $max_e;
+my $min_len;
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(
-		    # Required Arguments
+		    # REQUIRED
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    "d|db-dir=s"   => \$dir_blast_db,
 		    "c|config=s"   => \$file_config,
-		    # Optional strings
+		    # OPTIONS
+#		    "p|program=s"  => \$blast_program,
+#		    "d|database=s" => \$param,
+		    "f|feature=s"  => \$feature_type,
+		    "gff-ver=s"    => \$gff_ver,
 		    "blast-path=s" => \$blast_path,
 		    "logfile=s"    => \$logfile,
 		    # Booleans
@@ -146,6 +165,25 @@ if ($show_version) {
     print "\nbatch_mask.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -429,11 +467,13 @@ for my $ind_file (@fasta_files)
 		$append_gff = 1;
 	    }
 
+	    # CONVERT BLAST TO GFF
 	    blast2gff ( $file_blast_out, 
 			$gff_out_file,
 			$append_gff,
 			$name_root,
-			$ind_db->[2]);
+			$ind_db->[2],
+			$feature_type);
 	}
 
 
@@ -567,6 +607,287 @@ sub test_blast_db {
 }
 
 sub blast2gff {
+# CONVERT BLAST TO GFF 
+    
+    # seqname - ID to use in the seqname field
+    # blastin - path to the blast input file
+    # gffout  - path to the gff output file
+    # append  - boolean append data to existing file at gff out
+    # align   - the alignment type of the blast output
+    # suffix  - the suffix to add to type of blast
+    # prog    - blast program (blastn, blastx, wublast etc)
+    # gff second column is built as progparam
+    # chaning option order to allow $feature to be easily passed
+    my ($blastin, $gffout, $append, $seqname, $align, $feature, $suffix,
+	$prog) = @_;
+    my $blastprog;        # Name of the blast program used (blastn, blastx)
+    my $dbname;           # Name of the database blasted
+    my $hitname;          # Name of the hit
+    my $start;            # Start of the feature
+    my $end;              # End of the feature
+    my $strand;           # Strand of the hit
+    
+
+    # Recode from number for tab delimited blast
+    if ($align == 8 || $align ==9) {
+	$align = "tab";
+    }
+    
+    #-----------------------------+
+    # BLAST INTPUT OBJECT         |
+    #-----------------------------+
+    # This allows for input from NCBI-BLAST, and WUBLAST in either 
+    # default or tab delimited output as well as 
+    # INPUT FROM FILE PATH
+    my $blast_report;
+    if ($blastin) {
+	
+	# TAB ALIGNED BLAST OUTPUT
+	if ($align =~ "tab" ) {
+	    $blast_report = new Bio::SearchIO::blasttable ( 
+		'-format' => 'blasttable',
+		'-file'   => $blastin )
+		|| die "Could not open BLAST input file:\n$blastin.\n";
+	}
+	else {
+	    $blast_report = new Bio::SearchIO ( '-format' => 'blast',
+						'-file'   => $blastin,
+						'-signif' => $max_e,
+						'-min_query_len' => $min_len) 
+		|| die "Could not open BLAST input file:\n$blastin.\n";
+	} # Default to default blast alignment
+    }
+
+    # INPUT FROM STDIN
+    else {
+	if ($align =~ "tab") {
+	    $blast_report = new Bio::SearchIO::blasttable ( 
+		'-format' => 'blasttable',
+		'-fh'     => \*STDIN )
+		|| die "Could not open STDIN for blast table input\n";
+	}
+	else {
+	    print STDERR "Expecting input from STDIN\n";
+	    $blast_report = new Bio::SearchIO ( '-format' => 'blast',
+						'-fh'     => \*STDIN,
+						'-signif' => $max_e,
+						'-min_query_len' => $min_len) 
+		|| die "Could not open STDIN for blast input\n";
+	}
+    }
+    
+    #-----------------------------+
+    # FILEHANDLE FOR OUTPUT       |
+    #-----------------------------+
+    if ($gffout) {
+	if ($append) {
+	    open (GFFOUT, ">>$gffout") 
+		|| die "Can not open file:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT, ">$gffout") 
+	    || die "Can not open file:\n $gffout\n";
+	    # only print the header if this is the first line of the file
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	}
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+    
+    while (my $blast_result = $blast_report->next_result())
+    {
+
+	# Not using the following for the moment
+	# 01/30/2009
+	$blastprog = $blast_result->algorithm;
+	#$dbname = $blast_result->database_name();
+	
+	#-----------------------------+
+	# GET SEQNAME IF NOT PROVIDED |
+	#-----------------------------+
+	# First attempt to extract from blast report
+	# otherwise use 'seq' as the indentifier.
+	# For multiple query sequence, this will use
+	# the same identifier for all
+	unless ($seqname) {
+	    if ($blast_result->query_name) {
+		$seqname = $blast_result->query_name();
+	    }
+	    else {
+		$seqname = "seq";
+	    }
+	}
+	# Remove prohibited characters
+	if ($gff_ver =~ "GFF3") {
+	    $seqname = seqid_encode($seqname);
+	}
+
+	#-----------------------------+
+	# GET ALGORITHM IF UNKNOWN    |
+	#-----------------------------+
+	# This attempts to get the algorithm from the
+	# blast report, otherwise the generic 'blast' is used
+	unless ($prog) {
+	    if ($blast_result->algorithm) {
+		$prog = $blast_result->algorithm;
+	    }
+	    else {
+		$prog = "blast";
+	    }
+	}
+	# Sanitize program name
+	if ($gff_ver =~ "GFF3") {
+	    $prog = gff3_encode($prog);		
+	}
+	
+        #-----------------------------+
+	# APPEND DB IDENTIFIER        |
+	#-----------------------------+
+	# Providing a suffix at the command line will override
+	# the name provided in the blast report
+	my $source = $prog;
+	my $blast_db;
+	if ($suffix) {
+	    if ($gff_ver =~ "GFF3") {
+		$suffix = gff3_encode($suffix);
+	    }
+	    $source = $source.":".$suffix;
+	}
+	elsif ($blast_result->database_name()) {
+	    # Remove trailing white space from db name
+	    $blast_db = $blast_result->database_name();
+	    # Trim trailing white space
+	    $blast_db =~ s/\s+$//;
+	    if ($gff_ver =~ "GFF3") {
+		$blast_db = gff3_encode($blast_db);
+	    }
+	    $source = $source.":".$blast_db;
+	}
+
+    	while (my $blast_hit = $blast_result->next_hit())
+	{
+
+	    my $hitname = $blast_hit->name();	    
+	    if ($gff_ver =~ "GFF3") {
+		$hitname = gff3_encode($hitname);
+	    }
+
+	    my $hsp_num = 0;
+
+	    while (my $blast_hsp = $blast_hit->next_hsp())
+	    {
+
+		$hsp_num++;
+		my $hsp_id = sprintf("%04d", $hsp_num);
+
+		#-----------------------------+
+		# GET STRAND                  |
+		#-----------------------------+
+		# NOTE: This defaults to positive strand!!
+		$strand = $blast_hsp->strand('query');
+		if ($strand =~ "-1") {
+		    $strand = "-";
+		}
+		elsif ($strand =~ "1") {
+		    $strand = "+";
+		}
+		else {
+		    $strand = "+";
+		}
+		
+		#-----------------------------+
+		# GET QRY START AND END       |
+		#-----------------------------+
+		# Make certain that start coordinate is
+		# less then the end coordinate
+		if ( $blast_hsp->start() < $blast_hsp->end() ) {
+		    $start = $blast_hsp->start();
+		    $end = $blast_hsp->end();
+		}
+		else {
+		    $start = $blast_hsp->end();
+		    $end = $blast_hsp->start();
+		}
+
+		#-----------------------------+
+		# GET HIT START AND END       |
+		#-----------------------------+
+		my $hit_start;
+		my $hit_end;
+		if ( $blast_hsp->start('hit') < $blast_hsp->end('hit') ) {
+		    $hit_start = $blast_hsp->start('hit');
+		    $hit_end = $blast_hsp->end('hit');
+		}
+		else {
+		    $hit_start = $blast_hsp->end('hit');
+		    $hit_end = $blast_hsp->start('hit');
+		}
+
+
+		#-----------------------------+
+		# Set attribute               |
+		#-----------------------------+
+		my $attribute;
+		if ($gff_ver =~ "GFF3") {
+		    $feature = "match_part"; 
+		    $attribute = "ID=".$source."_".$hitname.
+			";".
+			"Name=".$hitname.";".
+			"Target=".$hitname." ".
+			$hit_start." ".$hit_end;
+		}
+		else {
+		    $attribute = $hitname;
+		}
+		
+		#-----------------------------+
+		# PRINT OUTPUT TO GFF FILE    |
+		#-----------------------------+
+		print GFFOUT "$seqname\t".           # Seqname
+		    "$source\t".                     # Source
+		    "$feature\t".                    # Feature type name
+		    "$start\t".                      # Start
+		    "$end\t".                        # End
+		    $blast_hsp->score()."\t".        # Score
+		    "$strand\t".                     # Strand
+		    ".\t".                           # Frame
+		    $attribute.                      # Attribute
+		    "\n";                            # newline
+
+	    } # End of while next hsp
+	} # End of while next hit
+    } # End of while next result
+    
+    close GFFOUT;
+    
+}
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+1;
+__END__
+
+
+# THE ORIGINAL CONVERSION FUNCTION IS BELOW AS USED
+sub blast2gff_old {
 # CONVERT BLAST TO GFF 
     
     # seqname - ID to use in the seqname field
@@ -731,8 +1052,6 @@ sub blast2gff {
     
 }
 
-1;
-__END__
 
 =head1 NAME
 
@@ -792,6 +1111,21 @@ against. Lines beginning with # are ignored.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
+
+=item --feature
+
+The type of feature. Be default, this is set to match_part in order to
+follow the Sequence Ontology guidelines and to facilitate visualizing
+this blast report in Apollo and Gbrowse. It is also possible to set this to an
+ontology complient name such as match or expressed_sequence_match.
 
 =item --blast-path
 
@@ -1016,14 +1350,12 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -1042,7 +1374,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/23/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/03/2010
 
 VERSION: $Rev$
 
@@ -1074,3 +1406,8 @@ VERSION: $Rev$
 #
 # 04/23/2009
 # - Added code to convert to gff format
+# 
+# 03/03/2010
+# - Added support for gff3 format by replacing
+#   blast2gff subfunction
+# - Added --feature option to command line and gff-ver to command line
