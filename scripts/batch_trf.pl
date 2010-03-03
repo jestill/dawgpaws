@@ -44,6 +44,8 @@ use File::Copy;                # Copy files
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -63,6 +65,9 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 
+
+my $pad_len = 4;
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -70,6 +75,9 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"   => \$indir,
                     "o|outdir=s"  => \$outdir,
 		    # ADDITIONAL OPTIONS
+		    "trf-bin=s"   => \$trf_bin, 
+		    "gff-ver=s"   => \$gff_ver,
+		    "pad-len=i"   => \$pad_len,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -102,6 +110,26 @@ if ($show_version) {
     print "\nbatch_trf.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -288,6 +316,10 @@ for my $ind_file (@fasta_files) {
     open (TRFGFF, ">$gff_out") ||
 	die "Can not open GFF output file $gff_out";
     
+    if ($gff_ver =~ "GFF3") {
+	print TRFGFF "##gff-version 3\n";
+    }    
+
     my $trf_count = 0; # Trf feature count
     while (<TRFIN>) {
 
@@ -300,7 +332,6 @@ for my $ind_file (@fasta_files) {
 	if ($num_trf_parts == 15) {
 
 	    $trf_count++;  # Increment feature count
-	    my $pad_len = 4;
 	    my $trf_count_pad = sprintf("%0${pad_len}d", $trf_count);
 
 
@@ -308,22 +339,64 @@ for my $ind_file (@fasta_files) {
 	    my $start = $trf_parts[0];
 	    my $end = $trf_parts[1];
 	    my $repeat_word = $trf_parts[13];
+	    my $wordlen = length($repeat_word);
+	    my $len_alias;
+	    if ($wordlen == 1) {
+		$len_alias = "monomer";
+	    }
+	    elsif ($wordlen == 2) {
+		$len_alias = "dimer";
+	    }
+	    elsif ($wordlen == 3) {
+		$len_alias = "trimer";
+	    }
+	    elsif ($wordlen == 4) {
+		$len_alias = "tetramer";
+	    }
+	    elsif ($wordlen == 5) {
+		$len_alias = "pentamer";
+	    }
+	    elsif ($wordlen == 6) {
+		$len_alias = "hexamer";
+	    }
+	    elsif ($wordlen == 7) {
+		$len_alias = "heptamer";
+	    }
+	    elsif ($wordlen == 8) {
+		$len_alias = "octamer";
+	    }
+	    elsif ($wordlen == 9) {
+		$len_alias = "nonamer";
+	    }
+	    elsif ($wordlen == 10) {
+		$len_alias = "decamer";
+	    }
+	    else {
+		$len_alias = $wordlen."mer";
+	    }
+
 
 	    #print STDERR"\tSTART: $start\n\tEND: $end\n" if $verbose;
 	    #print STDERR "\tWORD: $repeat_word\n" if $verbose;
 
 	    # PRINT THE GFF OUTPUT
+	    my $attribute = "TRF$trf_count_pad";
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=TRF$trf_count_pad".
+		    "; Alias=".$len_alias.
+		    "; Name=$repeat_word";
+	    }    
 
 	    # The gff string
 	    my $gff_str = "$name_root\t".  # 1 Sequence name
-		"TRFv4.00\t".             # 2 Source program
-		"tandem_repeat\t".        # 3 Feature type
-		"$start\t".               # 4 Feature Start
-		"$end\t".                 # 5 Feature End
-		".\t".                    # 6 Score
-		".\t".                    # 7 Strand, could be +
-		".\t".                    # 8 Frame
-		"TRF$trf_count_pad\n";    # 9 Feature ID
+		"TRFv4.00\t".              # 2 Source program
+		"tandem_repeat\t".         # 3 Feature type
+		"$start\t".                # 4 Feature Start
+		"$end\t".                  # 5 Feature End
+		".\t".                     # 6 Score
+		".\t".                     # 7 Strand, could be +
+		".\t".                     # 8 Frame
+		"$attribute\n";            # 9 Feature ID
 	    print TRFGFF $gff_str;
 
 	    print STDERR $gff_str if $verbose;
@@ -462,6 +535,25 @@ against. Lines beginning with # are ignored.
 
 =over 2
 
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
+
+=item --trf-bin
+
+The location or alias of the Tandem Repeats Finder binary. This can also
+be set with the TRF_BIN variable in the user environment.
+
+=item --pad-len
+
+The length to pad the number by in the ID field. For exampe --pad-len 4 will 
+give names such as ID=TRF0001 while --pad-len 5 will give names such as
+ID=TRF00001.
+
 =item --usage
 
 Short overview of how to use program from command line.
@@ -536,7 +628,8 @@ This program does not make use of variables in the user environment.
 
 The batch_trf.pl program requires the Tandem Repeats Finder program. This
 program is available from:
-http://tandem.bu.edu/trf/trf.download.html
+http://tandem.bu.edu/trf/trf.download.html. The batch_trf.pl program has been
+tested on TRF 4.00 and TRF 4.04
 
 =back
 
@@ -571,7 +664,9 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =item * Limited testing on versions of TRF
 
-This program has been tested and is known to work with trf400.linux.exe
+This program has been tested and is known to work with trf400.linux.exe as well
+as trf404.mac.exe. If you find this program incompatible with your version of
+Tandem Repeats Finder please contact JamesEstill__@__gmail.com
 
 =back
 
@@ -586,14 +681,18 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
+
+You should also cite the Tandem Repeats Finder manuscript:
+
+G. Benson. 1999.
+"Tandem repeats finder: a program to analyze DNA sequences"
+Nucleic Acids Research. 27(2): 573-580.
 
 =head1 LICENSE
 
@@ -612,7 +711,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/10/2008
 
-UPDATED: 03/24/2009
+UPDATED: 03/03/2010
 
 VERSION: $Rev$
 
@@ -628,3 +727,13 @@ VERSION: $Rev$
 # 01/20/2009
 # - Updated POD documentation
 # - Added Rev to properties
+#
+# 03/03/2010
+# - Updated reference information
+# - Adding support for GFF3 output
+# - Added trf-bin option at command line to specify the 
+#   location of the TRF binary
+# - Using Alias to define the type of tandem repeat
+# - Using Name to report the base word
+# - Added option to set pad length for the unique identified
+#   with the --pad-len option
