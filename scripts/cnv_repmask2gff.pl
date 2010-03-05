@@ -46,6 +46,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #//////////////////////
 my $file_num_max = 1;
@@ -80,9 +82,10 @@ my $pos_strand = 0;            # Put all results in positive strand
 my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "i|infile=s"   => \$infile,
                     "o|outfile=s"  => \$outfile,
-		    # ADDITIONAL OPTIONS
-		    "program=s"      => \$prog,
-		    "p|param=s"      => \$param,
+		    # OPTIONS
+		    "program=s"    => \$prog,
+		    "gff-ver=s"    => \$gff_ver,
+		    "p|param=s"    => \$param,
 		    "n|s|seqname|name=s"  => \$seqname,
 		    # BOOLEANS
 		    "plus"         => \$pos_strand,
@@ -94,6 +97,26 @@ my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "version"      => \$show_version,
 		    "man"          => \$show_man,
 		    "h|help"       => \$show_help,);
+
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -179,11 +202,17 @@ sub rmout2gff {
 	else {
 	    open (GFFOUT,">$gff_out") ||
 		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
 	}
     }
     else {
 	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
     }
 
     #-----------------------------+
@@ -214,6 +243,8 @@ sub rmout2gff {
     #12 starting position of match in database sequence 
     #   (using top-strand numbering)
     #13 ending position of match in database sequence
+    my $lc_count = 0;
+    my $tr_count = 0;
 
     while (<RM_IN>) {
 	chomp;
@@ -226,13 +257,23 @@ sub rmout2gff {
 	my $cur_strand = $rmout[8];
 
 	#-----------------------------+
-	# GET STRAND                  |
+	# GET 
 	#-----------------------------+
+
+	#-----------------------------+
+	# GET STRAND AND HIT COORDS   |
+	#-----------------------------+
+	my $hit_start;                 # Start position in hit 
+	my $hit_end;                   # End position in alignment hit
 	if ($cur_strand =~ "C" ) {
 	    $strand = "-";
+	    $hit_start = $rmout[12];
+	    $hit_end = $rmout[13];
 	}
 	else {
 	    $strand = "+";
+	    $hit_start = $rmout[11];
+	    $hit_end = $rmout[12];
 	}
 
 	if ($all_plus) {
@@ -251,6 +292,63 @@ sub rmout2gff {
 	    }
 	}
 
+	# Since these are essentially parts of a match these will be
+	# set to be match part
+	my $rm_class = $rmout[10];
+
+	#-----------------------------+
+	# FORMAT FEATURE              |
+	#-----------------------------+
+	my $feature = "match_part";
+	if ($rm_class =~ "Unknown") {
+	    $feature = "match_part";
+	}
+	elsif ($rm_class =~ "Simple_repeat") {
+	    $tr_count++;
+	    $feature = "tandem_repeat"
+
+	}
+	elsif ($rm_class =~ "Low_complexity") {
+	    $lc_count++;
+	    $feature = "low_complexity_region";
+	}
+
+
+	#-----------------------------+
+	# FORMAT ATTRIBUTE            |
+	#-----------------------------+
+	my $hitname = $rmout[9];
+	my $attribute;
+	if ($gff_ver =~ "GFF3") {
+	    
+	    if ($rm_class =~ "Simple_repeat") {
+		$attribute = "ID=".$hitname."_".$tr_count;
+	    }
+	    elsif ($rm_class =~ "Low_complexity") {
+		$attribute = "ID=".$hitname."_".$lc_count;
+	    }
+	    elsif ($feature =~ "match_part") {
+		# The following taken from 
+		#$attribute = "ID=".$source."_".$hitname.
+		$attribute = "ID=".$hitname.
+		    ";".
+		    "Name=".$hitname.";".
+		    "Target=".$hitname." ".
+		    $hit_start." ".$hit_end;
+		
+	    }
+	    else {
+		$attribute="ID=".$hitname;
+	    }
+
+	}
+	else {
+	    $attribute = $hitname;
+	}
+
+	# If match part may want to express where thse
+	# match on the corresponging region in the dbase
+
 	#-----------------------------+
 	# PRINT GFF OUT               |
 	#-----------------------------+
@@ -258,13 +356,13 @@ sub rmout2gff {
 	# May also want to place everything in positive strand
 	print GFFOUT "$seq_id\t".              # qry sequence name
 	    "$source\t".              # software used
-	    "exon\t".                 # attribute name
+	    "$feature\t".                 # feature attribute name
 	    "$rmout[5]\t".            # start
 	    "$rmout[6]\t".            # stop
 	    "$rmout[0]\t".            # smith waterman score"
 	    "$strand\t".              # Postive strand
 	    ".\t".                    # frame
-	    "$rmout[9]".              # attribute
+	    "$attribute".              # attribute
 	    "\n";
 	
     }
@@ -387,6 +485,14 @@ program will write the output to STDERR.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item -p,--param
 
@@ -784,3 +890,8 @@ VERSION: $Rev$
 #
 # 03/30/2009
 # - Added support for --seqname in addition to --name
+# 
+# 03/05/2010
+# - Added support for GFF3 output
+# - sorting low_complexity and tandem_repeat separate
+#   from match_part
