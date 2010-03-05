@@ -243,8 +243,10 @@ sub rmout2gff {
     #12 starting position of match in database sequence 
     #   (using top-strand numbering)
     #13 ending position of match in database sequence
-    my $lc_count = 0;
-    my $tr_count = 0;
+    my $lc_count = 0; # Count of low complexity
+    my $tr_count = 0; # Count of tandem repeats
+    my $m_count = 0;  # Count of matches
+    my $unk_count = 0;  # Count of unkonwn type
 
     while (<RM_IN>) {
 	chomp;
@@ -301,10 +303,15 @@ sub rmout2gff {
 	#-----------------------------+
 	# FORMAT FEATURE              |
 	#-----------------------------+
-	my $feature = "match_part";
+#	my $feature = "match_part";
+#	if ($rm_class =~ "Unknown") {
+#	    $feature = "match_part";
+#	}
+	my $feature = "match";
 	if ($rm_class =~ "Unknown") {
-	    $feature = "match_part";
+	    $feature = "match";
 	}
+
 	elsif ($rm_class =~ "Simple_repeat") {
 	    $tr_count++;
 	    $feature = "tandem_repeat"
@@ -333,12 +340,12 @@ sub rmout2gff {
 	    elsif ($rm_class =~ "Low_complexity") {
 		$attribute = "ID=".$hitname."_".$lc_count;
 	    }
-	    elsif ($feature =~ "match_part") {
-		# The following taken from 
-		#$attribute = "ID=".$source."_".$hitname.
-		$attribute = "ID=".$hitname.
-		    ";".
-		    "Name=".$hitname.";".
+#	    elsif ($feature =~ "match_part") {
+	    elsif ($feature =~ "match") {
+		$m_count++;
+		$attribute = "ID=match_".$m_count."_".$hitname.
+		    "; ".
+		    "Name=".$hitname."; ".
 		    "Target=".$hitname." ".
 		    $hit_start." ".$hit_end;
 		
