@@ -257,10 +257,6 @@ sub rmout2gff {
 	my $cur_strand = $rmout[8];
 
 	#-----------------------------+
-	# GET 
-	#-----------------------------+
-
-	#-----------------------------+
 	# GET STRAND AND HIT COORDS   |
 	#-----------------------------+
 	my $hit_start;                 # Start position in hit 
@@ -291,10 +287,16 @@ sub rmout2gff {
 		$seq_id = "seq";
 	    }
 	}
-
+	if ($gff_ver =~ "GFF3") {
+	    $seq_id = seqid_encode($seq_id);
+	}
+	
 	# Since these are essentially parts of a match these will be
 	# set to be match part
 	my $rm_class = $rmout[10];
+	if ($gff_ver =~ "GFF3") {
+	    $rm_class = gff3_encode($rm_class);
+	}
 
 	#-----------------------------+
 	# FORMAT FEATURE              |
@@ -318,6 +320,10 @@ sub rmout2gff {
 	# FORMAT ATTRIBUTE            |
 	#-----------------------------+
 	my $hitname = $rmout[9];
+	if ($gff_ver =~ "GFF3") {
+	    $hitname = gff3_encode($hitname);
+	}
+
 	my $attribute;
 	if ($gff_ver =~ "GFF3") {
 	    
@@ -435,6 +441,22 @@ sub print_help {
 
     exit 0;
    
+}
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
 }
 
 
