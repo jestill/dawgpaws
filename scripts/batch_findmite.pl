@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 08/30/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/08/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the FINDMITE program in batch mode using a config    |
@@ -44,6 +44,8 @@ my @fm_params = ();
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -53,6 +55,9 @@ my $outdir;                    # Output directory
 my $parfile;                   # Parameters file
 my $name_root;                 # Root name of the input file
 my $gff_dir;                    # Dir to hold the gff output file
+my $param;                     # Name of the parameter set used
+my $prog = "findmite";         # Name of program
+my $fasta_out_path;
 
 # Counters/Index Vals
 my $i = 0;                     # Array index val
@@ -69,6 +74,8 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_gff_convert = 1;
 my $do_fasta_out = 0;          # Create a fasta file with all predicted MITEs
+my $do_test = 0;
+my $fasta_append = 0;
 
 my $findmite_bin = $ENV{FINDMITE_BIN} || "FINDMITE1New.bin";
 
@@ -80,10 +87,15 @@ my $ok = GetOptions(# Required Arguments
                     "o|outdir=s"      => \$outdir,
 		    "c|config=s"      => \$parfile,
 		    # Additional options
+		    "program=s"       => \$prog,
+		    "p|param=s"       => \$param,
+		    "gff-ver=s"       => \$gff_ver,
 		    "f|fasta"         => \$do_fasta_out,
 		    "q|quiet"         => \$quiet,
 		    "verbose"         => \$verbose,
 		    "gff"             => \$do_gff_convert,
+		    "test"            => \$do_test,
+		    "append-fasta"    => \$fasta_append,
 		    # Additional information
 		    "usage"           => \$show_usage,
 		    "version"         => \$show_version,
@@ -113,6 +125,26 @@ if ($show_man) {
     system("perldoc $0");
     exit($ok ? 0 : 2);
 }
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
 
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
@@ -239,7 +271,8 @@ for my $ind_file (@fasta_files) {
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	# default to full file name
+	$name_root = $ind_file;
     }
 
     #-----------------------------+
@@ -303,38 +336,37 @@ for my $ind_file (@fasta_files) {
 	# Then should be made a subfunction that can return true
 	my $fm_in = $indir.$ind_file;
 	my $fm_out = $findmite_dir.$name_root."_".$mite_name.".mite.txt";
-#	my $fm_cmd = "FINDMITE1New.bin $fm_in $fm_out";
 	my $fm_cmd = "$findmite_bin $fm_in $fm_out";
-	print "CMD: $fm_cmd\n" if $verbose;
+	print STDERR "CMD: $fm_cmd\n" if $verbose;
 
-
-	# It seems like FINDMTE is closing
-	# Some j
-	open(FINDMITE,"|$fm_cmd") ||
-	    die "Could not open findmite\n";
-	#sleep 1;
-	print FINDMITE "150000\n" ||
-	    die "Could not set length";
-	print FINDMITE "$rep\n";
-	#sleep 1;
-	print FINDMITE "$tir_len\n";
-	#sleep 1;
-	print FINDMITE "$num_mismatch\n";
-	#sleep 1;
-	print FINDMITE "$filt_at\n";
-	#sleep 1;
-	print FINDMITE "$filt_cg\n";
-	#sleep 1;
-	print FINDMITE "$filt_atta\n";
-	#sleep 1;
-	print FINDMITE "$filt_2_base\n";
-	#sleep 1;
-	print FINDMITE "$min_dist\n";
-	#sleep 1;
-	print FINDMITE "$max_dist\n";
-	#sleep 10;
-	close FINDMITE;
-
+	unless ($do_test) {
+	    # It seems like FINDMTE is closing
+	    # Some j
+	    open(FINDMITE,"|$fm_cmd") ||
+		die "Could not open findmite\n";
+	    #sleep 1;
+	    print FINDMITE "150000\n" ||
+		die "Could not set length";
+	    print FINDMITE "$rep\n";
+	    #sleep 1;
+	    print FINDMITE "$tir_len\n";
+	    #sleep 1;
+	    print FINDMITE "$num_mismatch\n";
+	    #sleep 1;
+	    print FINDMITE "$filt_at\n";
+	    #sleep 1;
+	    print FINDMITE "$filt_cg\n";
+	    #sleep 1;
+	    print FINDMITE "$filt_atta\n";
+	    #sleep 1;
+	    print FINDMITE "$filt_2_base\n";
+	    #sleep 1;
+	    print FINDMITE "$min_dist\n";
+	    #sleep 1;
+	    print FINDMITE "$max_dist\n";
+	    #sleep 10;
+	    close FINDMITE;
+	}
 
 	#-----------------------------+
 	# CONVERT OUTPUT TO GFF       |
@@ -349,8 +381,29 @@ for my $ind_file (@fasta_files) {
 		# Currently will do_fasta_file creation if requested
 		# This last boolean set to 1 will append to any existing
 		# fasta file that is present
-		findmite2gff ($fm_out, $findmite_gff, 0, $name_root, 
-			      $do_fasta_out, 1, $findmite_fasta);
+
+		# OLD GFF2 CONVERSION REQUIRED:
+		#     my ($findmite_in, $gff_out, $append_gff, $seqname, 
+	        #     $fasta_out, $append_fasta, $fasta_out_path) = @_;
+
+#		findmite2gff ($fm_out, $findmite_gff, 0, $name_root, 
+#			      $do_fasta_out, 1, $findmite_fasta);
+
+		#NEW GFF3 CONVERSION REQUIRES:
+              #   my ( $source, $findmite_in, $gff_out, $src_suffix, 
+              #   $append_gff, 
+              #   $fm_seqname, $fasta_out, $append_fasta) = @_;
+		my $param = $mite_name;
+		my $do_append_gff = 1;
+		if ($fasta_out_path) {
+		    findmite2gff ($prog, $fm_out, $findmite_gff, $param,
+				  $do_append_gff, $name_root,
+				  $fasta_out_path, $fasta_append);
+		} else {
+		    findmite2gff ($prog, $fm_out, $findmite_gff, $param,
+				  $do_append_gff, $name_root,
+				  0, 0);
+		}
 		
 		# Copy the gff file file
 		my $gff_copy_path = $gff_dir.$name_root.
@@ -384,7 +437,394 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+
 sub findmite2gff {
+    
+    #-----------------------------+
+    # SUBFUNCTION VARS            |
+    #-----------------------------+
+    my ( $source, $findmite_in, $gff_out, $src_suffix, $append_gff, 
+	 $fm_seqname, $fasta_out, $append_fasta) = @_;
+
+    # GFF OUT VARS
+    my $gff_seq_id;                 # Seq id for use in gff
+    my $gff_start;                  # Start of the feature
+    my $gff_end;                    # End of the feature
+    my $gff_source;                 # Source ie findmite_at_11
+    my $gff_name;                   # Name of the feature 
+
+    # FINDMITE HEADER VARS
+    my $fm_dir_repeats;             # Direct repeats
+    my $fm_tir_len;                 # Lenght of the TIR
+    my $fm_mismatch_max;            # Max number of mistmatches
+    my $fm_filter_at;               # Were A/T strings filtered 
+    my $fm_filter_cg;               # Were C/G strings filtered
+    my $fm_filter_atta;             # Were AT/TA strings filtered
+    my $fm_filter_2_base;           # Percent (0 to 100)
+    my $fm_min_dist;                # Minimum distance used
+    my $fm_max_dist;                # Maximum distance used
+    my $fm_file_an;                 # Name of the file analyzed
+
+    # FINDMATE INDIVIDUAL MITE VARS
+    my $fm_pattern;                 # Pattern
+    my $fm_seq_id;                  # Id of the query sequence
+    my $fm_num_mismatch;            # Num of mismatches
+    my $fm_seq = "";                # Sequence string as parsed from findmite
+    my $mite_seq_string;            # Sequence string of the putatitve mite
+    my $mite_context_5;             # 5' Context of the mite (40bp)
+    my $mite_context_3;             # 3' Context of the mite (40bp)
+    my $mite_start;                 # Start of the mite as parsed from FM
+    my $mite_end;                   # End of the mite as parsed from FM
+
+    # Counter
+    my $mite_num = 0;               # Incremented ID number for the mite
+
+    # BOOLEANS
+    my $in_seq = 0;                 # Boolean, in seq data (past header info)
+
+    #-----------------------------+
+    # OPEN INFILE                 |
+    #-----------------------------+
+    if ($findmite_in) {
+	open (INFILE, "<$findmite_in") ||
+	    die "Can not open input file:\n$findmite_in\n";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Could not open STDIN for input.\n"
+    }
+    
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+    if ($gff_out) {
+	if ($append_gff) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "Can not open output file:\n$gff_out\n";	
+	}
+	else {
+	    open (GFFOUT, ">$gff_out") ||
+		die "Can not open gff output file:\n$gff_out\n";
+	}
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    #-----------------------------+
+    # FASTA OUTPUT FILE           |
+    #-----------------------------+
+    if ($fasta_out) {
+	if ($append_fasta) {
+	    open (FASTAOUT, ">>$fasta_out") ||
+		die "Can not FASTA output file:\n$fasta_out\n";
+	} 
+	else {
+	    open (FASTAOUT, ">$fasta_out") ||
+	    die "Can not FASTA output file:\n$fasta_out\n";
+	}
+    } 
+
+    #-----------------------------+
+    # PROCESS FINDMITE FILE       |
+    #-----------------------------+
+    while (<INFILE>) {
+	chomp;
+ 	#print $_."\n";
+
+	if(m/^Pattern  : (.*)/) {
+
+	    # If we have previously loaded seq data then
+	    # futher parse the sequence string and and
+	    # print the results to the gff output
+	    if ($in_seq) {
+		                   
+		if ($fm_seq =~ m/(.*)\((.*)\)\-{5}(.*)\-{5}\((.*)\)(.*)/) {
+		    $mite_context_5 = $1;
+		    $mite_start = $2;
+		    $mite_seq_string = $3;
+		    $mite_end = $4;
+		    $mite_context_3 = $5;
+
+		    if ($verbose) {
+			print STDERR "\t5CON: $mite_context_5\n";
+			print STDERR "\tSTAR: $mite_start\n";
+			print STDERR "\tMITE: $mite_seq_string\n";
+			print STDERR "\tEND : $mite_end\n";
+			print STDERR "\t3CON: $mite_context_3\n";
+			print STDERR "\n\n";
+		    }
+
+		    #-----------------------------+
+		    # SET SEQUENCE ID             |
+		    #-----------------------------+
+		    if ($fm_seqname) {
+			$gff_seq_id = $fm_seqname;
+		    }
+		    else {
+			if ($fm_seq_id =~ m/^>(\S*)\s./) {
+			    $gff_seq_id = $1;
+			}
+			elsif ($fm_seq_id =~ m/^>(.*)/) {
+			    $gff_seq_id = $1;
+			}
+			else {
+			    $gff_seq_id = $fm_seq_id;
+			}
+		    }
+		    
+		    #-----------------------------+
+		    # SET PROGRAM SOURCE           |
+		    #-----------------------------+
+		    $gff_source = $source;
+		    if ($src_suffix) {
+			$gff_source = $gff_source.":".$src_suffix;
+		    }
+#		    else {
+#			$gff_source = $gff_source.":".
+#			    $fm_dir_repeats."_".$fm_tir_len;
+#		    }
+		    
+		    #-----------------------------+
+		    # SET FEATURE NAME            |
+		    #-----------------------------+
+		    if ($src_suffix) {
+			$gff_name = "findmite_".$src_suffix.
+			    "_".$mite_num;
+		    }
+		    else {
+			$gff_name = "findmite_".$mite_num;
+		    }
+
+		    $gff_start = $mite_start;
+		    $gff_end = $mite_end;
+
+		    #-----------------------------+
+		    # PRINT TO GFF FILE           |
+		    #-----------------------------+
+		    my $attribute;
+		    if ($gff_ver =~ "GFF3") {
+			$attribute = "ID=".$gff_name;
+		    }
+		    else {
+			$attribute = $gff_name
+		    }
+
+		    print GFFOUT "$gff_seq_id\t".   # Seq name
+			"$gff_source\t".            # Source
+			"MITE\t".                   # Feature type
+			"$gff_start\t".             # Start
+			"$gff_end\t".               # End
+			".\t".                      # Score
+			"+\t".                      # Strand
+			".\t".                      # Frame
+			"$attribute\n";              # Feature name
+
+		    #-----------------------------+
+		    # PRINT MITE TO FASTA FILE    |
+		    #-----------------------------+
+		    if ($fasta_out) {
+			print FASTAOUT ">$gff_name\n";
+			print FASTAOUT "$mite_seq_string\n";
+		    }
+
+		}
+
+		# Reset vals to null
+		$fm_seq = "";
+	    }
+
+	    $in_seq = 1;
+	    $mite_num++;
+	    $fm_pattern = $1;
+	    print STDERR "$fm_pattern\n" if $verbose;
+	}
+	elsif(m/^Sequence : (.*)/) {
+	    $fm_seq_id = $1;
+	    print STDERR "\t$fm_seq_id\n" if $verbose;
+	}
+	elsif(m/^Mismatch : (.*)/){
+	    $fm_num_mismatch = $1;
+	    print STDERR "\t$fm_num_mismatch\n" if $verbose;
+	}
+	elsif($in_seq) {
+	    $fm_seq = $fm_seq.$_;
+	}
+	#-----------------------------+
+	# HEADER INFORMATION          | 
+	#-----------------------------+
+	elsif(m/Direct repeats.{17}(.*)/) {
+	    $fm_dir_repeats = $1;
+	}
+	elsif(m/Length of TIR.{18}(.*)/) {
+	    $fm_tir_len = $1;
+	}
+	elsif(m/Number of mis.{18}(.*)/) {
+	    $fm_num_mismatch = $1;
+	}
+	elsif(m/Filtering A\/T.{18}(.*)/) {
+	    $fm_filter_at = $1;
+	}
+	elsif(m/Filtering C\/G.{18}(.*)/) {
+	    $fm_filter_cg = $1;
+	}
+	elsif(m/Filtering AT\/.{18}(.*)/) {
+	    $fm_filter_atta = $1;
+	}
+	elsif(m/Filtering 2.{20}(.*)/) {
+	    $fm_filter_2_base = $1;
+	}
+	elsif(m/Minimum dist.{19}(.*)/) {
+	    $fm_min_dist = $1;
+	}
+	elsif(m/Maximum dist.{19}(.*)/) {
+	    $fm_max_dist = $1;
+	}
+	elsif(m/The results from the input.{17}(.*)/) {
+	    $fm_file_an = $1;
+	}
+
+    }
+
+    
+    #-----------------------------+
+    # PRINT OUT OF DATA IN VARS   |
+    #-----------------------------+
+    if ($fm_seq =~ m/(.*)\((.*)\)\-{5}(.*)\-{5}\((.*)\)(.*)/) {
+    #if ($fm_seq =~ m/(.*)\((.*)\)\-\-\-\-\-(.*)\-\-\-\-\-\((.*)\)(.*)/) {
+	$mite_context_5 = $1;
+	$mite_start = $2;
+	$mite_seq_string = $3;
+	$mite_end = $4;
+	$mite_context_3 = $5;
+	
+
+	if ($verbose) {
+	    print STDERR "\t5CON: $mite_context_5\n";
+	    print STDERR "\tSTAR: $mite_start\n";
+	    print STDERR "\tMITE: $mite_seq_string\n";
+	    print STDERR "\tEND : $mite_end\n";
+	    print STDERR "\t3CON: $mite_context_3\n";
+	    print STDERR "\n\n";
+	}	
+
+    }
+
+
+
+    #////////////////////////////////
+    # THE FOLLOWING CODE SHOULD NOT BE THIS REDUNDANT CUT AND COPY
+    #-----------------------------+
+    # SET SEQUENCE ID             |
+    #-----------------------------+
+    if ($fm_seqname) {
+	$gff_seq_id = $fm_seqname;
+    }
+    else {
+	if ($fm_seq_id =~ m/^>(\S*)\s./) {
+	    $gff_seq_id = $1;
+	}
+	elsif ($fm_seq_id =~ m/^>(.*)/) {
+	    $gff_seq_id = $1;
+	}
+	else {
+	    $gff_seq_id = $fm_seq_id;
+	}
+    }
+    
+    #-----------------------------+
+    # SET PROGRAM SOURCE           |
+    #-----------------------------+
+    $gff_source = $source;
+    if ($src_suffix) {
+	$gff_source = $gff_source.":".$src_suffix;
+    }
+#    else {
+#	$gff_source = $gff_source.":".
+#	    $fm_dir_repeats."_".$fm_tir_len;
+#    }
+    
+    #-----------------------------+
+    # SET FEATURE NAME            |
+    #-----------------------------+
+    if ($src_suffix) {
+	$gff_name = "findmite_".$src_suffix.
+	    "_".$mite_num;
+    }
+    else {
+	$gff_name = "findmite_".$mite_num;
+    }
+    
+    $gff_start = $mite_start;
+    $gff_end = $mite_end;
+    
+
+
+    my $attribute;
+    if ($gff_ver =~ "GFF3") {
+	$attribute = "ID=".$gff_name;
+    }
+    else {
+	$attribute = $gff_name
+    }
+    
+    print GFFOUT "$gff_seq_id\t".   # Seq name
+	"$gff_source\t".            # Source
+	"MITE\t".                   # Feature type
+	"$gff_start\t".             # Start
+	"$gff_end\t".               # End
+	".\t".                      # Score
+	"+\t".                      # Strand
+	".\t".                      # Frame
+	"$attribute\n";              # Feature name
+
+
+#    print GFFOUT "$gff_seq_id\t".   # Seq name
+#	"$gff_source\t".            # Source
+#	"MITE\t".                   # Feature type
+#	"$gff_start\t".             # Start
+#	"$gff_end\t".               # End
+#	".\t".                      # Score
+#	"+\t".                      # Strand
+#	".\t".                      # Frame
+#	"$gff_name\n";              # Feature name
+#
+#    # END REDUNDANT CUT AND COPY
+#    #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    #-----------------------------+
+    # PRINT MITE TO FASTA FILE    |
+    #-----------------------------+
+    if ($fasta_out) {
+	print FASTAOUT ">$gff_name\n";
+	print FASTAOUT "$mite_seq_string\n";
+    }
+
+    # Print while debu
+    if ($verbose) {
+	print STDERR "FILE  : $fm_file_an\n";
+	print STDERR "DIRREP: $fm_dir_repeats\n";
+	print STDERR "TIRLEN: $fm_tir_len\n";
+	print STDERR "NUMMIS: $fm_num_mismatch\n";
+	print STDERR "F_AT  : $fm_filter_at\n";
+	print STDERR "F_CG  : $fm_filter_cg\n";
+	print STDERR "F_ATTA: $fm_filter_atta\n";
+	print STDERR "F_2BAS: $fm_filter_2_base\n";
+	print STDERR "MIN   : $fm_min_dist\n";
+	print STDERR "MAX   : $fm_max_dist\n";
+    }
+
+    close INFILE;
+    close GFFOUT;
+    close FASTAOUT if ($fasta_out);
+
+}
+
+
+# The original subfunction
+sub findmite2gff_old {
     
     #-----------------------------+
     # SUBFUNCTION VARS            |
@@ -739,39 +1179,6 @@ sub print_help {
 1;
 __END__
 
-# Deprecated print_help
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"batch_findmite.pl -i InDir -o OutDir -p ParamFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Directory of fasta files to process\n".
-	"  --outdir       # Path to the output direcotry\n".
-	"  --params       # Path to the params file\n".
-	"\n".
-	"OPTIONS:\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
-
 =head1 NAME
 
 batch_findmite.pl - Run the findmite program in batch mode.
@@ -1062,7 +1469,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/30/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/08/2010
 
 VERSION: $Rev$
 
@@ -1092,3 +1499,7 @@ VERSION: $Rev$
 # - Updated POD documentation
 # - Added print_help subfunction to extract help and
 #   usage messages from the POD documentation
+#
+# 03/08/2010
+# - Added support for GFF3 output
+# - Removed deprecated print_help
