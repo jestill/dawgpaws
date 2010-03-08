@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 04/10/2006                                       |
-# UPDATED: 04/23/2009                                       |
+# UPDATED: 03/05/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Runs the RepeatMasker program for a set of input         |
@@ -47,6 +47,9 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
+
 #//////////////////////
 my $file_num_max = 1;
 #\\\\\\\\\\\\\\\\\\\\\\
@@ -57,10 +60,12 @@ my $file_num_max = 1;
 
 # VARS WITH DEFAULT VALUES
 my $engine = "crossmatch";
+my $prog = "repeatmasker";     # The program used 
 
 # GENERAL PROGRAM VARS
 my @inline;                    # Parse of an input line
 my $msg;                       # Message printed to the log file
+my $param;                     # Parameter name
 
 # DIR PATHS
 my $indir;                     # Directory containing the seq files to process
@@ -128,6 +133,7 @@ my $apollo = 0;                # Path to apollo and apollo variables
 my $test = 0;
 my $verbose = 0;
 my $debug = 0;                 # Run the program in debug mode 
+my $pos_strand = 0;            # Put all results in positive strand
 
 # PROGRAM COMMAND STRINGS
 my $cmd_repmask;               # Command to run RepeatMasker
@@ -152,6 +158,9 @@ my $ok = GetOptions(
                     "o|outdir=s"   => \$outdir,
 		    "c|config=s",  => \$config_file,
 		    # ADDITIONAL OPTIONS
+		    # BOOLEANS
+		    "program=s"    => \$prog,
+		    "gff-ver=s"    => \$gff_ver,
 		    "rm-path=s"    => \$rm_path,
 		    "rm-dir=s"     => \$rm_dir,
 		    "ap-path=s",   => \$ap_path,
@@ -159,6 +168,7 @@ my $ok = GetOptions(
 		    "p|num-proc=s" => \$num_proc,
 		    "engine=s"     => \$engine,
 		    # BOOLEANS
+		    "plus"         => \$pos_strand,
 		    "apollo"       => \$apollo,
 		    "verbose"      => \$verbose,
 		    "debug"        => \$debug,
@@ -196,6 +206,25 @@ if ($show_version) {
     print "\nbatch_repmask.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -416,7 +445,7 @@ for my $ind_file (@fasta_files)
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	$name_root = $ind_file;
     }
 	
     # The following names are the names as produced by
@@ -575,15 +604,21 @@ for my $ind_file (@fasta_files)
 	}
 
 
-	unless ( $test ) {
-	    rmout_to_gff($repmask_outfile, $gff_el_out, ">");
-	}
-
-
-	unless ( $test ) {
-	    rmout_to_gff( $repmask_outfile, $gff_alldb_out, ">>");
-	}
-
+	#-----------------------------------------------------------+
+	# CONVERT TO GFF
+	#-----------------------------------------------------------+
+	my $append;
+	$append = 0;
+	$param = $rep_db_name;
+	print STDERR "Out to $gff_el_out" if $test;
+	rmout2gff ($prog, $repmask_outfile, $gff_el_out, 
+		   $name_root, $param, $append, $pos_strand );
+	
+        # append to existing file
+	$append = 1;
+	$param = $rep_db_name;
+	rmout2gff ($prog, $repmask_outfile, $gff_el_out, 
+		   $name_root, $param, $append, $pos_strand );
 
 	#-----------------------------+
 	# CONVERT THE FILES FROM GFF  | 
@@ -661,6 +696,9 @@ for my $ind_file (@fasta_files)
 	move ( $repmask_masked_file, $repmask_masked_cp ) ||
 	    print STDERR $msg;
 
+
+	print STDERR "Moving GFF to $repmask_el_cp\n" if $test;
+
 	$msg = "\nERROR: Can not move ".$gff_el_out."\n";
 	move ( $gff_el_out , $repmask_el_cp ) ||
 	    print STDERR $msg;
@@ -719,6 +757,260 @@ exit;
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+sub rmout2gff {
+
+# DO CONVERSION
+# example use
+#rmout2gff ($prog, $infile, $outfile, $seqname, $param, $append, $pos_strand );
+
+
+
+
+    # $source = program name source for the annotation
+    # $rm_file = path to the repeat masker file
+    # $gff_file = path to the gff output file
+    # $seq_id   = identifier of the sequence being processed
+    # $src_suffix = parameter name/ db name suffix for source
+    # $do_append  = append results to an existing gff file
+    # $all_plus   = place all results on the plus strand
+    # the default will be to concatenate when the prefix
+    # variable can not be undertood
+    my ( $source, $rm_file, $gff_out, $seq_id, $src_suffix, $do_append, 
+	 $all_plus) = @_;
+
+    my $strand;
+
+    # Set the has_seq_id flag to true is a over ride sequence id was passed
+    my $has_seq_id;
+    if ($seq_id) {
+	$has_seq_id = 1;
+    }
+    else {
+	$has_seq_id = 0;
+    }
+    
+    #-----------------------------+
+    # OPEN RM FILE                |
+    #-----------------------------+
+    # Default is to expect intput from STDIN if infile path not given
+    if ($rm_file) {
+	open ( RM_IN, "<".$rm_file ) ||
+	    die "Could not open the RM infile:\n $rm_file\n";
+    }
+    else {
+	print STDERR "Expecting input from STDIN";
+	open ( RM_IN, "<&STDIN" ) ||
+	    die "Could not open STDIN for input\n";
+    }
+
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gff_out) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	}
+	else {
+	    open (GFFOUT,">$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	}
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
+    }
+
+    #-----------------------------+
+    # SET PROGRAM SOURCE          |
+    #-----------------------------+
+    if ($src_suffix) {
+	$source = $source.":".$src_suffix;
+    }
+
+    #-----------------------------------------------------------+
+    # REPEATMASKER OUT FILE CONTAINS
+    #-----------------------------------------------------------+
+    # 0 Smith-Waterman score of the match
+    # 1 % substitutions in matching region compared to the consensus
+    # 2 % of bases opposite a gap in the query sequence (deleted bp)
+    # 3 % of bases opposite a gap in the repeat consensus (inserted bp)
+    # 4 name of query sequence
+    # 5 starting position of match in query sequence
+    # 6 ending position of match in query sequence
+    # 7 no. of bases in query sequence past the ending position of match
+    #   in parenthesis
+    # 8 match is with the Complement of the consensus sequence in the database
+    #   C
+    # 9 name of the matching interspersed repeat
+    #10 class of the repeat, in this case a DNA transposon 
+    #11 no. of bases in (complement of) the repeat consensus sequence 
+    #   in parenthesis
+    #12 starting position of match in database sequence 
+    #   (using top-strand numbering)
+    #13 ending position of match in database sequence
+    my $lc_count = 0; # Count of low complexity
+    my $tr_count = 0; # Count of tandem repeats
+    my $m_count = 0;  # Count of matches
+    my $unk_count = 0;  # Count of unkonwn type
+
+    while (<RM_IN>) {
+	chomp;
+	my @rmout = split;
+
+	my $line_len = @rmout;
+	# Skip lines related to database used etc
+	next if ($line_len < 13);
+	
+	my $cur_strand = $rmout[8];
+
+	#-----------------------------+
+	# GET STRAND AND HIT COORDS   |
+	#-----------------------------+
+	my $hit_start;                 # Start position in hit 
+	my $hit_end;                   # End position in alignment hit
+	if ($cur_strand =~ "C" ) {
+	    $strand = "-";
+	    $hit_start = $rmout[12];
+	    $hit_end = $rmout[13];
+	}
+	else {
+	    $strand = "+";
+	    $hit_start = $rmout[11];
+	    $hit_end = $rmout[12];
+	}
+
+	if ($all_plus) {
+	    $strand = "+";
+	}
+
+	#-----------------------------+
+	# SET SEQUENCE ID             |
+	#-----------------------------+
+	unless ($has_seq_id) {
+	    if ($rmout[4]) {
+		$seq_id = $rmout[4];
+	    }
+	    else {
+		$seq_id = "seq";
+	    }
+	}
+	if ($gff_ver =~ "GFF3") {
+	    $seq_id = seqid_encode($seq_id);
+	}
+	
+	# Since these are essentially parts of a match these will be
+	# set to be match part
+	my $rm_class = $rmout[10];
+	if ($gff_ver =~ "GFF3") {
+	    $rm_class = gff3_encode($rm_class);
+	}
+
+	#-----------------------------+
+	# FORMAT FEATURE              |
+	#-----------------------------+
+#	my $feature = "match_part";
+#	if ($rm_class =~ "Unknown") {
+#	    $feature = "match_part";
+#	}
+	my $feature = "match";
+	if ($rm_class =~ "Unknown") {
+	    $feature = "match";
+	}
+
+	elsif ($rm_class =~ "Simple_repeat") {
+	    $tr_count++;
+	    $feature = "tandem_repeat"
+
+	}
+	elsif ($rm_class =~ "Low_complexity") {
+	    $lc_count++;
+	    $feature = "low_complexity_region";
+	}
+
+
+	#-----------------------------+
+	# FORMAT ATTRIBUTE            |
+	#-----------------------------+
+	my $hitname = $rmout[9];
+	if ($gff_ver =~ "GFF3") {
+	    $hitname = gff3_encode($hitname);
+	}
+
+	my $attribute;
+	if ($gff_ver =~ "GFF3") {
+	    
+	    if ($rm_class =~ "Simple_repeat") {
+		$attribute = "ID=".$hitname."_".$tr_count;
+	    }
+	    elsif ($rm_class =~ "Low_complexity") {
+		$attribute = "ID=".$hitname."_".$lc_count;
+	    }
+#	    elsif ($feature =~ "match_part") {
+	    elsif ($feature =~ "match") {
+		$m_count++;
+		$attribute = "ID=match_".$m_count."_".$hitname.
+		    "; ".
+		    "Name=".$hitname."; ".
+		    "Target=".$hitname." ".
+		    $hit_start." ".$hit_end;
+		
+	    }
+	    else {
+		$attribute="ID=".$hitname;
+	    }
+
+	}
+	else {
+	    $attribute = $hitname;
+	}
+
+	# If match part may want to express where thse
+	# match on the corresponging region in the dbase
+
+	#-----------------------------+
+	# PRINT GFF OUT               |
+	#-----------------------------+
+	# TO DO: Allow for attribute name at cmd line
+	# May also want to place everything in positive strand
+	print GFFOUT "$seq_id\t".              # qry sequence name
+	    "$source\t".              # software used
+	    "$feature\t".                 # feature attribute name
+	    "$rmout[5]\t".            # start
+	    "$rmout[6]\t".            # stop
+	    "$rmout[0]\t".            # smith waterman score"
+	    "$strand\t".              # Postive strand
+	    ".\t".                    # frame
+	    "$attribute".              # attribute
+	    "\n";
+
+	# Seeing if working
+#	print STDERR "$seq_id\t".              # qry sequence name
+#	    "$source\t".              # software used
+#	    "$feature\t".                 # feature attribute name
+#	    "$rmout[5]\t".            # start
+#	    "$rmout[6]\t".            # stop
+#	    "$rmout[0]\t".            # smith waterman score"
+#	    "$strand\t".              # Postive strand
+#	    ".\t".                    # frame
+#	    "$attribute".              # attribute
+#	    "\n";
+	
+    }
+    
+    close RM_IN;
+    close GFFOUT;
+    
+    return;
+    
+}
 
 sub apollo_convert {
 
@@ -852,7 +1144,30 @@ sub print_help {
    
 }
 
-sub rmout_to_gff {
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+
+1;
+__END__
+
+
+# The original for of the subfunction
+sub rmout_to_gff_old {
 
 # Subfunction to convert repeatmasker out file
 # to gff format for apollo
@@ -967,6 +1282,8 @@ sub rmout_to_gff {
     return;
     
 }
+
+
 
 =head1 NAME
 
@@ -1229,14 +1546,12 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8. 
 
 =head1 LICENSE
 
@@ -1416,3 +1731,10 @@ VERSION: $Rev$
 # - Can use the DP_RM_BIN env var to set location of rm binary
 # - Can use the DP_RM_DIR env var to set location of rm databases
 # - Updated POD to reflect changes
+#
+# 03/05/2010
+# - Adding support for gff3 format
+#
+# 03/08/2010
+# - Changing test code to not run repeatmasker but to still
+#   translate results to gff3 format
