@@ -96,6 +96,6 @@ my @hmmer_obs = <OBSERVED>;
 close (OBSERVED);
 
 is_deeply ( \@hmmer_obs, \@hmmer_exp,
-	    "RepeatMasker GFF file contains correct data");
+	    "HMMER GFF file contains correct data");
 
 exit;
