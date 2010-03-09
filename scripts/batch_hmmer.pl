@@ -610,7 +610,10 @@ sub hmmer2gff {
     }
     else {
 	open ( GFFOUT, ">$gff_out_path") ||
-	    die "ERROR: Can not open gff output file:\n$gff_out_path\n";;
+	    die "ERROR: Can not open gff output file:\n$gff_out_path\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
     }
 
     $tot_res = 0;
