@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/17/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/09/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run hmmer against repeat hmmer models in batch mode,     |
@@ -43,6 +43,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -79,6 +81,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"  => \$outdir,
 		    "c|config=s"  => \$config_file,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "db-parent=s" => \$db_parent_dir,
 		    "gff"         => \$do_gff,
 		    "q|quiet"     => \$quiet,
@@ -113,6 +116,27 @@ if ($show_man) {
     system("perldoc $0");
     exit($ok ? 0 : 2);
 }
+
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
 
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
@@ -259,8 +283,10 @@ for my $ind_file (@fasta_files) {
 	$name_root = "$1";
     } 
     else {
-	$name_root = "UNDEFINED";
+	$name_root = "ind_file";
     }
+
+    print STDERR "Processing fasta file: $name_root\n" if $verbose;
 
     #-----------------------------+
     # MAKE OUTPUT DIR             |
@@ -307,7 +333,6 @@ for my $ind_file (@fasta_files) {
 	mkdir $hmmer_par_out_dir, 0777 unless (-e $hmmer_par_out_dir); 
 	
 	run_hmmer( $name_root, $file_to_search, $hmm_par_model_dir,
-#		   $hmm_par_suffix, $hmmer_out_dir, $hmm_par_name);
 		   $hmm_par_suffix, $hmmer_par_out_dir, $hmm_par_name);
 		
 
@@ -597,6 +622,8 @@ sub hmmer2gff {
 	
 	my $hmm_in_path = $hmm_in_dir.$ind_file;
 	
+	print STDERR "Processing: $ind_file\n";
+
         # OPEN THE HMM RESULT AS HMMER RESULTS OBJECT
 	my $hmm_res = new Bio::Tools::HMMER::Results ( -file => $hmm_in_path ,
 						       -type => 'hmmsearch') 
@@ -606,20 +633,19 @@ sub hmmer2gff {
 	$tot_res = $tot_res + $num_res;
 	
 	# ONLY PRINT OUTPUT FOR QUERIES WITH MATCHES
-	if ($num_res >> 0) #08/07/2006
-	{	              #08/07/2006
-	    foreach my $seq ( $hmm_res->each_Set ) 
-	    {
-		foreach $domain ( $seq->each_Domain ) 
-		{		
+	if ($num_res >> 0) {
+	    foreach my $seq ( $hmm_res->each_Set ) {
+		my $res_count = 0;
+		foreach $domain ( $seq->each_Domain ) {
+		
 		    #my $CurBit = $domain->bits;
+		    $res_count++;
 		    my $cur_name = $domain->hmmname;
 		    $cur_name =~ m/.*\/(.*)\.hmm/;  # Returns what I want
 		    $cur_name = $1;
 		    # RECORD THE NAME AND SCORE OF THE
 		    # BEST HIT
-		    if ($domain->bits > $BestBit)
-		    {
+		    if ($domain->bits > $BestBit) {
 			# ASSUMES BIT SCORE AND E VALUE
 			# HAVE THE SAME RANK
 			$BestBit = $domain->bits;
@@ -636,15 +662,31 @@ sub hmmer2gff {
 		    #-----------------------------+
 		    # PRINT RESULTS TO GFF OUT    |
 		    #-----------------------------+
+		    my $attribute;
+		    if ($gff_ver =~ "GFF3") {
+			$attribute = "ID=".$cur_name."_".$res_count.
+			    "; Target=".$cur_name.
+			    " ".$domain->hstart.
+			    " ".$domain->hend.
+			    "; Name=$cur_name"
+		    }
+		    else {
+			$attribute = $cur_name;
+		    }
+		    
+		    # See if I can get the match information
+		    #print STDERR "Dstart".$domain->hstart;
+		    #print STDERR "Dend".$domain->hend;
+
 		    print GFFOUT "$seq_name\t".    # Name of sequence
 			"$gff_source\t".           # Source
-			"transposable element\t".  # Feature name
+			"match\t".                 # Feature name
 			$domain->start."\t".       # Feature start
 			$domain->end."\t".         # Feature end
 			$domain->evalue."\t".      # Feature score
 			".\t".                     # Feature strand
 			".\t".                     # Feature frame
-			"$cur_name\n";             # Feature name
+			"$attribute\n";             # Feature name
 		    
 		} # End of for each domain in the HMM output file
 	    } # End of if greater then zero hits 08/07/2006
@@ -674,38 +716,6 @@ sub hmmer2gff {
 
 1;
 __END__
-
-# Deprecated print_help function
-
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
 
 =head1 NAME
 
@@ -759,6 +769,14 @@ command line arguments for hmmsearch.
 =head1 OPTIONS
 
 =over
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
 
 =item --db-parent
 
@@ -1001,14 +1019,12 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -1027,7 +1043,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/17/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/09/2010
 
 VERSION: $Rev$
 
@@ -1050,3 +1066,6 @@ VERSION: $Rev$
 #
 # 04/23/2009
 # - Modified to always produce gff results
+#
+# 03/08/2010
+# - Adding support for GFF3 output
