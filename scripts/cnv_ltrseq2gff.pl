@@ -279,11 +279,17 @@ sub ltrseq2gff {
 	else {
 	    open (GFFOUT, ">$gff_out") ||
 		die "ERROR: Can not open output file for output\n$gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
 	} # End of if append_gff
     }
     else {
 	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
     }
 
     if ($param) {
@@ -432,6 +438,23 @@ sub ltrseq2gff {
 
 }
 
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+
 
 1;
 __END__
@@ -465,22 +488,6 @@ sub print_help {
     }
     
     exit;
-}
-
-sub seqid_encode {
-    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
-    # Modified from code for urlencode in the perl cookbook
-    # Ids must not contain unescaped white space, so spaces are not allowed
-    my ($value) = @_;
-    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
-    return ($value);
-}
-
-sub gff3_encode {
-    # spaces are allowed in attribute, but tabs must be escaped
-    my ($value) = @_;
-    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
-    return ($value);
 }
 
 
