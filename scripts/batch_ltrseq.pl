@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/06/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/09/2010                                       |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -34,6 +34,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -42,13 +44,11 @@ my $indir;
 my $outdir;
 my $file_config;
 
-# LTR SEQ DIR
-
 # This is the dir that will hold the config files
-
 my $ltrseq_dir = $ENV{LTR_SEQ_DIR} || $ENV{HOME};
-
+# Path to the LTRseq binary
 my $ltrseq_bin = $ENV{LTR_SEQ_BIN} || "LTR_seq";
+my $program="LTR_seq";
 
 # Booleans
 my $help = 0;
@@ -66,6 +66,8 @@ my $do_test = 0;
 my $ok = GetOptions("i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # OPTIONS
+		    "program=s"    => \$program,
+		    "gff-ver=s"    => \$gff_ver,
 		    "c|config=s"   => \$file_config,
 		    "config-dir=s" => \$ltrseq_dir,
 		    "ltrseq-bin=s" => \$ltrseq_bin,
@@ -102,6 +104,24 @@ if ($show_version) {
     exit;
 }
 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
@@ -331,15 +351,21 @@ for my $ind_file (@fasta_files) {
 
 	print STDERR "Processing: $ltrseq_cmd\n" if $verbose;
 
-	system ($ltrseq_cmd) unless $do_test;;
+	system ($ltrseq_cmd) unless $do_test;
 	
 	#-----------------------------+
 	# CONVERT OUTPUT TO GFF       |
 	#-----------------------------+
         #ltrseq2gff ($ltrseq_in, $gff_out, $append_gff, $seqname);
 	if (-e $ltrseq_outfile) {
+	    # OLD REF TO THE CONVERSION FUNCTION
+#	    ltrseq2gff ($ltrseq_outfile, $gff_outfile, 0, 
+#			$name_root, $config_name);
+	    # NEW CONVERSION FUNCTION should look like
+	    # differn is program variable
+	    #ltrseq2gff ( $infile, $outfile, 0, $inseqname, $program, $parameter);
 	    ltrseq2gff ($ltrseq_outfile, $gff_outfile, 0, 
-			$name_root, $config_name);
+			$name_root, $program, $config_name);
 	}
 	else {
 	    # Report error, can not translate to gff
@@ -353,6 +379,231 @@ exit 0;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+
+sub ltrseq2gff {
+
+    #-----------------------------+
+    # SUBFUNCTION VARS            |
+    #-----------------------------+
+    # $source is the program
+    my ($ltrseq_in, $gff_out, $append_gff, $seqname,
+	$source, $param) = @_;
+
+    #-----------------------------+
+    # LTRSEQ VARS                 |
+    #-----------------------------+
+    my $ltrseq_infile;              # Input file that was analyzed by LTR_seq
+    my $ltrseq_numseqs;             # Number of seqs analyzed by LTR_seq
+    my $ltrseq_msrt;                # Max Score Ration Threshold
+    my $ltrseq_ltrmin;              # LTRmin
+    my $ltrseq_ltr_minexact;        # LTR Min Exact Match
+    my $ltrseq_dmin;                # Dmin
+    my $ltrseq_dmax;                # Dmax
+
+    # Postion of the LTR Retrotransposon features
+    my $ltrseq_name;                # Unique name assigned to the prediction
+    my $ltrspan_start;              # Start of the entire LTR Retrotransposon
+    my $ltrspan_end;                # End of the entire LTR Retrotransposon
+    my $ltrspan_len;                # Length of the LTR span
+    my $ltr5_start;                 # Start of the 5' LTR
+    my $ltr5_end;                   # End of the 5' LTR
+    my $ltr3_start;                 # Start of the 3' LTR
+    my $ltr3_end;                   # End of the 3' LTR
+    my $ltr_len;                    # Length of the LTRs
+    my $mid_start;                  # Start of the LTR Mid region
+    my $mid_end;                    # End of the LTR Mid region
+    my $ltr_diff;                   # Percent Difference in the LTRs
+    my $ltr_conf;                   # Confidence score for the prediction
+    my $ltr_tsr;                    # Target site rep
+
+    my @in_split = ();              # Split of the infile line
+    my $num_in;                     # Number of split vars in the infile
+
+    # Initialize Counters
+    my $ltrseq_num = 0;             # ID Number of putatitve LTR retro (Incremented Number)
+
+    #-----------------------------+
+    # OPEN FILES                  |
+    #-----------------------------+
+    
+    if ($ltrseq_in) {
+	open (INFILE, "<$ltrseq_in") ||
+	    die "ERROR: Can not open input file:\n$ltrseq_in\n";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+    
+    if ($gff_out) {
+	if ($append_gff) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Can not open output file for appending\n$gff_out\n";
+	}
+	else {
+	    open (GFFOUT, ">$gff_out") ||
+		die "ERROR: Can not open output file for output\n$gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	} # End of if append_gff
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
+    }
+
+    if ($param) {
+	$source = $source.":".$param
+    }
+
+    #-----------------------------+
+    # PROCESS INFILE              |
+    #-----------------------------+
+    while (<INFILE>) {
+	chomp;
+
+	# Print the INFILE
+	#print "$_\n";
+
+	if (m/^Report:/) {
+
+	    # If this is a Report line, accepted or rejected can be
+	    # determined by counting the line number
+	    # 15 is a rejected line
+	    # 19 is an accepted line 
+	    my @in_split = split;
+	    my $num_in = @in_split;   
+
+	    #print "Report Line: $num_in parts\n";
+	    #print "\t$_\n";
+
+	    if ($num_in == 15) {
+		#print "\tREJECTED\n";
+	    }
+	    #-----------------------------+
+	    # ACCEPTED LTR RETRO Parts    | 
+	    #-----------------------------+
+	    elsif ($num_in == 19) {
+		#print "\tACCEPTED\n";
+		print STDERR "\n".$_."\n" if $verbose;
+
+		$ltrseq_num++;              # Increment the count
+
+		$ltr5_start = $in_split[4] || "0";   # Replaced with zero
+		$ltr5_end = $in_split[5] || "NULL";
+		$ltr3_start = $in_split[7] || "NULL";
+		$ltr3_end = $in_split[8] || "NULL";
+		$mid_start = $ltr5_end + 1;
+		$mid_end = $ltr3_start - 1;
+		$ltrspan_start = $ltr5_start;
+		$ltrspan_end = $ltr3_end;
+		$ltrspan_len = $in_split[12];
+		$ltr_len = $in_split[10];
+		$ltr_diff = $in_split[14];
+		$ltr_conf = $in_split[16];
+		$ltr_tsr = $in_split[18];
+
+		$ltrseq_name = "ltrseq_".$ltrseq_num;
+
+		if ($ltr_tsr =~ m/\#(.*)\#/) {
+		    $ltr_tsr = $1;
+		}
+
+		# SHOW INFO IF VERBOSE
+		
+		if ($verbose) {
+		    print STDERR "$ltrseq_name\n";
+		    print STDERR "\tSTART:    $ltrspan_start\n";
+		    print STDERR "\tEND:      $ltrspan_end\n";
+		    print STDERR "\tLTRLEN:   $ltr_len\n";
+		    print STDERR "\tSPAN_LEN: $ltrspan_len\n";
+		    print STDERR "\tLTSR:     $ltr_tsr\n";
+		    print STDERR "\tLTRCON:   $ltr_conf\n";
+		    print STDERR "\tLTRDIF:   $ltr_diff\n";
+		} # End of if verbose
+
+		#-----------------------------+
+		# PRINT TO GFF OUTPUT FILE    |
+		#-----------------------------+
+		my $attribute = $ltrseq_name;
+		my $parent_id = $ltrseq_name;
+
+		#-----------------------------+
+		# LTR RETRO PREDICTION SPAN
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id;
+		}
+		print GFFOUT "$seqname\t".     # Name of sequence
+		    "$source\t".               # Source
+		    "LTR_retrotransposon\t".   # Feature, exon for Apollo
+		    "$ltrspan_start\t".        # Start of the ltr span
+		    "$ltrspan_end\t".          # End of the ltr span
+		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    ".\t".                     # Strand
+		    ".\t".                     # Frame
+		    "$attribute\n";          # Features (Name)
+		
+		#-----------------------------+
+		# 5' LTR                      |
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id."_five_prime_LTR".
+			";Name=Five Prime LTR".
+			";Parent=".$parent_id;
+		}
+		print GFFOUT "$seqname\t".     # Name of sequence
+		    "$source\t".               # Source
+		    "five_prime_LTR\t".        # Feature, exon for Apollo
+		    "$ltr5_start\t".           # Start of the 5'ltr
+		    "$ltr5_end\t".             # End of the 5' ltr span
+		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    ".\t".                     # Strand
+		    ".\t".                     # Frame
+		    "$attribute\n";          # Features (Name)
+
+		#-----------------------------+
+		# 3' LTR                      |
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    $attribute = "ID=".$parent_id."_three_prime_LTR".
+			";Name=Three Prime LTR".
+			";Parent=".$parent_id;
+		}
+		print GFFOUT "$seqname\t".     # Name of sequence
+		    "$source\t".               # Source
+		    "three_prime_LTR\t".       # Feature, exon for Apollo
+		    "$ltr3_start\t".           # Start of the 3'ltr
+		    "$ltr3_end\t".             # End of the 3' ltr span
+		    "$ltr_conf\t".             # Score, LTR Confidence Score
+		    ".\t".                     # Strand
+		    ".\t".                     # Frame
+		    "$attribute\n";          # Features (Name)
+	    }
+
+
+	    # 15 Parts is Rejected
+
+	}
+	# HEADER INFORMATION
+	elsif (m/^Info:/) {
+	    
+	}
+	# The input string that was passed
+	elsif (m/^Input:/) {
+
+	}
+
+    } # End of while INFILE
+
+}
+
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
@@ -416,7 +667,29 @@ sub print_help {
     exit 0;
    
 }
-sub ltrseq2gff {
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+1;
+__END__
+
+
+# OLD LTRSEQ 2 GFF CONVERSION
+sub ltrseq2gff_old {
 
     #-----------------------------+
     # SUBFUNCTION VARS            |
@@ -652,8 +925,6 @@ sub ltrseq2gff {
 }
 
 
-1;
-__END__
 
 =head1 NAME
 
@@ -1027,7 +1298,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/06/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/09/2010
 
 VERSION: $Rev$
 
@@ -1055,3 +1326,6 @@ VERSION: $Rev$
 # 01/27/2009
 # - Updated GFF output to use LTR feature names instead of exon
 # - Added location of Target Site Duplications of GFF outfile
+#
+# 03/09/2010
+# - Adding support for GFF3 foramt output
