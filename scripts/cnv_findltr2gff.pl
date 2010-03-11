@@ -243,16 +243,19 @@ sub findltr2gff {
 	else {
 	    open (GFFOUT, ">$gff_out") ||
 		die "Could not open output file for output\n$gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
 	} # End of if append_gff
     }
     else {
 	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
     }
 
-    if ($gff_ver =~ "GFF3") {
-	print GFFOUT "##gff-version 3\n";
-    }
     
     # Append parameter name if passed
     if ($gff_suffix) {
