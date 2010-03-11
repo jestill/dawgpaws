@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/13/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/10/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the find_ltr.pl LTR finding program in batch mode.   |
@@ -40,10 +40,14 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
+my $param;
+my $program = "FindLTR";
 my $indir;                     # Base intput dir
 my $outdir;                    # Base output dir
 my $config_file;               # Configuration file
@@ -72,6 +76,7 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_gff_convert = 1;
 my $do_test = 0;
+my $do_gff_append = 0;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -81,6 +86,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"  => \$outdir,
 		    "c|config=s"  => \$config_file,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
+		    "program=s"   => \$program,
 		    "fl-path=s"   => \$fl_path,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -91,6 +98,27 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
+
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -345,11 +373,23 @@ for my $ind_file (@fasta_files) {
 	#-----------------------------+
 	# CONVERT OUTPUT TO GFF       |
 	#-----------------------------+
+	print STDERR "Searching for $fl_ltrpos_out\n";
 	if ( (-e $fl_ltrpos_out) && ($do_gff_convert)) {
-	    findltr2gff ( $fl_ltrpos_out, $fl_gff_outpath, 
-			  0, $name_root, $fl_suffix);
-	}
+	    
+	    if ($do_gff_append) {
+		findltr2gff ( $program, $fl_ltrpos_out, $fl_gff_outpath, 
+			      1, $name_root, $fl_suffix);
+	    }
+	    else {
+		print STDERR "Converting ".$fl_ltrpos_out." to ".$fl_gff_outpath."\n";
+		findltr2gff ( $program, $fl_ltrpos_out, $fl_gff_outpath, 
+			      0, $name_root, $fl_suffix);
+	    }
 
+#	    # OLD SUBFUNCTION
+#	    findltr2gff ( $fl_ltrpos_out, $fl_gff_outpath, 
+#			  0, $name_root, $fl_suffix);
+	}
 
 	#-----------------------------+
 	# MOVE RESULTS FILES          |
@@ -376,6 +416,21 @@ exit;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
@@ -442,6 +497,189 @@ sub print_help {
 
 
 sub findltr2gff {
+
+    #-----------------------------+
+    # SUBFUNCTION VARS            |
+    #-----------------------------+
+    # gff_suffix is the name appended to the end of the gff_source
+    my ($gff_source, 
+	$findltr_in, $gff_out, $append_gff, $seqname, $gff_suffix) = @_;
+
+    # find_ltr
+    #my $gff_source;                 # 
+    my $findltr_id;                 # Id as assigned from find_ltr.pl
+    my $findltr_name;               # Full name for the find_ltr prediction
+    my $ltr5_start;                 # Start of the 5' LTR
+    my $ltr5_end;                   # End of the 5' LTR
+    my $ltr5_len;                   # Length of the 5' LTR
+    my $ltr3_start;                 # Start of the 3' LTR
+    my $ltr3_end;                   # End of the 3' LTR
+    my $ltr3_len;                   # Length of the 3' LTR
+    my $el_len;                     # Length of the entire element
+    my $mid_start;                  # Start of the LTR Mid region
+    my $mid_end;                    # End of the LTR Mid region
+    my $ltr_similarity;             # Percent similarity between LTRs
+    my $ltr_strand;                 # Strand of the LTR
+
+    my @in_split = ();              # Split of the infile line
+    my $num_in;                     # Number of split vars in the infile
+
+     # Initialize Counters
+    my $findltr_num = 0;            # ID Number of putatitve LTR retro
+
+    #-----------------------------+
+    # OPEN FILES                  |
+    #-----------------------------+
+    if ($findltr_in) {
+	open (INFILE, "<$findltr_in") ||
+	    die "Can not open input file:\n$findltr_in\n";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+
+
+    if ($gff_out) {
+	if ($append_gff) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "Could not open output file for appending\n$gff_out\n";
+	}
+	else {
+	    open (GFFOUT, ">$gff_out") ||
+		die "Could not open output file for output\n$gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+
+	} # End of if append_gff
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
+    }
+
+    
+    # Append parameter name if passed
+    if ($gff_suffix) {
+	$gff_source = $gff_source.":".$gff_suffix;
+    }
+
+    #-----------------------------+
+    # PROCESS INFILE              |
+    #-----------------------------+
+    while (<INFILE>) {
+	chomp;
+
+	my @in_split = split;
+	my $num_in = @in_split;   
+	
+	# Load split data to vars if expected number of columns found
+	if ($num_in == 10) {
+
+	    $findltr_num++;
+	    my $model_num = sprintf("%04d", $findltr_num);
+
+	    $findltr_id = $in_split[0];
+	    $ltr5_start = $in_split[1];
+	    $ltr5_end = $in_split[2];
+	    $ltr3_start = $in_split[3];
+	    $ltr3_end = $in_split[4];
+	    $ltr_strand = $in_split[5];
+	    $ltr5_len = $in_split[6];	    
+	    $ltr3_len = $in_split[7];
+	    $el_len = $in_split[8];
+	    $ltr_similarity = $in_split[9];
+
+	    $mid_start = $ltr5_end + 1;
+	    $mid_end = $ltr3_start - 1;   
+
+	    $findltr_name = "findltr";
+	    
+	    my $attribute = $findltr_name."_".$findltr_id;
+
+	    # FULL LTR Retrotransposon Span
+	    if ($gff_ver =~ "GFF3") {
+		if ($param) {
+		    $attribute = "findltr".
+			"_par".$param.
+			"_model".$model_num;
+		}
+		else {
+		    $attribute = "findltr".
+			"_model".$model_num;
+		}
+
+		$seqname = seqid_encode( $seqname );
+	    }
+	    my $parent_id = $attribute;
+
+
+	    # LTR Retrotransposon
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id;
+	    }
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"$gff_source\t".       # Source
+		"LTR_retrotransposon\t".
+		"$ltr5_start\t".       # Feature start
+		"$ltr5_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		$attribute.
+		"\n";
+
+	    # 5'LTR
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id."_five_prime_LTR".
+		    ";Name=Five Prime LTR".
+		    ";Parent=".$parent_id;
+	    }
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"$gff_source\t".       # Source
+		"five_prime_LTR\t".
+		"$ltr5_start\t".       # Feature start
+		"$ltr5_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		$attribute.
+		"\n";     # Features (name)
+
+	    # 3'LTR
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$parent_id."_three_prime_LTR".
+		    ";Name=Three Prime LTR".
+		    ";Parent=".$parent_id;
+	    }
+	    print GFFOUT "$seqname\t". # Name of sequence
+		"$gff_source\t".       # Source
+		"three_prime_LTR\t".
+		"$ltr3_start\t".       # Feature start
+		"$ltr3_end\t".	       # Feature end
+		".\t".                 # Score, Could use $ltr_similarity
+		"$ltr_strand\t".         # Strand
+		".\t".                 # Frame
+		$attribute.
+		"\n";                 # Features (name)
+
+	} # End of if num_in is 10
+
+    } # End of while INFILE
+
+
+} # End of findltr2gff
+
+
+1;
+__END__
+
+sub findltr2gff_old {
 
     #-----------------------------+
     # SUBFUNCTION VARS            |
@@ -575,9 +813,6 @@ sub findltr2gff {
 
 } # End of findltr2gff
 
-1;
-__END__
-
 =head1 NAME
 
 batch_findltr.pl - Run the find_ltr.pl program in batch mode.
@@ -640,6 +875,14 @@ environment heading below.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment.
 
 =item --fl-path
 
@@ -871,7 +1114,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/13/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/10/2010
 
 VERSION: $Rev$
 
