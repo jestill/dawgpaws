@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 11/06/2008                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/11/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Short Program Description                                |
@@ -38,10 +38,14 @@ use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # Convert a relative path to an abosolute path
 
+#use Bio::Tools::Geneid;
+
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -50,6 +54,9 @@ my $indir;
 my $outdir;
 my $geneid_param_file;         # File containing the parameters for geneid
 
+# The path to the binary for running the geneid program
+# by defalt this will assume it is in the user's Path variable
+# under the default name
 my $geneid_path = $ENV{GENEID_BIN} || "geneid";  
 
 # BOOLEANS
@@ -65,11 +72,12 @@ my $do_test = 0;                  # Run the program in test mode
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions(# REQUIRED OPTIONS
+my $ok = GetOptions(# REQUIRED
 		    "i|indir=s"     => \$indir,
                     "o|outdir=s"    => \$outdir,
 		    "p|param=s"     => \$geneid_param_file,
-		    # ADDITIONAL OPTIONS
+		    # OPTIONS
+		    "gff-ver=s"    => \$gff_ver,
 		    "geneid-path=s" => \$geneid_path,
 		    "q|quiet"       => \$quiet,
 		    "verbose"       => \$verbose,
@@ -106,15 +114,37 @@ if ($show_version) {
 }
 
 #-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
+
+#-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if ( (!$indir) || (!$outdir) ) {
+if ( (!$indir) || (!$outdir) || (!$geneid_param_file)  ) {
     print "\a";
     print STDERR "\n";
     print STDERR "ERROR: An input directory was not specified at the".
 	" command line\n" if (!$indir);
-    print STDERR "ERROR: An output directory was specified at the".
+    print STDERR "ERROR: An output directory was not specified at the".
 	" command line\n" if (!$outdir);
+    print STDERR "ERROR: A geneid paremter file was not specified at".
+	" command line\n" if (!$geneid_param_file);
     print_help ("usage", $0 );
 }
 
@@ -231,7 +261,7 @@ for my $ind_file (@fasta_files) {
     
     print STDERR "$geneid_cmd\n" if $verbose;
     
-    system( $geneid_cmd );
+    system( $geneid_cmd ) unless $do_test;
 
 
     #-----------------------------+
@@ -239,39 +269,12 @@ for my $ind_file (@fasta_files) {
     # APOLLO TOLERATED GFF        |
     #-----------------------------+
     if (-e $geneid_out) {
-	
-	open (GENEID, "<$geneid_out") ||
-	    die "Can not open genid gff file";
-	my $gff_out_file = $gff_dir.$name_root.".geneid.gff";
-	open (GFFOUT, ">$gff_out_file") ||
-	    die "Can not open gff file for output";
-	
-	while (<GENEID>) {
-	    
-	    next if m/^\#/;
-	    # May also want to choose to ignore comment lines ...
+	my $gff_outfile = $gff_dir.$name_root.".geneid.gff";
+	geneid2gff ("geneid", $geneid_out, $gff_outfile);
 
-	    # Replace exon positional ids with the word exon
-	    $_ =~ s/First/exon/;
-	    $_ =~ s/Internal/exon/;
-	    $_ =~ s/Single/exon/;
-	    $_ =~ s/Terminal/exon/;
-	    
-	    print GFFOUT $_;
-	    
-
-	}
-	
-	close GENEID;
-	close GFFOUT;
     }
 
 
-    # Another option is to open a file handle like I
-    # did with FINDMITE
-    #open(FINDMITE,"|$fm_cmd") ||
-	#die "Could not open findmite\n";
-    
 }
 
 
@@ -280,6 +283,224 @@ exit 0;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub geneid2gff {
+
+    my ($source, $geneid_output, $gff_out, $seq_id, $src_suffix, $do_append) 
+	=  @_;
+    
+    # Array to hold all of the geneid results
+    my @geneid_results;
+
+    my $attribute;
+
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+     # Default to STDOUT if no argument given
+    if ($gff_out) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	}
+	else {
+	    open (GFFOUT,">$gff_out") ||
+		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	    
+	}
+    } 
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
+	
+    }
+
+    #-----------------------------+
+    # SET PROGRAM SOURCE          |
+    #-----------------------------+
+    unless ($source) {
+	$source = "geneid";
+    }
+    if ($src_suffix) {
+	$source = $source.":".$src_suffix;
+    }
+
+    open (GENEID, "<$geneid_output") ||
+	die "Can not open genid gff file";
+
+    #-----------------------------------------------------------+
+    # GET DATA FROM THE GENEID OUTPUT FILE                      |
+    #-----------------------------------------------------------+
+    my $gene_strand;
+    my $i = -1;         # indexing gene count
+    my $j;              # indexing exon count for individual gene
+    while (<GENEID>) {
+	
+	#next if m/^\#/;
+	# May also want to choose to ignore comment lines ...
+	
+	# Parsing line in form of 
+	# # Gene 1 (Forward). 20 exons. 1122 aa. Score = 63.52 
+	if ( m/^\#/) {
+	    if (m/\# Gene (\d*) \((.*)\)\. (\d*) exons\. (\d*) aa\. Score \= (\d*)\.(\d*)/) {
+		$i++;
+		$j=-1;
+		my $geneid_num = $1;
+		my $geneid_dir = $2;
+		my $geneid_num_exons = $3;
+		my $geneid_num_aa = $4;
+		my $geneid_score = $5.".".$6;
+		
+		$geneid_results[$i]{num} = $1;
+		$geneid_results[$i]{dir} = $2;
+		$geneid_results[$i]{num_exons} = $3;
+		$geneid_results[$i]{num_aa} = $4;
+		$geneid_results[$i]{gene_score} = $5.".".$6;
+		
+		
+		#-----------------------------+
+		# GET GENE STRAND             |
+		#-----------------------------+
+		if ($geneid_dir =~ "Forward") {
+		    $geneid_results[$i]{gene_strand} = "+";
+		}
+		elsif ($geneid_dir =~ "Reverse") {
+		    $geneid_results[$i]{gene_strand} = "-";
+		}
+		else {
+		    $geneid_results[$i]{gene_strand} = "?";
+		}
+		
+#		# Test variables passed to strings
+#		print STDERR "///////////////////////////////////////\n";
+#		print STDERR "Gene ".$geneid_num."\t";
+#		print STDERR "Dir: ".$geneid_dir."\t";
+#		print STDERR "Exons: ".$geneid_num_exons."\t";
+#		print STDERR "AA: ".$geneid_num_aa."\t";
+#		print STDERR "Score: ".$geneid_score."\t";
+#		print STDERR "Strand:".$gene_strand."\t";
+#		print STDERR "\n";
+#		print STDERR "///////////////////////////////////////\n";
+#		
+#		# test variables passed to array of hashes
+#		print STDERR $geneid_results[$i]{num}."\t";
+#		print STDERR $geneid_results[$i]{dir}."\t";
+#		print STDERR $geneid_results[$i]{num_exons}."\t";
+#		print STDERR $geneid_results[$i]{num_aa}."\t";
+#		print STDERR $geneid_results[$i]{gene_score}."\t";
+#		print STDERR "\n";
+#		print STDERR "///////////////////////////////////////\n";
+		
+	    }
+	}
+	# parsing of exon information
+	else {
+	    # Split GFF results by tab
+	    if (m/(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)\t(.*)/) {
+		$j++;
+		if ($j ==0) {
+		    $geneid_results[$i]{gene_start} = $4;
+		}
+
+		$geneid_results[$i]{exon}[$j]{seq_id} = $1;
+		$geneid_results[$i]{exon}[$j]{prog_source} = $2;
+		$geneid_results[$i]{exon}[$j]{feat_type} = $3;
+		$geneid_results[$i]{exon}[$j]{start} = $4;
+		$geneid_results[$i]{exon}[$j]{end} = $5;
+		$geneid_results[$i]{exon}[$j]{score} = $6;
+		$geneid_results[$i]{exon}[$j]{strand} = $7;
+		$geneid_results[$i]{exon}[$j]{frame} = $8;
+		$geneid_results[$i]{exon}[$j]{attribute} = $9;		
+		# keep overwriting until correct
+		$geneid_results[$i]{gene_end} = $5;
+		$geneid_results[$i]{gene_attribute} = $9;
+		$geneid_results[$i]{gene_seq_id} = $1;
+	    }
+	    else {
+		print STDERR "Warning:Line not in expected format:\n".$_."\n";
+	    }
+	}
+
+    } # End of while GENEID
+
+    #-----------------------------------------------------------+
+    # PRINT OUTPUT FROM THE ARRAY OF HASHES
+    #-----------------------------------------------------------+
+    my $parent_id;
+    for my $href ( @geneid_results ) {
+
+	# PRINT GENE SPAN INFORMATION
+	
+	#-----------------------------+
+	# PRINT GENE VALS FOR GFF3    |
+	#-----------------------------+
+	if ($gff_ver =~ "GFF3") {
+
+
+	    $parent_id = $href->{gene_attribute};
+	    unless ($seq_id) {
+		$seq_id = $href->{gene_seq_id};
+	    }
+
+	    print GFFOUT $seq_id."\t".                # seq id
+		"geneid\t".
+		"gene\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		$href->{gene_score}."\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id."\t".      # attribute
+		"\n";
+
+	}
+
+	#-----------------------------+
+	# EXONS
+	#-----------------------------+
+	my $exon_count = 0;
+	for my $ex ( @{ $href->{exon} } ) {
+	    $exon_count++;
+
+	    
+
+	    if ($gff_ver =~ "GFF3") {
+	    $attribute = "ID=".$ex->{attribute}."_exon_".$exon_count.
+		";Parent=".$parent_id;
+	    }
+	    else {
+		$attribute = $ex->{attribute};
+	    }
+
+	    print GFFOUT $ex->{seq_id}."\t".
+		"geneid\t".
+		"exon\t".
+		$ex->{start}."\t".
+		$ex->{end}."\t".
+		$ex->{score}."\t".
+		$ex->{strand}."\t".
+		$ex->{frame}."\t".
+		$attribute."\t".
+		"\n";
+
+
+	}
+
+    }
+
+    # PRINT TO GFF OUT
+    
+    close GENEID;
+    close GFFOUT;
+    
+    
+}
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
@@ -344,6 +565,24 @@ sub print_help {
    
 }
 
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+
 1;
 __END__
 
@@ -393,6 +632,14 @@ Path to the GeneID Parameter file.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
 
 =item --geneid-path
 
@@ -551,7 +798,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/06/2008
 
-UPDATED: 03/24/2009
+UPDATED: 03/11/2010
 
 VERSION: $Rev$
 
@@ -564,3 +811,11 @@ VERSION: $Rev$
 # - Main body of program written
 # 01/19/2009
 # - Added Rev to SVN propset
+# 03/12/2010
+# - Testing swtich to Bio::Tools::Geneid for parsing
+# - This did not work, erros like
+#Argument "Internal" isn't numeric in sort at /Users/jestill/code/bioperl-live//Bio/RangeI.pm line 412, <GEN2> line 24.
+#Argument "geneid_v1.3" isn't numeric in sort at /Users/jestill/code/bioperl-live//Bio/RangeI.pm line 410, <GEN2> line 25.
+#Argument "Internal" isn't numeric in sort at /Users/jestill/code/bioperl-live//Bio/RangeI.pm line 412, <GEN2> line 25.
+#Argument "geneid_v1.3" isn't numeric in sort at /Users/jestill/code/bioperl-live//Bio/RangeI.pm line 410, <GEN2> line 26.
+#Argument "Internal" isn't numeric in sort at /Users/jestill/code/bioperl-live//Bio/RangeI.pm line 412, <GEN2> line 26.
