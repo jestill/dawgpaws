@@ -38,6 +38,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARS USING ENV              |
@@ -74,20 +76,25 @@ my $verbose = 0;
 
 # COUNTERS
 my $num_proc = 1;              # Number of processors to use
+my $param;
+my $program;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(
-		    # Required
+		    # REQUIRED
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
-		    # Optional strings
-		    "genscan-path" => \$genscan_path,
+		    # OPTIONS
+		    "param=s"      => \$param,
+		    "program=s"    => \$program,
 		    "lib-path"     => \$lib_path,
+		    "gff-ver=s"    => \$gff_ver,
+		    "genscan-path" => \$genscan_path,
 		    "logfile=s"    => \$logfile,
-		    # Booleans
 		    "apollo"       => \$apollo,
+		    # ADDITIONAL INFORMATION
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
 		    "usage"        => \$show_usage,
@@ -145,16 +152,16 @@ if ( (!$indir) || (!$outdir) ) {
 #-----------------------------+
 # OPEN THE LOG FILE           |
 #-----------------------------+
-if ($logfile) {
-    # Open file for appending
-    open ( LOG, ">>$logfile" ) ||
-	die "Can not open logfile:\n$logfile\n";
-    my $time_now = time;
-    print LOG "==================================\n";
-    print LOG "  batch_mask.pl\n";
-    print LOG "  JOB: $time_now\n";
-    print LOG "==================================\n";
-}
+#if ($logfile) {
+#    # Open file for appending
+#    open ( LOG, ">>$logfile" ) ||
+#	die "Can not open logfile:\n$logfile\n";
+#    my $time_now = time;
+#    print LOG "==================================\n";
+#    print LOG "  batch_genscan.pl\n";
+#    print LOG "  JOB: $time_now\n";
+#    print LOG "==================================\n";
+#}
 
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
@@ -204,11 +211,9 @@ unless (-e $outdir) {
 }
 
 #-----------------------------+
-# RUN REPEAT MAKSER AND PARSE |
+# RUN GENSCAN AND PARSE       |
 # RESULTS FOR EACH SEQ IN THE |
-# fasta_files ARRAY FOR EACH  |
-# REPEAT LIBRARY IN THE       |
-# RepLibs ARRAY               |
+# fasta_files ARRAY           |
 #-----------------------------+
 
 for my $ind_file (@fasta_files) {
@@ -271,103 +276,227 @@ for my $ind_file (@fasta_files) {
     }
 
     my $out_path = $genscan_dir.$name_root.".genscan.out";
-    #my $gff_path = $genscan_dir.$name_root.".genscan.gff";
     my $gff_path = $gff_dir.$name_root.".genscan.gff";
 
     my $genscan_cmd = "$genscan_path $lib_path $infile_path -v > $out_path";
 
-    print "=======================================\n" if $verbose;
-    print "Running Genscan for $name_root\n" if $verbose;
-    print " File $file_num of $num_files\n" if $verbose;
-    print "=======================================\n" if $verbose;
-    print "$genscan_cmd\n" if $verbose;
+    print STDERR "=======================================\n" if $verbose;
+    print STDERR "Running Genscan for $name_root\n" if $verbose;
+    print STDERR " File $file_num of $num_files\n" if $verbose;
+    print STDERR "=======================================\n" if $verbose;
+    print STDERR "$genscan_cmd\n" if $verbose;
+
     system($genscan_cmd) unless $test;
 
-    print "Converting Genscan output\n";
+    print STDERR "Converting Genscan output\n";
     if (-e $out_path) {
-	genscan_2_gff($out_path, $gff_path, $name_root) unless $test;
+	genscan2gff($out_path, $gff_path, $name_root, $program, $param);
     }
     else {
-	print "ERROR: Could not find genscan output at:\n$out_path\n"
+	print STDERR "ERROR: Could not find genscan output at:\n$out_path\n"
     }
-
+    
 } # End of for each file in the input folder
 
-close LOG if $logfile;
+#close LOG if $logfile;
 
 exit;
 
-#-----------------------------------------------------------+
+#-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-sub genscan_2_gff 
-{
-# Convert a Genscan format output to the GFF format
-# Modified from
-# http://nucleus.cshl.org/agsa/presentations.html
-# as Downloaded by JCE 02/22/2007
+sub genscan2gff {
 
-    my ($infile, $outfile, $name_root) = @_;
+    my ($infile, $outfile, $name_root, $dp_source, $dp_source_suffix) = @_;
+
+
+    # Encode sequence name to be legal
+    $name_root = seqid_encode ($name_root);
+
+    my $gff_source;
+    unless ($dp_source) {
+	$gff_source = "genscan";
+    }
+    else {
+	$gff_source = $dp_source;
+    }
+    
+    if ($dp_source_suffix) {
+	$gff_source = $dp_source.":".$dp_source_suffix;
+    }
+
+    my @genscan_results;
 
     my %exon_type = ('Sngl', 'Single Exon',
 		     'Init', 'Initial Exon',
 		     'Intr', 'Internal Exon',
 		     'Term', 'Terminal Exon');
     
-    open (IN, "<".$infile);
-    open (OUT, ">".$outfile);
-    
+    if ($infile) {
+	open (IN, "<".$infile) || 
+	    die "Can not open genscan file for input:\n$infile\n";
+    }
+    else {
+	open (IN, "<&STDIN") || 
+	    die "Can not STDIN for input\n";
+    }
+
+
+    if ($outfile) {
+	open (GFFOUT, ">".$outfile) ||
+	    die "Can not open GFF putout file for output:\n$outfile";
+    } 
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    # PRINT GFF VERSION HEADER
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
     while (<IN>) {
+
+	# The following appears to just fetch the exons
 	
 	# Last line before predictions contains nothing but spaces and dashes
 	if (/^\s*-[-\s]+$/)  {
+
+	    my $cur_gene_name;
+	    my $prev_gene_name = "null";
+	    my $exon_count = 0;
+	    my $i = -1;                     # i indexes gene count
+	    my $j = -1;                     # j indexes exon count
+
 	    while (<IN>)  {
-		my %feature; 
+		#my %feature;
+
+		# TO DO: Add use of polyy and promoter
+		#        at the moment and promoter at the moment
 		if (/init|term|sngl|intr/i) {
 		    
 		    my @f  = split;
 		    
 		    my ($gene, $exon) = split (/\./, $f[0]); 
-		    
-                    #name must be a number
-		    $feature {name} = $gene + ($exon/1000); 
+		    my $cur_gene_name = $gene;
 
-		    #arrange numbers so that start is always < end
+		    #-----------------------------+
+		    # PUT START < END             |
+		    #-----------------------------+
+		    my $start;
+		    my $end;
 		    if ($f[2] eq '+') {
-			$feature {'start'}  = $f[3];
-			$feature {'end'}    = $f[4];
-			$feature {'strand'} = "+";
+			$start  = $f[3];
+			$end = $f[4];
 		    } elsif ($f[2] eq '-') {
-			$feature {'start'}  = $f[4];
-			$feature {'end'}    = $f[3];
-			$feature {'strand'} = "-";
+			$start  = $f[4];
+			$end = $f[3];
 		    }
+
+
+		    if ($cur_gene_name =~ $prev_gene_name) {
+			# IN SAME GENE MODEL
+			$j++;  # increment exon count
+		    } else {
+			# IN NEW GENE MODEL
+			$j=-1;
+			$i++;   # increment gene count
+			$j++;   # increment exon count
+
+			$genscan_results[$i]{gene_strand} = $f[2];
+			$genscan_results[$i]{gene_name} = $gff_source."_".
+			    "gene_".
+			    $cur_gene_name;
+			$genscan_results[$i]{gene_start} = $start;
+
+		    }
+		    # set previous name to current name after comparison
+		    $prev_gene_name = $cur_gene_name;
+
+		    # Continue to overwrite end
+		    $genscan_results[$i]{gene_end} = $end;
+
+		    # LOAD EXON INFORMATION TO ARRAY
+		    $genscan_results[$i]{exon}[$j]{exon_id} = $exon;
+		    $genscan_results[$i]{exon}[$j]{start} = $start;
+		    $genscan_results[$i]{exon}[$j]{end} = $end;
+		    $genscan_results[$i]{exon}[$j]{score} = $f[12];
+		    $genscan_results[$i]{exon}[$j]{strand} = $f[2];
+		    # Probability of exon
+		    $genscan_results[$i]{exon}[$j]{p} = $f[11];
+		    # Coding region score
+		    $genscan_results[$i]{exon}[$j]{cod_rg} = $f[10];
+		    $genscan_results[$i]{exon}[$j]{exon_type} = 
+			$exon_type{$f[1]};
 		    
-		    $feature {'score'}   = $f[12];
-		    $feature {'p'}       = $f[11];
-		    $feature {'type'}    = $exon_type{$f[1]};
-		    $feature {'program'} = 'Genscan';
-		    $feature {'program_version'} = '1.0';
-		    $feature {'primary'} = 'prediction';
-		    $feature {'source'}  = 'genscan';
-		    
-		    # Pring GFF format output
-		    print OUT 
-			"$name_root\t" .            # SeqName
-			"Genscan:maize\t".          # Source
-			"exon\t".                     # Feature
-			$feature{start}."\t" .      # Start
-			$feature{end}."\t" .        # End
-			$feature{p}."\t" .          # Score
-			$feature{strand} . "\t".    # Strand
-			".\t" .                     # Frame
-			"gene_".$gene."\n";               # Attribute
 		} elsif (/predicted peptide/i) {
 		    last;   
 		}
 	    } # End of second while statement
 	} # End of if seach command
-    } # End of first while statment
+    } # End of while INPUT
+
+
+   #-----------------------------+
+   # PRINT GFF OUTPUT            |
+   #-----------------------------+
+    my $parent_id;
+    for my $href ( @genscan_results ) {
+	
+	# If GFF3 need to print the parent gene span
+	if ($gff_ver =~ "GFF3") {
+	    $parent_id = $href->{gene_name};
+
+	    print GFFOUT $name_root."\t".                # seq id
+		$gff_source."\t".
+		"gene\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id."\t".      # attribute
+		"\n";
+
+	}
+
+	#-----------------------------+
+	# EXONS
+	#-----------------------------+
+	my $exon_count = 0;
+	my $attribute;
+	for my $ex ( @{ $href->{exon} } ) {
+
+	    $exon_count++;
+	    
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_exon_".
+		    $ex->{exon_id}.
+		    ";Parent=".$parent_id;
+	    }
+	    else {
+		$attribute = $href->{gene_name};
+	    }
+	    
+	    print GFFOUT $name_root."\t".
+		$gff_source."\t".
+		"exon\t".
+		$ex->{start}."\t".
+		$ex->{end}."\t".
+		$ex->{score}."\t".
+		$ex->{strand}."\t".
+		".\t".
+		$attribute."\t".
+		"\n";
+
+	    
+	}
+	
+
+	
+    }
 
 } #End of genscan_2_gff subfunction
 
@@ -436,48 +565,27 @@ sub print_help {
 }
 
 
+
+sub seqid_encode {
+    # Following conventions for GFF3 v given at http://gmod.org/wiki/GFF3
+    # Modified from code for urlencode in the perl cookbook
+    # Ids must not contain unescaped white space, so spaces are not allowed
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-|])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+sub gff3_encode {
+    # spaces are allowed in attribute, but tabs must be escaped
+    my ($value) = @_;
+    $value =~ s/([^[a-zA-Z0-9.:^*$@!+_?-| ])/"%" . uc(sprintf "%lx" , unpack("C", $1))/eg;
+    return ($value);
+}
+
+
 1;
 __END__
 
-
-# The deprecated print_help subfunction
-
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-    
-    my $usage = "USAGE:\n".
-	"  batch_genscan.pl -i DirToProcess -o OutDir";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"\n".
-	"OPTIONS:\n".
-	"  --gencan-path  # Full path to the genscan binary\n".
-	"  --lib-path     # Full path to the prediction library:\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --test         # Run the program in test mode\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
 
 =head1 NAME
 
@@ -703,7 +811,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/31/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/15/2010
 
 VERSION: $Rev$
 
@@ -733,3 +841,13 @@ VERSION: $Rev$
 #
 # 04/28/2009
 # - Putting output in gff dir
+#
+# 03/15/2010
+# - Adding support for GFF3 output
+# - Loading data to array before printing to GFF
+# - Dropping LOG file, using STDOUT instead
+# - Rewrote subfunction for GFF conversion
+#
+# TO DO: 
+# Switch to a config file of
+# LIBNAME tab   LIBPATH
