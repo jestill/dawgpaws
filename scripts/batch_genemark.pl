@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill at gmail.com                         |
 # STARTED: 11/09/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/16/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the genmark gene prediction program in batch mode.   |
@@ -38,10 +38,13 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
 #-----------------------------+
+my @config_opts;               # Configuration file options
 my $file_config;               # Path to the configuration file
 my $logfile;                   # Path to a logfile to log error info
 my $indir;                     # Directory containing the seq files to process
@@ -57,6 +60,10 @@ my $name_root;                 # Root name to be used for output etc
 my $genmark_dir = $ENV{GM_BIN_DIR};
 # lib_dir is the dir that contains the genmark matrix librarires
 my $lib_dir = $ENV{GM_LIB_DIR};
+
+# The name used as the source program
+my $src_prog = "GeneMarkHMM";  
+
 
 # BOOLEANS
 my $show_help = 0;             # Show program help
@@ -78,10 +85,11 @@ my $ok = GetOptions(
 		    # Required
 		    "i|indir=s"      => \$indir,
                     "o|outdir=s"     => \$outdir,
-		    #"c|config=s"     => \$file_config,
+		    "c|config=s"     => \$file_config,
 		    # Optional strings
 		    "genemark-dir=s" => \$genmark_dir,
 		    "lib-dir=s"      => \$lib_dir,
+		    "program=s"      => \$src_prog, 
 		    #"logfile=s"      => \$logfile,
 		    # Booleans
 		    #"apollo"         => \$apollo,
@@ -92,6 +100,25 @@ my $ok = GetOptions(
 		    "man"            => \$show_man,
 		    "h|help"         => \$show_help,
 		    "q|quiet"        => \$quiet,);
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 my $proc_num = 0;
 
@@ -128,13 +155,20 @@ if ($show_version) {
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if ( (!$indir) || (!$outdir) ) {
+if ( (!$indir) || (!$outdir) || (!$file_config) || (!$lib_dir) || 
+     (!$genmark_dir) ) {
     print "\a";
     print STDERR "\n";
+    print STDERR "ERROR: A paramter file directory was not specified".
+	" at the command line" if (!$lib_dir);
+    print STDERR "ERROR: A genmark binary directory  was not specified".
+	" at the command line" if (!$genmark_dir);
     print STDERR "ERROR: An input directory was not specified at the".
 	" command line\n" if (!$indir);
-    print STDERR "ERROR: An output directory was specified at the".
+    print STDERR "ERROR: An output directory was not specified at the".
 	" command line\n" if (!$outdir);
+    print STDERR "ERROR: An configuration file was not specified at the".
+	" command line\n" if (!$file_config);
     print_help("full");
 }
 
@@ -151,6 +185,83 @@ unless ($indir =~ /\/$/ ) {
 
 unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
+}
+
+#-----------------------------+
+# GET INFO FROM CONFIG FILE   |
+#-----------------------------+
+# Load to the 2d dbs array
+open (CONFIG, $file_config) ||
+    die "Can't open the config file:\n$file_config";
+$i = 0;
+my $line_num = 0;
+while (<CONFIG>) {
+    $line_num ++;
+    
+    # ignore comment lines
+    next if m/^\#/;       
+
+    chomp;
+    my @tmpary = split (/\t/);
+    my $count_tmp = @tmpary;
+
+    if ($count_tmp == 4) {
+	
+	#-----------------------------+
+	# LOAD CONFIG INFO            |
+	#-----------------------------+
+	$config_opts[$i]{param_name} = $tmpary[0];
+	$config_opts[$i]{param_short} = $tmpary[1];
+	$config_opts[$i]{gmhmme_ver} = $tmpary[2];
+	$config_opts[$i]{param_file} = $tmpary[3];
+
+	#-----------------------------+
+	# SET PROGRAM NUMBER TO       |
+	# PROGRAM NAME OF THE GMHMME  |
+	# BINARY PROGRAM              |
+	#-----------------------------+
+	if ($config_opts[$i]{gmhmme_ver} =~ 3 ) {
+	    $config_opts[$i]{gmhmme_ver} = "gmhmme3";
+	}
+	elsif ($config_opts[$i]{gmhmme_ver} =~ 2 ) {
+	    $config_opts[$i]{gmhmme_ver} = "gmhmme2";
+	}
+	else {
+	    my $err_msg = "ERROR: The GMHMMER version option in line ".
+		$line_num." is set to ".$config_opts[$i]{gmhmme_ver}.
+		"Valid options are 2 or 3.";
+	    die $err_msg;
+	}
+	
+	# TEST THAT THE PARAM FILE EXISTS
+	my $param_path = $lib_dir.$config_opts[$i]{param_file};
+	unless (-e $param_path) {
+	    my $err_msg = "ERROR: The paramter file could not be located at:\n".
+		"$param_path\n";
+	    die $err_msg;
+	}
+
+	$i++;
+	
+    } # End of if count_tmp = 4
+    else {
+	print STDERR "WARNING: Config file line number $line_num\n";
+	print STDERR "         Only $line_num variables were found\n" 
+    }
+    
+    
+} # End of while CONFIG
+
+my $num_configs = @config_opts;
+if ($num_configs == 0) {
+    my $err_msg = "ERROR: No configuration options were present in the"; 
+    print STDERR "\a";
+    print STDERR $err_msg;
+    print STDERR 
+    die;
+}
+else {
+    print STDERR "Processing $num_configs parameter files\n" if $verbose;
 }
 
 #-----------------------------+
@@ -187,8 +298,7 @@ unless (-e $outdir) {
 }
 
 
-for my $ind_file (@fasta_files)
-{
+for my $ind_file (@fasta_files) {
 
     $proc_num++;
     $file_num++;
@@ -250,78 +360,57 @@ for my $ind_file (@fasta_files)
 	    die "Could not create gff out dir:\n$gff_out_dir\n";
     }
 
-    print STDERR "\n=======================================\n" if $verbose;
-    print STDERR "Running GeneMark for $name_root\n" if $verbose;
+    print STDERR "\n===========================================\n" if $verbose;
+    print STDERR " Running GeneMark for $name_root\n" if $verbose;
     print STDERR " File $file_num of $num_files\n" if $verbose;
-    print STDERR "=======================================\n" if $verbose;
-
+    print STDERR "===========================================\n" if $verbose;
     
     my $infile_path = $indir.$ind_file;
     my $out_dir = $genmark_out_dir.$name_root.".genmark.out";
     my $gff_path = $genmark_out_dir.$name_root.".genmark.gff";
 
-    # To be more generalizable the following vars for each matrix
-    # should be read in from a config file, but I am cutting 
-    # corners here and hard coding this
+    #-----------------------------+
+    # RUNN FOR EACH PARAMETER     |
+    # SET IN THE CONFIG FILE      |
+    #-----------------------------+
+    for my $config (@config_opts) {
+	print STDERR " Processing: ".$name_root." - ".
+	    $config->{param_name}."\n" if $verbose;
+	
+	my $gff_out = $gff_out_dir.$name_root."_genemark_".
+	    $config->{param_short}.".gff";
 
-    #-----------------------------+
-    # RICE                        |
-    #-----------------------------+ 
-    my $gff_os_out = $gff_out_dir.$name_root."_genemark_os.gff";
-    my $gm_os_out = $genmark_out_dir.$name_root."_genemark_os.out";
-    my $gm_os_cmd = $genmark_dir."gmhmme3 -p -m ".$lib_dir."o_sativa.mod".
-	" -o $gm_os_out".
-	" $infile_path";
-    print STDERR "\n$gm_os_cmd\n" if $verbose;
-    system($gm_os_cmd) unless $test;
-    if (-e $gm_os_out) {
-	genemark_to_gff($gm_os_out, $gff_os_out, 
-			$name_root, "GeneMarkHMM_Os" );
-    }
+	my $gm_out = $genmark_out_dir.$name_root."_genemark_".
+	    $config->{param_short}.".out";
 
-    #-----------------------------+
-    # MAIZE                       |
-    #-----------------------------+
-    my $gff_zm_out = $gff_out_dir.$name_root."_genemark_zm.gff";
-    my $gm_zm_out = $genmark_out_dir.$name_root."_genemark_zm.out";
-    my $gm_zm_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."corn.mtx".
-	" -o $gm_zm_out".
-	" $infile_path";
-    print STDERR "\n$gm_zm_cmd\n" if $verbose;
-    system($gm_zm_cmd) unless $test;
-    if (-e $gm_zm_out) {
-	genemark_to_gff($gm_zm_out, $gff_zm_out, 
-			$name_root, "GeneMarkHMM_Zm" );
-    }
+	my $gm_cmd;
+	if ($config->{gmhmme_ver} =~ "gmhmme2") {
+	    $gm_cmd = $genmark_dir."gmhmme2 -m ";
+	}
+	elsif ( $config->{gmhmme_ver} =~ "gmhmme3" ) {
+	    $gm_cmd = $genmark_dir."gmhmme3 -p -m";
+	}
+	else {
+	    die "ERROR: Unknown gmhmme command:".$config->{gmhmme_ver};
+	}
+	
+	$gm_cmd = $gm_cmd.$lib_dir.$config->{param_file}.
+	    " -o ".$gm_out.
+	    " ".$infile_path;
 
-    #-----------------------------+
-    # WHEAT                       |
-    #-----------------------------+
-    my $gff_ta_out = $gff_out_dir.$name_root."_genemark_ta.gff";
-    my $gm_ta_out = $genmark_out_dir.$name_root."_genemark_ta.out";
-    my $gm_ta_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."wheat.mtx".
-	" -o $gm_ta_out".
-	" $infile_path";
-    print STDERR "\n$gm_ta_cmd\n" if $verbose;
-    system($gm_ta_cmd) unless $test;
-    if (-e $gm_ta_out) {
-	genemark_to_gff($gm_ta_out, $gff_ta_out, 
-			$name_root, "GeneMarkHMM_Ta" );
-    }
-
-    #-----------------------------+
-    # BARLEY                      |
-    #-----------------------------+
-    my $gff_hv_out = $gff_out_dir.$name_root."_genemark_hv.gff";
-    my $gm_hv_out = $genmark_out_dir.$name_root."_genemark_hv.out";
-    my $gm_hv_cmd = $genmark_dir."gmhmme2 -m ".$lib_dir."barley.mtx".
-	" -o $gm_hv_out".
-	" $infile_path";
-    print STDERR "\n$gm_hv_cmd\n" if $verbose;
-    system($gm_hv_cmd) unless $test;
-    if (-e $gm_hv_out) {
-	genemark_to_gff($gm_hv_out, $gff_hv_out, 
-			$name_root, "GeneMarkHMM_Hv" );
+	print STDERR "\t$gm_cmd\n" if $verbose;
+	system($gm_cmd) unless $test;
+	
+	# Convert result to gff format
+	if (-e $gm_out) {
+#	    # OLD
+#	    genemark_to_gff($gm_out, $gff_out, 
+#			    $name_root, $conig->{param_name});
+	    # NEW FUNCTION
+	    genemark_to_gff ($name_root, $src_prog, $gm_out, $gff_out, 
+			     $config->{param_name});
+	}
+	
     }
 
 } # End of for each file in the input folder
@@ -332,71 +421,205 @@ exit;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
+
 sub genemark_to_gff {
+
+#    my ($gm_in_path, $gff_out_path, $gm_src_seq, $gm_src_prog) = @_;
     
-    my ($gm_in_path, $gff_out_path, $gm_src_seq, $gm_src_prog) = @_;
+    my ($gm_src_seq, $gm_src_prog, $gm_in_path, $gff_out_path, 
+	$parameter) = @_;
 
-    # OPEN THE GENEMARK INFILE
-    my $gm_obj = Bio::Tools::Genemark->new(-file => $gm_in_path);
+    my $attribute;
+    my $source = $gm_src_prog;
 
-    # OPEN THE GFF OUTFILE
-     open (GFFOUT, ">$gff_out_path") ||
-	die "Can not open outfile:\n$gff_out_path\n";
+    #-----------------------------+
+    # OPEN THE GFF OUTFILE        |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gff_out_path) {
+	open (GFFOUT, ">$gff_out_path") ||
+	    die "ERROR: Can not output gff output file:\n$gff_out_path\n"
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
+    #-----------------------------+
+    # OPEN THE GENEMARK INFILE    |
+    #-----------------------------+
+    my $gm_obj;
+    if ($gm_in_path) {
+	$gm_obj = Bio::Tools::Genemark->new(-file => $gm_in_path);
+    }
+    else {
+	$gm_obj = Bio::Tools::Genemark->new(-fh => \*STDIN);
+    }
+    
+    if ($parameter) {
+	$gm_src_prog = $gm_src_prog.":".$parameter;
+    }
 
     my $rna_count = 0;
+    my $gene_num = 0;
+
     while(my $gene = $gm_obj->next_prediction()) {
        
+	$gene_num++;     
+	my $gene_id = sprintf("%05d", $gene_num); # Pad the gene number
+	my $gene_name = $gm_src_prog."_gene_".$gene_id."\n";
+	$gene_id = "gene".$gene_id;
+
+	# The following is a duplicate of gene_num
 	$rna_count++;
-	#$result = sprintf("%08d", $number);
-	my $rna_id = sprintf("%04d", $rna_count);
+	my $rna_id = sprintf("%05d", $rna_count);
+	# End duplicate
 
 	my @exon_ary = $gene->exons();
+
 	my $num_exon = @exon_ary;
 
-	#print "START\tEND\tORIENT";
-	for my $ind_gene (@exon_ary) {
-	    my $start = $ind_gene->start;
-	    my $end = $ind_gene->end;
-	    my $strand = $ind_gene->strand;
-	    if ($strand == 1) {
-		$strand = "+"; 
+	#-----------------------------+
+	# Gene span for GFF3          |
+	#-----------------------------+
+	if ($gff_ver =~ "GFF3") {
+
+	    #-----------------------------+
+	    # GENE                        |
+            #-----------------------------+
+	    $attribute = "ID=".$source."_".$gene_id;
+
+	    # Get gene start and end
+	    my $gene_start = $gene->start();
+	    my $gene_end = $gene->end();
+	    if ($gene_start > $gene_end) {
+		$gene_end =  $gene->start();
+		$gene_start = $gene->end();
 	    }
-	    elsif ($strand == -1) {
-		$strand = "-";
+
+	    # Get gene score
+	    my $gene_score;
+	    if ($gene->score()) {
+		$gene_score = $gene->score();
+	    }
+	    else {
+		$gene_score = ".";
+	    }
+
+	    # Get gene strand
+	    my $gene_strand = $gene->strand()."\t";
+	    if ($gene_strand =~ "-1") {
+		$gene_strand = "-";
+	    }
+	    else {
+		$gene_strand = "+";
+	    }
+
+	    print GFFOUT  $gm_src_seq."\t".     # Seqname
+		$source."\t".                   # Source
+		"gene\t".                       #feature
+		"$gene_start\t".                # start
+		"$gene_end\t".                  # end
+		"$gene_score\t".                # score
+		"$gene_strand\t".               # strand
+		".\t".                          # frame
+		$attribute.                     # attribute
+		"\n";
+
+	}
+
+	#-----------------------------+
+	# EXONS                       |
+	#-----------------------------+
+	my $exon_num = 0;
+	for my $ind_exon (@exon_ary) {
+	    
+	    $exon_num++;
+	    my $exon_id = sprintf("%05d", $exon_num); # Pad the exon number
+	    $exon_id = "exon".$exon_id;
+
+	    # Set Feature
+	    my $feature = "exon";
+
+	    #-----------------------------+
+	    # GET START AND END           |
+	    #-----------------------------+
+	    my $start = $ind_exon->start;
+	    my $end = $ind_exon->end;
+	    my $strand = $ind_exon->strand;
+	    if ($start > $end) {
+		$end =  $ind_exon->start();
+		$start = $ind_exon->end();
+	    }
+
+	    #-----------------------------+
+	    # FORMAT STRAND               |
+	    #-----------------------------+
+	    if ($strand =~ '-1') {
+		$strand = "-"; 
+	    }
+	    elsif ($strand =~ '1') {
+		$strand = "+";
 	    }
 	    else {
 		$strand = ".";
 	    }
-	    
-	    # GFFOUTPUT
-#	    print $gm_src_seq."\t".   # seq name
-#		$gm_src_prog."\t".    # source
-#		"exon\t".             # feature
-#		$start."\t".          # start
-#		$end."\t".            # end
-#		".\t".                # score
-#		$strand."\t".         # strand
-#		".\t".                # frame
-#		"RNA$rna_id\n";       # attribute
 
+	    #-----------------------------+
+	    # GET SCORE                   |
+	    #-----------------------------+
+	    # It does not look like a score is assigned
+	    # but will put this here in case one shows up
+	    # in the future
+	    my $score = $ind_exon->score() || ".";
+
+	    #-----------------------------+
+	    # SET ATTRIBUTE               |
+	    #-----------------------------+
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$source."_".$gene_id."_".$exon_id.
+		    "\;Parent=".$source."_".$gene_id;
+	    }
+	    else {
+		$attribute = $gene_id;
+	    }
+
+	    #-----------------------------+
+	    # GET FRAME
+	    #-----------------------------+
+	    #my $frame = $ind_exon->frame();
+	    my $frame = ".";
+
+	    #-----------------------------+
+	    # PRINT GFF OUTPUT            |
+	    #-----------------------------+
+	    # The following produces output for Apollo
 	    print GFFOUT $gm_src_seq."\t".   # seq name
-		$gm_src_prog."\t".    # source
-		"exon\t".             # feature
-		$start."\t".          # start
-		$end."\t".            # end
-		".\t".                # score
-		$strand."\t".         # strand
-		".\t".                # frame
-		"RNA$rna_id\n";       # attribute
+		$gm_src_prog."\t".           # source
+		$feature."\t".               # feature
+		$start."\t".                 # start
+		$end."\t".                   # end
+		$score."\t".                 # score
+		$strand."\t".                # strand
+		$frame."\t".                 # frame
+		$attribute.                  # attribute		
+		"\n";      
 
-	}
+	} # End of for each exon
 
-    }
+    } # End of for each gene model
 
-    close GFFOUT;
     $gm_obj->close();
 
+    if ($gff_out_path) {
+	close (GFFOUT);
+    }
+
 }
+
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
@@ -464,44 +687,6 @@ sub print_help {
 1;
 __END__
 
-# Deprecated print_help subfunction
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-    
-    my $usage = "USAGE:\n".
-	"  batch_genscan.pl -i DirToProcess -o OutDir";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --indir        # Path to the directory containing the sequences\n".
-	"                 # to process. The files must have one of the\n".
-	"                 # following file extensions:\n".
-	"                 # [fasta|fa]\n".
-	"  --outdir       # Path to the output directory\n".
-	"\n".
-	"OPTIONS:\n".
-	"  --gencan-path  # Full path to the genscan binary\n".
-	"  --lib-path     # Full path to the prediction library:\n".
-	"  --logfile      # Path to file to use for logfile\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --test         # Run the program in test mode\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
 
 =head1 NAME
 
@@ -551,6 +736,14 @@ be a fairly easy thing to add, and is on my TODO List.
 =head1 OPTIONS
 
 =over 2
+
+=item --gff-ver
+
+The GFF version for the output. This will accept either gff2 or gff3 as the
+options. By default the GFF version will be GFF2 unless specified otherwise.
+The default GFF version for output can also be set in the user environment
+with the DP_GFF option. The command line option will always override the option
+defined in the user environment. 
 
 =item --genemark-dir
 
@@ -738,7 +931,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/09/2007
 
-UPDATED: 03/24/2009
+UPDATED: 03/16/2010
 
 VERSION: $Rev$
 
@@ -759,3 +952,7 @@ VERSION: $Rev$
 #   and usage messages from the command line.
 # - Added a better developed check for required 
 #   arguments
+#
+# 03/16/2010
+# - Added support for config files
+# - Added support for GFF3 output
