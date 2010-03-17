@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 11/07/2008                                       |
-# UPDATED: 01/20/2009                                       |
+# UPDATED: 03/17/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the EuGene gene prediction progrm in batch mode      |
@@ -44,6 +44,8 @@ use File::Copy;                # Copy file from one location to another
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -71,6 +73,9 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 
+my $program = "Eugene";       # The source program
+my $param_name;               # Suffix appended to the end of the gff 
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -79,6 +84,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"      => \$outdir,
 		    # ADDITIONAL OPTIONS
 		    "eugene-binary=s" => \$eugene_bin,
+		    "program=s"       => \$program,
+		    "p|param-name=s"  => \$param_name,
 		    "get-sites=s"     => \$get_sites,
 		    "organism=s"      => \$organism,
 		    "p|param=s"       => \$param_file,
@@ -114,6 +121,26 @@ if ($show_version) {
     print "\nbatch_eugene.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -273,26 +300,84 @@ for my $ind_file (@fasta_files) {
 
     print STDERR "$eugene_cmd" if $verbose;
     
-    system ($eugene_cmd);
+    system ($eugene_cmd) unless ($do_test);
 
     #-----------------------------+
     # CONVERT EUGENE GFF TO       |
     # APOLLO GFF                  |
     #-----------------------------+
+    my $eug_gff_in = $eugene_dir.$name_root.".gff";     # The EuGene gff file
+    my $dp_gff_out = $gff_dir.$name_root."_eugene.gff"; # DAWGPAWS
+
+    # OLD Call to subfunction
+    #cnv_eugene2gff ($eug_gff_in, $dp_gff_out);
+    if (-e $eug_gff_in) {
+	cnv_eugene2gff ($name_root, $eug_gff_in, $dp_gff_out);
+    }
+    else {
+	print STDERR "\a";
+	print STDERR "WARNING: The expected Eugene outoput file not found:\n".
+	    "$eug_gff_in\n conversion to GFF could not be completed\n";
+    }
+
+}
+
+
+
+exit 0;
+
+#-----------------------------------------------------------+ 
+# SUBFUNCTIONS                                              |
+#-----------------------------------------------------------+
+sub cnv_eugene2gff {
+
+    # CONVERTS THE EUGENE FORMAT GFF FILE TO THE 
+    # DAWGPAWS COMPATIBLE GFF FILE
+    my ($seq_name, $gff_source, $eug_gff, $gffout) =  @_;
+    my @eugene_results;
+    my $start;
+    my $end;
+
+    #-----------------------------+
+    # EUGENE INPUT                |
+    #-----------------------------+
+    if ($eug_gff) {
+	open (EUGIN, "<$eug_gff") ||
+	    die "Can not open EuGene gff file $eug_gff";
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (EUGIN, "<&STDIN") || 
+	    die "Can not STDIN for input\n";
+    }
     
-#    my $eug_gff = $eug_fasta.".gff";               # The EuGene gff file
-    my $eug_gff = $eugene_dir.$name_root.".gff";    # The EuGene gff file
-    my $ap_gff = $gff_dir.$name_root."_eugene.gff"; # Apollo gff file
-    open (EUGIN, "<$eug_gff") ||
-	die "Can not open EuGene gff file $eug_gff";
-    open (GFFOUT, ">$ap_gff") ||
-	die "Can not open gff output\n";
-    
+    #-----------------------------+
+    # GFF OUTPUT                  |
+    #-----------------------------+
+    if ($gffout) {
+	open (GFFOUT, ">$gffout") ||
+	    die "Can not open gff output\n";
+    }    
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    # PRINT GFF3 Header
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
+    my $cur_gene_name;
+    my $prev_gene_name = "null";
+    my $i = -1;                     # i indexes gene count
+    my $j = -1;                     # j indexes exon count
+
     while (<EUGIN>) {
 
-	# Can choose to ignore UTRs if necessary
 	my @gff_parts = split;
 	my $num_gff_parts = @gff_parts;
+	my $exon_count = 0;
 	
 	# The middle part of this is gene model number
 	# Name as HEX20.9.0
@@ -302,7 +387,52 @@ for my $ind_file (@fasta_files) {
 	my @name_parts = split ( /\./, $gff_parts[0] );
 	my $model_num = $name_parts[1];
 
-	print "MODEL NUMBER: $model_num\n" if $verbose;
+	my $cur_gene_name = $model_num;
+	
+	#-----------------------------+
+	# MAKE START < END            |
+	#-----------------------------+
+	if ($gff_parts[3] < $gff_parts[4]) {
+	    $start = $gff_parts[3];
+	    $end = $gff_parts[4];
+	} else {
+	    $end = $gff_parts[4];
+	    $start = $gff_parts[3];
+	}
+
+	if ($cur_gene_name =~ $prev_gene_name) {
+	    # IN SAME GENE MODEL
+	    $j++;  # increment exon count
+	} else {
+	    # IN NEW GENE MODEL
+	    $j=-1;
+	    $i++;   # increment gene count
+	    $j++;   # increment exon count
+	    
+	    $eugene_results[$i]{gene_strand} = $gff_parts[6];
+	    $eugene_results[$i]{gene_name} = $gff_source."_".
+		"gene_".
+		$cur_gene_name;
+	    $eugene_results[$i]{gene_start} = $start;
+	    
+	}
+	
+	$prev_gene_name = $cur_gene_name;
+
+	# GET GENE END
+	$eugene_results[$i]{gene_end} = $end;
+
+	# LOAD EXON INFORMATION TO ARRAY
+	$eugene_results[$i]{exon}[$j]{exon_id} = $name_parts[2];
+	$eugene_results[$i]{exon}[$j]{start} = $start;
+	$eugene_results[$i]{exon}[$j]{end} = $end;
+	$eugene_results[$i]{exon}[$j]{score} = $gff_parts[5];
+	$eugene_results[$i]{exon}[$j]{strand} = $gff_parts[6];
+	$eugene_results[$i]{exon}[$j]{frame} = $gff_parts[7];
+	$eugene_results[$i]{exon}[$j]{exon_type} = $gff_parts[2];
+	# convert exon type to SONG compatible format
+
+	print STDERR "MODEL NUMBER: $model_num\n" if $verbose;
 
 	# Positions are listed as
 	# UTR5
@@ -317,48 +447,105 @@ for my $ind_file (@fasta_files) {
 	unless ($gff_parts[2] =~ "UTR5" ||
 		$gff_parts[2] =~ "UTR3") {
 	    
-	    my $start;
-	    my $end;
 
-	    if ($gff_parts[3] < $gff_parts[4]) {
-		$start = $gff_parts[3];
-		$end = $gff_parts[4];
-	    } else {
-		$end = $gff_parts[4];
-		$start = $gff_parts[3];
-	    }
+	    
+#	    print GFFOUT "eugene_simp_".$model_num;
 
+	    #-----------------------------+
+	    # PRINT GFFOUTPUT AS PARSE    |
+	    #-----------------------------+
+	    my $attribute = "eugene_simp_".$model_num;;
+	    
 	    # Need to replace the 
 	    # Addiing simp to eugene model name
 	    # to indicate that external information
 	    # was not used besides the rice matrix
-	    print GFFOUT "$name_root\t".   # 1
-		"eugene\t".                # 2
-		"exon\t".                  # 3
-		"$start\t".                # 4
-		"$end\t".                  # 5
-		$gff_parts[5]."\t".        # 6
-		$gff_parts[6]."\t".        # 7
-		$gff_parts[7]."\t".        # 8
-		"eugene_simp_".$model_num.      # 9
-		"\n";
+	    print GFFOUT "$seq_name\t";
+	    print GFFOUT "eugene\t";
+	    print GFFOUT "exon\t";
+	    print GFFOUT $start."\t";
+	    print GFFOUT $end."\t";
+	    print GFFOUT $gff_parts[5]."\t";
+	    print GFFOUT $gff_parts[6]."\t";
+	    print GFFOUT $gff_parts[7]."\t";
+	    print GFFOUT $attribute."\t";
+	    print GFFOUT "\n";
 	    
-	    print "\t$gff_parts[2]\n" if $verbose;
+	    #print "\t$gff_parts[2]\n" if $verbose;
 	}
 
     }
     
+
+    #-----------------------------+
+    # PRINT GFFOUT FROM ARRAY     |
+    #-----------------------------+
+    my $parent_id;
+    for my $href ( @eugene_results ) {
+	
+	# If GFF3 need to print the parent gene span
+	if ($gff_ver =~ "GFF3") {
+	    $parent_id = $href->{gene_name};
+	    
+	    print GFFOUT $seq_name."\t".                # seq id
+		$gff_source."\t".
+		"gene\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id."\t".      # attribute
+		"\n";
+	    
+	}
+	
+	#-----------------------------+
+	# EXONS                       |
+	#-----------------------------+
+	my $exon_count = 0;
+	my $attribute;
+
+	for my $ex ( @{ $href->{exon} } ) {
+
+	    $exon_count++;
+	    
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_exon_".
+		    $ex->{exon_id}.
+		    ";Parent=".$parent_id;
+	    }
+	    else {
+		$attribute = $href->{gene_name};
+	    }
+	    
+	    # Currently not reporting UTRs
+	    # May want to exclude UTRs from gene span reported above
+	    unless ($ex->{exon_type} =~ "UTR5" ||
+		    $ex->{exon_type} =~ "UTR3") {
+		
+		print GFFOUT $seq_name."\t".
+		    $gff_source."\t".
+		    "exon\t".
+		    $ex->{start}."\t".
+		    $ex->{end}."\t".
+		    $ex->{score}."\t".
+		    $ex->{strand}."\t".
+		    $ex->{frame}."\t".
+		    $attribute."\t".
+		    "\n";
+	    }
+	    
+	}
+
+    }
+
+
     close (EUGIN);
     close (GFFOUT);
     
 }
-
-
-exit 0;
-
-#-----------------------------------------------------------+ 
-# SUBFUNCTIONS                                              |
-#-----------------------------------------------------------+
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
@@ -639,7 +826,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 11/07/2008
 
-UPDATED: 01/20/2009
+UPDATED: 03/16/2010
 
 VERSION: $Rev$
 
@@ -654,3 +841,6 @@ VERSION: $Rev$
 #
 # 01/20/2009
 # - Updated POD documentation
+#
+# 03/17/2010
+# - Added support for GFF3 format 
