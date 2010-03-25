@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 02/17/2009                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert a game xml format file to the gff3 format. This  |
@@ -62,15 +62,17 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 my $test=0;
+my $do_fasta = 0;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions(# REQUIRED OPTIONS
+my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
-		    # ADDITIONAL OPTIONS
+		    # OPTIONS
 		    "ap-path=s"   => \$apollo_bin,
+		    "fasta"       => \$do_fasta,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -138,8 +140,17 @@ elsif (-d $infile) {
     #-----------------------------+
     for my $ind_file (@xml_files) {
 
-	apollo_convert ($apollo_bin, $indir.$ind_file, "game", 
-			$indir.$ind_file.".gff", "gff3");
+	if ($do_fasta) {
+
+	    print STDERR "Doing FASTA TOO\n\n\n" if $verbose;
+	    apollo_convert ($apollo_bin, $indir.$ind_file, "game", 
+			    $indir.$ind_file.".gff", "gff3",
+			    $indir.$ind_file.".fasta");
+	} 
+	else {
+	    apollo_convert ($apollo_bin, $indir.$ind_file, "game", 
+			    $indir.$ind_file.".gff", "gff3");
+	}
 	
     }
 
@@ -197,6 +208,12 @@ sub apollo_convert {
     $InForm = lc($InForm);
     $OutForm = lc($OutForm);
     
+    if ($SeqFile) {
+#	$SeqFile
+#	$ApCmd = $ApCmd." -s ".$fasta_file;
+	$ApCmd = $ApCmd." -s ".$SeqFile;
+    }
+
     # Determine the proper command to use based on the input format
     # since GFF file also require a sequence file
     if ($InForm =~ "gff" ) {
@@ -208,6 +225,8 @@ sub apollo_convert {
     }
 
     # Do the apollo command
+    print STDERR "\n\n".$ApCmd."\n\n" if $verbose;
+
     system ( $ApCmd );
 
 }
@@ -511,3 +530,5 @@ VERSION: $Rev$
 # - Main body of program written
 # 02/20/2009
 # - POD documentation finished
+# 03/25/2010
+# - Added fasta file output
