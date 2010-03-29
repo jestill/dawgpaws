@@ -66,6 +66,8 @@ my $do_test = 0;                  # Run the program in test mode
 # Path to the snap program
 my $sn_path = $ENV{SNAP_PATH} ||
     "snap";
+my $program = "SNAP";
+my $param;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -76,6 +78,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "c|config=s"  => \$config_file,
 		    # ADDITIONAL OPTIONS
 		    "snap-bin"    => \$sn_path,
+		    "program=s"   => \$program,
 		    "gff-ver=s"   => \$gff_ver,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -312,6 +315,10 @@ for my $ind_file (@fasta_files) {
 	# CONVERT THE SNAP OUTPUT TO GFF
 	system ($sn_cmd) unless $do_test;
 
+	if (-e $sn_res) {
+	    snap2gff ($program, $sn_res, $sn_gff, $name_root, 
+		      $sn_param_name, 0);
+	}
 
     }
     # Running the SNAP program
@@ -336,6 +343,201 @@ exit 0;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub snap2gff {
+    
+    my ($source, $snap_in, $gffout, $seq_id, $src_suffix, $do_append ) = @_;
+    # Array to hold all snap results for a single contig
+    my @snap_results;
+    my $prev_gene_name;
+
+    # Rows are the individual genes
+    #   exons array nested in snap results will contain results
+    #   for each individual gene model
+    # Starting i and j at -1 so that increments start at 0
+    my $i = -1;
+    my $j = -1;
+    my $model_num = 0;
+
+    if ($src_suffix) {
+	$source = $source.":".$src_suffix;
+    }
+    
+    my $attribute;
+
+    #-----------------------------+
+    # OPEN INPUT FILE HANDLE      |
+    #-----------------------------+
+    if ($snap_in) {
+	open (INFILE, "<$snap_in") ||
+	    die "ERROR: Can not open LTR_FINDER result file\n $snap_in\n";
+	
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+    
+    #-----------------------------+
+    # OPEN GFF OUTFILE            |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gffout) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT,">$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+    } 
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
+    $prev_gene_name = "NULL";
+    # PROCESS FILE
+    while (<INFILE>) {
+	
+#	print STDERR $_;
+
+	my @gff_parts = split;
+	my $num_gff_parts = @gff_parts;
+	my $exon_count = 0;
+	
+	my $cur_gene_name = $gff_parts[8];
+
+	#-----------------------------+
+	# MAKE START < END            |
+	#-----------------------------+
+	my $start;
+	my $end;
+	if ($gff_parts[3] < $gff_parts[4]) {
+	    $start = $gff_parts[3];
+	    $end = $gff_parts[4];
+	} else {
+	    $end = $gff_parts[4];
+	    $start = $gff_parts[3];
+	}
+
+
+	if ($cur_gene_name =~ $prev_gene_name) {
+	    # IN SAME GENE MODEL
+	    $j++;  # increment exon count
+	} else {
+	    # IN NEW GENE MODEL
+	    $j=-1;
+	    $i++;   # increment gene count
+	    $j++;   # increment exon count
+	    
+	    $snap_results[$i]{gene_strand} = $gff_parts[6];
+	    $snap_results[$i]{gene_name} = $source."_".
+		"gene_".
+		$cur_gene_name;
+	    $snap_results[$i]{gene_start} = $start;
+	    $snap_results[$i]{gene_end} = $end;
+	}
+	
+	$prev_gene_name = $cur_gene_name;
+	
+	# UPDATE GENE START AND END
+	if ($start < $snap_results[$i]{gene_start} ) {
+	    $snap_results[$i]{gene_start} = $start;
+	}
+	if ($end > $snap_results[$i]{gene_start} ) {
+	    $snap_results[$i]{gene_end} = $end;
+	}
+	
+	# LOAD EXON INFORMATION TO ARRAY
+	if  ($seq_id) {
+	    $snap_results[$i]{seq_id} = $seq_id;
+	}
+	else {
+	    $snap_results[$i]{seq_id} = $gff_parts[0];
+	}
+	$snap_results[$i]{exon}[$j]{exon_id} = $j + 1;
+	$snap_results[$i]{exon}[$j]{start} = $start;
+	$snap_results[$i]{exon}[$j]{end} = $end;
+	$snap_results[$i]{exon}[$j]{score} = $gff_parts[5];
+	$snap_results[$i]{exon}[$j]{strand} = $gff_parts[6];
+	$snap_results[$i]{exon}[$j]{frame} = $gff_parts[7];
+	$snap_results[$i]{exon}[$j]{exon_type} = $gff_parts[2];
+
+	print STDERR "MODEL NUMBER: $model_num\n" if $verbose;
+
+    }
+
+    # DONE WITH INFILE
+    close INFILE;
+    
+    #-----------------------------+
+    # PRINT GFFOUT FROM ARRAY     |
+    #-----------------------------+
+    my $parent_id;
+    for my $href ( @snap_results ) {
+		
+	# If GFF3 need to print the parent gene span
+	if ($gff_ver =~ "GFF3") {
+	    $parent_id = $href->{gene_name};
+	    
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"gene\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id."\t".      # attribute
+		"\n";
+	    
+	}
+
+	my $exon_count = 0;
+
+	for my $ex ( @{ $href->{exon} } ) {
+
+	    $exon_count++;
+	    
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_exon_".
+		    $ex->{exon_id}.
+		    ";Parent=".$parent_id;
+	    }
+	    else {
+		$attribute = $href->{gene_name};
+	    }
+	    
+	    # Currently not reporting UTRs
+	    # May want to exclude UTRs from gene span reported above
+		
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"exon\t".
+		$ex->{start}."\t".
+		$ex->{end}."\t".
+		$ex->{score}."\t".
+		$ex->{strand}."\t".
+		$ex->{frame}."\t".
+		$attribute."\t".
+		"\n";
+	    
+	}
+
+    }
+
+    # DONE
+    close GFFOUT;
+
+}
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
