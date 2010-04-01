@@ -91,6 +91,10 @@ my $in_strand;    # 6 - Strand of the feature
 my $in_frame;     # 7 - Frame of the feature
 my $in_attribute; # 8 - Attribute info
 
+# Feature name to use in output
+# ie mathmatetically_defined_repeat
+my $feature;
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -100,6 +104,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "p|parse-out=s" => \$outfile_parse,
 		    "t|thresh=s"    => \$thresh,
 		    # ADDITIONAL OPTIONS
+		    "feature=s"     => \$feature,
 		    "seqname=s"     => \$seqid,
 		    "program=s"     => \$program,
 		    "param=s"       => \$param,
@@ -206,7 +211,7 @@ while (<GFFIN>) {
 	$in_frame     = $gff_data[7];  # 7 - 
 	$in_attribute = $gff_data[8];  # 8 - 
 
-	if ( $in_score >= $thresh) {
+	if ( $in_score >= $thresh ) {
 	    
 	    # The following for debug
 	    #print "$in_score \:\>\: $thresh\n";
@@ -249,9 +254,16 @@ while (<GFFIN>) {
 		    $in_seq_name = $seqid;
 		}
 
+		# If a new feature name is not passed use the
+		# existing name
+		unless ($feature) {
+		    $feature = $in_feat;
+		}
+
 		my $gff_out_str = $in_seq_name."\t".
 		    $in_source."\t".
-		    $in_feat."\t".
+#		    $in_feat."\t".
+		    $feature."\t".
 		    $seg_start."\t".
 		    $seg_end."\t".
 		    $thresh."\t".
