@@ -23,6 +23,17 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+#
+# TO DO: 
+# Load to array then print to file handle instead of print on demand
+#
+# Accept threshold as comma delimited array 
+#
+# MODIFY CONFIG FILE
+# param_name
+# kmer_len
+# database_path
+# additional vmatch options
 
 package DAWGPAWS;
 
@@ -71,16 +82,19 @@ my $thresh = '50';
 # ARRAYS
 my @params;                    # Parameters array for running oligocounts
                                # Index starts at zero
+my @thresh_vals;               # Array of threshold values
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"   => \$indir,
-#		    "d|db=s"      => \$indexdir,
                     "o|outdir=s"  => \$outdir,
 		    "c|config=s"  => \$file_config,
 		    # ADDITIONAL OPTIONS
-		    "t|thresh=s"  => \$thresh,
+#		    "t|thresh=s"  => \$thresh,
+		    # Thresh can take one or more
+		    "t|thresh=i{1,}"  => \@thresh_vals,
 		    # BOOLEAN OPTIONS
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -95,12 +109,10 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 # SHOW REQUESTED HELP         |
 #-----------------------------+
 if ( ($show_usage) ) {
-#    print_help ("usage", File::Spec->rel2abs($0) );
     print_help ("usage", $0 );
 }
 
 if ( ($show_help) || (!$ok) ) {
-#    print_help ("help",  File::Spec->rel2abs($0) );
     print_help ("help",  $0 );
 }
 
@@ -126,6 +138,19 @@ if ( (!$indir) || (!$outdir) || (!$file_config) ) {
     print_help("");
 
 }
+
+
+# TEST OF PASSING THRESHOLD VALUES ARRAY
+if (@thresh_vals) {
+    print STDERR "There are threshold values\n";
+    for my $thresh (@thresh_vals) {
+	print STDERR "\tT: $thresh \n";
+    }
+}
+else {
+    print STDERR "There are no threshold values\n";
+}
+#exit;
 
 
 #-----------------------------+
@@ -202,17 +227,19 @@ while (<CONFIG>) {
 	
 	# If the parameter line has the expected number of parameters
 	
-	if ($count_tmp == 3) {
-	 
+	if ($count_tmp == 3 ||
+	    $count_tmp == 4) {
+	    
 	    $i++;
-	    $params[$i][0] = $tmpary[0];  # Kmer length
-	    $params[$i][1] = $tmpary[1];  # Database Name
-	    $params[$i][2] = $tmpary[2];  # Full Database Path
+	    $params[$i][0] = $tmpary[0];            # Param Name
+	    $params[$i][1] = $tmpary[1];            # k_mer length
+	    $params[$i][2] = $tmpary[2];            # index db path
+	    $params[$i][3] = $tmpary[3] || "NULL";  # vmatch options
 	    
 	}
 	else {
 	    print STDERR "ERROR: Config file line number $line_num\n";
-	    print STDERR "       Only $line_num variables were found\n"; 
+	    print STDERR "       $count_tmp variables were found\n"; 
 	}
 	
     }
@@ -305,12 +332,15 @@ for my $ind_file (@fasta_files) {
 
 	$proc_num++;
 	
-	print STDERR "===============================================\n";
-	print STDERR " Process $proc_num of $num_proc_total\n";
-	print STDERR "===============================================\n";
-
+	if ($verbose) {
+	    print STDERR "===============================================\n";
+	    print STDERR " Process $proc_num of $num_proc_total\n";
+	    print STDERR "===============================================\n";
+	}
+	
 	# LOAD VARS FROM THE PARAMS ARRAY
-	my $kmer_len = $params[$i][0] 
+	# CHANGED 03/30/2010
+	my $param_name = $params[$i][0] 
 	    || die "Error in paramter array line $i\n";
 	my $db_name = $params[$i][1] 
 	    || die "Error in parameter array line $i\n";
@@ -433,6 +463,7 @@ sub seq_kmer_count {
     my $start_pos;
     my $end_pos;
     my $i;         # Array index value
+
 
     #-----------------------------+
     # FILE PATHS                  |
@@ -613,19 +644,50 @@ sub seq_kmer_count {
 	    }
 
 	    
-	    #-----------------------------+
-	    # PRINT OLIGOS OVER THRESHOLD |
-	    # TO STDOUT                   |
-	    #-----------------------------+
-	    # PRINT OUT SEQS EXCEEDING THRESHOLD VALUES TO STDOUT
-	    if ($counts[$i] > $thresh) {
-		my $thresh_seq = $seq->subseq($start_pos, $end_pos);
-		#print STDOUT "$start_pos\t".$counts[$i]."\t".
-		#   "$thresh_seq\n";
-	    }
 
 	}
 	
+	#-----------------------------+
+	# PRINT OLIGOS OVER THRESHOLD |
+	# TO STDOUT                   |
+	#-----------------------------+
+	# PRINT OUT SEQS EXCEEDING THRESHOLD VALUES TO STDOUT
+	# This uses a global thres_vals array ... naughty subfun
+	if (@thresh_vals) {
+	    
+	    # LOAD THE THRESHOLD ARRAY
+	    for my $thresh (@thresh_vals) {
+
+		
+		# OPEN THE THRESHOLD GFF FILE
+		# Results of start end in the threshold array
+		my @mdr_results;
+
+		my $mdr_out = 
+		
+		# LOAD RESULTS TO THRESHOLD GFF FILE
+
+		print STDERR "\tT: $thresh \n";
+		if ($counts[$i] > $thresh) {
+		    my $thresh_seq = $seq->subseq($start_pos, $end_pos);
+		    #print STDOUT "$start_pos\t".$counts[$i]."\t".
+		    #   "$thresh_seq\n";
+		}
+
+		
+		# PRINT THE THRESHOLD ARRAY TO GFF
+		
+		# CLOSE THE THRESHOLD GFF FILE
+		
+
+	    }
+
+
+
+	    
+	}
+
+	# close the GFF and OC
 	close (GFFCOUNT) if ($do_gff);
 	close (OCOUNT);
 
@@ -636,43 +698,15 @@ sub seq_kmer_count {
     
 }
 
+
+
+
 1;
 __END__
 
-# OLD print_help subfunction
-sub print_help {
-
-    # Print requested help or exit.
-    # Options are to just print the full 
-    my ($opt) = @_;
-
-    my $usage = "USAGE:\n". 
-	"MyProg.pl -i InFile -o OutFile";
-    my $args = "REQUIRED ARGUMENTS:\n".
-	"  --infile       # Path to the input file\n".
-	"  --outfile      # Path to the output file\n".
-	"\n".
-	"OPTIONS::\n".
-	"  --version      # Show the program version\n".     
-	"  --usage        # Show program usage\n".
-	"  --help         # Show this help message\n".
-	"  --man          # Open full program manual\n".
-	"  --quiet        # Run program with minimal output\n";
-	
-    if ($opt =~ "full") {
-	print "\n$usage\n\n";
-	print "$args\n\n";
-    }
-    else {
-	print "\n$usage\n\n";
-    }
-    
-    exit;
-}
-
 =head1 NAME
 
-seq_oligocount.pl - Count oligos from an input sequence
+batch_oligocount.pl - Count oligos from an input sequence
 
 =head1 VERSION
 
