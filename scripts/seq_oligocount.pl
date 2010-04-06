@@ -73,7 +73,7 @@ my $program="vmatch";          # The source program the result is derived from
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
-my $ok = GetOptions(# REQUIRED OPTIONS
+my $ok = GetOptions(# REQUIRED ARGUMENTS
 		    "i|infile=s"  => \$infile,
 		    "d|db=s"      => \$index,
                     "o|outdir=s"  => \$outdir,
