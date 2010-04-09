@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR  : JAMES C. ESTILL                                 |
 # STARTED : 02/08/2007                                      |
-# UPDATED : 04/08/2010                                      |
+# UPDATED : 04/09/2010                                      |
 # VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
@@ -995,6 +995,456 @@ sortbycolumn : GENOMIC_RANGE
 # BAC/Genome.
 # 
 #
+
+#-----------------------------------------------------------+
+# Mathematically Defined Repeat - MDRS                       |
+#-----------------------------------------------------------+
+# 04/09/2010
+# Data are split by source chemistry and library technique
+# using random sequence data typically avaiable for a 
+# genome sequence project.
+#   - SOLiD sequence data - SOLID
+#   - 454 sequence data --- 454
+#   - Sanger derived WGS -- WGS
+#   - BAC End Sequences --- BES
+
+[Tier]
+tiername : MDR SOLID
+expanded : false
+
+[Type]
+typename : MDR SOLID 1
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_1
+glyph : DrawableResultFeatureSet
+color : 255,255,150
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR SOLID 10
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_10
+glyph : DrawableResultFeatureSet
+color : 255,255,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR SOLID 100
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_100
+glyph : DrawableResultFeatureSet
+color : 200,200,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR SOLID 1000
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_1000
+glyph : DrawableResultFeatureSet
+color : 150,150,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR SOLID 10000
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_10000
+glyph : DrawableResultFeatureSet
+color : 100,100,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR SOLID 100000
+tiername : MDR SOLID
+resulttype : Vmatch:20mer_SOLID_100000
+glyph : DrawableResultFeatureSet
+color : 50,50,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+#-----------------------------------------------------------+
+# MDRs - WGS Sanger INDEX                                   |
+#-----------------------------------------------------------+
+[Tier]	
+tiername : MDR BES
+expanded : false 
+
+[Type]
+typename : MDR_BES 1
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_1
+glyph : DrawableResultFeatureSet
+color : 200,200,255
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_BES 10
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_10
+glyph : DrawableResultFeatureSet
+color : 150,150,255
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_BES 100
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_100
+glyph : DrawableResultFeatureSet
+color : 100,100,255
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_BES 1000
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_1000
+glyph : DrawableResultFeatureSet
+color : 50,50,255
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_BES 10000
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_10000
+glyph : DrawableResultFeatureSet
+color : 0,0,255
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_BES 100000
+tiername : MDR BES
+resulttype : Vmatch:20mer_bes_100000
+glyph : DrawableResultFeatureSet
+color : 0,0,200
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+
+#-----------------------------------------------------------+
+# MDRs - WGS Sanger INDEX                                   |
+#-----------------------------------------------------------+
+[Tier]
+tiername : MDR Sanger WGS
+expanded : false
+
+[Type]
+typename : MDR_WGS 1
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_1
+glyph : DrawableResultFeatureSet
+color : 200,255,200
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_WGS 10
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_10
+glyph : DrawableResultFeatureSet
+color : 150,255,150
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_WGS 100
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_100
+glyph : DrawableResultFeatureSet
+color : 100,255,100
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_WGS 1000
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_1000
+glyph : DrawableResultFeatureSet
+color : 50,255,50
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_WGS 10000
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_10000
+glyph : DrawableResultFeatureSet
+color : 0,255,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_WGS 100000
+tiername : MDR Sanger WGS
+resulttype : Vmatch:20mer_wgs_100000
+glyph : DrawableResultFeatureSet
+color : 0,200,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+#-----------------------------------------------------------+
+# MDRs - 454 INDEX                                          |
+#-----------------------------------------------------------+
+# 04/09/2010
+# Split into color ramp by order of magnitude
+
+[Tier]
+tiername : MDR 454
+expanded : false
+
+[Type]
+typename : MDR_454 1
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_1
+glyph : DrawableResultFeatureSet
+color : 255,200,200
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_454 10
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_10
+glyph : DrawableResultFeatureSet
+color : 255,150,150
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_454 100
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_100
+glyph : DrawableResultFeatureSet
+color : 255,100,100
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# MDR against 454 derived shotgun sequences
+[Type]
+typename : MDR_454 1000
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_1000
+glyph : DrawableResultFeatureSet
+color : 255,50,50
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_454 10000
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_10000
+glyph : DrawableResultFeatureSet
+color : 255,0,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+[Type]
+typename : MDR_454 100000
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_100000
+glyph : DrawableResultFeatureSet
+color : 200,0,0
+usescore : true
+minscore : 1
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
 
 #-----------------------------------------------------------+
 # RepeatMasker                                              |
