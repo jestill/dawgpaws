@@ -7,7 +7,7 @@
 #                                                           |
 # AUTHOR  : JAMES C. ESTILL                                 |
 # STARTED : 02/08/2007                                      |
-# UPDATED : 11/07/2008                                      |
+# UPDATED : 04/08/2010                                      |
 # VERSION : $Rev$                                     |
 # DESCRIPTION:                                              |
 #                                                           |
@@ -153,7 +153,7 @@ warnonedit : false
 #-----------------------------+
 # GENE                        |
 #-----------------------------+
-# Using DPgn for Dawg Paws Gene for now
+## Using DPgn for Dawg Paws Gene for now
 [Type]
 label : gene
 tiername : Annotation
@@ -352,23 +352,21 @@ number_of_levels : 3
 [Type]
 label : LTR Retrotransposon
 tiername : Annotation
-//tiername : Dispersed Repeats
-//datatype : transposable_element
-//datatype : transposable_element
-// Jamie added the following two
-datatype : ltr_struc
 datatype : ltr_retrotransposon
-//datatype : LTR Retro
-//datatype : repeat_region
-#glyph : DoubleHeadedArrow
-glyph : DrawableResultFeatureSet
+//glyph : DoubleHeadedArrow
+//glyph : DrawableResultFeatureSet
+glyph : DrawableGeneFeatureSet
 color : 255,0,203
+number_of_levels : 2
 idformat : HEX_ltr\d{7}
 name_method : FlyNameAdapter
-overlap_method : NoOverlap
+//overlap_method : NoOverlap
+column : NAME
+column : SCORE
 column : ID
 column : GENOMIC_RANGE
-sortbycolumn : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : NAME
 groupby : HOMOLOGY
 warnonedit : false
 number_of_levels : 3
@@ -754,6 +752,43 @@ sortbycolumn : GENOMIC_RANGE
 weburl : http://www.softberry.com/berry.phtml?topic=index&group=programs&subgroup=gfind#
 
 #-----------------------------------------------------------+
+# RAPLIKE
+#-----------------------------------------------------------+
+# Added 09/27/2009
+
+[Tier]
+tiername : RAPLike
+expanded : true
+
+[Type]
+typename : RAPLIKE_GMHMMWheat
+label : RAPLike GMHMM-Wheat
+tiername : RAPLike
+resulttype : RAPLIKE_GMHMMwheat
+glyph : DrawableResultFeatureSet
+color : 255,0,0
+#usescore : true
+#/minscore : 0.0
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+[Type]
+typename : RAPLIKE_Wheat
+label : RAPLike Wheat
+tiername : RAPLike
+resulttype : RAPLIKEwheat
+glyph : DrawableResultFeatureSet
+color : 230,0,0
+#usescore : true
+#/minscore : 0.0
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
 # GeneMark.hmm                                              |
 #-----------------------------------------------------------+
 // GeneMark from TriAnnot does not appear to have
@@ -773,6 +808,8 @@ typename : GeneMarkHMM_Ta
 label : GeneMarkHMM Triticum aestivum
 tiername : GeneMark.hmm
 resulttype : GeneMarkHMM_Ta
+# Added for TriAnnot compatibility - 09/27/2009
+resulttype : GMHMMwheat
 glyph : DrawableResultFeatureSet
 color : 214,187,135
 // Commented out score use - 02/08/2007
@@ -788,6 +825,8 @@ typename : GeneMarkHMM_Hv
 label : GeneMarkHMM Hordeum vulgare
 tiername : GeneMark.hmm
 resulttype : GeneMarkHMM_Hv
+# Added for TriAnnot compatibility - 09/27/2009
+resulttype : GMHMMbarley
 glyph : DrawableResultFeatureSet
 color : 216,105,31
 //usescore : true
@@ -803,6 +842,8 @@ typename : GeneMarkHMM_Zm
 label : GeneMarkHMM Zea Mays
 tiername : GeneMark.hmm
 resulttype : GeneMarkHMM_Zm
+# Added for TriAnnot compatibility - 09/27/2009
+resulttype : GMHMMmaize
 glyph : DrawableResultFeatureSet
 color : 226,183,37
 //usescore : true
@@ -817,6 +858,8 @@ sortbycolumn : GENOMIC_RANGE
 typename : GeneMarkHMM_Os
 tiername : GeneMark.hmm
 resulttype : GeneMarkHMM_Os
+# Added for TriAnnot compatibility - 09/27/2009
+resulttype : GMHMMrice
 glyph : DrawableResultFeatureSet
 color : 255,255,255
 //usescore : true
@@ -840,6 +883,8 @@ typename : geneid_type
 label : geneid
 tiername : geneid
 resulttype : geneid
+# Added 09/27/2009 for TriAnnot compatibility
+resulttype : GENEID
 resulttype : geneid_v1.2
 glyph : DrawableResultFeatureSet
 color : 200,227,98
@@ -871,6 +916,52 @@ resulttype : EuGene
 glyph : DrawableResultFeatureSet
 #color : 75,147,216
 color : 128,0,0
+//usescore : true
+//minscore : 0.0
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+#-----------------------------------------------------------+
+# SNAP                                                      |
+# Added 04/08/2010                                          |
+#-----------------------------------------------------------+
+
+[Tier]
+tiername : SNAP
+expanded : true
+curated : false
+labeled : false
+number_of_levels : 3 
+
+[Type]
+typename : Snap_Rice
+label : SNAP Rice
+tiername : SNAP
+datatype : SNAP:rice
+datatype : SNAP:o_sativa
+datatype : gene
+#resulttype : SNAP:rice
+#resulttype : SNAP:o_sativa
+glyph : DrawableResultFeatureSet
+//color : 200,0,200
+color : 0,200,0
+//usescore : true
+//minscore : 0.0
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+
+[Type]
+typename : Snap_Arabidopsis
+label : SNAP Arabidopsis
+tiername : SNAP
+resulttype : SNAP:Arabidopsis
+resulttype : SNAP:a_thaliana
+glyph : DrawableResultFeatureSet
+color : 250,0,250
 //usescore : true
 //minscore : 0.0
 column : SCORE
@@ -911,6 +1002,7 @@ sortbycolumn : GENOMIC_RANGE
 # 07/18/2007
 # - Modified to be the same as ensj.tiers to try to
 #   get the RepeatMasker files to parse correctly
+
 [Tier]
 tiername : RepeatMasker
 expanded : false
@@ -922,28 +1014,180 @@ tiername : RepeatMasker
 resulttype : RepeatMasker
 resulttype : repeatmasker
 resulttype : repeatmasker:trep9
-//glyph : DoubleHeadedArrow
 glyph : DrawableResultFeatureSet
 color : 124,124,124
 usescore : true
 annot_type : transposable_element
-//Leaving Name out to see
-// if this helps the parse of the
-// name as given in the GFF file
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
-//overlap_method : SimpleOverlap
-//overlap_method : ORF_Overlap
-//groupby : HOMOLOGY
 groupby : SINGLE
+
+# 03/12/2010 
+[Type]
+typename : Low Complexity Region
+tiername : RepeatMasker
+resulttype : low_complexity_region
+glyph : DrawableResultFeatureSet
+color : 114,114,114
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# 03/12/2010 
+[Type]
+typename : Tandem Repeat
+tiername : RepeatMasker
+resulttype : tandem_repeat
+glyph : DrawableResultFeatureSet
+color : 114,114,114
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- RMask All RepBase 
+tiername : RepeatMasker
+resulttype : REPEATMannot_ALL_Repbase
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- RMask TIGR Fam
+tiername : RepeatMasker
+resulttype : REPEATMannot_TIGR_Fam_Repeats
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- RMask TIGR GSS
+tiername : RepeatMasker
+resulttype : REPEATMannot_TIGR_GSS_Repeats
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- RMask Trep_nr
+tiername : RepeatMasker
+resulttype : REPEATMannot_TREP_nr
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- RMask Trep_total
+tiername : RepeatMasker
+resulttype : REPEATMannot_TREP_total
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+# Added 09/27/2009 for TriAnnot Compatibility
+[Type]
+typename : TriAnnot- simple RMdb
+tiername : RepeatMasker
+resulttype : REPEATMsimple_RMdb
+glyph : DrawableResultFeatureSet
+color : 124,124,124
+usescore : true
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+
+#-----------------------------------------------------------+
+# REPET Results                                             |
+#-----------------------------------------------------------+
+[Tier]
+tiername : REPET Result
+expanded : false
+
+[Type]
+typename : TriAnnot- REPET
+tiername : REPET
+resulttype : REPET Result
+glyph : DrawableGeneFeatureSet
+color : 134,134,134
+column : NAME
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+overlap_method : ORF_Overlap
 
 #-----------------------------------------------------------+
 # TE Nest results                                           |
 #-----------------------------------------------------------+
+
+# The default TE Nest result
 [Tier]
 tiername : TE Nest Result
 expanded : false
@@ -954,6 +1198,44 @@ tiername : TE Nest Result
 resulttype : tenest
 glyph : DrawableGeneFeatureSet
 color : 164,164,164
+column : NAME
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+overlap_method : ORF_Overlap
+
+# Te Nest result with Zea mays
+[Tier]
+tiername : TE Nest Zm
+expanded : false
+
+[Type]
+typename : TE Nest Maize
+tiername : TE Nest Zm
+resulttype : tenest:maize
+glyph : DrawableGeneFeatureSet
+color : 0,255,0
+column : NAME
+column : ID
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+overlap_method : ORF_Overlap
+
+# TE Nest result with maize exemplars from J. Estill
+[Tier]
+tiername : TE Nest Zm Exemplars
+expanded : false
+
+[Type]
+typename : TE Nest Exemplars
+tiername : TE Nest Zm Exemplars
+resulttype : tenest:exemplar
+glyph : DrawableGeneFeatureSet
+color : 255,0,0
 column : NAME
 column : ID
 column : GENOMIC_RANGE
@@ -1211,7 +1493,9 @@ expanded : false
 label : LTR_Finder Younger
 tiername : LTR_Finder Younger Results
 resulttype : ltr_finder:p_30
-glyph : DoubleHeadedArrow
+//glyph : DoubleHeadedArrow
+//glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
 color : 20,255,20
 annot_type : LTR Retrotransposon
 column : NAME
@@ -1221,7 +1505,6 @@ column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 
-
 [Tier]
 tiername : LTR_Finder Result
 expanded : false
@@ -1230,15 +1513,20 @@ expanded : false
 label : LTR_Finder
 tiername : LTR_Finder Result
 resulttype : ltr_finder:def
-glyph : DoubleHeadedArrow
+//glyph : DoubleHeadedArrow
+//glyph : DrawableResultFeatureSet
+//glyph : ThinRectangle
+glyph : DrawableGeneFeatureSet
 color : 0,255,0
+number_of_levels : 2
 annot_type : LTR Retrotransposon
 column : NAME
 column : SCORE
 column : ID
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
-sortbycolumn : GENOMIC_RANGE
+sortbycolumn : NAME
+groupby : GENE
 
 [Tier]
 tiername : LTR_Finder Older Results
@@ -1248,7 +1536,9 @@ expanded : false
 label : LTR_Finder Older
 tiername : LTR_Finder Older Results
 resulttype : ltr_finder:p_10
-glyph : DoubleHeadedArrow
+//glyph : DrawableResultFeatureSet
+glyph : ThinRectangle
+//glyph : DoubleHeadedArrow
 color : 40,255,40
 annot_type : LTR Retrotransposon
 column : NAME
@@ -1380,6 +1670,7 @@ tiername : SanMiguel
 resulttype : BLASTN_SanMiguel
 // The following added for manual import of local BLAST
 resulttype : blastn:SanMiguel_200610
+resulttype : blast:SanMiguel_200610_num
 resulttype : BLASTN:SanMiguel_200610
 glyph : DoubleHeadedArrow
 color : 184,184,184
@@ -3751,3 +4042,63 @@ column : MATCH_LENGTH
 sortbycolumn : GENOMIC_RANGE
 groupby : HOMOLOGY
 weburl : http://rapdownload.lab.nig.ac.jp/
+
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# LTR RETRO ANNOTATION
+#-----------------------------------------------------------+
+#-----------------------------------------------------------+
+# The following tiers are for the annotation of individual
+# ltr retrotransposons. These added 07/22/2009 - JCE
+
+#-----------------------------------------------------------+
+# Maize TE Exemplars                                        |
+#-----------------------------------------------------------+
+# BLASTN against the SanMiguel retrotransposon database
+
+[Tier]
+tiername : BLASTN: UGA Maize TE Exemplars
+expanded : false
+
+[Type]
+label : Maize TE Exemplars
+tiername : BLASTN: UGA Maize TE Exemplars
+resulttype : BLASTN:exemplars_507_num
+resulttype : blast:exemplars_507_num
+resulttype : blast:exemplars_507
+resulttype : blast:exemplars_rm
+resulttype : blast:maize_te_exemplars
+resulttype : blastn:maize_te_exemplars
+#glyph : DrawableResultFeatureSet
+glyph : DoubleHeadedArrow
+#color : 184,184,184
+color : 0,255,0
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : SCORE
+
+[Tier]
+tiername : BLASTN: UGA Maize TE
+expanded : false
+
+[Type]
+label : UGA Maize Transposable Elements
+tiername : BLASTN: UGA Maize TE
+resulttype : blastn:ltr_fl_hqwname
+resulttype : blast:ltr_fl_hqwname
+#glyph : DrawableResultFeatureSet
+glyph : DoubleHeadedArrow
+color : 175,0,0
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : SCORE
