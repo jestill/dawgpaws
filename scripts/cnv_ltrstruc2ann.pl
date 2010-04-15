@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 04/14/2008                                       |
-# UPDATED: 04/14/2008                                       |
+# UPDATED: 06/02/2009                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert *rpt.txt output files from LTR_STRUC to          |
@@ -25,7 +25,8 @@
 # TO DO: * Add percent divergence of the LTRs to the annotation
 #        * Decide of this should be append to an existing gff file or write
 #          a new gff for every sequence
-#        * Add support for GFF3 output   
+#        * Add support for GFF3 output
+#
 
 package DAWGPAWS;
 
@@ -120,13 +121,13 @@ if ($show_man) {
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
 #-----------------------------+
-if ( (!$outfile) || (!$repdir)  ) {
-    print "ERROR: Featsummary file must be specified\n" if !$fs_outfile;
-    print "ERROR: Output file must be specified\n" if !$outfile;
-    print "ERROR: Reports directory must be specified\n" if !$repdir;
-    print "\n";
-#    print_help ("usage", $0 );
-}
+#if ( (!$outfile) || (!$repdir)  ) {
+#    print "ERROR: Featsummary file must be specified\n" if !$fs_outfile;
+#    print "ERROR: Output file must be specified\n" if !$outfile;
+#    print "ERROR: Reports directory must be specified\n" if !$repdir;
+#    print "\n";
+##    print_help ("usage", $0 );
+#}
 
 #-----------------------------------------------------------+
 # MAIN PROGRAM BODY                                         |
@@ -138,10 +139,10 @@ if ( (!$outfile) || (!$repdir)  ) {
 #-----------------------------+
 # If the indir does not end in a slash then append one
 # TO DO: Allow for backslash
-
 unless ($repdir =~ /\/$/ ) {
     $repdir = $repdir."/";
 }
+
 #-----------------------------+
 # OPEN FEATURE SUMMARY OUTFILE|
 # PRINT HEADER                |
@@ -1117,7 +1118,7 @@ sub print_help {
 
 =head1 NAME
 
-cnv_ltrstruc2gff.pl - Convert LTR_STRUC report output files to gff
+cnv_ltrstruc2ann.pl - Convert LTR_STRUC report output files to gff
 
 =head1 VERSION
 
@@ -1127,7 +1128,7 @@ This documentation refers to program version $Rev: 343 $
 
 =head2 Usage
 
-    cnv_ltrstruc2gff.pl -i InDir -o OutDir -r LStrucOut
+    cnv_ltrstruc2ann.pl -i InDir -o OutDir -r LStrucOut
 
 =head2 Required Arguments
 
@@ -1145,15 +1146,17 @@ from,
 
 =over 2
 
-=item -i,--indir
+=item -o,--outfile
 
-Path of the intput directory containing the fasta files that were
-analyzed by LTR_STRUC.
+Path of the output file. -- THIS DOES NOT GET USED
 
-=item -o,--outdir
+=item -g,--gff-out
 
-Path of the output directory that will serve as the base for the
-output from the conversion to gff.
+Path to the gff format output file.
+
+=item -f,--feat-sum
+
+Path to the feature summary output file.
 
 =item -r,--results
 
@@ -1268,11 +1271,28 @@ or the Sourceforge project page
 ( http://sourceforge.net/projects/dawgpaws ) 
 for additional information about this package.
 
+=head1 REFERENCE
+
+Your use of the DAWGPAWS programs should reference the following manuscript:
+
+JC Estill and JL Bennetzen. 2009. 
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
+
+The use of the cnv_ltrstruc2ann.pl program should also reference the 
+LTR_STRUC manuscript:
+
+EM McCarthy and JF McDonald. 2003. "LTR_STRUC: a novel search and 
+identification program for LTR retrotransposons." Bioinformatics 19(3): 362-7.
+
 =head1 LICENSE
 
 GNU GENERAL PUBLIC LICENSE, VERSION 3
 
 http://www.gnu.org/licenses/gpl.html
+
+THIS SOFTWARE COMES AS IS, WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTY. USE AT YOUR OWN RISK.
 
 =head1 AUTHOR
 
@@ -1282,7 +1302,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/25/2007
 
-UPDATED: 09/28/2007
+UPDATED: 04/15/2010
 
 VERSION: $Rev: 343 $
 
