@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_sourceforge.net                   |
 # STARTED: 10/30/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 03/05/2010                                       #
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the repeat masker *.out file into the GFF       |
@@ -736,16 +736,22 @@ a BUG report an include an output file that is not able to be parsed.
 
 =back
 
+=head1 SEE ALSO
+
+This program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -764,7 +770,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 04/10/2006
 
-UPDATED: 03/24/2009
+UPDATED: 03/05/2010
 
 VERSION: $Rev$
 
