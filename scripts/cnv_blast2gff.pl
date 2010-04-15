@@ -43,7 +43,6 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
-
 # Get GFF version from environment, GFF2 is DEFAULT
 my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
@@ -235,15 +234,18 @@ sub blast2gff {
 	else {
 	    open (GFFOUT, ">$gffout") 
 	    || die "Can not open file:\n $gffout\n";
+    
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+
 	}
     }
     else {
 	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not print to STDOUT\n";
-    }
-    
-    if ($gff_ver =~ "GFF3") {
-	print GFFOUT "##gff-version 3\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
     }
 
     while (my $blast_result = $blast_report->next_result())
@@ -567,8 +569,9 @@ blastn, blastx, or wublast.
 
 =item --feature
 
-The type of feature. Be default, this is set to exon to facilitate using
-this blast report in Apollo. It is also possible to set this to an
+The type of feature. Be default, this is set to match_part in order to
+follow the Sequence Ontology guidelines and to facilitate visualizing
+this blast report in Apollo and Gbrowse. It is also possible to set this to an
 ontology complient name such as match or expressed_sequence_match.
 
 =item -d,--database
@@ -820,8 +823,7 @@ http://sourceforge.net/tracker/?group_id=204962
 
 =head1 REFERENCE
 
-Please refer to the DAWGPAWS manuscript in Plant Methods when describing
-your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
 "The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
