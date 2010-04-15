@@ -36,14 +36,14 @@ else {
 # TESTING BINARY PATH WORKS   |
 #-----------------------------+
 diag ("Test running the hmmsearch program ...");
-# Basic command to see that RepeatMasker is installed
+# Basic command to see that hmmsearch is installed
 # Have to do a trick here to capture STDERR by sending it to STDOUT
 my $basic_hmm_cmd = $hmm_bin." -h 2>&1";
 
 # Get the result
 my $basic_hmm_result = `$basic_hmm_cmd`;
 
-# Test for the ltr version string that comes as part of the help message
+# Test for the HMMER string that comes as part of the help message
 like ($basic_hmm_result, qr/HMMER/, "hmmsearch is working");
 
 #-----------------------------+
@@ -60,7 +60,6 @@ my $can_clean = 0;  # The tmp dir did not already exist
 unless (-e $out_dir) {
     mkdir $out_dir;
 }
-
 
 # Get the working dir of the dp_batch_repmask_test.t program
 # use this to set the dir for the hmm databases
