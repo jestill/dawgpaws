@@ -1342,15 +1342,12 @@ groupby : SINGLE
 [Tier]
 tiername : MDR 454
 expanded : false
-
 [Type]
-typename : MDR_454 100000
+typename : MDR_454 1
 tiername : MDR 454
-resulttype : Vmatch:20mer_454_100000
+resulttype : Vmatch:20mer_454_1
 glyph : DrawableResultFeatureSet
-color : 200,0,0
-#usescore : true
-#minscore : 1
+color : 255,200,200
 annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
@@ -1359,15 +1356,15 @@ column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
 groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
 
 [Type]
-typename : MDR_454 10000
+typename : MDR_454 10
 tiername : MDR 454
-resulttype : Vmatch:20mer_454_10000
+resulttype : Vmatch:20mer_454_10
 glyph : DrawableResultFeatureSet
-color : 255,0,0
-#usescore : true
-#minscore : 1
+color : 255,150,150
 annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
@@ -1376,6 +1373,25 @@ column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
 groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
+
+[Type]
+typename : MDR_454 100
+tiername : MDR 454
+resulttype : Vmatch:20mer_454_100
+glyph : DrawableResultFeatureSet
+color : 255,100,100
+annot_type : mathematically_defined_repeat
+column : NAME
+column : SCORE
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+reversesort : false
+groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
 
 # MDR against 454 derived shotgun sequences
 [Type]
@@ -1384,8 +1400,6 @@ tiername : MDR 454
 resulttype : Vmatch:20mer_454_1000
 glyph : DrawableResultFeatureSet
 color : 255,50,50
-#usescore : true
-#minscore : 1
 annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
@@ -1394,15 +1408,15 @@ column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
 groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
 
 [Type]
-typename : MDR_454 100
+typename : MDR_454 10000
 tiername : MDR 454
-resulttype : Vmatch:20mer_454_100
+resulttype : Vmatch:20mer_454_10000
 glyph : DrawableResultFeatureSet
-color : 255,100,100
-#usescore : true
-#minscore : 1
+color : 255,0,0
 annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
@@ -1411,15 +1425,15 @@ column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
 groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
 
 [Type]
-typename : MDR_454 10
+typename : MDR_454 100000
 tiername : MDR 454
-resulttype : Vmatch:20mer_454_10
+resulttype : Vmatch:20mer_454_100000
 glyph : DrawableResultFeatureSet
-color : 255,150,150
-#usescore : true
-#minscore : 1
+color : 200,0,0
 annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
@@ -1428,23 +1442,8 @@ column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
 reversesort : false
 groupby : SINGLE
-
-[Type]
-typename : MDR_454 1
-tiername : MDR 454
-resulttype : Vmatch:20mer_454_1
-glyph : DrawableResultFeatureSet
-color : 255,200,200
-#usescore : true
-#minscore : 1
-annot_type : mathematically_defined_repeat
-column : NAME
-column : SCORE
-column : GENOMIC_RANGE
-column : GENOMIC_LENGTH
-sortbycolumn : GENOMIC_RANGE
-reversesort : false
-groupby : SINGLE
+sortbycolumn : SCORE
+overlap_method : SimpleOverlap
 
 #-----------------------------------------------------------+
 # RepeatMasker                                              |
@@ -1541,7 +1540,7 @@ column : SCORE
 column : GENOMIC_RANGE
 column : GENOMIC_LENGTH
 sortbycolumn : GENOMIC_RANGE
-reversesort : false
+lesreversesort : false
 groupby : SINGLE
 
 # Added 09/27/2009 for TriAnnot Compatibility
