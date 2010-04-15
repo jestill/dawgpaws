@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 03/29/2010                                       |
-# UPDATED: 03/29/2010                                       |
+# UPDATED: 04/08/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the SNAP gene predition program in batch mode.       |
@@ -484,6 +484,7 @@ sub snap2gff {
     for my $href ( @snap_results ) {
 		
 	# If GFF3 need to print the parent gene span
+	# and a fake transcript gene
 	if ($gff_ver =~ "GFF3") {
 	    $parent_id = $href->{gene_name};
 	    
@@ -495,8 +496,26 @@ sub snap2gff {
 		".\t".    # score
 		$href->{gene_strand}."\t".        # strand
 		".\t".                       # Frame
-		"ID=".$parent_id."\t".      # attribute
+		"ID=".$parent_id.      # attribute
+		"; Name=".$parent_id.
 		"\n";
+	    
+	    # Added fake transcript for Apollo
+	    # 04/08/2010
+	    # trs added fro "transcript
+	    $parent_id = $href->{gene_name}."_trs";
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"transcript\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id.      # attribute
+		"; Name=".$parent_id.
+		"\n";
+	    
 	    
 	}
 
@@ -859,3 +878,7 @@ VERSION: $Rev$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 04/08/2010 
+# - The current version of Apollo balks at putting exons
+#   as childrn of genes. I now need to add a fake transcript
+#   model.
