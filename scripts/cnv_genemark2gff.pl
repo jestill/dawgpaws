@@ -43,10 +43,6 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
-#//////////////////////
-my $file_num_max = 1;
-#\\\\\\\\\\\\\\\\\\\\\\
-
 # Get GFF version from environment, GFF2 is DEFAULT
 my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
@@ -658,8 +654,8 @@ This program is known to work with output produced from gmhmme2 and gmhmme3.
 
 =head1 SEE ALSO
 
-The program is part of the DAWG-PAWS package of genome
-annotation programs. See the DAWG-PAWS web page 
+Thhis program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
@@ -667,14 +663,16 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
+
+The use of the cnv_genemark2gff.pl  program should also reference the 
+appropriate GeneMark manuscript listed at:
+
+http://exon.biology.gatech.edu/references.html
 
 =head1 LICENSE
 
@@ -693,7 +691,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 10/30/2007
 
-UPDATED: 01/12/2010
+UPDATED: 04/15/2010
 
 VERSION: $Rev$
 
@@ -723,3 +721,5 @@ VERSION: $Rev$
 # - Added default printing to STDOUT if gffout not defined
 # - Modified gene id for the gff2 version
 # - Updated POD to take these changes into account
+# 04/15/2010
+# -Updated reference and license
