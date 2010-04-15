@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 12/18/2007                                       |
-# UPDATED: 12/18/2007                                       |
+# UPDATED: 01/04/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert sequence data from game.xml file to the fasta    |
@@ -62,7 +62,7 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 
-# Set the text wrap columns to 80
+# Set the text wrap columns to 60
 $Text::Wrap::columns = 60;
 
 #-----------------------------+
@@ -86,9 +86,6 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 
 
-#-----------------------------+
-# MAIN PROGRAM BODY           |
-#-----------------------------+
 if ( ($show_usage) ) {
 #    print_help ("usage", File::Spec->rel2abs($0) );
     print_help ("usage", $0 );
@@ -106,10 +103,15 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_game2fasta.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
+
+#-----------------------------------------------------------+
+# MAIN PROGRAM BODY                                         |
+#-----------------------------------------------------------+
+
 
 #-----------------------------+
 # FILE IO                     |
@@ -135,10 +137,8 @@ my $game_xml = new XML::Simple;
 my $game_data = $game_xml->XMLin($infile);
 
 
-
-
 #-----------------------------+
-# DATA DUMP
+# DATA DUMP FOR TESTING       |
 #-----------------------------+
 #use Data::Dumper;
 #print STDERR Dumper($game_xml);
@@ -379,3 +379,6 @@ VERSION: $Rev$
 # HISTORY                                                   |
 #-----------------------------------------------------------+
 #
+# 01/04/2010
+# - Using xml::simple, only about 30% of the game.xml files
+#   are being properly parsed. Working on alternative methods.
