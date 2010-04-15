@@ -1,12 +1,20 @@
-! DAWGPAWS OBO File
-! 01/14/2010
-! Modified from 
-! This OBO file is an extension to the SO OBO file
-! It is used by Apollo to map SO terms to Apollo datatypes
-! For each extended SO term, a relationship of "uses_java_class"
-! links to the appropriate Apollo term
-! For each Apollo term, the name is the appropriate Apollo Java class
-! to load at runtime
+!-----------------------------------------------------------+
+! DAWGPAWS OBO File                                         |
+!-----------------------------------------------------------+
+!                                                           |
+!  AUTHOR: James C. Estill                                  |
+! CONTACT: JamesEstill_at_gmail.com                         |
+! STARTED: 01/18/2010                                       |
+! UPDATED: 01/19/2010                                       |
+!                                                           |
+! DESCRIPTION:                                              |
+! This OBO file is an extension to the SO OBO file          |
+! It is used by Apollo to map SO terms to Apollo datatypes  |
+! uses_java_class links to the appropriate Apollo term      |
+! For each Apollo term, the name is the appropriate Apollo  |
+! Java class to load at runtime.                            |
+!                                                           |
+!-----------------------------------------------------------+
 
 format-version: 1.2
 subsetdef: Apollo "Apollo Genome Annotation and Curation Tool"
@@ -51,11 +59,6 @@ relationship: uses_java_class Apollo:match
 id: Apollo:match
 name: apollo.datamodel.FeatureSet
 
-! The following will show links among same named
-![Term]
-!id: Apollo:match
-!name: apollo.datamodel.SeqFeature
-
 [Term]
 id: SO:0000039
 relationship: uses_java_class Apollo:match_part
@@ -64,21 +67,24 @@ relationship: uses_java_class Apollo:match_part
 id: Apollo:match_part
 name: apollo.datamodel.SeqFeature
 
-!!-----------------------------------------------------------+
-!! LTR RETROTRANSPOSONS
-!! 01/19/2010
-!!-----------------------------------------------------------+
+!-----------------------------------------------------------+
+! LTR RETROTRANSPOSONS                                      |
+! The following added for drawing LTR retrotransposons      |
+! 01/19/2010                                                |
+!-----------------------------------------------------------+
 
-!! The following added for drawing LTR retrotransposons
+[Term]
+id: Apollo:LTR_retrotransposon
+!name: apollo.datamodel.SeqFeature
+name: apollo.datamodel.FeatureSet
+
 [Term]
 id: SO:0000186
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
-[Term]
-id: Apollo:LTR_retrotransposon
-name: apollo.datamodel.SeqFeature
-
-!!primer_binding_site
+!-----------------------------+
+! PRIMER BINDING SITE         |
+!-----------------------------+
 [Term]
 id: SO:0005850
 relationship: uses_java_class Apollo:LTR_retrotransposon
@@ -87,7 +93,9 @@ relationship: uses_java_class Apollo:LTR_retrotransposon
 id: Apollo:primer_binding_site
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
-!!polypurine tract
+!-----------------------------+
+! POLYPURINE TRACT            |
+!-----------------------------+
 [Term]
 id: SO:0000435
 relationship: uses_java_class Apollo:LTR_retrotransposon
@@ -96,7 +104,9 @@ relationship: uses_java_class Apollo:LTR_retrotransposon
 id: Apollo:RR_tract
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
-!!five prime LTR
+!-----------------------------+
+! FIVE PRIME LTR              |
+!-----------------------------+
 [Term]
 id: SO:0000425
 relationship: uses_java_class Apollo:LTR_retrotransposon
@@ -105,7 +115,9 @@ relationship: uses_java_class Apollo:LTR_retrotransposon
 id: Apollo:five_prime_LTR
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
-!!three prime LTR
+!-----------------------------+
+! THREE PRIME LTR             |
+!-----------------------------+
 [Term]
 id: SO:0000426
 relationship: uses_java_class Apollo:LTR_retrotransposon
@@ -114,7 +126,9 @@ relationship: uses_java_class Apollo:LTR_retrotransposon
 id: Apollo:three_prime_LTR
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
-!!Primer Binding Site
+!-----------------------------+
+! PRIMER BINDING SITE         |
+!-----------------------------+
 [Term]
 id: SO:0000314
 relationship: uses_java_class Apollo:LTR_retrotransposon
@@ -123,6 +137,22 @@ relationship: uses_java_class Apollo:LTR_retrotransposon
 id: Apollo:primer_binding_site
 relationship: uses_java_class Apollo:LTR_retrotransposon
 
+!-----------------------------+
+! INTEGRASE                   |
+!-----------------------------+
+! Attempting to make coding regions work
+! This does not really work, since it is using non standard terms
+[Term]
+id: Apollo:integrase_core_domain
+relationship: uses_java_class Apollo:LTR_retrotransposon
+
+[Term]
+id: Apollo:integrase_core_orf
+relationship: uses_java_class Apollo:LTR_retrotransposon
+
+!-----------------------------------------------------------+
+! APOLLO TYPEDEF                                            |
+!-----------------------------------------------------------+
 [Typedef]
 id: uses_java_class
 name: uses_java_class
