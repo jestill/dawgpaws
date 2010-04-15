@@ -791,8 +791,8 @@ EuGene rel 3.3.
 
 =head1 SEE ALSO
 
-The program is part of the DAWG-PAWS package of genome
-annotation programs. See the DAWG-PAWS web page 
+This program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
@@ -800,14 +800,17 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
+
+The use of the batch_eugene program should also reference the EuGene program:
+
+Schiex, T., A. Moisan, et al. (2001). EuGene: An Eucaryotic Gene Finder that 
+combines several sources of evidence. Computational Biology. O. Gascuel 
+and M.-F. Sagot [Eds.]: 111-125.
 
 =head1 LICENSE
 
