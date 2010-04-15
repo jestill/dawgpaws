@@ -255,16 +255,21 @@ sub fgenesh2gff {
 	else {
 	    open (GFFOUT,">$gff_out") ||
 		die "ERROR: Can not open gff outfile:\n $gff_out\n";
+	    if ($gff_ver =~ "GFF3") {
+		print GFFOUT "##gff-version 3\n";
+	    }
+	    
 	}
     } 
     else {
 	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not print to STDOUT\n";
+	if ($gff_ver =~ "GFF3") {
+	    print GFFOUT "##gff-version 3\n";
+	}
+
     }
 
-    if ($gff_ver =~ "GFF3") {
-	print GFFOUT "##gff-version 3\n";
-    }
 
     #-----------------------------+
     # SET PROGRAM SOURCE          |
@@ -352,7 +357,7 @@ sub fgenesh2gff {
 		"$gene_start\t".           # start
 		"$gene_end\t".             # end
 		"$gene_score\t".           # score
-		"$gene_strand\t".      # strand
+		"$gene_strand\t".          # strand
 		".\t".                     # frame
 		$attribute.                # attribute
 		"\n";
@@ -897,16 +902,22 @@ contact the author and let me know.
 
 =back
 
+=head1 SEE ALSO
+
+This program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
+( http://dawgpaws.sourceforge.net/ )
+or the Sourceforge project page 
+( http://sourceforge.net/projects/dawgpaws ) 
+for additional information about this package.
+
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -956,3 +967,6 @@ VERSION: $Rev$
 #   line or the user environment.
 # - This currently sets exon as the child of gene.
 # - Updated POD for the changes
+#
+# 04/15/2010
+# - Updated reference and see also
