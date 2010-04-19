@@ -60,7 +60,7 @@ my $outfile;                    # Default to STDOUT if not given
 my $blast_program;
 my $blast_alignment = 0;        # Alternatives include 8 and 9
 my $param;
-my $feature_type = "exon";
+my $feature_type = "match";
 
 # Booleans
 my $verbose = 0;
