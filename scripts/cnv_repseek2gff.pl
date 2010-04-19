@@ -296,7 +296,6 @@ sub repseek2gff {
 	    my $span_end = $locations[3];
 
 	    # PRINT 
-	    print STDERR "#\n";
 	    print GFFOUT "$seqname\t".       # Seqname
 		"$source\t".                 # Source
 		"$feature\t".                # Feature
