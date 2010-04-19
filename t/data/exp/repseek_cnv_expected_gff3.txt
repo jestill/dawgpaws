@@ -1,0 +1,177 @@
+seq	repseek	direct_repeat	117	193	33.06	+	.	ID=repseek1_direct_repeat; Alias=overlapping_direct_repeat; Note= 84.615 48 52 -24
+seq	repseek	repeat_unit	117	165	33.06	+	.	ID=repseek1_direct_copy1; Parent=repseek1_direct_repeat
+seq	repseek	repeat_unit	141	193	33.06	+	.	ID=repseek1_direct_copy2; Parent=repseek1_direct_repeat
+seq	repseek	direct_repeat	10979	5725	1593.04	+	.	ID=repseek2_direct_repeat; Note= 96.167 1745 1731 5254
+seq	repseek	repeat_unit	3980	5725	1593.04	+	.	ID=repseek2_direct_copy1; Parent=repseek2_direct_repeat
+seq	repseek	repeat_unit	10979	12710	1593.04	+	.	ID=repseek2_direct_copy2; Parent=repseek2_direct_repeat
+seq	repseek	direct_repeat	13884	5729	1254.62	+	.	ID=repseek3_direct_repeat; Note= 86.969 1749 1750 8155
+seq	repseek	repeat_unit	3980	5729	1254.62	+	.	ID=repseek3_direct_copy1; Parent=repseek3_direct_repeat
+seq	repseek	repeat_unit	13884	15634	1254.62	+	.	ID=repseek3_direct_copy2; Parent=repseek3_direct_repeat
+seq	repseek	direct_repeat	4592	72898	241.67	+	.	ID=repseek4_direct_repeat; Note= 63.559 459 471 67376
+seq	repseek	repeat_unit	4592	5051	241.67	+	.	ID=repseek4_direct_copy1; Parent=repseek4_direct_repeat
+seq	repseek	repeat_unit	72427	72898	241.67	+	.	ID=repseek4_direct_copy2; Parent=repseek4_direct_repeat
+seq	repseek	direct_repeat	10957	15643	1206.85	+	.	ID=repseek5_direct_repeat; Note= 85.271 1767 1776 1143
+seq	repseek	repeat_unit	10957	12724	1206.85	+	.	ID=repseek5_direct_copy1; Parent=repseek5_direct_repeat
+seq	repseek	repeat_unit	13867	15643	1206.85	+	.	ID=repseek5_direct_copy2; Parent=repseek5_direct_repeat
+seq	repseek	direct_repeat	14494	72815	187.50	+	.	ID=repseek6_direct_repeat; Note= 58.763 387 388 57546
+seq	repseek	repeat_unit	14494	14881	187.50	+	.	ID=repseek6_direct_copy1; Parent=repseek6_direct_repeat
+seq	repseek	repeat_unit	72427	72815	187.50	+	.	ID=repseek6_direct_copy2; Parent=repseek6_direct_repeat
+seq	repseek	direct_repeat	18272	18382	32.56	+	.	ID=repseek7_direct_repeat; Note= 97.143 35 35 40
+seq	repseek	repeat_unit	18272	18307	32.56	+	.	ID=repseek7_direct_copy1; Parent=repseek7_direct_repeat
+seq	repseek	repeat_unit	18347	18382	32.56	+	.	ID=repseek7_direct_copy2; Parent=repseek7_direct_repeat
+seq	repseek	direct_repeat	28066	41817	142.99	+	.	ID=repseek8_direct_repeat; Note= 97.987 149 149 13453
+seq	repseek	repeat_unit	28066	28215	142.99	+	.	ID=repseek8_direct_copy1; Parent=repseek8_direct_repeat
+seq	repseek	repeat_unit	41668	41817	142.99	+	.	ID=repseek8_direct_copy2; Parent=repseek8_direct_repeat
+seq	repseek	direct_repeat	29924	30053	77.74	+	.	ID=repseek9_direct_repeat; Alias=overlapping_direct_repeat; Note= 87.879 99 99 -69
+seq	repseek	repeat_unit	29924	30023	77.74	+	.	ID=repseek9_direct_copy1; Parent=repseek9_direct_repeat
+seq	repseek	repeat_unit	29954	30053	77.74	+	.	ID=repseek9_direct_copy2; Parent=repseek9_direct_repeat
+seq	repseek	direct_repeat	32892	41480	1633.51	+	.	ID=repseek10_direct_repeat; Note= 97.086 1747 1749 5092
+seq	repseek	repeat_unit	32892	34639	1633.51	+	.	ID=repseek10_direct_copy1; Parent=repseek10_direct_repeat
+seq	repseek	repeat_unit	39731	41480	1633.51	+	.	ID=repseek10_direct_copy2; Parent=repseek10_direct_repeat
+seq	repseek	direct_repeat	32892	79401	241.70	+	.	ID=repseek11_direct_repeat; Note= 84.110 364 363 45782
+seq	repseek	repeat_unit	32892	33256	241.70	+	.	ID=repseek11_direct_copy1; Parent=repseek11_direct_repeat
+seq	repseek	repeat_unit	79038	79401	241.70	+	.	ID=repseek11_direct_copy2; Parent=repseek11_direct_repeat
+seq	repseek	direct_repeat	32894	72527	423.29	+	.	ID=repseek12_direct_repeat; Note= 70.192 825 810 37998
+seq	repseek	repeat_unit	32894	33719	423.29	+	.	ID=repseek12_direct_copy1; Parent=repseek12_direct_repeat
+seq	repseek	repeat_unit	71717	72527	423.29	+	.	ID=repseek12_direct_copy2; Parent=repseek12_direct_repeat
+seq	repseek	direct_repeat	33585	79401	5330.09	+	.	ID=repseek13_direct_repeat; Note= 92.172 6510 6511 32795
+seq	repseek	repeat_unit	33585	40095	5330.09	+	.	ID=repseek13_direct_copy1; Parent=repseek13_direct_repeat
+seq	repseek	repeat_unit	72890	79401	5330.09	+	.	ID=repseek13_direct_copy2; Parent=repseek13_direct_repeat
+seq	repseek	direct_repeat	34647	34817	30.32	+	.	ID=repseek14_direct_repeat; Note= 83.636 53 55 62
+seq	repseek	repeat_unit	34647	34700	30.32	+	.	ID=repseek14_direct_copy1; Parent=repseek14_direct_repeat
+seq	repseek	repeat_unit	34762	34817	30.32	+	.	ID=repseek14_direct_copy2; Parent=repseek14_direct_repeat
+seq	repseek	direct_repeat	34695	82727	677.65	+	.	ID=repseek15_direct_repeat; Note= 74.712 1533 1521 44978
+seq	repseek	repeat_unit	34695	36228	677.65	+	.	ID=repseek15_direct_copy1; Parent=repseek15_direct_repeat
+seq	repseek	repeat_unit	81206	82727	677.65	+	.	ID=repseek15_direct_copy2; Parent=repseek15_direct_repeat
+seq	repseek	direct_repeat	39733	72527	427.58	+	.	ID=repseek16_direct_repeat; Note= 70.228 827 810 31157
+seq	repseek	repeat_unit	39733	40560	427.58	+	.	ID=repseek16_direct_copy1; Parent=repseek16_direct_repeat
+seq	repseek	repeat_unit	71717	72527	427.58	+	.	ID=repseek16_direct_copy2; Parent=repseek16_direct_repeat
+seq	repseek	direct_repeat	40348	81181	479.77	+	.	ID=repseek17_direct_repeat; Note= 74.552 1132 1152 38549
+seq	repseek	repeat_unit	40348	41480	479.77	+	.	ID=repseek17_direct_copy1; Parent=repseek17_direct_repeat
+seq	repseek	repeat_unit	80029	81181	479.77	+	.	ID=repseek17_direct_copy2; Parent=repseek17_direct_repeat
+seq	repseek	direct_repeat	40426	73941	870.11	+	.	ID=repseek18_direct_repeat; Note= 92.519 1054 1051 31410
+seq	repseek	repeat_unit	40426	41480	870.11	+	.	ID=repseek18_direct_copy1; Parent=repseek18_direct_repeat
+seq	repseek	repeat_unit	72890	73941	870.11	+	.	ID=repseek18_direct_copy2; Parent=repseek18_direct_repeat
+seq	repseek	direct_repeat	41528	41815	130.84	+	.	ID=repseek19_direct_repeat; Alias=overlapping_direct_repeat; Note= 96.599 145 147 -5
+seq	repseek	repeat_unit	41528	41673	130.84	+	.	ID=repseek19_direct_copy1; Parent=repseek19_direct_repeat
+seq	repseek	repeat_unit	41668	41815	130.84	+	.	ID=repseek19_direct_copy2; Parent=repseek19_direct_repeat
+seq	repseek	direct_repeat	46435	46509	31.90	+	.	ID=repseek20_direct_repeat; Alias=overlapping_direct_repeat; Note= 76.712 73 68 -67
+seq	repseek	repeat_unit	46435	46508	31.90	+	.	ID=repseek20_direct_copy1; Parent=repseek20_direct_repeat
+seq	repseek	repeat_unit	46441	46509	31.90	+	.	ID=repseek20_direct_copy2; Parent=repseek20_direct_repeat
+seq	repseek	direct_repeat	48310	50906	157.63	+	.	ID=repseek21_direct_repeat; Note= 96.491 171 171 2254
+seq	repseek	repeat_unit	48310	48481	157.63	+	.	ID=repseek21_direct_copy1; Parent=repseek21_direct_repeat
+seq	repseek	repeat_unit	50735	50906	157.63	+	.	ID=repseek21_direct_copy2; Parent=repseek21_direct_repeat
+seq	repseek	direct_repeat	52089	54464	145.41	+	.	ID=repseek22_direct_repeat; Note= 91.209 182 181 2012
+seq	repseek	repeat_unit	52089	52271	145.41	+	.	ID=repseek22_direct_copy1; Parent=repseek22_direct_repeat
+seq	repseek	repeat_unit	54283	54464	145.41	+	.	ID=repseek22_direct_copy2; Parent=repseek22_direct_repeat
+seq	repseek	direct_repeat	54658	54693	23.74	+	.	ID=repseek23_direct_repeat; Alias=overlapping_direct_repeat; Note= 90.323 31 31 -27
+seq	repseek	repeat_unit	54658	54689	23.74	+	.	ID=repseek23_direct_copy1; Parent=repseek23_direct_repeat
+seq	repseek	repeat_unit	54662	54693	23.74	+	.	ID=repseek23_direct_copy2; Parent=repseek23_direct_repeat
+seq	repseek	direct_repeat	57836	58594	175.87	+	.	ID=repseek24_direct_repeat; Alias=overlapping_direct_repeat; Note= 71.489 469 447 -158
+seq	repseek	repeat_unit	57836	58305	175.87	+	.	ID=repseek24_direct_copy1; Parent=repseek24_direct_repeat
+seq	repseek	repeat_unit	58147	58594	175.87	+	.	ID=repseek24_direct_copy2; Parent=repseek24_direct_repeat
+seq	repseek	direct_repeat	59215	59257	39.29	+	.	ID=repseek25_direct_repeat; Alias=overlapping_direct_repeat; Note= 100.000 40 40 -38
+seq	repseek	repeat_unit	59215	59255	39.29	+	.	ID=repseek25_direct_copy1; Parent=repseek25_direct_repeat
+seq	repseek	repeat_unit	59217	59257	39.29	+	.	ID=repseek25_direct_copy2; Parent=repseek25_direct_repeat
+seq	repseek	direct_repeat	61033	63349	24.69	+	.	ID=repseek26_direct_repeat; Note= 96.000 25 25 2266
+seq	repseek	repeat_unit	61033	61058	24.69	+	.	ID=repseek26_direct_copy1; Parent=repseek26_direct_repeat
+seq	repseek	repeat_unit	63324	63349	24.69	+	.	ID=repseek26_direct_copy2; Parent=repseek26_direct_repeat
+seq	repseek	direct_repeat	61036	61057	21.43	+	.	ID=repseek27_direct_repeat; Alias=overlapping_direct_repeat; Note= 100.000 20 20 -19
+seq	repseek	repeat_unit	61036	61056	21.43	+	.	ID=repseek27_direct_copy1; Parent=repseek27_direct_repeat
+seq	repseek	repeat_unit	61037	61057	21.43	+	.	ID=repseek27_direct_copy2; Parent=repseek27_direct_repeat
+seq	repseek	direct_repeat	63196	63348	27.00	+	.	ID=repseek28_direct_repeat; Alias=overlapping_direct_repeat; Note= 62.025 151 150 -149
+seq	repseek	repeat_unit	63196	63347	27.00	+	.	ID=repseek28_direct_copy1; Parent=repseek28_direct_repeat
+seq	repseek	repeat_unit	63198	63348	27.00	+	.	ID=repseek28_direct_copy2; Parent=repseek28_direct_repeat
+seq	repseek	direct_repeat	63325	72881	24.77	+	.	ID=repseek29_direct_repeat; Note= 89.655 29 29 9498
+seq	repseek	repeat_unit	63325	63354	24.77	+	.	ID=repseek29_direct_copy1; Parent=repseek29_direct_repeat
+seq	repseek	repeat_unit	72852	72881	24.77	+	.	ID=repseek29_direct_copy2; Parent=repseek29_direct_repeat
+seq	repseek	direct_repeat	63484	63624	97.53	+	.	ID=repseek30_direct_repeat; Alias=overlapping_direct_repeat; Note= 96.296 108 108 -76
+seq	repseek	repeat_unit	63484	63592	97.53	+	.	ID=repseek30_direct_copy1; Parent=repseek30_direct_repeat
+seq	repseek	repeat_unit	63516	63624	97.53	+	.	ID=repseek30_direct_copy2; Parent=repseek30_direct_repeat
+seq	repseek	direct_repeat	64723	68872	74.31	+	.	ID=repseek31_direct_repeat; Note= 76.970 164 160 3825
+seq	repseek	repeat_unit	64723	64887	74.31	+	.	ID=repseek31_direct_copy1; Parent=repseek31_direct_repeat
+seq	repseek	repeat_unit	68712	68872	74.31	+	.	ID=repseek31_direct_copy2; Parent=repseek31_direct_repeat
+seq	repseek	direct_repeat	70465	71716	381.70	+	.	ID=repseek32_direct_repeat; Note= 94.382 441 444 366
+seq	repseek	repeat_unit	70465	70906	381.70	+	.	ID=repseek32_direct_copy1; Parent=repseek32_direct_repeat
+seq	repseek	repeat_unit	71272	71716	381.70	+	.	ID=repseek32_direct_copy2; Parent=repseek32_direct_repeat
+seq	repseek	direct_repeat	71717	79393	318.85	+	.	ID=repseek33_direct_repeat; Note= 95.467 352 353 6971
+seq	repseek	repeat_unit	71717	72069	318.85	+	.	ID=repseek33_direct_copy1; Parent=repseek33_direct_repeat
+seq	repseek	repeat_unit	79040	79393	318.85	+	.	ID=repseek33_direct_copy2; Parent=repseek33_direct_repeat
+seq	repseek	direct_repeat	72391	72997	63.29	+	.	ID=repseek34_direct_repeat; Note= 26.812 138 138 330
+seq	repseek	repeat_unit	72391	72529	63.29	+	.	ID=repseek34_direct_copy1; Parent=repseek34_direct_repeat
+seq	repseek	repeat_unit	72859	72997	63.29	+	.	ID=repseek34_direct_copy2; Parent=repseek34_direct_repeat
+seq	repseek	direct_repeat	73949	74102	29.33	+	.	ID=repseek35_direct_repeat; Note= 89.474 38 38 77
+seq	repseek	repeat_unit	73949	73987	29.33	+	.	ID=repseek35_direct_copy1; Parent=repseek35_direct_repeat
+seq	repseek	repeat_unit	74064	74102	29.33	+	.	ID=repseek35_direct_copy2; Parent=repseek35_direct_repeat
+seq	repseek	direct_repeat	73996	82727	756.68	+	.	ID=repseek36_direct_repeat; Note= 76.493 1534 1522 5675
+seq	repseek	repeat_unit	73996	75530	756.68	+	.	ID=repseek36_direct_copy1; Parent=repseek36_direct_repeat
+seq	repseek	repeat_unit	81205	82727	756.68	+	.	ID=repseek36_direct_copy2; Parent=repseek36_direct_repeat
+seq	repseek	direct_repeat	77115	77179	32.34	+	.	ID=repseek37_direct_repeat; Alias=overlapping_direct_repeat; Note= 83.673 49 49 -34
+seq	repseek	repeat_unit	77115	77164	32.34	+	.	ID=repseek37_direct_copy1; Parent=repseek37_direct_repeat
+seq	repseek	repeat_unit	77130	77179	32.34	+	.	ID=repseek37_direct_copy2; Parent=repseek37_direct_repeat
+seq	repseek	inverted_repeat	32892	5726	1302.19	+	.	ID=repseek38_inverted_repeat; Note= 88.209 1746 1742 27166
+seq	repseek	repeat_unit	3980	5726	1302.19	+	.	ID=repseek38_inverted_copy1; Parent=repseek38_inverted_repeat
+seq	repseek	repeat_unit	32892	34634	1302.19	+	.	ID=repseek38_inverted_copy2; Parent=repseek38_inverted_repeat
+seq	repseek	inverted_repeat	10537	41475	4578.82	+	.	ID=repseek39_inverted_repeat; Note= 86.054 6557 6523 24415
+seq	repseek	repeat_unit	3980	10537	4578.82	+	.	ID=repseek39_inverted_copy1; Parent=repseek39_inverted_repeat
+seq	repseek	repeat_unit	34952	41475	4578.82	+	.	ID=repseek39_inverted_copy2; Parent=repseek39_inverted_repeat
+seq	repseek	inverted_repeat	3980	73936	954.77	+	.	ID=repseek40_inverted_repeat; Note= 95.717 1069 1069 67818
+seq	repseek	repeat_unit	3980	5049	954.77	+	.	ID=repseek40_inverted_copy1; Parent=repseek40_inverted_repeat
+seq	repseek	repeat_unit	72867	73936	954.77	+	.	ID=repseek40_inverted_copy2; Parent=repseek40_inverted_repeat
+seq	repseek	inverted_repeat	3980	81176	503.82	+	.	ID=repseek41_inverted_repeat; Note= 75.214 1140 1147 74909
+seq	repseek	repeat_unit	3980	5120	503.82	+	.	ID=repseek41_inverted_copy1; Parent=repseek41_inverted_repeat
+seq	repseek	repeat_unit	80029	81176	503.82	+	.	ID=repseek41_inverted_copy2; Parent=repseek41_inverted_repeat
+seq	repseek	inverted_repeat	4920	72531	622.50	+	.	ID=repseek42_inverted_repeat; Note= 80.929 804 814 65993
+seq	repseek	repeat_unit	4920	5724	622.50	+	.	ID=repseek42_inverted_copy1; Parent=repseek42_inverted_repeat
+seq	repseek	repeat_unit	71717	72531	622.50	+	.	ID=repseek42_inverted_copy2; Parent=repseek42_inverted_repeat
+seq	repseek	inverted_repeat	10537	79393	3636.29	+	.	ID=repseek43_inverted_repeat; Note= 86.221 5166 5139 63717
+seq	repseek	repeat_unit	5371	10537	3636.29	+	.	ID=repseek43_inverted_copy1; Parent=repseek43_inverted_repeat
+seq	repseek	repeat_unit	74254	79393	3636.29	+	.	ID=repseek43_inverted_copy2; Parent=repseek43_inverted_repeat
+seq	repseek	inverted_repeat	10534	9249	598.74	+	.	ID=repseek44_inverted_repeat; Note= 75.561 1285 1249 70944
+seq	repseek	repeat_unit	9249	10534	598.74	+	.	ID=repseek44_inverted_copy1; Parent=repseek44_inverted_repeat
+seq	repseek	repeat_unit	81478	82727	598.74	+	.	ID=repseek44_inverted_copy2; Parent=repseek44_inverted_repeat
+seq	repseek	inverted_repeat	10920	81235	489.48	+	.	ID=repseek45_inverted_repeat; Note= 74.889 1099 1112 68104
+seq	repseek	repeat_unit	10920	12019	489.48	+	.	ID=repseek45_inverted_copy1; Parent=repseek45_inverted_repeat
+seq	repseek	repeat_unit	80123	81235	489.48	+	.	ID=repseek45_inverted_copy2; Parent=repseek45_inverted_repeat
+seq	repseek	inverted_repeat	10933	34680	1297.16	+	.	ID=repseek46_inverted_repeat; Note= 87.458 1777 1787 20183
+seq	repseek	repeat_unit	10933	12710	1297.16	+	.	ID=repseek46_inverted_copy1; Parent=repseek46_inverted_repeat
+seq	repseek	repeat_unit	32893	34680	1297.16	+	.	ID=repseek46_inverted_copy2; Parent=repseek46_inverted_repeat
+seq	repseek	inverted_repeat	10947	73968	955.05	+	.	ID=repseek47_inverted_repeat; Note= 94.698 1092 1090 60839
+seq	repseek	repeat_unit	10947	12039	955.05	+	.	ID=repseek47_inverted_copy1; Parent=repseek47_inverted_repeat
+seq	repseek	repeat_unit	72878	73968	955.05	+	.	ID=repseek47_inverted_copy2; Parent=repseek47_inverted_repeat
+seq	repseek	inverted_repeat	10974	41480	1278.91	+	.	ID=repseek48_inverted_repeat; Note= 87.684 1736 1748 27022
+seq	repseek	repeat_unit	10974	12710	1278.91	+	.	ID=repseek48_inverted_copy1; Parent=repseek48_inverted_repeat
+seq	repseek	repeat_unit	39732	41480	1278.91	+	.	ID=repseek48_inverted_copy2; Parent=repseek48_inverted_repeat
+seq	repseek	inverted_repeat	11918	72531	594.03	+	.	ID=repseek49_inverted_repeat; Note= 79.218 791 814 59008
+seq	repseek	repeat_unit	11918	12709	594.03	+	.	ID=repseek49_inverted_copy1; Parent=repseek49_inverted_repeat
+seq	repseek	repeat_unit	71717	72531	594.03	+	.	ID=repseek49_inverted_copy2; Parent=repseek49_inverted_repeat
+seq	repseek	inverted_repeat	12356	79393	310.09	+	.	ID=repseek50_inverted_repeat; Note= 93.503 354 354 66329
+seq	repseek	repeat_unit	12356	12710	310.09	+	.	ID=repseek50_inverted_copy1; Parent=repseek50_inverted_repeat
+seq	repseek	repeat_unit	79039	79393	310.09	+	.	ID=repseek50_inverted_copy2; Parent=repseek50_inverted_repeat
+seq	repseek	inverted_repeat	13884	34634	1167.76	+	.	ID=repseek51_inverted_repeat; Note= 85.392 1746 1741 17263
+seq	repseek	repeat_unit	13884	15630	1167.76	+	.	ID=repseek51_inverted_copy1; Parent=repseek51_inverted_repeat
+seq	repseek	repeat_unit	32893	34634	1167.76	+	.	ID=repseek51_inverted_copy2; Parent=repseek51_inverted_repeat
+seq	repseek	inverted_repeat	13884	41475	1179.87	+	.	ID=repseek52_inverted_repeat; Note= 85.344 1750 1747 24094
+seq	repseek	repeat_unit	13884	15634	1179.87	+	.	ID=repseek52_inverted_copy1; Parent=repseek52_inverted_repeat
+seq	repseek	repeat_unit	39728	41475	1179.87	+	.	ID=repseek52_inverted_copy2; Parent=repseek52_inverted_repeat
+seq	repseek	inverted_repeat	13884	73936	914.35	+	.	ID=repseek53_inverted_repeat; Note= 94.818 1040 1040 57972
+seq	repseek	repeat_unit	13884	14924	914.35	+	.	ID=repseek53_inverted_copy1; Parent=repseek53_inverted_repeat
+seq	repseek	repeat_unit	72896	73936	914.35	+	.	ID=repseek53_inverted_copy2; Parent=repseek53_inverted_repeat
+seq	repseek	inverted_repeat	13884	81176	476.68	+	.	ID=repseek54_inverted_repeat; Note= 75.936 1038 1053 65201
+seq	repseek	repeat_unit	13884	14922	476.68	+	.	ID=repseek54_inverted_copy1; Parent=repseek54_inverted_repeat
+seq	repseek	repeat_unit	80123	81176	476.68	+	.	ID=repseek54_inverted_copy2; Parent=repseek54_inverted_repeat
+seq	repseek	inverted_repeat	14788	72527	370.99	+	.	ID=repseek55_inverted_repeat; Note= 66.667 846 815 56078
+seq	repseek	repeat_unit	14788	15634	370.99	+	.	ID=repseek55_inverted_copy1; Parent=repseek55_inverted_repeat
+seq	repseek	repeat_unit	71712	72527	370.99	+	.	ID=repseek55_inverted_copy2; Parent=repseek55_inverted_repeat
+seq	repseek	inverted_repeat	15268	79401	279.35	+	.	ID=repseek56_inverted_repeat; Note= 88.556 366 366 63401
+seq	repseek	repeat_unit	15268	15634	279.35	+	.	ID=repseek56_inverted_copy1; Parent=repseek56_inverted_repeat
+seq	repseek	repeat_unit	79035	79401	279.35	+	.	ID=repseek56_inverted_copy2; Parent=repseek56_inverted_repeat
+seq	repseek	inverted_repeat	46482	63354	22.13	+	.	ID=repseek57_inverted_repeat; Note= 88.889 27 27 16818
+seq	repseek	repeat_unit	46482	46509	22.13	+	.	ID=repseek57_inverted_copy1; Parent=repseek57_inverted_repeat
+seq	repseek	repeat_unit	63327	63354	22.13	+	.	ID=repseek57_inverted_copy2; Parent=repseek57_inverted_repeat
+seq	repseek	inverted_repeat	46488	61057	22.02	+	.	ID=repseek58_inverted_repeat; Note= 100.000 21 21 14527
+seq	repseek	repeat_unit	46488	46509	22.02	+	.	ID=repseek58_inverted_copy1; Parent=repseek58_inverted_repeat
+seq	repseek	repeat_unit	61036	61057	22.02	+	.	ID=repseek58_inverted_copy2; Parent=repseek58_inverted_repeat
+seq	repseek	inverted_repeat	72427	73327	271.79	+	.	ID=repseek59_inverted_repeat; Note= 66.742 445 445 10
+seq	repseek	repeat_unit	72427	72872	271.79	+	.	ID=repseek59_inverted_copy1; Parent=repseek59_inverted_repeat
+seq	repseek	repeat_unit	72882	73327	271.79	+	.	ID=repseek59_inverted_copy2; Parent=repseek59_inverted_repeat

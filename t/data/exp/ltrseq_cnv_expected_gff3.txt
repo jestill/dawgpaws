@@ -1,0 +1,13 @@
+##gff-version 3
+HEX3045G05	LTR_seq	LTR_retrotransposon	14989	17024	1.000000	.	.	ID=ltrseq_1
+HEX3045G05	LTR_seq	five_prime_LTR	14989	15137	1.000000	.	.	ID=ltrseq_1_five_prime_LTR;Name=Five Prime LTR;Parent=ltrseq_1
+HEX3045G05	LTR_seq	three_prime_LTR	16876	17024	1.000000	.	.	ID=ltrseq_1_three_prime_LTR;Name=Three Prime LTR;Parent=ltrseq_1
+HEX3045G05	LTR_seq	LTR_retrotransposon	14989	17024	1.000000	.	.	ID=ltrseq_2
+HEX3045G05	LTR_seq	five_prime_LTR	14989	15137	1.000000	.	.	ID=ltrseq_2_five_prime_LTR;Name=Five Prime LTR;Parent=ltrseq_2
+HEX3045G05	LTR_seq	three_prime_LTR	16876	17024	1.000000	.	.	ID=ltrseq_2_three_prime_LTR;Name=Three Prime LTR;Parent=ltrseq_2
+HEX3045G05	LTR_seq	LTR_retrotransposon	14989	16872	0.500000	.	.	ID=ltrseq_3
+HEX3045G05	LTR_seq	five_prime_LTR	14989	15127	0.500000	.	.	ID=ltrseq_3_five_prime_LTR;Name=Five Prime LTR;Parent=ltrseq_3
+HEX3045G05	LTR_seq	three_prime_LTR	16736	16872	0.500000	.	.	ID=ltrseq_3_three_prime_LTR;Name=Three Prime LTR;Parent=ltrseq_3
+HEX3045G05	LTR_seq	LTR_retrotransposon	14989	16872	0.500000	.	.	ID=ltrseq_4
+HEX3045G05	LTR_seq	five_prime_LTR	14989	15127	0.500000	.	.	ID=ltrseq_4_five_prime_LTR;Name=Five Prime LTR;Parent=ltrseq_4
+HEX3045G05	LTR_seq	three_prime_LTR	16736	16872	0.500000	.	.	ID=ltrseq_4_three_prime_LTR;Name=Three Prime LTR;Parent=ltrseq_4
