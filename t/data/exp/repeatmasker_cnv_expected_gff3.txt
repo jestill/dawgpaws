@@ -1,0 +1,55 @@
+##gff-version 3
+HEX3045G05	repeatmasker	low_complexity_region	463	491	29	+	.	ID=AT_rich_1
+HEX3045G05	repeatmasker	low_complexity_region	469	493	25	-	.	ID=AT_rich_2
+HEX3045G05	repeatmasker	low_complexity_region	716	754	25	+	.	ID=AT_rich_3
+HEX3045G05	repeatmasker	match	1764	2069	469	+	.	ID=match_1_TREP20; Name=TREP20; Target=TREP20 1482 1784
+HEX3045G05	repeatmasker	match	1816	2105	507	+	.	ID=match_2_TREP58; Name=TREP58; Target=TREP58 177 467
+HEX3045G05	repeatmasker	match	1920	2248	450	+	.	ID=match_3_TREP214; Name=TREP214; Target=TREP214 787 1115
+HEX3045G05	repeatmasker	match	3980	12709	66873	+	.	ID=match_4_TREP1222; Name=TREP1222; Target=TREP1222 6 8718
+HEX3045G05	repeatmasker	match	13308	13357	288	-	.	ID=match_5_TREP824; Name=TREP824; Target=TREP824 3522 3473
+HEX3045G05	repeatmasker	match	13392	13897	1642	-	.	ID=match_6_TREP824; Name=TREP824; Target=TREP824 3468 2960
+HEX3045G05	repeatmasker	match	13880	15631	10808	+	.	ID=match_7_TREP1222; Name=TREP1222; Target=TREP1222 2 1738
+HEX3045G05	repeatmasker	match	15619	16424	1998	-	.	ID=match_8_TREP824; Name=TREP824; Target=TREP824 2985 2183
+HEX3045G05	repeatmasker	match	24659	24795	345	+	.	ID=match_9_TREP778; Name=TREP778; Target=TREP778 7161 7292
+HEX3045G05	repeatmasker	match	24687	24780	385	+	.	ID=match_10_TREP778; Name=TREP778; Target=TREP778 7306 7398
+HEX3045G05	repeatmasker	tandem_repeat	25472	25552	239	+	.	ID=%28A%29n_1
+HEX3045G05	repeatmasker	tandem_repeat	25725	25817	320	+	.	ID=%28A%29n_2
+HEX3045G05	repeatmasker	tandem_repeat	27496	27614	424	+	.	ID=%28A%29n_3
+HEX3045G05	repeatmasker	match	28221	29843	3025	-	.	ID=match_11_TREP2057; Name=TREP2057; Target=TREP2057 5906 4282
+HEX3045G05	repeatmasker	match	28290	30033	2440	-	.	ID=match_12_TREP1326; Name=TREP1326; Target=TREP1326 4671 2929
+HEX3045G05	repeatmasker	match	30263	31577	1069	-	.	ID=match_13_TREP2057; Name=TREP2057; Target=TREP2057 3831 2510
+HEX3045G05	repeatmasker	match	30264	31307	1224	-	.	ID=match_14_TREP2012; Name=TREP2012; Target=TREP2012 1429 381
+HEX3045G05	repeatmasker	match	32892	34688	12557	-	.	ID=match_15_TREP1222; Name=TREP1222; Target=TREP1222 8719 6937
+HEX3045G05	repeatmasker	match	34762	34906	595	-	.	ID=match_16_TREP792; Name=TREP792; Target=TREP792 6969 6826
+HEX3045G05	repeatmasker	match	34952	41474	42845	-	.	ID=match_17_TREP1222; Name=TREP1222; Target=TREP1222 6547 6
+HEX3045G05	repeatmasker	match	42614	42766	258	-	.	ID=match_18_TREP2034; Name=TREP2034; Target=TREP2034 166 18
+HEX3045G05	repeatmasker	low_complexity_region	43424	43449	26	+	.	ID=GC_rich_4
+HEX3045G05	repeatmasker	tandem_repeat	46472	46508	228	+	.	ID=%28G%29n_4
+HEX3045G05	repeatmasker	match	47010	47340	1300	-	.	ID=match_19_TREP2036; Name=TREP2036; Target=TREP2036 319 1
+HEX3045G05	repeatmasker	match	47423	47911	1517	+	.	ID=match_20_TREP239; Name=TREP239; Target=TREP239 68 570
+HEX3045G05	repeatmasker	match	48312	49556	1908	-	.	ID=match_21_TREP1301; Name=TREP1301; Target=TREP1301 2511 1271
+HEX3045G05	repeatmasker	match	48504	50043	7339	-	.	ID=match_22_TREP1301; Name=TREP1301; Target=TREP1301 2342 805
+HEX3045G05	repeatmasker	match	50371	50835	2024	-	.	ID=match_23_TREP1301; Name=TREP1301; Target=TREP1301 520 63
+HEX3045G05	repeatmasker	match	51886	53298	9551	-	.	ID=match_24_TREP255; Name=TREP255; Target=TREP255 2525 1117
+HEX3045G05	repeatmasker	match	54067	54289	1374	-	.	ID=match_25_TREP255; Name=TREP255; Target=TREP255 429 208
+HEX3045G05	repeatmasker	match	54273	54455	971	-	.	ID=match_26_TREP255; Name=TREP255; Target=TREP255 2333 2151
+HEX3045G05	repeatmasker	tandem_repeat	54668	54699	246	+	.	ID=%28GAAA%29n_5
+HEX3045G05	repeatmasker	tandem_repeat	59215	59259	384	+	.	ID=%28GA%29n_6
+HEX3045G05	repeatmasker	match	59638	60266	2283	+	.	ID=match_27_TREP240; Name=TREP240; Target=TREP240 1 633
+HEX3045G05	repeatmasker	tandem_repeat	61036	61056	189	-	.	ID=%28G%29n_7
+HEX3045G05	repeatmasker	tandem_repeat	63319	63347	240	-	.	ID=%28G%29n_8
+HEX3045G05	repeatmasker	match	63641	63779	229	+	.	ID=match_28_TREP2053; Name=TREP2053; Target=TREP2053 1034 1159
+HEX3045G05	repeatmasker	low_complexity_region	64016	64037	22	+	.	ID=AT_rich_5
+HEX3045G05	repeatmasker	tandem_repeat	64156	64223	266	-	.	ID=%28GAAAA%29n_9
+HEX3045G05	repeatmasker	match	66497	66553	299	-	.	ID=match_29_TREP2051; Name=TREP2051; Target=TREP2051 67 11
+HEX3045G05	repeatmasker	match	71721	72395	3566	-	.	ID=match_30_TREP1222; Name=TREP1222; Target=TREP1222 1732 1051
+HEX3045G05	repeatmasker	match	72263	72419	288	-	.	ID=match_31_TREP792; Name=TREP792; Target=TREP792 1188 1046
+HEX3045G05	repeatmasker	match	72527	72863	1529	+	.	ID=match_32_TREP792; Name=TREP792; Target=TREP792 7692 8028
+HEX3045G05	repeatmasker	low_complexity_region	72864	72889	26	+	.	ID=GC_rich_6
+HEX3045G05	repeatmasker	match	72890	73998	8415	-	.	ID=match_33_TREP792; Name=TREP792; Target=TREP792 8028 6921
+HEX3045G05	repeatmasker	match	74064	74207	772	-	.	ID=match_34_TREP792; Name=TREP792; Target=TREP792 6969 6827
+HEX3045G05	repeatmasker	match	74212	79392	33695	-	.	ID=match_35_TREP1222; Name=TREP1222; Target=TREP1222 6595 1382
+HEX3045G05	repeatmasker	match	79393	81237	10541	-	.	ID=match_36_TREP706; Name=TREP706; Target=TREP706 8842 7008
+HEX3045G05	repeatmasker	match	81273	81417	721	-	.	ID=match_37_TREP792; Name=TREP792; Target=TREP792 6969 6827
+HEX3045G05	repeatmasker	match	81416	82300	3977	-	.	ID=match_38_TREP1222; Name=TREP1222; Target=TREP1222 6616 5699
+HEX3045G05	repeatmasker	match	81596	82726	4546	-	.	ID=match_39_TREP700; Name=TREP700; Target=TREP700 6457 5303

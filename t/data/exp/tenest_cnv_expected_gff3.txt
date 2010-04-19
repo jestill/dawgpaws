@@ -1,0 +1,43 @@
+##gff-version 3
+qry%2D1188415018_5205	tenest	solo_LTR	72890	72904	.	-	.	ID=solo_Angela_s0; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	4045	5725	.	+	.	ID=pair_Angela_p0; Name=Angela
+qry%2D1188415018_5205	tenest	five_prime_LTR	4045	5725	.	+	.	ID=pair_Angela_p0_five_prime_LTR;Parent=pair_Angela_p0
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	5759	11044	.	+	.	ID=pair_Angela_p0; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	11044	12709	.	+	.	ID=pair_Angela_p0; Name=Angela
+qry%2D1188415018_5205	tenest	three_prime_LTR	11044	12709	.	+	.	ID=pair_Angela_p0_three_prime_LTR;Parent=pair_Angela_p0
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	32892	34568	.	-	.	ID=pair_Angela_p1; Name=Angela
+qry%2D1188415018_5205	tenest	five_prime_LTR	32892	34568	.	-	.	ID=pair_Angela_p1_five_prime_LTR;Parent=pair_Angela_p1
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	34569	34679	.	-	.	ID=pair_Angela_p1; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	35072	39731	.	-	.	ID=pair_Angela_p1; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	39731	41410	.	-	.	ID=pair_Angela_p1; Name=Angela
+qry%2D1188415018_5205	tenest	three_prime_LTR	39731	41410	.	-	.	ID=pair_Angela_p1_three_prime_LTR;Parent=pair_Angela_p1
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	71717	72182	.	-	.	ID=pair_Angela_p2; Name=Angela
+qry%2D1188415018_5205	tenest	five_prime_LTR	71717	72182	.	-	.	ID=pair_Angela_p2_five_prime_LTR;Parent=pair_Angela_p2
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	72905	73981	.	-	.	ID=pair_Angela_p2; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	74064	74207	.	-	.	ID=pair_Angela_p2; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	74252	79005	.	-	.	ID=pair_Angela_p2; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	79038	79392	.	-	.	ID=pair_Angela_p2; Name=Angela
+qry%2D1188415018_5205	tenest	three_prime_LTR	79038	79392	.	-	.	ID=pair_Angela_p2_three_prime_LTR;Parent=pair_Angela_p2
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	51886	52125	.	-	.	ID=pair_Veju_p3; Name=Veju
+qry%2D1188415018_5205	tenest	five_prime_LTR	51886	52125	.	-	.	ID=pair_Veju_p3_five_prime_LTR;Parent=pair_Veju_p3
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	52126	53245	.	-	.	ID=pair_Veju_p3; Name=Veju
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	54117	54279	.	-	.	ID=pair_Veju_p3; Name=Veju
+qry%2D1188415018_5205	tenest	three_prime_LTR	54117	54279	.	-	.	ID=pair_Veju_p3_three_prime_LTR;Parent=pair_Veju_p3
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	13868	15633	.	+	.	ID=frag_Angela_f0; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	69846	71275	.	+	.	ID=frag_Vowyli_f1; Name=Vowyli
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	71277	71713	.	+	.	ID=frag_Vowyli_f2; Name=Vowyli
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	47377	47910	.	+	.	ID=frag_XC_f3; Name=XC
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	13308	13866	.	+	.	ID=frag_Yvonne_f4; Name=Yvonne
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	15635	16423	.	+	.	ID=frag_Yvonne_f4; Name=Yvonne
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	54281	54462	.	+	.	ID=frag_Veju_f5; Name=Veju
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	79393	82725	.	+	.	ID=frag_WIS_f6; Name=WIS
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	24796	24949	.	+	.	ID=frag_Enuc_f7; Name=Enuc
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	25305	25473	.	+	.	ID=frag_Enuc_f7; Name=Enuc
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	1852	3130	.	+	.	ID=frag_Mara_f8; Name=Mara
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	72212	72412	.	+	.	ID=frag_Angela_f9; Name=Angela
+qry%2D1188415018_5205	tenest	LTR_retrotransposon	72527	72862	.	+	.	ID=frag_Angela_f9; Name=Angela
+qry%2D1188415018_5205	tenest	transposable_element	59638	60275	.	+	.	ID=nltr_XC_n0; Name=XC
+qry%2D1188415018_5205	tenest	transposable_element	28218	32730	.	+	.	ID=nltr_Liuling_n1; Name=Liuling
+qry%2D1188415018_5205	tenest	transposable_element	48312	50891	.	+	.	ID=nltr_Artem_n2; Name=Artem
+qry%2D1188415018_5205	tenest	transposable_element	24996	25303	.	+	.	ID=nltr_Enuc_n3; Name=Enuc
+qry%2D1188415018_5205	tenest	transposable_element	25475	25654	.	+	.	ID=nltr_Enuc_n4; Name=Enuc
