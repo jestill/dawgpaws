@@ -246,8 +246,9 @@ sub blast2gff {
 	    die "Can not print to STDOUT\n";
 	if ($gff_ver =~ "GFF3") {
 	    print GFFOUT "##gff-version 3\n";
+	}
     }
-
+    
     while (my $blast_result = $blast_report->next_result())
     {
 
@@ -414,7 +415,7 @@ sub blast2gff {
     
     close GFFOUT;
     
-}
+    }
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
