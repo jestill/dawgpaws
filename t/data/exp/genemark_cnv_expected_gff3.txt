@@ -1,0 +1,27 @@
+##gff-version 3
+HEX3045G05	GeneMarkHMM	gene	26597	26974	.	-	.	ID=GeneMarkHMM_gene00001
+HEX3045G05	GeneMarkHMM	exon	26597	26669	.	-	.	ID=GeneMarkHMM_gene00001_exon00001;Parent=GeneMarkHMM_gene00001
+HEX3045G05	GeneMarkHMM	exon	26925	26974	.	-	.	ID=GeneMarkHMM_gene00001_exon00002;Parent=GeneMarkHMM_gene00001
+HEX3045G05	GeneMarkHMM	gene	31722	43613	.	-	.	ID=GeneMarkHMM_gene00002
+HEX3045G05	GeneMarkHMM	exon	31722	32260	.	-	.	ID=GeneMarkHMM_gene00002_exon00001;Parent=GeneMarkHMM_gene00002
+HEX3045G05	GeneMarkHMM	exon	32399	32884	.	-	.	ID=GeneMarkHMM_gene00002_exon00002;Parent=GeneMarkHMM_gene00002
+HEX3045G05	GeneMarkHMM	exon	42379	42464	.	-	.	ID=GeneMarkHMM_gene00002_exon00003;Parent=GeneMarkHMM_gene00002
+HEX3045G05	GeneMarkHMM	exon	43159	43613	.	-	.	ID=GeneMarkHMM_gene00002_exon00004;Parent=GeneMarkHMM_gene00002
+HEX3045G05	GeneMarkHMM	gene	44707	46588	.	-	.	ID=GeneMarkHMM_gene00003
+HEX3045G05	GeneMarkHMM	exon	44707	45080	.	-	.	ID=GeneMarkHMM_gene00003_exon00001;Parent=GeneMarkHMM_gene00003
+HEX3045G05	GeneMarkHMM	exon	46513	46588	.	-	.	ID=GeneMarkHMM_gene00003_exon00002;Parent=GeneMarkHMM_gene00003
+HEX3045G05	GeneMarkHMM	gene	54818	57661	.	-	.	ID=GeneMarkHMM_gene00004
+HEX3045G05	GeneMarkHMM	exon	54818	55147	.	-	.	ID=GeneMarkHMM_gene00004_exon00001;Parent=GeneMarkHMM_gene00004
+HEX3045G05	GeneMarkHMM	exon	55265	55355	.	-	.	ID=GeneMarkHMM_gene00004_exon00002;Parent=GeneMarkHMM_gene00004
+HEX3045G05	GeneMarkHMM	exon	55520	55704	.	-	.	ID=GeneMarkHMM_gene00004_exon00003;Parent=GeneMarkHMM_gene00004
+HEX3045G05	GeneMarkHMM	exon	57497	57661	.	-	.	ID=GeneMarkHMM_gene00004_exon00004;Parent=GeneMarkHMM_gene00004
+HEX3045G05	GeneMarkHMM	gene	61299	62532	.	+	.	ID=GeneMarkHMM_gene00005
+HEX3045G05	GeneMarkHMM	exon	61299	61494	.	+	.	ID=GeneMarkHMM_gene00005_exon00001;Parent=GeneMarkHMM_gene00005
+HEX3045G05	GeneMarkHMM	exon	62276	62350	.	+	.	ID=GeneMarkHMM_gene00005_exon00002;Parent=GeneMarkHMM_gene00005
+HEX3045G05	GeneMarkHMM	exon	62438	62532	.	+	.	ID=GeneMarkHMM_gene00005_exon00003;Parent=GeneMarkHMM_gene00005
+HEX3045G05	GeneMarkHMM	gene	66925	68130	.	-	.	ID=GeneMarkHMM_gene00006
+HEX3045G05	GeneMarkHMM	exon	66925	67030	.	-	.	ID=GeneMarkHMM_gene00006_exon00001;Parent=GeneMarkHMM_gene00006
+HEX3045G05	GeneMarkHMM	exon	67118	67189	.	-	.	ID=GeneMarkHMM_gene00006_exon00002;Parent=GeneMarkHMM_gene00006
+HEX3045G05	GeneMarkHMM	exon	67404	67547	.	-	.	ID=GeneMarkHMM_gene00006_exon00003;Parent=GeneMarkHMM_gene00006
+HEX3045G05	GeneMarkHMM	exon	67655	67726	.	-	.	ID=GeneMarkHMM_gene00006_exon00004;Parent=GeneMarkHMM_gene00006
+HEX3045G05	GeneMarkHMM	exon	67826	68130	.	-	.	ID=GeneMarkHMM_gene00006_exon00005;Parent=GeneMarkHMM_gene00006
