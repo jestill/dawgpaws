@@ -17,7 +17,7 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Test::More tests => 20;
+use Test::More tests => 23;
 
 diag ("Testing required modules ...\n");
 
@@ -53,11 +53,14 @@ use_ok( 'File::Spec' );
 #-----------------------------+
 # Bioperl packages use throughout
 use_ok( 'Bio::SearchIO' );
+use_ok( 'Bio::Seq' );
 use_ok( 'Bio::SeqIO' );
 use_ok( 'Bio::Tools::Genemark' );
+use_ok( 'Bio::Tools::Fgenesh' );
 use_ok( 'Bio::Tools::HMMER::Results' );
 use_ok( 'Bio::Tools::Run::StandAloneBlast' );
-use_ok( 'Bio::Location::Simple' );
+# The following not currently used
+#use_ok( 'Bio::Location::Simple' );
 
 #-----------------------------+
 # CONNECTIVITY                |
@@ -77,3 +80,10 @@ use_ok( 'Text::Wrap' );
 # Dont Know why               |
 #-----------------------------+
 use_ok( 'utf8' );
+
+use_ok( 'LWP::Simple' );
+use_ok( 'LWP::UserAgent' );
+
+
+
+
