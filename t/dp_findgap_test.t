@@ -19,10 +19,9 @@ use Test::More tests => 3;
 #-----------------------------+
 # TEST RUNNING THE PROGRAM    |
 #-----------------------------+
-diag ("Testing running the batch_findgaps.pl program, this is slow ...");
+diag ("Test running the batch_findgaps.pl program ...");
 my $out_dir = $ENV{HOME}."/dp_temp_test/";
-my $findgaps_cmd = "batch_findgaps.pl -i data/fasta/ -o $out_dir";
-
+my $findgaps_cmd = "batch_findgaps.pl -i data/fasta/ -o $out_dir --gff-ver gff2";
 # This will exit zero when things work
 ok ( system($findgaps_cmd)==0 , "batch_findgaps.pl");
 
@@ -30,8 +29,7 @@ ok ( system($findgaps_cmd)==0 , "batch_findgaps.pl");
 # TEST PROGRAM OUTPUT         |
 #-----------------------------+
 diag ("Testing gap results ..");
-my $exp_file = "data/exp/HEX2903P03_gaps.gff";
-
+my $exp_file = "data/exp/HEX2903P03_gaps_gff2.gff";
 open (EXPECTED, "<".$exp_file);
 my @gaps_exp = <EXPECTED>;
 close (EXPECTED);
