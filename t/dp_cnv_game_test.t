@@ -62,7 +62,7 @@ my $tmp_result = "~/tmp_gamexml_observed.txt";
 my $cnv_cmd = "cnv_gff2game.pl".
     " -i data/HEX3045G05/HEX3045G05_TREP9.masked.fasta".
     " -g data/HEX3045G05/gff/HEX3045G05.genscan.gff".
-    " -o $tmp_result";
+    " -o $tmp_result ";
 system ($cnv_cmd);
 
 my $obs_file = $ENV{HOME}."/tmp_gamexml_observed.txt";
