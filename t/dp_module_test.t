@@ -17,7 +17,7 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Test::More tests => 23;
+use Test::More tests => 24;
 
 diag ("Testing required modules ...\n");
 
@@ -47,6 +47,10 @@ use_ok( 'Pod::Text' );         # Print POD doc as formatted text file
 use_ok( 'IO::Scalar' );
 use_ok( 'IO::Pipe' );
 use_ok( 'File::Spec' );
+
+# Module to get path parts
+# used in some of the batch scripts
+use_ok( 'File::Basename' );
 
 #-----------------------------+
 # BIOPERL                     |
