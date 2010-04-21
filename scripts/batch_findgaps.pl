@@ -42,6 +42,8 @@ use File::Spec;                # To convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -77,7 +79,7 @@ my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $name_root;                 # Root name to be used for output etc
 my $min_gap_len = "100";       # Minimum length to be considered a gap
-my $gap_char = "n";            # Character indicating a gap
+my $gap_char = "N";            # Character indicating a gap
 my $dir_game_out;              # Dir to hold the game xml output
 my $dir_gff_out;               # Dir to hold the gff output
 
@@ -89,8 +91,9 @@ my $ok = GetOptions(
 		    "i|indir=s"    => \$indir,
                     "o|outdir=s"   => \$outdir,
 		    # Optional strings
-		    "len"          => \$min_gap_len,
-		    "gapchar=s"    => \$gap_char,
+		    "gff-ver=s"    => \$gff_ver,
+		    "l|len=i"      => \$min_gap_len,
+		    "c|gapchar=s"  => \$gap_char,
 		    "logfile=s"    => \$logfile,
 		    "ap-path=s"    => \$ap_path,
 		    # Booleans
@@ -139,6 +142,26 @@ if ($show_version) {
 	"Version: $VERSION\n\n";
     exit;
 }
+
+
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
+
 
 #-----------------------------+
 # CHECK REQUIRED ARGS         |
@@ -311,84 +334,47 @@ for my $ind_file (@fasta_files) {
 
 	print STDERR "FULL SEQ LEN:\t$seq_len\n\n" if $verbose;
 
-	# Increment across the seq string and see if this is 
-	# the gap 
-	for (my $i = 1; $i<$seq_len; $i++) {
+	my $seq_string = uc($seq->seq());
+	# FIND ALL STRINGS THAT ARE RUNS OF N AT LEAST 100 CHARACTERS LONG
+	my $gap_count=0;
 
-	    my $seq_char = $seq->subseq($i,$i);
+	while ($seq_string =~ m/(($gap_char){$min_gap_len,})/g ) {
 	    
-	    # Show the seq residue being evaluated
-	    # This is superverbose and should not be used except
-	    # when working with the code
-	    # print STDERR "\t $i\t$seq_char\n" if $verbose;
-	    
-	    #-----------------------------+
-	    # DETERMINE IF THIS IS AS GAP |
-	    # CHARACTER                   |
-	    #-----------------------------+
-	    if ( ($seq_char =~ $gap_char) || ($seq_char =~ "N") ) {
-		$is_gap = 1;
+	    $gap_count++;
+	    my $gap_len = length($1);
+
+	    # This is how I did this the first time
+	    # this is off by on in the end ..
+	    #my $end =  pos($seq_string);
+	    #my $start = $end - $gap_len + 1;
+
+	    my $end =  pos($seq_string) + 1;
+	    my $start = $end - $gap_len;
+
+	    if ($gff_ver =~ "GFF3" ) {
+		$attribute =  "ID=".$seq->primary_id."_gap_len_".
+		    $gap_len."-".
+		    $gap_count;
 	    }
 	    else {
-		$is_gap = 0;
+		$attribute =  $seq->primary_id."_gap_len_".
+		    $gap_len."-".
+		    $gap_count;
 	    }
 
-	    #-----------------------------+
-	    # DETERMINE START AND END OF  |
-	    # GAPS                        |
-	    #-----------------------------+
-	    if ( ($is_gap) & (!$prev_gap) ) {
-		# START OF A GAP
-		$gap_start = $i;
 
-		print STDERR "Gap start .. $i\n" if $verbose;
-
-	    } 
-	    elsif ( (!$is_gap) & ($prev_gap) ) {
-		# If we are not in a gap, but previously were
-		# End of a gap
-		$gap_end = $i;
-		$gap_len = $gap_end - $gap_start;
-		print STDERR "\tSTART:\t$gap_start\n" if $verbose;
-		print STDERR "\tEND:\t$gap_end\n" if $verbose;
-		print STDERR "\tLEN:\t$gap_len\n" if $verbose;
-		# If gap length is equal to or more then minimum 
-		# write to gff file
-		# This is labeled as gap
-		if ($gap_len >= $min_gap_len) {
-		    
-		    my $time_end_gap = time;
-		    my $total_time = $time_end_gap - $time_start_seq;
-		    print STDERR "\tGap is Big Enough\n" if $verbose;
-		    print STDERR "\tTime: $total_time\n" if $verbose;
-
-		    print GFFOUT 
-			"$name_root\t".  # SeqName
-			"gap\t".         # Source
-			"gap\t".         # Feature (May need to make exon)
-			"$gap_start\t".  # Start
-			"$gap_end\t".    # End
-			".\t".           # Score
-			"+\t".           # Strand
-			".\t".           # Frame
-			"gap\n";         # Attribute
-
-		}
-	    }
-	    else {
-		# Continuation of gap
-	    }
 	    
-	    # Set the prev_gap for next round
-	    if ($is_gap) {
-		$prev_gap = 1;
-	    }
-	    else {
-		$prev_gap = 0;
-	    }
+	    print GFFOUT $seq->primary_id()."\t". # Seqname
+		"dawgpaws_findgap\t".             # source
+		"gap\t".                 # feature
+		"$start\t".                       # Start
+		"$end\t".                         # End
+		"$gap_len\t".                     # Score
+		"+\t".                            # Strand
+		".\t".                            # Frame
+		$attribute."\n";
 	    
-
-	} # End of for $i
+	}
 	
     } # End of while next_seq
     
@@ -809,3 +795,6 @@ VERSION: $Rev$
 # - Added option to specify the Apollo path for convertion to
 #   game xml. This is a sloppy implementation and uses a global variable 
 #   in the subfunction.
+#
+# 04/21/2010
+# - Switching to a regular expression based conversion
