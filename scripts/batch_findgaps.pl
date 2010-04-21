@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 08/01/2007                                       |
-# UPDATED: 03/24/2009                                       |
+# UPDATED: 04/21/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files, this will find gaps    |
@@ -20,9 +20,6 @@
 #  http://www.gnu.org/licenses/gpl.html                     |
 #                                                           |
 #-----------------------------------------------------------+
-#
-# TO DO: Must find a way to speed this up
-#
 
 #-----------------------------+
 # INCLUDES                    |
@@ -37,6 +34,7 @@ use Pod::Text;                 # Print POD doc as formatted text file
 use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # To convert a relative path to an abosolute path
+use File::Basename;
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -54,7 +52,7 @@ my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 my $out_ext = ".hard.fasta";  # Outfile extension
 my $mask_char = "N";          # Character to mask with
 
-my $ap_path = "/home/jestill/Apps/Apollo_1.6.5/apollo/bin/apollo";
+my $ap_path = $ENV{DP_APOLLO_BIN} || "apollo";
 
 # BOOLEANS
 my $do_apollo_game = 0;        # Convert the gff output to game file format
@@ -192,30 +190,55 @@ if ($logfile) {
 
 
 #-----------------------------+
+# Get the FASTA files from the|
+# directory provided by the   |
+# var $indir                  |
+#-----------------------------+
+# I expect indir to be a dir, but also allow for htis to be an
+# individual file
+my @fasta_files;
+my $num_files;
+if (-d $indir) {
+
+    unless ($outdir =~ /\/$/ ) {
+	$outdir = $outdir."/";
+    }
+
+    opendir( DIR, $indir ) || 
+	die "Can't open directory:\n$indir"; 
+    @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
+    closedir( DIR );
+    
+    $num_files = @fasta_files;
+}
+elsif (-f $indir) {
+    $num_files = 1;
+    my ($single_file,$dirs) = fileparse($indir);
+    @fasta_files = ( $single_file );
+    $indir = $dirs;
+}
+else {
+    die "Can not recognize $indir as a file or directory.\n";
+}
+
+#-----------------------------+
 # CHECK FOR SLASH IN DIR      |
 # VARIABLES                   |
 #-----------------------------+
 # If the indir does not end in a slash then append one
 # TO DO: Allow for backslash
+
+
 unless ($indir =~ /\/$/ ) {
     $indir = $indir."/";
 }
+
 
 unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
 }
 
-#-----------------------------+
-# Get the FASTA files from the|
-# directory provided by the   |
-# var $indir                  |
-#-----------------------------+
-opendir( DIR, $indir ) || 
-    die "Can't open directory:\n$indir"; 
-my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
-closedir( DIR );
 
-my $num_files = @fasta_files;
 
 #-----------------------------+
 # SHOW ERROR IF NO FILES      |
@@ -343,13 +366,8 @@ for my $ind_file (@fasta_files) {
 	    $gap_count++;
 	    my $gap_len = length($1);
 
-	    # This is how I did this the first time
-	    # this is off by on in the end ..
-	    #my $end =  pos($seq_string);
-	    #my $start = $end - $gap_len + 1;
-
-	    my $end =  pos($seq_string) + 1;
-	    my $start = $end - $gap_len;
+	    my $end =  pos($seq_string);
+	    my $start = $end - $gap_len + 1;
 
 	    if ($gff_ver =~ "GFF3" ) {
 		$attribute =  "ID=".$seq->primary_id."_gap_len_".
@@ -361,7 +379,6 @@ for my $ind_file (@fasta_files) {
 		    $gap_len."-".
 		    $gap_count;
 	    }
-
 
 	    
 	    print GFFOUT $seq->primary_id()."\t". # Seqname
@@ -709,15 +726,6 @@ Sourceforge website: http://sourceforge.net/tracker/?group_id=204962
 
 =over 2
 
-=item * Recognized gap characters
-
-Due to the way that regular expressions are coded in PERL, the characters
-that can be used to indicate gaps must be hard coded. The characters that are
-currently hard coded for recognition by batch_findgaps are n, N, x, and X. If 
-there are additional characters you would like to add as a recognized
-gap character, file a Feature Request on the DAWG-PAWS poject page on
-Sourceforge ( http://sourceforge.net/tracker/?group_id=204962&atid=991722 ).
-
 =item * Limited file extensions are supported
 
 BLAST output file must currently end with blo, bln, or blx. For example
@@ -729,8 +737,8 @@ For examples must have names like my_seq.fasta or my_seq.fa.
 
 =head1 SEE ALSO
 
-The batch_findgaps.pl program is part of the DAWG-PAWS package of genome
-annotation programs. See the DAWG-PAWS web page 
+The batch_findgaps.pl program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
@@ -738,14 +746,12 @@ for additional information about this package.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Please refer to the DAWGPAWS manuscript in Plant Methods when describing
+your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -761,7 +767,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 08/01/2007
 
-UPDATED: 09/29/2008
+UPDATED: 04/21/2010
 
 VERSION: $Rev$
 
@@ -798,3 +804,7 @@ VERSION: $Rev$
 #
 # 04/21/2010
 # - Switching to a regular expression based conversion
+#
+# 04/21/2010
+# - Fixed position of the gaps, the previous was off by one
+# - Added the ability to send a single file instead of a directory
