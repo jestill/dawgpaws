@@ -128,7 +128,8 @@ my $feature;
 # then test to see if -t is equal to l in length
 # default
 #my @thresh_vals = (0,1,10,100,1000,10000,100000);
-my @thresh_vals = (1,10,100,1000,10000,100000);
+my @thresh_vals;
+#my @thresh_vals = (1,10,100,1000,10000,100000);
 my @label_vals;
 
 # Optional output files
@@ -141,9 +142,8 @@ my $ok = GetOptions(# REQUIRED VARIABLES
 		    "i|infile=s"       => \$infile,
                     "s|seg-out=s"      => \$outfile_seg,
 		    "p|parse-out=s"    => \$outfile_parse,
-		    "t|thresh=s"       => \$thresh,
-#		    "t|thresh=s"    => \@thresh_vals,
-#		    "l|labels=s"    => \@labell_vals,
+#		    "t|thresh=s"       => \$thresh,
+		    "t|thresh=s@"    => \@thresh_vals,
 		    # OPTIONS
 		    "sgr=s"            => \$sgr_out,
 		    "gff-ver=s"        => \$gff_ver,
@@ -161,19 +161,12 @@ my $ok = GetOptions(# REQUIRED VARIABLES
 		    "man"              => \$show_man,
 		    "h|help"           => \$show_help,);
 
-## TEST OF PASSING THRESHOLD VALUES ARRAY
-#if (@thresh_vals) {
-#    print STDERR "There are threshold values\n";
-#    for my $thresh (@thresh_vals) {
-#	print STDERR "\tT: $thresh \n";
-#    }
-#}
-#else {
-#    print STDERR "There are no threshold values\n";
-#}
-#
-#exit;
-
+if (@thresh_vals) {
+    @thresh_vals = split(/,/,join(',',@thresh_vals));
+}
+else {
+    @thresh_vals = (1,10,100,1000,10000,100000);
+}
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
