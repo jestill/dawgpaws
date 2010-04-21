@@ -10,7 +10,7 @@
 # UPDATED: 04/14/2009                                       |
 #                                                           |
 # SHORT DESCRIPTION:                                        |
-#  Test to see if modules required by DAWG-PAWS are         |
+#  Test to see if modules required by DAWGPAWS are          |
 #  present.                                                 |
 #-----------------------------------------------------------+
 
