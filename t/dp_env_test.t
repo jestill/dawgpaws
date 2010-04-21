@@ -18,9 +18,11 @@
 #-----------------------------+
 # INCLUDES                    |
 #-----------------------------+
-use Test::More tests => 9;
+use Test::More tests => 19;
 
+diag ("-----------------------------------------------------------");
 diag ("Testing user environment ...");
+diag ("-----------------------------------------------------------");
 
 #-----------------------------+
 # VENNMASTER                  |
@@ -79,3 +81,67 @@ ok ($ENV{PROSITE_DIR},
 ok ($ENV{LTR_FINDER},
     "LTR Finder binary path defined in environment") ||
     diag("The path to the LTR finder binary can be defined with LTR_FINDER");
+
+#-----------------------------+
+# GFF VERSION                 |
+#-----------------------------+
+ok ($ENV{DP_GFF},
+    "Default GFF version defined in environment") ||
+    diag("The default GFF version can be defined with DP_GFF");
+
+#-----------------------------+
+# SNAP BINARY PATH            |
+#-----------------------------+
+ok ($ENV{SNAP_PATH},
+    "SNAP binary path defined in environment") ||
+    diag("The path to the SNAP binary can be defined with SNAP_PATH");
+
+#-----------------------------+
+# REPEATMASKER                |
+#-----------------------------+
+ok ($ENV{DP_RM_BIN},
+    "RepatMasker binary path defined in environment") ||
+    diag("The path to the RepeatMasker binary can be defined with DP_RM_BIN");
+
+ok ($ENV{DP_RM_DIR},
+    "RepatMasker directory defined in environment") ||
+    diag("The path to the RepeatMasker directory can be defined with DP_RM_DIR");
+
+#-----------------------------+
+# LTRSEQ
+#-----------------------------+
+ok ($ENV{LTR_SEQ_BIN},
+    "Path to LTRSeq binary defined in the environment") ||
+    diag("The path to the LTRSeq library can be defined with LTR_SEQ_BIN");
+ok ($ENV{LTR_SEQ_DIR},
+    "LTRSeq  directory defined in the environment") ||
+    diag("The path to the genscan library directory can be defined with".
+	 " LTR_SEQ_DIR");
+
+#-----------------------------+
+# GENEID                      |
+#-----------------------------+
+ok ($ENV{GENEID_BIN},
+    "Path to geneid binary defined in the environment") ||
+    diag("The path to the geneid binary can be defined with GENEID_BIN");
+
+#-----------------------------+
+# FINDMITE                    |
+#-----------------------------+
+ok ($ENV{FINDMITE_BIN},
+    "Path to FindMITE binary defined in the environment") ||
+    diag("The path to the geneid binary can be defined with FINDMITE_BIN");
+
+#-----------------------------+
+# FGENESH                     |
+#-----------------------------+
+ok ($ENV{FGENESH_PATH},
+    "Path to FGENESH binary defined in the environment") ||
+    diag("The path to the FGENESH library can be defined with FGENESH_PATH");
+
+#-----------------------------+
+# BLAST                       |
+#-----------------------------+
+ok ($ENV{DP_BLAST_BIN},
+    "Path to NCBI-BLAST binary defined in the environment") ||
+    diag("The path to the NCBI-BLAST library can be defined with DP_BLAST_BIN");
