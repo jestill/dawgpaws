@@ -1,0 +1,73 @@
+//-----------------------------------------------------------+
+// AMBORELLA APOLLO STYLE FILE
+//  AUTHOR: James C. Estill
+// UPDATED: 05/10/2010
+// simply be saved on a machine as fly.style to overwrite
+// the deafult style. I am using the name amborella.style
+// so that I can work with it.
+//-----------------------------------------------------------+
+
+//-----------------------------------------------------------+
+// IMPORT THE GAME STYLE AND ADD TO IT                       |
+// ADDED 11/29/2006 - JCE                                    |
+//-----------------------------------------------------------+
+ImportStyle             "game.style"
+
+// CHROMOSOME NUMBERS FOR WHEAT
+Chromosomes             "1,2,3,4,5,6,7,8,9,10,11,12,13"
+
+//-----------------------------------------------------------+
+// TIERS                                                     |
+//-----------------------------------------------------------+
+Types		        "amborella.tiers"
+
+//-----------------------------------------------------------+
+// GENERAL VARIABLES                                         |
+//-----------------------------------------------------------+
+Draw3D                      "false"
+
+//-----------------------------------------------------------+
+// AMBORELLA ANNOTATION COMMENTS
+//-----------------------------------------------------------+
+AnnotationComment "Prediction based on FGENESH prediction without associated expressed data"
+AnnotationComment "Prediction based on first generation SNAP ab initio annotation"
+
+//-----------------------------------------------------------+
+// AMBORELLA TRANSCRIPT COMMENTS
+//-----------------------------------------------------------+
+TranscriptComment "Gene model not available"
+
+//-----------------------------------------------------------+
+// USERS FOR THE AMBORELLA ANNOTATION PROJECT                |
+//-----------------------------------------------------------+
+// It appears that this is using the user name that the person is
+// logged onto the computer with. The comments field will be signed
+// by the name of the person that made the comment.
+UserInfo "user=jestill:project=Amborella:color=25,25,112:full-name=Jamie Estill"
+UserInfo "user=jleebensmack:project=Amborella:color=255,255,0:full-name=Jim Leebens-Mack"
+UserInfo "user=jbowers:project=Amborella:color=0,0,255:full-name=John Bowers"
+//Generic Amborella annotation
+UserInfo "user=ateam:project=Amborella:color=0,0,255:full-name=A Team"
+
+//-----------------------------------------------------------+
+// PEPTIDE STATUS FOR THE AMBORELLA ANNOTATION PROJECT       |
+//-----------------------------------------------------------+
+PeptideStatus "2:Dialog,0,10:true:curator examined, accepted"
+PeptideStatus "2:Dialog,2,10:true:curator examined, unresolved"
+PeptideStatus "0:Dialog,3,10:true:not analyzed"
+PeptideStatus "0:Dialog,3,10:false:computational analysis failed"
+PeptideStatus "3:Dialog,0,10:false:perfect match to swissprot real (computational)"
+PeptideStatus "3:Dialog,0,10:false:not in swissprot real (computational)"
+PeptideStatus "1:Dialog,1,10:false:Imperfect match to SwissProt real (computational)"
+PeptideStatus "1:Dialog,1,10:false:Possible incorrect identifier (computational)"
+
+//-----------------------------------------------------------+
+// RESULT TAGS FOR THE AMBORELLA ANNOTATION PROJECT          |
+//-----------------------------------------------------------+
+// String before : in ResultTag must match a Type from tiers file.
+// You can have multiple ResultTags for each result type, and multiple
+// result types for each tag.
+// Example from 
+ResultTag  "EST Same Strain, EST Different Strain, Fly EST All, DGC cDNA, Community GB:comment: significant strain polymorphisms"
+// TAGS FOR 
+ResultTag  "FGENESH, Genscan:comment: Gene model contains putative transposons"
