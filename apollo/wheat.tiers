@@ -1020,7 +1020,7 @@ glyph : DrawableResultFeatureSet
 color : 255,255,150
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1037,7 +1037,7 @@ glyph : DrawableResultFeatureSet
 color : 255,255,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1054,7 +1054,7 @@ glyph : DrawableResultFeatureSet
 color : 200,200,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1071,7 +1071,7 @@ glyph : DrawableResultFeatureSet
 color : 150,150,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1088,7 +1088,7 @@ glyph : DrawableResultFeatureSet
 color : 100,100,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1105,7 +1105,7 @@ glyph : DrawableResultFeatureSet
 color : 50,50,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1129,7 +1129,7 @@ glyph : DrawableResultFeatureSet
 color : 200,200,255
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1146,7 +1146,7 @@ glyph : DrawableResultFeatureSet
 color : 150,150,255
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1163,7 +1163,7 @@ glyph : DrawableResultFeatureSet
 color : 100,100,255
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1180,7 +1180,7 @@ glyph : DrawableResultFeatureSet
 color : 50,50,255
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1197,7 +1197,7 @@ glyph : DrawableResultFeatureSet
 color : 0,0,255
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1214,7 +1214,7 @@ glyph : DrawableResultFeatureSet
 color : 0,0,200
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1239,7 +1239,7 @@ glyph : DrawableResultFeatureSet
 color : 200,255,200
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1256,7 +1256,7 @@ glyph : DrawableResultFeatureSet
 color : 150,255,150
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1273,7 +1273,7 @@ glyph : DrawableResultFeatureSet
 color : 100,255,100
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1290,7 +1290,7 @@ glyph : DrawableResultFeatureSet
 color : 50,255,50
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1307,7 +1307,7 @@ glyph : DrawableResultFeatureSet
 color : 0,255,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1324,7 +1324,7 @@ glyph : DrawableResultFeatureSet
 color : 0,200,0
 usescore : true
 minscore : 1
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1346,9 +1346,10 @@ expanded : false
 typename : MDR_454 1
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_1
+resulttype : vmatch_1
 glyph : DrawableResultFeatureSet
 color : 255,200,200
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1363,9 +1364,10 @@ overlap_method : SimpleOverlap
 typename : MDR_454 10
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_10
+resulttype : vmatch_10
 glyph : DrawableResultFeatureSet
 color : 255,150,150
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1380,9 +1382,10 @@ overlap_method : SimpleOverlap
 typename : MDR_454 100
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_100
+resulttype : vmatch_100
 glyph : DrawableResultFeatureSet
 color : 255,100,100
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1398,9 +1401,10 @@ overlap_method : SimpleOverlap
 typename : MDR_454 1000
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_1000
+resulttype : vmatch_1000
 glyph : DrawableResultFeatureSet
 color : 255,50,50
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1415,9 +1419,10 @@ overlap_method : SimpleOverlap
 typename : MDR_454 10000
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_10000
+resulttype : vmatch_10000
 glyph : DrawableResultFeatureSet
 color : 255,0,0
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -1432,9 +1437,10 @@ overlap_method : SimpleOverlap
 typename : MDR_454 100000
 tiername : MDR 454
 resulttype : Vmatch:20mer_454_100000
+resulttype : vmatch_100000
 glyph : DrawableResultFeatureSet
 color : 200,0,0
-annot_type : mathematically_defined_repeat
+#annot_type : mathematically_defined_repeat
 column : NAME
 column : SCORE
 column : GENOMIC_RANGE
@@ -2149,6 +2155,23 @@ tiername : BLASTN: MIPS REdat
 resulttype : blastn:mips_REdat_4_3
 resulttype : BLASTN:mips_REdat_4_3
 glyph : DoubleHeadedArrow
+color : 164,164,164
+annot_type : transposable_element
+column : NAME
+column : SCORE
+column : expect
+column : identity
+column : GENOMIC_RANGE
+column : GENOMIC_LENGTH
+sortbycolumn : GENOMIC_RANGE
+weburl : http://mips.gsf.de/proj/plant/webapp/recat/RepeatRetrival.jsp?searchcolumn=name&kw=__ID#__&coltosort=
+
+
+[Type]
+label : MIPS REdat 4.3
+tiername : BLASTX: MIPS REdat
+resulttype : TBLASTX:redat
+glyph : ThinRectangle
 color : 164,164,164
 annot_type : transposable_element
 column : NAME
