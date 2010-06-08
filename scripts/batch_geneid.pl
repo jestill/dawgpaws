@@ -68,6 +68,7 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 
+my $param_name;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -76,6 +77,7 @@ my $ok = GetOptions(# REQUIRED
 		    "i|indir=s"     => \$indir,
                     "o|outdir=s"    => \$outdir,
 		    "p|param=s"     => \$geneid_param_file,
+		    "param-name=s"  => \$param_name,
 		    # OPTIONS
 		    "gff-ver=s"    => \$gff_ver,
 		    "geneid-path=s" => \$geneid_path,
@@ -235,7 +237,7 @@ for my $ind_file (@fasta_files) {
     my $geneid_dir = $name_root_dir."geneid/";
     unless (-e $geneid_dir) {
 	mkdir $geneid_dir ||
-	    die "Could not create genscan out dir:\n$geneid_dir\n";
+	    die "Could not create geneid out dir:\n$geneid_dir\n";
     }
 
     #-----------------------------+
@@ -269,7 +271,14 @@ for my $ind_file (@fasta_files) {
     # APOLLO TOLERATED GFF        |
     #-----------------------------+
     if (-e $geneid_out) {
-	my $gff_outfile = $gff_dir.$name_root.".geneid.gff";
+	# Add param_name_source
+	my $gff_outfile;
+	if ($param_name) {
+	    my $gff_outfile = $gff_dir.$name_root.".geneid".$param_name.".gff";
+	}
+	else {
+	    my $gff_outfile = $gff_dir.$name_root.".geneid.gff";
+	}
 	geneid2gff ("geneid", $geneid_out, $gff_outfile);
 
     }
@@ -436,7 +445,11 @@ sub geneid2gff {
     for my $href ( @geneid_results ) {
 
 	# PRINT GENE SPAN INFORMATION
-	
+	my $prog_source = "geneid";
+	if ($param_name) {
+	    $prog_source = $prog_source.":".$param_name;
+	}
+
 	#-----------------------------+
 	# PRINT GENE VALS FOR GFF3    |
 	#-----------------------------+
@@ -449,7 +462,7 @@ sub geneid2gff {
 	    }
 
 	    print GFFOUT $seq_id."\t".                # seq id
-		"geneid\t".
+		$prog_source."\t".
 		"gene\t".
 		$href->{gene_start}."\t".    # start
 		$href->{gene_end}."\t".      # end
@@ -479,7 +492,7 @@ sub geneid2gff {
 	    }
 
 	    print GFFOUT $ex->{seq_id}."\t".
-		"geneid\t".
+		$prog_source."\t".
 		"exon\t".
 		$ex->{start}."\t".
 		$ex->{end}."\t".
