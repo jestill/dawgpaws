@@ -255,7 +255,14 @@ for my $ind_file (@fasta_files) {
     #-----------------------------+
     # RUN THE GENID PROGRAM       |
     #-----------------------------+
-    my $geneid_out = $geneid_dir.$name_root.".geneid.gff";
+    my $geneid_out;
+    if ($param_name) {
+	$geneid_out = $geneid_dir.$name_root.".geneid.".$param_name.".gff";
+    }
+    else
+    {
+	$geneid_out = $geneid_dir.$name_root.".geneid.gff";
+    }
 
     my $geneid_cmd = "$geneid_path -G -P $geneid_param_file ".
 	$indir.$ind_file.
