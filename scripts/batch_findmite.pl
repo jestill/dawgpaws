@@ -345,7 +345,8 @@ for my $ind_file (@fasta_files) {
 	    open(FINDMITE,"|$fm_cmd") ||
 		die "Could not open findmite\n";
 	    #sleep 1;
-	    print FINDMITE "150000\n" ||
+#	    print FINDMITE "150000\n" ||
+	    print FINDMITE "1000000\n" ||
 		die "Could not set length";
 	    print FINDMITE "$rep\n";
 	    #sleep 1;
