@@ -39,6 +39,8 @@ use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # Convert a relative path to an abosolute path
 
+use Bio::Tools::Blat;          # Another BLAT parser in Bioperl
+
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
@@ -191,6 +193,8 @@ if ($show_version) {
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 if ($simple) {
+#    biotools_blat2gff ($infile, $outfile, $do_append, $qry_name, $blast_alignment,
+	#	       $param, $blast_program, $feature_type);
     simple_blat2gff ($infile, $outfile, $do_append, $qry_name, $blast_alignment,
 	       $param, $blast_program, $feature_type);
 } 
@@ -205,6 +209,36 @@ exit;
 #-----------------------------------------------------------+
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub biotools_blat2gff {
+    # THE BLAT MODULE IN TOOLS IS BROKEN
+    my ($blatin, $gffout, $append, $seqname, $align, $suffix, $prog,
+       $feature) = @_;
+
+
+# PARTS ARE
+##($matches, $mismatches, $rep_matches, $n_count, $q_num_insert,
+#			 $q_base_insert, $t_num_insert, $t_base_insert, $strand, $q_name,
+#			 $q_length, $q_start, $q_end, $t_name, $t_length, 
+#			 $t_start, $t_end, $block_count, $block_sizes, $q_starts,
+#			 $t_starts
+    
+    my $INFILE;
+    open ($INFILE, $blatin) ||
+	die "Can not open file handle\n";
+
+    my $blat_parser = Bio::Tools::Blat->new(-fh =>$INFILE );
+
+    while( my $blat_feat = $blat_parser->next_result ) {
+
+	my @blat_feat;
+        push @blat_feat, $blat_feat;
+
+#	print STDERR $blat_feat->{t_name}."\n";
+
+    }
+    
+}
 
 sub simple_blat2gff {
     print STDERR "Doing simple\n" if $verbose;
@@ -230,6 +264,12 @@ sub simple_blat2gff {
     	open (GFFOUT, ">&STDOUT") ||
 	    die "Can not open STDOUT for writing\n";
     }
+
+    # PRINT GFF3 HEADER
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
 
     # TO FIX LATER
     my $source = "BLAT";
@@ -299,12 +339,31 @@ sub simple_blat2gff {
 	my $block_sizes = $blat_parts[18];
 	my @block_size_parts = split (/\,/, $block_sizes);
 	my $num_blocks = @block_size_parts;
-
 	$sum_tblock_length = 0;
 	if ($num_blocks ) {
 	    $sum_tblock_length += $_ for @block_size_parts;
-#	    $sum += $_ for @a;
 	}
+
+	# QUERY STARTS
+	my $q_starts = $blat_parts[19];
+	my @q_starts_parts  = split (/\,/, $q_starts);
+	my $num_q_starts = @q_starts_parts;
+
+#	# QUERY ENDS
+#	my @q_ends_parts;
+#	my $i = 0;
+#	for my $q_val (@q_starts_parts) {
+#	    $q_ends_parts[$i] = $q_starts_parts[$i] 
+#		+ $block_size_parts[$i]; 
+#	    $i++;
+#	} 
+
+	# TRANSCRIPT STARTS
+	my $t_starts =  $blat_parts[20];
+	my @t_start_parts = split (/\,/, $t_starts);
+
+	# TRANSCRIPT ENDS
+
 
 	my $tblock_length;
 #	$tblock_length = $sum_tblock_length - $num_blocks + 1;
@@ -362,40 +421,60 @@ sub simple_blat2gff {
 	    }
 	}
 
-	#-----------------------------+
-	# SETTING ATTRIBUTE LINE      |
-	#-----------------------------+
-	if ($gff_ver =~ "GFF3") {
-	    $feature = "match_part"; 
-	    $attribute = "ID=".$source."_".$blat_parts[13].
-		"; ".
-		"Name=".$blat_parts[13]."; ".
-		"Target=".$blat_parts[13]." ".
-		$start." ".$end;
-	}
 
 	#-----------------------------+
 	# PRINT OUTPUT TO GFF FILE    |
 	#-----------------------------+
 	if ($do_print) {
-	    print GFFOUT "$gff_seqname\t".           # Seqname
-		"$source\t".                     # Source
-		"$feature\t".                    # Feature type name
-		"$start\t".                      # Start
-		"$end\t".                        # End
-		"$score\t".                      # Score
-		"$strand\t".                     # Strand
-		"."."\t".                        # Frame
-#		$line_count.                     # Attribute
-		$attribute.                      # Attribute
-		"\n";                            # newline
 
-	    # TEST WORKING OUT LENGTH OF MATCHES
-	    print STDERR $_."\n";
-	    print STDERR "\t".$num_blocks.":".
-		$sum_tblock_length."\n";
-	    print STDERR "\tMatch Ratio: ".$match_ratio."\n";
-	    print STDERR "\n";
+	    #-----------------------------+
+	    # CYCLE THROUGH HSPS          |
+	    #-----------------------------+
+	    # PRINT PARTS FOR ERROR CHECKING
+	    my $j = 0;
+	    for my $q_start (@q_starts_parts) {
+
+		# Other coordinates
+		my $q_end = $q_start + $block_size_parts[$j]; 
+		my $t_start = $t_start_parts[$j];
+		my $t_end = $t_start_parts[$j] + $block_size_parts[$j];
+		$j++;
+
+		#-----------------------------+
+		# SET ATTRIBUTE                |
+		#-----------------------------+
+		if ($gff_ver =~ "GFF3") {
+		    # The start and end of the target are not correct
+		    $feature = "match_part"; 
+		    $attribute = "ID=".$source."_".$blat_parts[13]."_".$j.
+			"; ".
+			"Name=".$blat_parts[13]."; ".
+			"Target=".$blat_parts[13]." ".
+			$t_start." ".$t_end;
+		}
+		else {
+		    $attribute = $blat_parts[13];
+		}
+		
+		print GFFOUT "$gff_seqname\t".       # Seqname
+		    "$source\t".                     # Source
+		    "$feature\t".                    # Feature type name
+		    "$q_start\t".                    # Start
+		    "$q_end\t".                      # End
+		    "$score\t".                      # Score
+		    "$strand\t".                     # Strand
+		    "."."\t".                        # Frame
+		    $attribute.                      # Attribute
+		    "\n";                            # newline
+
+	    }
+	    
+#	    # TEST WORKING OUT LENGTH OF MATCHES
+#	    print STDERR "\t".$num_blocks.":".
+#		$sum_tblock_length."\n";
+#	    print STDERR "\tMatch Ratio: ".$match_ratio."\n";
+#	    print STDERR "\n";
+
 	}
 
 #	if ($line_count == 100) {
