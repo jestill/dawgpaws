@@ -1,23 +1,22 @@
 #!/usr/bin/perl -w
 #-----------------------------------------------------------+
 #                                                           |
-# Name.pl                                                   |
+# cnv_genscan2gff.pl - Convert gecan to gff format          |
 #                                                           |
 #-----------------------------------------------------------+
 #                                                           |
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
-# STARTED: 00/00/2007                                       |
-# UPDATED: 00/00/2007                                       |
+# STARTED: 10/22/2010                                       |
+# UPDATED: 10/22/2010                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Short Program Description                                |
+#  Convert genscan output to GFF format.                    |
 #                                                           |
 # USAGE:                                                    |
-#  ShortFasta Infile.fasta Outfile.fasta                    |
+#  cnv_genscan2gff.pl -i infile -o outfile                  |
 #                                                           |
 # VERSION: $Rev$                                            |
-#                                                           |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -92,6 +91,27 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 #-----------------------------+
 # SHOW REQUESTED HELP         |
 #-----------------------------+
+if ( ($show_usage) ) {
+#    print_help ("usage", File::Spec->rel2abs($0) );
+    print_help ("usage", $0 );
+}
+
+if ( ($show_help) || (!$ok) ) {
+#    print_help ("help",  File::Spec->rel2abs($0) );
+    print_help ("help",  $0 );
+}
+
+if ($show_man) {
+    # User perldoc to generate the man documentation.
+    system ("perldoc $0");
+    exit($ok ? 0 : 2);
+}
+
+if ($show_version) {
+    print "\nbatch_genscan.pl:\n".
+	"Version: $VERSION\n\n";
+    exit;
+}
 
 
 #-----------------------------+
@@ -120,14 +140,20 @@ if ($show_version) {
 }
 
 
+#    my ($infile, $outfile, $name_root, $dp_source, $dp_source_suffix) = @_;
+
 # DO the conversion
 genscan2gff($infile, $outfile, $seq_id, $program, $param);
+
+# The old vars below
+#genscan2gff($infile, $outfile, $seq_id, $program, $param);
 
 exit 0;
 
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
 sub genscan2gff {
 
     my ($infile, $outfile, $name_root, $dp_source, $dp_source_suffix) = @_;
@@ -324,7 +350,6 @@ sub genscan2gff {
 } #End of genscan_2_gff subfunction
 
 
-
 sub print_help {
     my ($help_msg, $podfile) =  @_;
     # help_msg is the type of help msg to use (ie. help vs. usage)
@@ -413,11 +438,11 @@ __END__
 
 =head1 NAME
 
-Name.pl - Short program description. 
+cnv_genscan2gff.pl - Convert gecan to gff format
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
