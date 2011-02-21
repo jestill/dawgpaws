@@ -36,7 +36,7 @@ use File::Spec;                # Convert a relative path to an abosolute path
 #-----------------------------+
 # PROGRAM VARIABLES           |
 #-----------------------------+
-my ($VERSION) = q$Rev$ =~ /(\d+)/;
+my ($VERSION) = q$Rev: 977 $ =~ /(\d+)/;
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -166,7 +166,6 @@ unless (-e $outdir) {
 #-----------------------------+
 # WRITE SHELL SCRIPTS         |
 #-----------------------------+
-
 my $max_num = $num_dir + 1;
 for (my $i=1; $i<$max_num; $i++) {
 
@@ -190,6 +189,14 @@ for (my $i=1; $i<$max_num; $i++) {
 	open (SHOUT, ">".$shell_path);
 	close SHOUT;
 
+    }
+    elsif ($prog_name =~ "batch_ltrfinder") {
+	open (SHOUT, ">".$shell_path);
+	print SHOUT "batch_ltrfinder.pl".
+	    " -i /iob_scratch/jestill/amborella/454_contigs_201102/454_parts/$base_name$i/".
+	    " -o /iob_scratch/jestill/amborella/454_contigs_201102/annotations/".
+	    " -c /iob_scratch/jestill/amborella/454_contigs_201102/batch_ltrfinder.jcfg";
+	close SHOUT;
     }
     else {
 	print STDERR "The program name is not recognized: $prog_name\n";
@@ -277,7 +284,7 @@ clust_write_shell.pl - Write shell scripts for the r cluster
 
 =head1 VERSION
 
-This documentation refers to fasta_dirsplit version $Rev$
+This documentation refers to fasta_dirsplit version $Rev: 977 $
 
 =head1 SYNOPSIS
 
@@ -464,7 +471,7 @@ STARTED: 07/26/2007
 
 UPDATED: 04/06/2009
 
-VERSION: $Rev$
+VERSION: $Rev: 977 $
 
 =cut
 
