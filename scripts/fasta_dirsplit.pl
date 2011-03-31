@@ -153,7 +153,7 @@ if ($logfile) {
 	die "Can not open logfile:\n$logfile\n";
     my $time_now = time;
     print LOG "==================================\n";
-    print LOG "  batch_hardmask.pl\n";
+    print LOG "  fasta_dirsplit.pl\n";
     print LOG "  JOB: $time_now\n";
     print LOG "==================================\n";
 }
@@ -233,17 +233,8 @@ for (my $i=1; $i<$max_num; $i++) {
 # Temp exit
 #exit;
 
-#-----------------------------+
-# RUN REPEAT MAKSER AND PARSE |
-# RESULTS FOR EACH SEQ IN THE |
-# fasta_files ARRAY FOR EACH  |
-# REPEAT LIBRARY IN THE       |
-# RepLibs ARRAY               |
-#-----------------------------+
-
 $i = 1;
-for my $ind_file (@fasta_files)
-{
+for my $ind_file (@fasta_files) {
     
     $file_num++;
     #-----------------------------+
@@ -269,7 +260,7 @@ for my $ind_file (@fasta_files)
     $file_to_move = $indir.$ind_file;
     $file_new_loc = $outdir.$base_name.$i."/".$ind_file;
     
-    print "\nCopying:\n".
+    print STDERR "\nCopying:\n".
 	"\t$file_to_move TO\n".
 	"\t$file_new_loc\n" if $verbose;
     my $errmsg = "Can not move file:\n\t".
