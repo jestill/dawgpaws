@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 03/29/2010                                       |
-# UPDATED: 04/08/2010                                       |
+# UPDATED: 03/31/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run the SNAP gene predition program in batch mode.       |
@@ -112,6 +112,25 @@ if ($show_version) {
     print "\nbatch_mask.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
+}
+ 
+#-----------------------------+
+# STANDARDIZE GFF VERSION     |
+#-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
 }
 
 #-----------------------------+
@@ -626,23 +645,27 @@ __END__
 
 =head1 NAME
 
-Name.pl - Short program description. 
+batch_snap.pl - Run SNAP in batch mode on a directory of files
 
 =head1 VERSION
 
-This documentation refers to program version 0.1
+This documentation refers to program version $Rev$
 
 =head1 SYNOPSIS
 
-  USAGE:
-    Name.pl -i InDir -o OutDir
+=head2 Usage
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+   batch_snap.pl -i InDir -o OutDir -c ConfigFile.txt
+
+=head2 Required Options
+
+   --infile        # Path to the input file
+   --outfie        # Path to the output file
+   --config        # Configuration file for running SNAP.
 
 =head1 DESCRIPTION
 
-This is what the program does
+Runs SNAP in batch mode on a directory of FASTA format files.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -756,44 +779,103 @@ have write permission to the directory you want to place your file in.
 The location of the configuration file is indicated by the --config option
 at the command line.
 This is a tab delimited text file
-indicating required information for each of the databases to blast
-against. Lines beginning with # are ignored, and data are in six 
-columns as shown below:
+indicating required information for each of the HMM models to use 
+for running the SNAP program in batch mode.
+Lines beginning with # are ignored, and options are in three
+tab delimited colums as shown below
 
 =over 2
 
-=item Col 1. Blast program to use [ tblastx | blastn | blastx ]
+=item Col 1. HMM File to use
 
-The blastall program to use. DAWG-PAWS will support blastn,
-tblastx, and blastx format.
+Parameter name. The name to tag the SNAP out put with. For example
+a_thaliana_default could indicate the arabidopsis thaliana hmm model
+using default parameters.
 
-=item Col 2. Extension to add to blast output file. (ie. bln )
+=item Col 2. HMM File Path
 
-This is the suffix which will be added to the end of your blast
-output file. You can use this option to set different extensions
-for different types of blast. For example *.bln for blastn
-output and *.blx for blastx output.
+The full path to the HMM file used 
+
+=item Col 3. Additional options
+
+These are additional options to be passed to the command line
+for using the SNAP program. Mutliple options can be used but must
+be space delimited.
+
+Additional options that can be specified in column three are:
+
+=over
+
+=item -lcmask
+
+treat lowercase as N
+
+=item -plus
+
+predict on plus strand only
+
+=item -minus
+
+predict on minus strand only
+
+=item -gff
+
+output annotation as GFF
+
+=item -ace
+
+output annotation as ACED
+
+=item -quiet
+
+do not send progress to STDERR
+
+=item -aa <file>
+
+create FASTA file of proteins
+
+=item -tx <file>
+
+create FASTA file of transcripts
+
+=item -xdef <file>
+
+external definitions
+
+=item -name <string>
+
+name for the gene [default snap]
+
+=back
 
 =back
 
 An example config file:
 
  #-----------------------------+
- # BLASTN: TIGR GIs            |
+ # SNAP: Arabidopsis no mask
  #-----------------------------+
- blastn	bln	8	1e-5	TaGI_10	-a 2 -U
- blastn	bln	8	1e-5	AtGI_13	-a 2 -U
- blastn	bln	8	1e-5	ZmGI_17	-a 2 -U
+ a_thal	        /db/my_hmm/A.thaliana.hmm
+ a_thal_mask    /db/my_hmm/A.thaliana.hmm  -lcmask
  #-----------------------------+
- # TBLASTX: TIGR GIs           |
+ # SNAP: Rice
  #-----------------------------+
- tblastx	blx	8	1e-5	TaGI_10	-a 2 -U
- tblastx	blx	8	1e-5	AtGI_13	-a 2 -U
- tblastx	blx	8	1e-5	ZmGI_17	-a 2 -U
+ o_sativa	/db/my_hmm/O.sativa.hmm
+ o_sativa_mask	/db/my_hmm/O.sativa.hmm    -lcmask
 
 =head2 Environment
 
-This program does not make use of variables in the user environment.
+=over
+
+=item $ZOE
+
+The SNAP program allows for the user to specify the location of the 
+directory containing the hmm files with the $ZOE variable in the
+user enviornment. This would allow for setting the path of the hmm
+file to A.thaliana.hmm insead of specifying the full path of
+/db/my_hmm/O.sativa.hmm
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -801,9 +883,11 @@ This program does not make use of variables in the user environment.
 
 =over
 
-=item * Software Name
+=item * SNAP
 
-Any required software will be listed here.
+This program requires the SNAP gene prediction program. This program
+is available from the homepage of Ian Korf
+L<http://homepage.mac.com/iankorf/>
 
 =back
 
@@ -844,8 +928,8 @@ If this program has known limitations they will be listed here.
 
 =head1 SEE ALSO
 
-The program is part of the DAWG-PAWS package of genome
-annotation programs. See the DAWG-PAWS web page 
+The program is part of the DAWGPAWS package of genome
+annotation programs. See the DAWGPAWS web page 
 ( http://dawgpaws.sourceforge.net/ )
 or the Sourceforge project page 
 ( http://sourceforge.net/projects/dawgpaws ) 
@@ -866,19 +950,11 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 03/29/2010
 
-UPDATED:
+UPDATED: 03/31/2011
 
 VERSION: $Rev$
 
 =cut
 
-#-----------------------------------------------------------+
-# HISTORY                                                   |
-#-----------------------------------------------------------+
-#
-# 04/08/2010 
-# - The current version of Apollo balks at putting exons
-#   as childrn of genes. I now need to add a fake transcript
-#   model.
