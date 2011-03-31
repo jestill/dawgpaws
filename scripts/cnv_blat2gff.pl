@@ -63,6 +63,7 @@ my $blast_program;
 my $blast_alignment = 0;        # Alternatives include 8 and 9
 my $param;
 my $feature_type = "match";
+my $num_passing_hits = 0;       # The number of matches that fit criteria
 
 # Booleans
 my $simple = 1; # Doing something simple while SearchIO not working
@@ -427,7 +428,9 @@ sub simple_blat2gff {
 	#-----------------------------+
 	if ($do_print) {
 
-	    #-----------------------------+
+	    $num_passing_hits++;
+
+            #-----------------------------+
 	    # CYCLE THROUGH HSPS          |
 	    #-----------------------------+
 	    # PRINT PARTS FOR ERROR CHECKING
@@ -446,7 +449,8 @@ sub simple_blat2gff {
 		if ($gff_ver =~ "GFF3") {
 		    # The start and end of the target are not correct
 		    $feature = "match_part"; 
-		    $attribute = "ID=".$source."_".$blat_parts[13]."_".$j.
+		    # appending line number of parsed file to give unique id within results
+		    $attribute = "ID=".$source."_".$blat_parts[13]."_".$line_count."_".$j.
 			"; ".
 			"Name=".$blat_parts[13]."; ".
 			"Target=".$blat_parts[13]." ".
@@ -482,6 +486,8 @@ sub simple_blat2gff {
 #	}
 
     } # End of while BLATIN
+
+    print STDERR " $num_passing_hits Passed match criteria\n";
 
 }
 
