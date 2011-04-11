@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/23/2007                                       |
-# UPDATED: 03/03/2010                                       |
+# UPDATED: 04/11/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of softmasked fasta files, this will   |
@@ -38,7 +38,9 @@ use Pod::Text;                 # Print POD doc as formatted text file
 use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # Convert a relative path to an abosolute path
+
 use Bio::SearchIO;             # Parse BLAST output
+use Bio::SearchIO::blasttable;             # Parse BLAST output
 
 #-----------------------------+
 # PROGRAM VARIABLES           |
@@ -855,11 +857,22 @@ sub blast2gff {
 		    "$feature\t".                    # Feature type name
 		    "$start\t".                      # Start
 		    "$end\t".                        # End
-		    $blast_hsp->score()."\t".        # Score
+		    $blast_hsp->bits()."\t".        # Score
 		    "$strand\t".                     # Strand
 		    ".\t".                           # Frame
 		    $attribute.                      # Attribute
 		    "\n";                            # newline
+
+
+		# Testing what is broked
+#		print STDERR "$seqname\n";
+#		print STDERR "$source\n";
+#		print STDERR "$feature\n";
+#		print STDERR "$start\n";
+#		print STDERR "$end\n";
+#		print STDERR "score".$blast_hsp->bits()."\n";
+#		print STDERR "$strand\n";
+#		print STDERR "$attribute\n";
 
 	    } # End of while next hsp
 	} # End of while next hit
@@ -1414,3 +1427,7 @@ VERSION: $Rev$
 # - Added support for gff3 format by replacing
 #   blast2gff subfunction
 # - Added --feature option to command line and gff-ver to command line
+#
+# 04/11/2011
+# - Fixed hsp->score to hsp->bits
+#   I don't know if this changed in Bioperl, but this stopped working
