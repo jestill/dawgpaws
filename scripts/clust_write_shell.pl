@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/26/2007                                       |
-# UPDATED: 04/06/2009                                       |
+# UPDATED: 04/12/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given information from the command line, write the shell |
@@ -55,8 +55,6 @@ my $submit_job = 0;            # Submit the shell script that is created
 my $num_dir;                   # Number of dirs to split into
 my $file_to_move;              # Path to the file to mask
 my $file_new_loc;              # New location of the file to moave
-#my $hard_mask_out;             # Path to the hardmasked file output
-my $logfile;                   # Path to a logfile to log error info
 my $indir;                     # Directory containing the seq files to process
 my $outdir;                    # Directory to hold the output
 my $msg;                       # Message printed to the log file
@@ -64,18 +62,27 @@ my $search_name;               # Name searched for in grep command
 my $bac_out_dir;               # Dir for each sequnce being masked
 my $base_name;                 # Base name to be used for output etc
 my $prog_name;
+my $base_dir;                  # The base dir that contains the subdirs
+my $config_file;               # Path to the configuration file
+my $ann_outdir;                # Output directory for annotations on the cluster
+my $blast_dbdir;
+
+$base_dir = $ENV{DP_PARTS_DIR} || 0;
+$ann_outdir = $ENV{DP_ANN_DIR} || 0;
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required
-		    "p|program=s"   => \$prog_name,
-                    "o|outdir=s"    => \$outdir,
-		    "n|num-dir=s"   => \$num_dir,
-		    "b|base-name=s" => \$base_name,
-		    # Optional strings
-		    "logfile=s"     => \$logfile,
+		    "p|program=s"    => \$prog_name,
+                    "o|outdir=s"     => \$outdir,
+		    "n|num-dir=s"    => \$num_dir,
+		    "b|base-name=s"  => \$base_name,
+		    "d|base-dir=s"   => \$base_dir,
+		    "c|config=s"     => \$config_file,
+                    "a|ann-dir=s"    => \$ann_outdir,
+                    "blast-dir=s"    => \$blast_dbdir,
 		    # Booleans
 		    "verbose"       => \$verbose,
 		    "test"          => \$test,
@@ -128,22 +135,6 @@ if ( (!$outdir) || (!$prog_name) || (!$num_dir) || (!$base_name) ) {
     print_help ("usage", $0 );
 }
 
-
-#-----------------------------+
-# OPEN THE LOG FILE           |
-#-----------------------------+
-if ($logfile) {
-    # Open file for appending
-    open ( LOG, ">>$logfile" ) ||
-	die "Can not open logfile:\n$logfile\n";
-    my $time_now = time;
-    print LOG "==================================\n";
-    print LOG "  batch_hardmask.pl\n";
-    print LOG "  JOB: $time_now\n";
-    print LOG "==================================\n";
-}
-
-
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
 # VARIABLES                   |
@@ -170,11 +161,11 @@ my $max_num = $num_dir + 1;
 for (my $i=1; $i<$max_num; $i++) {
 
     # open the shell script
-    my $shell_path = $outdir.$base_name."_shell".$i.".sh";
+    my $shell_path = $outdir.$base_name."_".$prog_name."_shell".$i.".sh";
     
-    print "Writing to $shell_path\n";
-
-    if ($prog_name =~ "batch_blast") {
+    print STDERR "Writing to $shell_path\n";
+    
+    if ($prog_name =~ "batch_blast_old") {
 	open (SHOUT, ">".$shell_path);
 	print SHOUT "batch_blast.pl".
 	    " -i /scratch/jestill/wheat_in/$base_name$i/".
@@ -183,10 +174,22 @@ for (my $i=1; $i<$max_num; $i++) {
 	    " -d /db/jlblab/paws/".
 	    " --logfile /home/jlblab/jestill/$base_name$i.log";
 	close SHOUT;
-
     }
     elsif ($prog_name =~ "batch_repmask") {
 	open (SHOUT, ">".$shell_path);
+	print SHOUT "batch_repmask.pl".
+	    " -i /iob_scratch/jestill/amborella/454_contigs_201102/454_parts/$base_name$i/".
+	    " -o /iob_scratch/jestill/amborella/454_contigs_201102/annotations/".
+	    " --engine wublast".
+	    " -p 2".
+	    " -c /iob_scratch/jestill/amborella/454_contigs_201102/batch_mask.jcfg";
+	close SHOUT;
+    }
+    elsif ($prog_name =~ "batch_trf") {
+	open (SHOUT, ">".$shell_path);
+	print SHOUT "batch_trf.pl".
+	    " -i /iob_scratch/jestill/amborella/454_contigs_201102/454_parts/$base_name$i/".
+	    " -o /iob_scratch/jestill/amborella/454_contigs_201102/annotations/";
 	close SHOUT;
 
     }
@@ -198,10 +201,35 @@ for (my $i=1; $i<$max_num; $i++) {
 	    " -c /iob_scratch/jestill/amborella/454_contigs_201102/batch_ltrfinder.jcfg";
 	close SHOUT;
     }
-    else {
-	print STDERR "The program name is not recognized: $prog_name\n";
-	exit;
+    elsif ($prog_name =~ "batch_snap") {
+	open (SHOUT, ">".$shell_path);
+	my $prog_str = "batch_snap.pl".
+	    " -i $base_dir"."$base_name$i/".
+	    " -o $ann_outdir".
+	    " --gff-ver GFF3".
+	    " -c $config_file";
+	print SHOUT $prog_str;
+	close SHOUT;
     }
+    else {
+	open (SHOUT, ">".$shell_path);
+	my $cmd = "$prog_name".".pl".
+	    " -i $base_dir"."$base_name$i/".
+	    " -o $ann_outdir".
+	    " --gff-ver GFF3".
+	    " -c $config_file";
+	# Append some program specific parameters
+	if ($blast_dbdir) {
+	    $cmd = $cmd." -d $blast_dbdir";
+	}
+	print SHOUT $cmd;
+	close SHOUT;
+    }
+    
+    # make shell script executable
+    chmod(0700, $shell_path) ||
+	print STDERR "Can not change permissions for file $shell_path\n";
+    
     
 }
 
@@ -280,11 +308,11 @@ __END__
 
 =head1 NAME
 
-clust_write_shell.pl - Write shell scripts for the r cluster
+clust_write_shell.pl - Write shell scripts for cluster computing.
 
 =head1 VERSION
 
-This documentation refers to fasta_dirsplit version $Rev: 977 $
+This documentation refers to clust_write_shell version $Rev: 977 $
 
 =head1 SYNOPSIS
 
@@ -303,8 +331,11 @@ This documentation refers to fasta_dirsplit version $Rev: 977 $
 =head1 DESCRIPTION
 
 Given information from the command line, write the shell
-scripts required to run jobs on cluster environments
-using the LSF queuing system.
+scripts required to run jobs on cluster environments.
+This has been used to write shell scripts for the LSF queuing system,
+and should be compatible with most queuing systems. Currently this 
+does not write the shell script to submit all of the jobs to the
+queue.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -312,7 +343,7 @@ using the LSF queuing system.
 
 =item -p,--program
 
-Program to write shell scripts for
+Program to write shell scripts for.
 
 =item -o,--outdir
 
@@ -326,6 +357,10 @@ Number of dirs to split the parent dir into.
 
 Name to use a base name for creating the subdirectory
 
+=item -d, --base-dir
+
+The base directory that will hold the subdir of input directories.
+
 =item 
 
 =back
@@ -333,12 +368,6 @@ Name to use a base name for creating the subdirectory
 =head1 OPTIONS
 
 =over 2
-
-=item --logfile
-
-Path to a file that will be used to log program status.
-If the file already exists, additional information will be concatenated
-to the existing file.
 
 =item --usage
 
@@ -389,8 +418,22 @@ have write permission to the directory you want to place your file in.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-This program does not currently rely on an external configuration file
-or variables set in the user's environment.
+=head2 Environment Variables
+
+The following variables may be specified in the use environment:
+
+=over
+
+=item DP_PARTS_DIR
+
+This is the directory that contains n (--num-dir) subdirectories each
+containing a subset of the sequence contigs being annotated.
+
+=item DP_ANN_DIR
+
+The annotation directory that contains the annotation output.
+
+=back
 
 =head1 DEPENDENCIES
 
@@ -469,7 +512,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 07/26/2007
 
-UPDATED: 04/06/2009
+UPDATED: 04/12/2011
 
 VERSION: $Rev: 977 $
 
