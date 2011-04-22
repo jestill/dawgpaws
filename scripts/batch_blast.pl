@@ -447,9 +447,9 @@ for my $ind_file (@fasta_files)
 	
 	# PRINT VERBOSE OUTPUT
 	if ($verbose) {
-	    print "\tFILE: $name_root\n";
-	    print "\t  DB: ".$ind_db->[4]."\n";
-	    print "\t CMD: $blast_cmd\n";
+	    print STDERR "\tFILE: $name_root\n";
+	    print STDERR "\t  DB: ".$ind_db->[4]."\n";
+	    print STDERR "\t CMD: $blast_cmd\n";
 	}
 
 	unless ($test) {
@@ -470,12 +470,21 @@ for my $ind_file (@fasta_files)
 	    }
 
 	    # CONVERT BLAST TO GFF
+	    # need to send the database name if this is m8 or m9
+	    # format blast
+	    # The net option in the list is suffix,
+	    # so passing $ind_db->[4]
+	    # should set the suffix to the db name as set 
+	    # in the config file, this will set the name regardless
+	    # of what the blast db reports that it is
+	    print STDERR "Processing: $name_root\n";
 	    blast2gff ( $file_blast_out, 
 			$gff_out_file,
 			$append_gff,
 			$name_root,
 			$ind_db->[2],
-			$feature_type);
+			$feature_type,
+			$ind_db->[4]);
 	}
 
 
@@ -622,6 +631,7 @@ sub blast2gff {
     # chaning option order to allow $feature to be easily passed
     my ($blastin, $gffout, $append, $seqname, $align, $feature, $suffix,
 	$prog) = @_;
+
     my $blastprog;        # Name of the blast program used (blastn, blastx)
     my $dbname;           # Name of the database blasted
     my $hitname;          # Name of the hit
@@ -864,7 +874,7 @@ sub blast2gff {
 		    "\n";                            # newline
 
 
-		# Testing what is broked
+#		# Testing what is broked
 #		print STDERR "$seqname\n";
 #		print STDERR "$source\n";
 #		print STDERR "$feature\n";
