@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_at_gmail.com                         |
 # STARTED: 07/26/2007                                       |
-# UPDATED: 04/12/2011                                       |
+# UPDATED: 05/11/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given information from the command line, write the shell |
@@ -66,6 +66,7 @@ my $base_dir;                  # The base dir that contains the subdirs
 my $config_file;               # Path to the configuration file
 my $ann_outdir;                # Output directory for annotations on the cluster
 my $blast_dbdir;
+my $rmask_engine;              # engine for repeatmasker
 
 $base_dir = $ENV{DP_PARTS_DIR} || 0;
 $ann_outdir = $ENV{DP_ANN_DIR} || 0;
@@ -83,6 +84,7 @@ my $ok = GetOptions(
 		    "c|config=s"     => \$config_file,
                     "a|ann-dir=s"    => \$ann_outdir,
                     "blast-dir=s"    => \$blast_dbdir,
+                    "engine=s"       => \$rmask_engine,
 		    # Booleans
 		    "verbose"       => \$verbose,
 		    "test"          => \$test,
@@ -218,9 +220,12 @@ for (my $i=1; $i<$max_num; $i++) {
 	    " -o $ann_outdir".
 	    " --gff-ver GFF3".
 	    " -c $config_file";
-	# Append some program specific parameters
+	# Append some program specific options
 	if ($blast_dbdir) {
 	    $cmd = $cmd." -d $blast_dbdir";
+	}
+	if ($rmask_engine) {
+	    $cmd = $cmd." --engine $rmask_engine";
 	}
 	print SHOUT $cmd;
 	close SHOUT;
