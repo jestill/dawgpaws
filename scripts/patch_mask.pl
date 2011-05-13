@@ -35,7 +35,7 @@ package DAWGPAWS;
 #-----------------------------+
 use strict;
 use Getopt::Long;
-use File:Copy;                 # Used for OS indenpendent move of files
+use File::Copy;                 # Used for OS indenpendent move of files
 # The following needed for printing help
 use Pod::Select;               # Print subsections of POD documentation
 use Pod::Text;                 # Print POD doc as formatted text file
@@ -53,6 +53,7 @@ my ($VERSION) = q$Rev$ =~ /(\d+)/;
 #-----------------------------+
 my $indir;
 my $outdir;
+my $name_root;
 
 # BOOLEANS
 my $quiet = 0;
