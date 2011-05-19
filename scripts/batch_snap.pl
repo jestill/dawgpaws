@@ -251,7 +251,11 @@ for my $ind_file (@fasta_files) {
     $file_num++;
     my $name_root;
     # Get root file name
-    if ($ind_file =~ m/(.*)\.masked\.fasta$/) {
+    if ($ind_file =~ m/(.*)\.hard\.fasta$/) {
+	# file ends in .hard.fasta
+	$name_root = "$1";
+    }
+    elsif ($ind_file =~ m/(.*)\.masked\.fasta$/) {
 	# file ends in .masked.fasta
 	$name_root = "$1";
     }
