@@ -1,0 +1,117 @@
+#-----------------------------------------------------------+
+# DAWGPAWS AUGUSTUS CONFIG FILE
+#-----------------------------------------------------------+
+# PARAM	        SPECIES    ADDITIONAL
+# NAME          NAME       OPTIONS
+#-----------------------------------------------------------+
+# Maize, default settings without extrinsic information
+maize_def	maize
+# Arab
+arab_def	arabidopsis
+#-----------------------------------------------------------+
+# ADDITIONAL OPTIONS (taken from Augustus docs):
+#-----------------------------------------------------------+
+# NOTE : By default the batch_augustus.pl program will always produce
+#        GFF formatted output.
+#
+# --strand=both, --strand=forward or --strand=backward 
+#    report predicted genes on both strands, just the forward or just the 
+#    backward strand. default is 'both'
+#
+# --genemodel=partial, --genemodel=intronless, --genemodel=complete, 
+# --genemodel=atleastone or --genemodel=exactlyone
+#    partial      : allow prediction of incomplete genes at the sequence
+#                   boundaries (default)
+#    intronless   : only predict single-exon genes like in prokaryotes 
+#                   and some eukaryotes
+#    complete     : only predict complete genes
+#    atleastone   : predict at least one complete gene
+#    exactlyone   : predict exactly one complete gene
+#
+# --singlestrand=true
+#    predict genes independently on each strand, allow overlapping genes on
+#    opposite strands This option is turned off by default.
+#
+# --hintsfile=hintsfilename
+#   When this option is used the prediction considering hints 
+#   (extrinsic information) is turned on.
+#   hintsfilename contains the hints in gff format.
+#
+# --extrinsicCfgFile=cfgfilename
+#    Optional. This file contains the list of used sources for the hints and 
+#    their boni and mali.
+#    If not specified the file "extrinsic.cfg" in the config directory 
+#    $AUGUSTUS_CONFIG_PATH is used.
+#
+# --maxDNAPieceSize=n
+#   This value specifies the maximal length of the pieces that the sequence is 
+#   cut into for the core algorithm (Viterbi) to be run. 
+#   Default is --maxDNAPieceSize=200000.
+#   AUGUSTUS tries to place the boundaries of these pieces in the intergenic 
+#   region, which is inferred by a preliminary prediction. GC-content dependent
+#   parameters are chosen for each piece of DNA if 
+#   /Constant/decomp_num_steps > 1 for that species.
+#   This is why this value should not be set very large, even if you have 
+#   plenty of memory. 
+#
+# --protein=on/off
+#
+# --introns=on/off
+#
+# --start=on/off
+#
+# --stop=on/off
+#
+# --cds=on/off
+#
+# --codingseq=on/off
+#    Output options. Output predicted protein sequence, introns, start
+#    codons, stop codons. Or use 'cds' in addition to 'initial', 'internal',
+#   'terminal' and 'single' exon. The CDS excludes the stop codon 
+#   (unless stopCodonExcludedFromCDS=false)
+#  whereas the terminal and single exon include the stop codon.
+#
+# --AUGUSTUS_CONFIG_PATH=path
+#   path to config directory (if not specified as environment variable)
+#
+# --alternatives-from-evidence=true/false
+#   report alternative transcripts when they are suggested by hints
+#
+# --alternatives-from-sampling=true/false
+#  report alternative transcripts generated through probabilistic sampling
+#
+# --sample=n
+#
+# --minexonintronprob=p
+#
+# --minmeanexonintronprob=p
+#
+# --maxtracks=n
+#
+# --proteinprofile=filename
+#   Read a protein profile from file filename. See section 7 below.
+#
+# --predictionStart=A, --predictionEnd=B
+#  A and B define the range of the sequence for which predictions
+#  should be found. 
+#  Quicker if you need predictions only for a small part.
+#  --gff3=on/off
+#  output in gff3 format
+#--UTR=on/off
+#  predict the untranslated regions in addition to the coding sequence. 
+#  This currently works only for
+#  human, galdieria, toxoplasma and caenorhabditis.
+#
+# --outfile=filename
+#  print output to filename instead to standard output. 
+#  This is useful for computing environments, e.g. parasol jobs, which 
+#  do not allow shell redirection.
+#
+#--noInFrameStop=true/false
+#  Don't report transcripts with in-frame stop codons. Otherwise,
+#  intron-spanning stop codons could occur. Default: false
+#
+# --noprediction=true/false
+#  If true and input is in genbank format, no prediction is made. 
+#  Useful for getting the annotated protein sequences.
+# END
