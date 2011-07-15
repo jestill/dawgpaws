@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 06/01/2011                                       |
-# UPDATED: 07/13/2011                                       |
+# UPDATED: 07/14/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run Augustus gene prediction program in batch mode for   |
@@ -67,7 +67,6 @@ my $aug_path = $ENV{AUGUSTUS_BIN_PATH} ||
 my $program = "AUGUSTUS";
 my $param;
 
-
 # BOOLEANS
 my $quiet = 0;
 my $verbose = 0;
@@ -85,6 +84,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outdir=s"     => \$outdir,
                     "c|config=s"     => \$config_file,
 		    # ADDITIONAL OPTIONS
+		    "p|program=s"    => \$program,
 		    "augustus-bin=s" => \$aug_path,
 		    "gff-ver=s"      => \$gff_ver,
 		    "q|quiet"        => \$quiet,
@@ -319,6 +319,7 @@ for my $ind_file (@fasta_files) {
 
 	my $aug_cmd = $aug_path.
 	    " --species="."$aug_species".
+	    " --gff3=on".
 	    " ".$indir.$ind_file.
 	    " --outfile=".$aug_res;
 	
@@ -335,7 +336,24 @@ for my $ind_file (@fasta_files) {
 
 	# CONVERT THE AUGUSTUS OUTPUT TO GFF
 	if (-e $aug_res) {
-	    
+
+	    my $aug_gff = $gff_dir.$name_root."_augustus_"
+		.$aug_param_name.".gff";
+
+	    augustus2gff ( $program,
+			   $aug_res,
+			   $aug_gff,
+			   $name_root,
+			   $aug_param_name
+			  )
+
+	    # vars to send are source
+	    # $aug_in in file path
+	    # $gffout gff out file path
+	    # seq ID of the sequence being analyszed seq_id
+	    # src_suffix (this is the parameter name) 
+	    # do append -- if we are appending to an existing gff file
+
 	}
 
     } # End of for each fasta file for each parameter set
@@ -411,17 +429,72 @@ sub augustus2gff {
 	print GFFOUT "##gff-version 3\n";
     }
 
+
+    #-----------------------------+
     # PROCESS AUGUSTUS OUTPUT
+    #-----------------------------+
+    my $prev_gene_name = "NULL";
+
     while (<INFILE>) {
+	chomp;
+	# Skip comment lines
+	next if m/^\#/;
 
-    }
+	print STDERR $_."\n"
+	    if $verbose;
+
+	my @gff_parts = split;
+	my $num_gff_parts = @gff_parts;
+
+	#-----------------------------+
+	# MAKE START < END            |
+	#-----------------------------+
+	my $start;
+	my $end;
+	if ($gff_parts[3] < $gff_parts[4]) {
+	    $start = $gff_parts[3];
+	    $end = $gff_parts[4];
+	} else {
+	    $end = $gff_parts[4];
+	    $start = $gff_parts[3];
+	}
+
+
+	# WE MAY NEED TO ORDER PARTS OF A SINGLE GENE
+	# SEQUENTIALY BY OCCURENCE ON THE CONTIG
+
+	# It may also be necessary to include contig name in result
+	# name to that results for multiple contigs can have
+	# unique IDs.
+	# Load results to the $aug_results hash
+#	$i++;
+#	$aug_results[$i][0] = $gff_parts[0];
+#	$aug_results[$i][1] = $program.":".$src_suffix;
+#	$aug_results[$i][2] = $gff_parts[2];
+#	$aug_results[$i][3] = $start;
+#	$aug_results[$i][4] = $end;
+#	$aug_results[$i][5] = $gff_parts[5];
+#	$aug_results[$i][6] = $gff_parts[6];
+#	$aug_results[$i][7] = $gff_parts[7];
+#	$aug_results[$i][8] = $gff_parts[8];
+
+	# PRINT OUT TO GFF OUTFILE
+	# THIS WILL CURRENTLY ONLY PRINT TO GFF3
+	# OUT FORMAT
+	print GFFOUT $gff_parts[0]."\t".
+	    $program.":".$src_suffix."\t".
+	    $gff_parts[2]."\t".
+	    $start."\t".
+	    $end."\t".
+	    $gff_parts[5]."\t".
+	    $gff_parts[6]."\t".
+	    $gff_parts[7]."\t".
+	    $gff_parts[8]."\n";
+
+    } # End of while INFILE
+
     close INFILE;
-
-    #-----------------------------+
-    # PRINT GFFOUT FROM ARRAY     |
-    #-----------------------------+
-    
-
+    close GFFOUT;
 
 }
 
