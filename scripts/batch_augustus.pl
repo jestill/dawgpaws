@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 06/01/2011                                       |
-# UPDATED: 07/14/2011                                       |
+# UPDATED: 07/20/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run Augustus gene prediction program in batch mode for   |
@@ -26,9 +26,10 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-# TO DO: Allow for directly sending --species and other variables
-#        from the command line
-#
+# TO DO: Deal with Augustus hanging on large contigs ... may need
+#        to have timer and check that last line of outfile 
+#        contains the command before killing the job.
+
 
 package DAWGPAWS;
 
@@ -57,7 +58,7 @@ my $outdir;                    # Base output dir
 my $config_file;               # Configuration file
 my @aug_params = ();           # Augustus Parameters
                                # One row for each parameter set
-my $gff_ver = "GFF2";
+my $gff_ver = "GFF3";
 
 # PATH TO AUGUSTUS BINARY
 # Path to the Augustus binary file otherwise
@@ -75,6 +76,9 @@ my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
+my $apollo_format = 0;            # Apollo can't render CDS so use exon
+my $append_gff = 0;               # Append results to an existing GFF 
+my $delim = ":";                  # Character delimiter for source/suffix
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -87,6 +91,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "p|program=s"    => \$program,
 		    "augustus-bin=s" => \$aug_path,
 		    "gff-ver=s"      => \$gff_ver,
+		    "d|delim=s"      => \$delim,
+		    "apollo"         => \$apollo_format,
 		    "q|quiet"        => \$quiet,
 		    "verbose"        => \$verbose,
 		    # ADDITIONAL INFORMATION
@@ -317,6 +323,10 @@ for my $ind_file (@fasta_files) {
 	my $aug_res = $aug_dir.$name_root."_augustus_"
 	    .$aug_param_name.".gff";
 
+	# Be default we will ask for output in GFF3 format,
+	# This will be normalized to the standard GFF3 format
+	# used for the rest of DAWGPAWS, and will be simplified
+	# to GFF2 format.
 	my $aug_cmd = $aug_path.
 	    " --species="."$aug_species".
 	    " --gff3=on".
@@ -344,7 +354,10 @@ for my $ind_file (@fasta_files) {
 			   $aug_res,
 			   $aug_gff,
 			   $name_root,
-			   $aug_param_name
+			   $aug_param_name,
+			   $delim,
+			   $append_gff,
+			   $apollo_format
 			  )
 
 	    # vars to send are source
@@ -375,10 +388,11 @@ sub augustus2gff {
 # DAWGPAWS
 
     
-    my ($source, $aug_in, $gffout, $seq_id, $src_suffix, $do_append ) = @_;
+    my ($source, $aug_in, $gffout, $seq_id, $src_suffix, $d,
+	$do_append, $do_apollo_format) = @_;
     # Array to hold all snap results for a single contig
 
-    my @aug_results;
+#    my @aug_results;
 
     my $i = -1;
     my $j = -1;
@@ -459,6 +473,8 @@ sub augustus2gff {
 	    $start = $gff_parts[3];
 	}
 
+	my $type = $gff_parts[2];
+	my $attribute = $gff_parts[8];
 
 	# WE MAY NEED TO ORDER PARTS OF A SINGLE GENE
 	# SEQUENTIALY BY OCCURENCE ON THE CONTIG
@@ -478,18 +494,39 @@ sub augustus2gff {
 #	$aug_results[$i][7] = $gff_parts[7];
 #	$aug_results[$i][8] = $gff_parts[8];
 
-	# PRINT OUT TO GFF OUTFILE
-	# THIS WILL CURRENTLY ONLY PRINT TO GFF3
-	# OUT FORMAT
+
+	#/////////////////
+	# Kludge alert
+	#/////////////////
+	# For GFF2 will only report the CDS
+	if ($gff_ver =~ "GFF2") {
+	    next unless $type =~ "CDS";
+
+	    # Replace longer GFF3 type name
+	    if ($attribute =~ m/Parent\=(.*)/) {
+		print STDERR "YUP it is ".$1."\n";
+		$attribute = $1;
+	    }
+	    
+	    # Apollo can't render CDS features so 
+	    # converting type to exon for Apollo
+	    if ($do_apollo_format) {
+		$type = "exon";
+	    }
+	}
+	else {
+	    print STDERR "NOPE";
+	}
+
 	print GFFOUT $gff_parts[0]."\t".
-	    $program.":".$src_suffix."\t".
-	    $gff_parts[2]."\t".
+	    $program.$d.$src_suffix."\t".
+	    $type."\t".
 	    $start."\t".
 	    $end."\t".
 	    $gff_parts[5]."\t".
 	    $gff_parts[6]."\t".
 	    $gff_parts[7]."\t".
-	    $gff_parts[8]."\n";
+	    $attribute."\n";
 
     } # End of while INFILE
 
@@ -566,7 +603,7 @@ __END__
 
 =head1 NAME
 
-batch_augustus.pl - Run Augustus gene prediction in batch
+batch_augustus.pl - Run Augustus gene prediction in batches
 
 =head1 VERSION
 
@@ -611,6 +648,37 @@ program. Lines beginning with # are ignored.
 =head1 OPTIONS
 
 =over 2
+
+=item -p,--program
+
+The program name to use. The default name is AUGUSTUS.
+
+=item --augustus-bin
+
+The path to the augustus binary. The default behavior is to assume that
+the binary is in your $PATH such that typing augusuts from the command
+line will invoke the program.
+
+=item --gff-ver
+
+The version of GFF to use for output. By default GFF3 output is produced, but
+GFF2 can also be produced. Valid values are therefore 'GFF2' or 'GFF3'.
+
+=item -d,--delim
+
+The delimiting character to use between the program and the parameter set name.
+By default the colon (:) character is used. Howerver since Gbrowse does not 
+allow the use of the colon character for the source field, another value
+can be set with this option.
+
+=item --apollo
+
+Produce a GFF file result that can be properly rendered in the Apollo genome
+annotation curation program. Since Apollo can not properly render CDS features
+or genes as computational evidences, this option modifies the use of CDS
+in the output file with the word exon. HOWEVER, THESE FEATURES MAY NOT
+ALWAYS BE TRUE BIOLOGICAL EXONS. In some cases the 5' and 3' UTRs are not
+represented in the exon structure produced in this conversion.
 
 =item --usage
 
