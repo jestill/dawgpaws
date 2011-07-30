@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/24/2007                                       |
-# UPDATED: 12/11/2007                                       |
+# UPDATED: 02/18/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Given a directory of fasta files with UNIX line endings  |
@@ -193,7 +193,7 @@ for my $ind_file (@fasta_files) {
     my $dos_file_out = $outdir.$name_root.".txt";
     my $dos_file_name = $name_root.".txt";
 
-    print FLISTOUT $dos_file_name."\n";
+    print FLISTOUT $dos_file_name."\r\n";
 
     unix2dos($unix_file_in, $dos_file_out);
 
@@ -288,19 +288,24 @@ sub unix2dos {
     open( IN, $file_in)  || die ("\n Can not read $file_in \n");
     open( OUT, ">".$file_out) || die ("\n Can not write $file_out \n");
 
-    while( <IN>){
-       $line_num++;
-       $line = $_;
-       # Use the regular expression search operator to replace unix
-       $line =~ s/$unix/$dos/g;
-       print OUT "$line";
-       print STDERR "Processing line $line_num \n" if $verbose;
+    while( <IN> ){
+	# remove the existing newline character
+	chomp;
+	$line_num++;
+	$line = $_;
+	# Use the regular expression search operator to replace unix
+	#$line =~ s/$unix/$dos/g;
+	#$line =~ s/$1/\n/g if m/(\r\n?|\n\r?)/;
+	#$line =~ s/$1/\r\n/g if m/(\n?|\n\r?)/;
+	# is it \n\r or \r\n
+	print OUT "$line\r\n";
+	print STDERR "Processing line $line_num \n" if $verbose;
     }
     close(IN);
     close(OUT);
-
+    
     print STDERR "Unix2DOX Conversion is complete. \n" if $verbose;
-
+    
 }
 
 
