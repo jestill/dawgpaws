@@ -130,7 +130,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_bed2gff.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
