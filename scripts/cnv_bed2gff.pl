@@ -537,6 +537,9 @@ JC Estill and JL Bennetzen. 2009.
 "The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
 Elements in Plant Genomes." Plant Methods. 5:8.
 
+Additional information on the BED format are available at:
+http://genome.ucsc.edu/FAQ/FAQformat.html#format1
+
 =head1 LICENSE
 
 GNU General Public License, Version 3
