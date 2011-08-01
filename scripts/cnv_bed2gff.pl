@@ -16,7 +16,7 @@
 # USAGE:                                                    |
 #  cnv_bed2gff.pl -i infile.bed -o outfile.gff              |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                     |
 #                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
@@ -66,6 +66,7 @@ my $do_append=0;                  # Append result to existing GFF file
 my $prog = "TopHat";              # The name of the program
 my $param;                        # The parameter set, db name used
 my $delim = ":";                  # Delimiting character to use in GFF outfile
+my $feature = "match";            # The feature name to use in output
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -74,6 +75,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "feature=s"   => \$feature,
 		    "delim=s"     => \$delim,
 		    "program=s"   => \$prog,
 		    "p|param=s"   => \$param,
@@ -142,6 +144,7 @@ bed2gff ($infile,
 	 $prog,
 	 $param,
 	 $delim,
+	 $feature,
 	 $outfile,
 	 "GFF2",
 	 $seqname,
@@ -160,6 +163,7 @@ sub bed2gff {
 	$prog,
 	$param,
 	$delim,
+	$feature,
 	$gff_out,
 	$gff_format,
 	$seqname,
@@ -280,7 +284,7 @@ sub bed2gff {
 
 	my $gff_str = $gff_seqid."\t".   # Contig name
 	    $prog."\t".                  # Source (Program Name)
-	    "match"."\t".                # Feature type ie match
+	    $feature."\t".                # Feature type ie match
 	    $bed_start."\t".             # Feature start
 	    $bed_end."\t".               # Feature end
 	    $bed_score."\t".             # Score
@@ -420,6 +424,11 @@ The delimiting character to use to separate the program from the
 paramter name. For Apollo it is convienient to use the : character but 
 this causes errors in gbrowse. This allows differenct characters such as'_' 
 to be used for GFF output.
+
+=item --feature
+
+The feature name to use in the output file. This will use a single 
+feature name for all output
 
 =item -n,--name
 
