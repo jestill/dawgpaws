@@ -383,7 +383,7 @@ This documentation refers to program version $Rev$
 
 =head1 DESCRIPTION
 
-This is what the program does
+Convert BED format files to GFF format.
 
 =head1 REQUIRED ARGUMENTS
 
