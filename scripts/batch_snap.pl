@@ -393,7 +393,7 @@ sub snap2gff {
     #-----------------------------+
     if ($snap_in) {
 	open (INFILE, "<$snap_in") ||
-	    die "ERROR: Can not open LTR_FINDER result file\n $snap_in\n";
+	    die "ERROR: Can not open SNAP result file\n $snap_in\n";
 	
     }
     else {
