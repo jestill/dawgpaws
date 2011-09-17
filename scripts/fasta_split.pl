@@ -71,7 +71,7 @@ for ( $i = 1; $i<=$NumFiles; $i++ )
 
     my $num;
     print "Creating File $i \n";
-    if ($i == 100) {exit;}
+#    if ($i == 100) {exit;}
 
     if ($pad) {
 	$num = sprintf("%3d", $i);  
