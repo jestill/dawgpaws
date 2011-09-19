@@ -393,23 +393,25 @@ for my $ind_file (@fasta_files) {
 		".\t".                            # Frame
 		$attribute."\n";
 	    
+
+
+	    if ($do_stdout) {
+		print STDOUT $seq->primary_id()."\t". # Seqname
+		    "dawgpaws_findgap\t".             # source
+		    "gap\t".                 # feature
+		    "$start\t".                       # Start
+		    "$end\t".                         # End
+		    "$gap_len\t".                     # Score
+		    "+\t".                            # Strand
+		    ".\t".                            # Frame
+		    $attribute."\n";
+	    }
+	    
 	}
 	
     } # End of while next_seq
     
     close GFFOUT;
-
-    if ($do_stdout) {
-	print STDOUT $seq->primary_id()."\t". # Seqname
-	    "dawgpaws_findgap\t".             # source
-	    "gap\t".                 # feature
-	    "$start\t".                       # Start
-	    "$end\t".                         # End
-	    "$gap_len\t".                     # Score
-	    "+\t".                            # Strand
-	    ".\t".                            # Frame
-	    $attribute."\n";
-    }
 
     # TO DO: Convert the GFF output to Apollo game xml
     # I don't know if this works yet 09/29/2008
