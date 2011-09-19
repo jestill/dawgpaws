@@ -65,6 +65,7 @@ my $test = 0;                  # Run the program in test mode
 my $verbose = 0;               # Run the program in verbose mode
 my $is_gap = 0;                # Current character matche the gap char
 my $prev_gap = 0;              # Previous character matches the gap char
+my $do_stdout = 0;             # Write out output to a STDOUT 
 
 # PACKAGE LEVEL SCOPE
 my $file_to_mask;              # Path to the file to mask
@@ -95,6 +96,7 @@ my $ok = GetOptions(
 		    "logfile=s"    => \$logfile,
 		    "ap-path=s"    => \$ap_path,
 		    # Booleans
+                    "stdout"       => \$do_stdout,
 		    "game"         => \$do_apollo_game,
 		    "verbose"      => \$verbose,
 		    "test"         => \$test,
@@ -396,6 +398,18 @@ for my $ind_file (@fasta_files) {
     } # End of while next_seq
     
     close GFFOUT;
+
+    if ($do_stdout) {
+	print STDOUT $seq->primary_id()."\t". # Seqname
+	    "dawgpaws_findgap\t".             # source
+	    "gap\t".                 # feature
+	    "$start\t".                       # Start
+	    "$end\t".                         # End
+	    "$gap_len\t".                     # Score
+	    "+\t".                            # Strand
+	    ".\t".                            # Frame
+	    $attribute."\n";
+    }
 
     # TO DO: Convert the GFF output to Apollo game xml
     # I don't know if this works yet 09/29/2008
