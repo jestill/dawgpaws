@@ -8,6 +8,7 @@
 maize_def	maize
 # Arab
 arab_def	arabidopsis
+generic	generic
 #-----------------------------------------------------------+
 # ADDITIONAL OPTIONS (taken from Augustus docs):
 #-----------------------------------------------------------+
