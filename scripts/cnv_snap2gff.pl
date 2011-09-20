@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 03/29/2010                                       |
-# UPDATED: 03/29/2010                                       |
+# UPDATED: 09/20/2011                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  This is a very limited conversion of SNAP GFF output to  |
@@ -208,7 +208,6 @@ sub snap2gff {
 	    $start = $gff_parts[3];
 	}
 
-
 	if ($cur_gene_name =~ $prev_gene_name) {
 	    # IN SAME GENE MODEL
 	    $j++;  # increment exon count
@@ -232,11 +231,12 @@ sub snap2gff {
 	if ($start < $snap_results[$i]{gene_start} ) {
 	    $snap_results[$i]{gene_start} = $start;
 	}
-	if ($end > $snap_results[$i]{gene_start} ) {
+	if ($end > $snap_results[$i]{gene_end} ) {
 	    $snap_results[$i]{gene_end} = $end;
 	}
 	
-	# LOAD EXON INFORMATION TO ARRAY
+
+	#
 	if  ($seq_id) {
 	    $snap_results[$i]{seq_id} = $seq_id;
 	}
@@ -251,7 +251,7 @@ sub snap2gff {
 	$snap_results[$i]{exon}[$j]{frame} = $gff_parts[7];
 	$snap_results[$i]{exon}[$j]{exon_type} = $gff_parts[2];
 
-	print STDERR "MODEL NUMBER: $model_num\n" if $verbose;
+	print STDERR "MODEL NUMBER: $model_num:\n" if $verbose;
 
     }
 
@@ -262,6 +262,7 @@ sub snap2gff {
     # PRINT GFFOUT FROM ARRAY     |
     #-----------------------------+
     my $parent_id;
+    my $tr_id;
     for my $href ( @snap_results ) {
 		
 	# If GFF3 need to print the parent gene span
@@ -278,6 +279,22 @@ sub snap2gff {
 		".\t".                       # Frame
 		"ID=".$parent_id."\t".      # attribute
 		"\n";
+
+	    # mRNA
+	    $tr_id = $href->{gene_name}."_mrna";
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"mRNA\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$tr_id.
+		";Parent=".$parent_id.
+		";Name=".$tr_id.
+		"\n";
+
 	    
 	}
 
@@ -286,12 +303,11 @@ sub snap2gff {
 	for my $ex ( @{ $href->{exon} } ) {
 
 	    $exon_count++;
-	    
 	    if ($gff_ver =~ "GFF3") {
 		$attribute = "ID=".$href->{gene_name}.
 		    "_exon_".
 		    $ex->{exon_id}.
-		    ";Parent=".$parent_id;
+		    ";Parent=".$tr_id;
 	    }
 	    else {
 		$attribute = $href->{gene_name};
@@ -299,7 +315,6 @@ sub snap2gff {
 	    
 	    # Currently not reporting UTRs
 	    # May want to exclude UTRs from gene span reported above
-		
 	    print GFFOUT $href->{seq_id}."\t".                # seq id
 		$source."\t".
 		"exon\t".
@@ -311,8 +326,33 @@ sub snap2gff {
 		$attribute."\t".
 		"\n";
 	    
-	}
 
+	    # DO NOT USE SEPARATE CDS FOR GFF2 FILES
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_CDS_".
+		    $ex->{exon_id}.
+#		    ";Parent=".$href->{gene_name}.
+#		    "_exon_".
+#		    $ex->{exon_id};
+		    ";Parent=".$tr_id;
+
+		# CDS -- Required for EVM
+		print GFFOUT $href->{seq_id}."\t".                # seq id
+		    $source."\t".
+		    "CDS\t".
+		    $ex->{start}."\t".
+		    $ex->{end}."\t".
+		    $ex->{score}."\t".
+		    $ex->{strand}."\t".
+		    $ex->{frame}."\t".
+		    $attribute."\t".
+		    "\n";
+	    }
+	    
+	    
+	}
+	
     }
 
     # DONE
