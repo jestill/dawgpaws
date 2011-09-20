@@ -366,8 +366,241 @@ exit 0;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
-
 sub snap2gff {
+    
+    my ($source, $snap_in, $gffout, $seq_id, $src_suffix, $do_append ) = @_;
+    # Array to hold all snap results for a single contig
+    my @snap_results;
+    # Rows are the individual genes
+    #   exons array nested in snap results will contain results
+    #   for each individual gene model
+    # Starting i and j at -1 so that increments start at 0
+    my $i = -1;
+    my $j = -1;
+    my $model_num = 0;
+
+    if ($src_suffix) {
+	$source = $source.":".$src_suffix;
+    }
+    
+    my $attribute;
+
+    #-----------------------------+
+    # OPEN INPUT FILE HANDLE      |
+    #-----------------------------+
+    if ($snap_in) {
+	open (INFILE, "<$snap_in") ||
+	    die "ERROR: Can not open LTR_FINDER result file\n $snap_in\n";
+	
+    }
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (INFILE, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+    
+    #-----------------------------+
+    # OPEN GFF OUTFILE            |
+    #-----------------------------+
+    # Default to STDOUT if no argument given
+    if ($gffout) {
+	if ($do_append) {
+	    open (GFFOUT, ">>$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+	else {
+	    open (GFFOUT,">$gffout") ||
+		die "ERROR: Can not open gff outfile:\n $gffout\n";
+	}
+    } 
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    if ($gff_ver =~ "GFF3") {
+	print GFFOUT "##gff-version 3\n";
+    }
+
+    $prev_gene_name = "NULL";
+    # PROCESS FILE
+    while (<INFILE>) {
+	
+#	print STDERR $_;
+
+	my @gff_parts = split;
+	my $num_gff_parts = @gff_parts;
+	my $exon_count = 0;
+	
+	my $cur_gene_name = $gff_parts[8];
+
+	#-----------------------------+
+	# MAKE START < END            |
+	#-----------------------------+
+	my $start;
+	my $end;
+	if ($gff_parts[3] < $gff_parts[4]) {
+	    $start = $gff_parts[3];
+	    $end = $gff_parts[4];
+	} else {
+	    $end = $gff_parts[4];
+	    $start = $gff_parts[3];
+	}
+
+	if ($cur_gene_name =~ $prev_gene_name) {
+	    # IN SAME GENE MODEL
+	    $j++;  # increment exon count
+	} else {
+	    # IN NEW GENE MODEL
+	    $j=-1;
+	    $i++;   # increment gene count
+	    $j++;   # increment exon count
+	    
+	    $snap_results[$i]{gene_strand} = $gff_parts[6];
+	    $snap_results[$i]{gene_name} = $source."_".
+		"gene_".
+		$cur_gene_name;
+	    $snap_results[$i]{gene_start} = $start;
+	    $snap_results[$i]{gene_end} = $end;
+	}
+	
+	$prev_gene_name = $cur_gene_name;
+	
+	# UPDATE GENE START AND END
+	if ($start < $snap_results[$i]{gene_start} ) {
+	    $snap_results[$i]{gene_start} = $start;
+	}
+	if ($end > $snap_results[$i]{gene_end} ) {
+	    $snap_results[$i]{gene_end} = $end;
+	}
+	
+
+	#
+	if  ($seq_id) {
+	    $snap_results[$i]{seq_id} = $seq_id;
+	}
+	else {
+	    $snap_results[$i]{seq_id} = $gff_parts[0];
+	}
+	$snap_results[$i]{exon}[$j]{exon_id} = $j + 1;
+	$snap_results[$i]{exon}[$j]{start} = $start;
+	$snap_results[$i]{exon}[$j]{end} = $end;
+	$snap_results[$i]{exon}[$j]{score} = $gff_parts[5];
+	$snap_results[$i]{exon}[$j]{strand} = $gff_parts[6];
+	$snap_results[$i]{exon}[$j]{frame} = $gff_parts[7];
+	$snap_results[$i]{exon}[$j]{exon_type} = $gff_parts[2];
+
+	print STDERR "MODEL NUMBER: $model_num:\n" if $verbose;
+
+    }
+
+    # DONE WITH INFILE
+    close INFILE;
+    
+    #-----------------------------+
+    # PRINT GFFOUT FROM ARRAY     |
+    #-----------------------------+
+    my $parent_id;
+    my $tr_id;
+    for my $href ( @snap_results ) {
+		
+	# If GFF3 need to print the parent gene span
+	if ($gff_ver =~ "GFF3") {
+	    $parent_id = $href->{gene_name};
+	    
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"gene\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$parent_id."\t".      # attribute
+		"\n";
+
+	    # mRNA
+	    $tr_id = $href->{gene_name}."_mrna";
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"mRNA\t".
+		$href->{gene_start}."\t".    # start
+		$href->{gene_end}."\t".      # end
+		".\t".    # score
+		$href->{gene_strand}."\t".        # strand
+		".\t".                       # Frame
+		"ID=".$tr_id.
+		";Parent=".$parent_id.
+		";Name=".$tr_id.
+		"\n";
+
+	    
+	}
+
+	my $exon_count = 0;
+
+	for my $ex ( @{ $href->{exon} } ) {
+
+	    $exon_count++;
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_exon_".
+		    $ex->{exon_id}.
+		    ";Parent=".$tr_id;
+	    }
+	    else {
+		$attribute = $href->{gene_name};
+	    }
+	    
+	    # Currently not reporting UTRs
+	    # May want to exclude UTRs from gene span reported above
+	    print GFFOUT $href->{seq_id}."\t".                # seq id
+		$source."\t".
+		"exon\t".
+		$ex->{start}."\t".
+		$ex->{end}."\t".
+		$ex->{score}."\t".
+		$ex->{strand}."\t".
+		$ex->{frame}."\t".
+		$attribute."\t".
+		"\n";
+	    
+
+	    # DO NOT USE SEPARATE CDS FOR GFF2 FILES
+	    if ($gff_ver =~ "GFF3") {
+		$attribute = "ID=".$href->{gene_name}.
+		    "_CDS_".
+		    $ex->{exon_id}.
+#		    ";Parent=".$href->{gene_name}.
+#		    "_exon_".
+#		    $ex->{exon_id};
+		    ";Parent=".$tr_id;
+
+		# CDS -- Required for EVM
+		print GFFOUT $href->{seq_id}."\t".                # seq id
+		    $source."\t".
+		    "CDS\t".
+		    $ex->{start}."\t".
+		    $ex->{end}."\t".
+		    $ex->{score}."\t".
+		    $ex->{strand}."\t".
+		    $ex->{frame}."\t".
+		    $attribute."\t".
+		    "\n";
+	    }
+	    
+	    
+	}
+	
+    }
+
+    # DONE
+    close GFFOUT;
+
+}
+
+
+sub snap2gff_broken {
     
     my ($source, $snap_in, $gffout, $seq_id, $src_suffix, $do_append ) = @_;
     # Array to hold all snap results for a single contig
@@ -520,13 +753,14 @@ sub snap2gff {
 		$href->{gene_strand}."\t".        # strand
 		".\t".                       # Frame
 		"ID=".$parent_id.      # attribute
-		"; Name=".$parent_id.
+		";Name=".$parent_id.
 		"\n";
 	    
 	    # Added fake transcript for Apollo
 	    # 04/08/2010
 	    # trs added fro "transcript
-	    $parent_id = $href->{gene_name}."_trs";
+	    # PROBLEM, THIS DOES NOT HAVE CONNECTION TO PARENT ABOVE
+	    my $tr_id = $href->{gene_name}."_trs";
 	    print GFFOUT $href->{seq_id}."\t".                # seq id
 		$source."\t".
 		"transcript\t".
@@ -535,10 +769,10 @@ sub snap2gff {
 		".\t".    # score
 		$href->{gene_strand}."\t".        # strand
 		".\t".                       # Frame
-		"ID=".$parent_id.      # attribute
-		"; Name=".$parent_id.
+		"ID=".$tr_id.
+		";Parent=".$parent_id.
+		";Name=".$tr_id.
 		"\n";
-	    
 	    
 	}
 
@@ -552,7 +786,7 @@ sub snap2gff {
 		$attribute = "ID=".$href->{gene_name}.
 		    "_exon_".
 		    $ex->{exon_id}.
-		    ";Parent=".$parent_id;
+		    ";Parent=".$tr_id;
 	    }
 	    else {
 		$attribute = $href->{gene_name};
