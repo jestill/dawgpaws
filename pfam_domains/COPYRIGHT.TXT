@@ -1,0 +1,36 @@
+Pfam - A database of protein domain family alignments and HMMs
+Copyright (C) 1996-2001 The Pfam Consortium
+
+This database is free; you can redistribute it and/or modify it under
+the terms of the GNU Library General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+In summary, you are free to redistribute *verbatim* copies of Pfam or
+any Pfam files in any way you like, including packaging Pfam in
+proprietary software, so long as your copy of Pfam retains our
+copyright notice and the GNU license. You may also make *modified*
+copies of Pfam and distribute them, but your derivative database must
+be freely distributed under the GNU LGPL. Many academic freeware
+licenses prohibit any form of commercial use. In contrast, the intent
+of our license is that Pfam should be freely available to both
+industrial and academic researchers, including the use of the Pfam
+database in commercial software; however, proprietary modifications of
+the Pfam database itself are prohibited. Proprietary modification of
+the Pfam database is possible only by a separate formal licensing
+agreement from the Pfam consortium and our host institutions. See the
+file GNULICENSE for the full text of the GNU Library General Public
+License.
+
+This database is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You may also obtain a copy of the GNU LGPL by writing to the Free
+Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+02111-1307, USA.
+
+Pfam is now maintained by a consortium of researchers. You can
+contact the Pfam consortium at:
+	pfam-admin@sanger.ac.uk
