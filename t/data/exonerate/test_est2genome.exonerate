@@ -1,0 +1,993 @@
+Command line: [exonerate --showtargetgff yes --bestn 5 --model est2genome --showvulgar yes --softmaskquery yes --softmasktarget yes --ryo >%qi length=%ql alnlen=%qal\n>%ti length=%tl alnlen=%tal\n --showalignment no ambo_part29.masked.fasta first_100_scaffolds.fasta]
+Hostname: [compute-9-6.local]
+vulgar: gnl|Amborella|b4_c100125 135 280 + scaffold00029 711378 711235 - 131 M 6 6 G 4 0 M 6 6 G 1 0 M 11 11 G 1 0 M 9 9 G 0 1 M 12 12 G 0 4 M 6 6 G 0 4 M 6 6 G 2 0 M 11 11 G 1 0 M 11 11 G 0 3 M 18 18 G 2 0 M 6 6 G 1 0 M 2 2 G 2 0 M 27 27
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00029	exonerate:est2genome	gene	711236	711378	131	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100125 ; gene_orientation .
+scaffold00029	exonerate:est2genome	exon	711236	711378	.	-	.	insertions 12 ; deletions 14
+scaffold00029	exonerate:est2genome	similarity	711236	711378	131	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100125 ; Align 711379 136 6 ; Align 711373 146 6 ; Align 711367 153 11 ; Align 711356 165 9 ; Align 711346 174 12 ; Align 711330 186 6 ; Align 711320 192 6 ; Align 711314 200 11 ; Align 711303 212 11 ; Align 711289 223 18 ; Align 711271 243 6 ; Align 711265 250 2 ; Align 711263 254 27
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100125 length=294 alnlen=145
+>scaffold00029 length=4082488 alnlen=143
+vulgar: gnl|Amborella|b4_c100125 194 255 + scaffold00096 1839806 1839866 + 124 M 5 5 G 0 1 M 35 35 G 1 0 M 12 12 G 1 0 M 7 7
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00096	exonerate:est2genome	gene	1839807	1839866	124	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100125 ; gene_orientation .
+scaffold00096	exonerate:est2genome	exon	1839807	1839866	.	+	.	insertions 1 ; deletions 2
+scaffold00096	exonerate:est2genome	similarity	1839807	1839866	124	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100125 ; Align 1839807 195 5 ; Align 1839813 200 35 ; Align 1839848 236 12 ; Align 1839860 249 7
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100125 length=294 alnlen=61
+>scaffold00096 length=2266112 alnlen=60
+vulgar: gnl|Amborella|b4_c100125 230 290 + scaffold00025 2063563 2063500 - 110 M 36 36 G 0 2 M 19 19 G 0 1 M 5 5
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00025	exonerate:est2genome	gene	2063501	2063563	110	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100125 ; gene_orientation .
+scaffold00025	exonerate:est2genome	exon	2063501	2063563	.	-	.	insertions 3 ; deletions 0
+scaffold00025	exonerate:est2genome	similarity	2063501	2063563	110	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100125 ; Align 2063564 231 36 ; Align 2063526 267 19 ; Align 2063506 286 5
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100125 length=294 alnlen=60
+>scaffold00025 length=4066092 alnlen=63
+vulgar: gnl|Amborella|b4_c100125 251 290 + scaffold00074 1080741 1080779 + 106 M 15 15 G 1 0 M 23 23
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00074	exonerate:est2genome	gene	1080742	1080779	106	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100125 ; gene_orientation .
+scaffold00074	exonerate:est2genome	exon	1080742	1080779	.	+	.	insertions 0 ; deletions 1
+scaffold00074	exonerate:est2genome	similarity	1080742	1080779	106	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100125 ; Align 1080742 252 15 ; Align 1080757 268 23
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100125 length=294 alnlen=39
+>scaffold00074 length=2792156 alnlen=38
+vulgar: gnl|Amborella|b4_c100125 100 238 + scaffold00049 1530524 1530661 + 103 M 23 23 G 0 1 M 2 2 G 0 1 M 25 25 G 2 0 M 19 19 G 0 1 M 8 8 G 0 2 M 1 1 G 0 1 M 14 14 G 6 0 M 31 31 G 0 1 M 7 7
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00049	exonerate:est2genome	gene	1530525	1530661	103	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100125 ; gene_orientation .
+scaffold00049	exonerate:est2genome	exon	1530525	1530661	.	+	.	insertions 7 ; deletions 8
+scaffold00049	exonerate:est2genome	similarity	1530525	1530661	103	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100125 ; Align 1530525 101 23 ; Align 1530549 124 2 ; Align 1530552 126 25 ; Align 1530577 153 19 ; Align 1530597 172 8 ; Align 1530607 180 1 ; Align 1530609 181 14 ; Align 1530623 201 31 ; Align 1530655 232 7
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100125 length=294 alnlen=138
+>scaffold00049 length=3032705 alnlen=137
+vulgar: gnl|Amborella|b4_c10013 0 326 + scaffold00002 6214783 6215108 + 1609 M 310 310 G 1 0 M 15 15
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:est2genome	gene	6214784	6215108	1609	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c10013 ; gene_orientation .
+scaffold00002	exonerate:est2genome	exon	6214784	6215108	.	+	.	insertions 0 ; deletions 1
+scaffold00002	exonerate:est2genome	similarity	6214784	6215108	1609	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c10013 ; Align 6214784 1 310 ; Align 6215094 312 15
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c10013 length=326 alnlen=326
+>scaffold00002 length=7536074 alnlen=325
+vulgar: gnl|Amborella|b4_c10013 2 325 + scaffold00097 1563336 1871752 + 274 M 14 14 G 0 2 M 3 3 G 1 0 M 6 6 G 0 1 M 14 14 G 0 1 M 8 8 G 0 1 M 13 13 G 0 1 M 2 2 G 0 1 M 17 17 G 1 0 M 6 6 G 0 1 M 7 7 G 1 0 M 7 7 G 1 0 M 21 21 G 1 0 M 9 9 5 0 2 I 0 127530 3 0 2 M 6 6 G 0 1 M 1 1 G 0 6 M 18 18 G 0 3 M 2 2 G 0 2 M 1 1 G 0 3 M 12 12 G 0 1 M 3 3 G 0 1 M 47 47 G 0 2 M 2 2 G 0 3 M 12 12 G 0 1 M 28 28 G 0 3 M 19 19 5 0 2 I 0 180518 3 0 2 M 7 7 G 0 1 M 4 4 G 0 1 M 5 5 G 0 6 M 24 24
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00097	exonerate:est2genome	gene	1563337	1871752	274	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c10013 ; gene_orientation +
+scaffold00097	exonerate:est2genome	utr5	1563337	1563471	.	+	.	
+scaffold00097	exonerate:est2genome	exon	1563337	1563471	.	+	.	insertions 8 ; deletions 5
+scaffold00097	exonerate:est2genome	splice5	1563472	1563473	.	+	.	intron_id 1 ; splice_site "AT"
+scaffold00097	exonerate:est2genome	intron	1563472	1691005	.	+	.	intron_id 1
+scaffold00097	exonerate:est2genome	splice3	1691004	1691005	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00097	exonerate:est2genome	utr5	1691006	1691182	.	+	.	
+scaffold00097	exonerate:est2genome	exon	1691006	1691182	.	+	.	insertions 26 ; deletions 0
+scaffold00097	exonerate:est2genome	splice5	1691183	1691184	.	+	.	intron_id 2 ; splice_site "GT"
+scaffold00097	exonerate:est2genome	intron	1691183	1871704	.	+	.	intron_id 2
+scaffold00097	exonerate:est2genome	splice3	1871703	1871704	.	+	.	intron_id 1 ; splice_site "AG"
+scaffold00097	exonerate:est2genome	exon	1871705	1871752	.	+	.	insertions 8 ; deletions 0
+scaffold00097	exonerate:est2genome	similarity	1563337	1871752	274	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c10013 ; Align 1563337 3 14 ; Align 1563353 17 3 ; Align 1563356 21 6 ; Align 1563363 27 14 ; Align 1563378 41 8 ; Align 1563387 49 13 ; Align 1563401 62 2 ; Align 1563404 64 17 ; Align 1563421 82 6 ; Align 1563428 88 7 ; Align 1563435 96 7 ; Align 1563442 104 21 ; Align 1563463 126 9 ; Align 1691006 135 6 ; Align 1691013 141 1 ; Align 1691020 142 18 ; Align 1691041 160 2 ; Align 1691045 162 1 ; Align 1691049 163 12 ; Align 1691062 175 3 ; Align 1691066 178 47 ; Align 1691115 225 2 ; Align 1691120 227 12 ; Align 1691133 239 28 ; Align 1691164 267 19 ; Align 1871705 286 7 ; Align 1871713 293 4 ; Align 1871718 297 5 ; Align 1871729 302 24
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c10013 length=326 alnlen=323
+>scaffold00097 length=2367354 alnlen=308416
+vulgar: gnl|Amborella|b4_c10013 10 312 + scaffold00087 2112004 1758786 - 261 M 19 19 G 0 1 M 20 20 3 0 2 I 0 191514 5 0 2 M 37 37 3 0 2 I 0 104882 5 0 2 M 12 12 G 1 0 M 21 21 G 1 0 M 68 68 G 2 0 M 14 14 G 1 0 M 6 6 G 2 0 M 18 18 G 3 0 M 10 10 G 4 0 M 7 7 G 3 0 M 7 7 G 1 0 M 32 32 3 0 2 I 0 56525 5 0 2 M 13 13
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00087	exonerate:est2genome	gene	1758787	2112004	261	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c10013 ; gene_orientation -
+scaffold00087	exonerate:est2genome	utr5	2111965	2112004	.	-	.	
+scaffold00087	exonerate:est2genome	exon	2111965	2112004	.	-	.	insertions 1 ; deletions 0
+scaffold00087	exonerate:est2genome	splice3	2111963	2111964	.	-	.	intron_id -1 ; splice_site "AT"
+scaffold00087	exonerate:est2genome	splice5	1920447	1920448	.	-	.	intron_id 1 ; splice_site "AA"
+scaffold00087	exonerate:est2genome	utr5	1920410	1920446	.	-	.	
+scaffold00087	exonerate:est2genome	exon	1920410	1920446	.	-	.	insertions 0 ; deletions 0
+scaffold00087	exonerate:est2genome	splice3	1920408	1920409	.	-	.	intron_id -1 ; splice_site "CT"
+scaffold00087	exonerate:est2genome	splice5	1815524	1815525	.	-	.	intron_id 1 ; splice_site "AA"
+scaffold00087	exonerate:est2genome	utr5	1815329	1815523	.	-	.	
+scaffold00087	exonerate:est2genome	exon	1815329	1815523	.	-	.	insertions 0 ; deletions 18
+scaffold00087	exonerate:est2genome	splice3	1815327	1815328	.	-	.	intron_id -1 ; splice_site "AT"
+scaffold00087	exonerate:est2genome	splice5	1758800	1758801	.	-	.	intron_id 1 ; splice_site "TC"
+scaffold00087	exonerate:est2genome	exon	1758787	1758799	.	-	.	insertions 0 ; deletions 0
+scaffold00087	exonerate:est2genome	similarity	1758787	2112004	261	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c10013 ; Align 2112005 11 19 ; Align 2111985 30 20 ; Align 1920447 50 37 ; Align 1815524 87 12 ; Align 1815512 100 21 ; Align 1815491 122 68 ; Align 1815423 192 14 ; Align 1815409 207 6 ; Align 1815403 215 18 ; Align 1815385 236 10 ; Align 1815375 250 7 ; Align 1815368 260 7 ; Align 1815361 268 32 ; Align 1758800 300 13
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c10013 length=326 alnlen=302
+>scaffold00087 length=2491701 alnlen=353218
+vulgar: gnl|Amborella|b4_c10013 12 319 + scaffold00019 137991 311161 + 230 M 18 18 G 0 2 M 5 5 G 3 0 M 3 3 3 0 2 I 0 1178 5 0 2 M 23 23 G 0 1 M 4 4 G 0 1 M 16 16 G 1 0 M 6 6 3 0 2 I 0 2189 5 0 2 M 23 23 G 0 1 M 21 21 G 8 0 M 6 6 G 1 0 M 9 9 G 2 0 M 7 7 G 1 0 M 6 6 G 0 1 M 2 2 G 0 1 M 2 2 G 0 1 M 11 11 G 1 0 M 10 10 G 2 0 M 30 30 3 0 2 I 0 169496 5 0 2 M 34 34 G 0 2 M 2 2 G 0 2 M 6 6 G 3 0 M 9 9 G 1 0 M 8 8 G 1 0 M 22 22
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00019	exonerate:est2genome	gene	137992	311161	230	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c10013 ; gene_orientation -
+scaffold00019	exonerate:est2genome	utr5	137992	138019	.	+	.	
+scaffold00019	exonerate:est2genome	exon	137992	138019	.	+	.	insertions 2 ; deletions 3
+scaffold00019	exonerate:est2genome	splice3	138020	138021	.	+	.	intron_id -1 ; splice_site "TT"
+scaffold00019	exonerate:est2genome	splice5	139200	139201	.	+	.	intron_id 1 ; splice_site "AC"
+scaffold00019	exonerate:est2genome	utr5	139202	139252	.	+	.	
+scaffold00019	exonerate:est2genome	exon	139202	139252	.	+	.	insertions 2 ; deletions 1
+scaffold00019	exonerate:est2genome	splice3	139253	139254	.	+	.	intron_id -1 ; splice_site "TT"
+scaffold00019	exonerate:est2genome	splice5	141444	141445	.	+	.	intron_id 1 ; splice_site "AA"
+scaffold00019	exonerate:est2genome	utr5	141446	141576	.	+	.	
+scaffold00019	exonerate:est2genome	exon	141446	141576	.	+	.	insertions 4 ; deletions 15
+scaffold00019	exonerate:est2genome	splice3	141577	141578	.	+	.	intron_id -1 ; splice_site "AA"
+scaffold00019	exonerate:est2genome	splice5	311075	311076	.	+	.	intron_id 1 ; splice_site "AA"
+scaffold00019	exonerate:est2genome	exon	311077	311161	.	+	.	insertions 4 ; deletions 5
+scaffold00019	exonerate:est2genome	similarity	137992	311161	230	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c10013 ; Align 137992 13 18 ; Align 138012 31 5 ; Align 138017 39 3 ; Align 139202 42 23 ; Align 139226 65 4 ; Align 139231 69 16 ; Align 139247 86 6 ; Align 141446 92 23 ; Align 141470 115 21 ; Align 141491 144 6 ; Align 141497 151 9 ; Align 141506 162 7 ; Align 141513 170 6 ; Align 141520 176 2 ; Align 141523 178 2 ; Align 141526 180 11 ; Align 141537 192 10 ; Align 141547 204 30 ; Align 311077 234 34 ; Align 311113 268 2 ; Align 311117 270 6 ; Align 311123 279 9 ; Align 311132 289 8 ; Align 311140 298 22
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c10013 length=326 alnlen=307
+>scaffold00019 length=4251719 alnlen=173170
+vulgar: gnl|Amborella|b4_c10013 13 313 + scaffold00086 1834265 1836030 + 229 M 10 10 G 0 1 M 19 19 G 0 1 M 12 12 G 0 2 M 21 21 G 3 0 M 1 1 G 2 0 M 4 4 G 3 0 M 11 11 G 0 1 M 16 16 G 0 2 M 20 20 5 0 2 I 0 1468 3 0 2 M 13 13 G 0 1 M 29 29 G 0 1 M 6 6 G 0 1 M 19 19 G 2 0 M 24 24 G 0 2 M 12 12 G 3 0 M 21 21 G 2 0 M 21 21 G 2 0 M 7 7 G 2 0 M 15 15
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00086	exonerate:est2genome	gene	1834266	1836030	229	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c10013 ; gene_orientation +
+scaffold00086	exonerate:est2genome	utr5	1834266	1834386	.	+	.	
+scaffold00086	exonerate:est2genome	exon	1834266	1834386	.	+	.	insertions 7 ; deletions 8
+scaffold00086	exonerate:est2genome	splice5	1834387	1834388	.	+	.	intron_id 1 ; splice_site "gt"
+scaffold00086	exonerate:est2genome	intron	1834387	1835858	.	+	.	intron_id 1
+scaffold00086	exonerate:est2genome	splice3	1835857	1835858	.	+	.	intron_id 0 ; splice_site "CT"
+scaffold00086	exonerate:est2genome	exon	1835859	1836030	.	+	.	insertions 5 ; deletions 11
+scaffold00086	exonerate:est2genome	similarity	1834266	1836030	229	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c10013 ; Align 1834266 14 10 ; Align 1834277 24 19 ; Align 1834297 43 12 ; Align 1834311 55 21 ; Align 1834332 79 1 ; Align 1834333 82 4 ; Align 1834337 89 11 ; Align 1834349 100 16 ; Align 1834367 116 20 ; Align 1835859 136 13 ; Align 1835873 149 29 ; Align 1835903 178 6 ; Align 1835910 184 19 ; Align 1835929 205 24 ; Align 1835955 229 12 ; Align 1835967 244 21 ; Align 1835988 267 21 ; Align 1836009 290 7 ; Align 1836016 299 15
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c10013 length=326 alnlen=300
+>scaffold00086 length=2424996 alnlen=1765
+vulgar: gnl|Amborella|b4_c100253 3 242 + scaffold00042 121428 121680 + 745 M 49 49 G 0 1 M 62 62 G 2 0 M 70 70 G 0 8 M 18 18 G 0 3 M 4 4 G 0 2 M 15 15 G 0 1 M 19 19
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00042	exonerate:est2genome	gene	121429	121680	745	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100253 ; gene_orientation .
+scaffold00042	exonerate:est2genome	exon	121429	121680	.	+	.	insertions 15 ; deletions 2
+scaffold00042	exonerate:est2genome	similarity	121429	121680	745	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100253 ; Align 121429 4 49 ; Align 121479 53 62 ; Align 121541 117 70 ; Align 121619 187 18 ; Align 121640 205 4 ; Align 121646 209 15 ; Align 121662 224 19
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100253 length=561 alnlen=239
+>scaffold00042 length=3326005 alnlen=252
+vulgar: gnl|Amborella|b4_c100253 480 530 + scaffold00075 2422762 2422812 + 205 M 50 50
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00075	exonerate:est2genome	gene	2422763	2422812	205	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100253 ; gene_orientation .
+scaffold00075	exonerate:est2genome	exon	2422763	2422812	.	+	.	insertions 0 ; deletions 0
+scaffold00075	exonerate:est2genome	similarity	2422763	2422812	205	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100253 ; Align 2422763 481 50
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100253 length=561 alnlen=50
+>scaffold00075 length=2554510 alnlen=50
+vulgar: gnl|Amborella|b4_c100253 366 480 + scaffold00020 2986310 2986416 + 156 M 29 29 G 0 1 M 10 10 G 1 0 M 12 12 G 4 0 M 4 4 G 4 0 M 50 50
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00020	exonerate:est2genome	gene	2986311	2986416	156	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100253 ; gene_orientation .
+scaffold00020	exonerate:est2genome	exon	2986311	2986416	.	+	.	insertions 1 ; deletions 9
+scaffold00020	exonerate:est2genome	similarity	2986311	2986416	156	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100253 ; Align 2986311 367 29 ; Align 2986341 396 10 ; Align 2986351 407 12 ; Align 2986363 423 4 ; Align 2986367 431 50
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100253 length=561 alnlen=114
+>scaffold00020 length=4333971 alnlen=106
+vulgar: gnl|Amborella|b4_c100253 217 524 + scaffold00004 4095092 4094811 - 153 M 6 6 G 0 2 M 12 12 G 1 0 M 9 9 G 0 1 M 20 20 G 2 0 M 7 7 G 2 0 M 7 7 G 1 0 M 7 7 G 1 0 M 12 12 G 2 0 M 6 6 G 2 0 M 21 21 G 1 0 M 8 8 G 2 0 M 14 14 G 1 0 M 7 7 G 3 0 M 34 34 G 1 0 M 4 4 G 2 0 M 13 13 G 1 0 M 17 17 G 0 1 M 20 20 G 2 0 M 19 19 G 2 0 M 4 4 G 4 0 M 30 30
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00004	exonerate:est2genome	gene	4094812	4095092	153	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100253 ; gene_orientation .
+scaffold00004	exonerate:est2genome	exon	4094812	4095092	.	-	.	insertions 4 ; deletions 30
+scaffold00004	exonerate:est2genome	similarity	4094812	4095092	153	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100253 ; Align 4095093 218 6 ; Align 4095085 224 12 ; Align 4095073 237 9 ; Align 4095063 246 20 ; Align 4095043 268 7 ; Align 4095036 277 7 ; Align 4095029 285 7 ; Align 4095022 293 12 ; Align 4095010 307 6 ; Align 4095004 315 21 ; Align 4094983 337 8 ; Align 4094975 347 14 ; Align 4094961 362 7 ; Align 4094954 372 34 ; Align 4094920 407 4 ; Align 4094916 413 13 ; Align 4094903 427 17 ; Align 4094885 444 20 ; Align 4094865 466 19 ; Align 4094846 487 4 ; Align 4094842 495 30
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100253 length=561 alnlen=307
+>scaffold00004 length=6882163 alnlen=281
+vulgar: gnl|Amborella|b4_c100253 195 363 + scaffold00029 519852 520015 + 146 M 16 16 G 1 0 M 4 4 G 1 0 M 11 11 G 1 0 M 10 10 G 2 0 M 2 2 G 3 0 M 20 20 G 0 1 M 3 3 G 0 1 M 50 50 G 0 1 M 20 20 G 0 1 M 4 4 G 1 0 M 19 19
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00029	exonerate:est2genome	gene	519853	520015	146	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100253 ; gene_orientation .
+scaffold00029	exonerate:est2genome	exon	519853	520015	.	+	.	insertions 4 ; deletions 9
+scaffold00029	exonerate:est2genome	similarity	519853	520015	146	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100253 ; Align 519853 196 16 ; Align 519869 213 4 ; Align 519873 218 11 ; Align 519884 230 10 ; Align 519894 242 2 ; Align 519896 247 20 ; Align 519917 267 3 ; Align 519921 270 50 ; Align 519972 320 20 ; Align 519993 340 4 ; Align 519997 345 19
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100253 length=561 alnlen=168
+>scaffold00029 length=4082488 alnlen=163
+vulgar: gnl|Amborella|b4_c100509 426 471 + scaffold00061 878330 878280 - 134 M 31 31 G 0 5 M 14 14
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00061	exonerate:est2genome	gene	878281	878330	134	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100509 ; gene_orientation .
+scaffold00061	exonerate:est2genome	exon	878281	878330	.	-	.	insertions 5 ; deletions 0
+scaffold00061	exonerate:est2genome	similarity	878281	878330	134	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100509 ; Align 878331 427 31 ; Align 878295 458 14
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100509 length=471 alnlen=45
+>scaffold00061 length=2761478 alnlen=50
+vulgar: gnl|Amborella|b4_c100509 414 471 + scaffold00020 2366366 2366421 + 127 M 15 15 G 1 0 M 9 9 G 0 2 M 12 12 G 3 0 M 17 17
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00020	exonerate:est2genome	gene	2366367	2366421	127	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100509 ; gene_orientation .
+scaffold00020	exonerate:est2genome	exon	2366367	2366421	.	+	.	insertions 2 ; deletions 4
+scaffold00020	exonerate:est2genome	similarity	2366367	2366421	127	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100509 ; Align 2366367 415 15 ; Align 2366382 431 9 ; Align 2366393 440 12 ; Align 2366405 455 17
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100509 length=471 alnlen=57
+>scaffold00020 length=4333971 alnlen=55
+vulgar: gnl|Amborella|b4_c100509 354 445 + scaffold00082 593363 593459 + 114 M 5 5 G 1 0 M 8 8 G 0 2 M 22 22 G 0 4 M 7 7 G 0 1 M 13 13 G 2 0 M 9 9 G 0 1 M 24 24
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00082	exonerate:est2genome	gene	593364	593459	114	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100509 ; gene_orientation .
+scaffold00082	exonerate:est2genome	exon	593364	593459	.	+	.	insertions 8 ; deletions 3
+scaffold00082	exonerate:est2genome	similarity	593364	593459	114	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100509 ; Align 593364 355 5 ; Align 593369 361 8 ; Align 593379 369 22 ; Align 593405 391 7 ; Align 593413 398 13 ; Align 593426 413 9 ; Align 593436 422 24
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100509 length=471 alnlen=91
+>scaffold00082 length=2591715 alnlen=96
+vulgar: gnl|Amborella|b4_c100509 334 469 + scaffold00002 1434246 1521838 + 113 M 20 20 G 1 0 M 4 4 3 0 2 I 0 87445 5 0 2 M 14 14 G 0 1 M 9 9 G 0 2 M 24 24 G 0 3 M 7 7 G 0 1 M 25 25 G 2 0 M 7 7 G 2 0 M 5 5 G 0 6 M 15 15
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:est2genome	gene	1434247	1521838	113	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100509 ; gene_orientation -
+scaffold00002	exonerate:est2genome	utr5	1434247	1434270	.	+	.	
+scaffold00002	exonerate:est2genome	exon	1434247	1434270	.	+	.	insertions 0 ; deletions 1
+scaffold00002	exonerate:est2genome	splice3	1434271	1434272	.	+	.	intron_id -1 ; splice_site "TT"
+scaffold00002	exonerate:est2genome	splice5	1521718	1521719	.	+	.	intron_id 1 ; splice_site "ac"
+scaffold00002	exonerate:est2genome	exon	1521720	1521838	.	+	.	insertions 13 ; deletions 4
+scaffold00002	exonerate:est2genome	similarity	1434247	1521838	113	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100509 ; Align 1434247 335 20 ; Align 1434267 356 4 ; Align 1521720 360 14 ; Align 1521735 374 9 ; Align 1521746 383 24 ; Align 1521773 407 7 ; Align 1521781 414 25 ; Align 1521806 441 7 ; Align 1521813 450 5 ; Align 1521824 455 15
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100509 length=471 alnlen=135
+>scaffold00002 length=7536074 alnlen=87592
+vulgar: gnl|Amborella|b4_c100509 359 467 + scaffold00027 3680768 3680667 - 113 M 13 13 G 0 1 M 1 1 G 0 1 M 8 8 G 1 0 M 11 11 G 0 1 M 7 7 G 1 0 M 18 18 G 2 0 M 5 5 G 4 0 M 14 14 G 2 0 M 21 21
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00027	exonerate:est2genome	gene	3680668	3680768	113	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100509 ; gene_orientation .
+scaffold00027	exonerate:est2genome	exon	3680668	3680768	.	-	.	insertions 3 ; deletions 10
+scaffold00027	exonerate:est2genome	similarity	3680668	3680768	113	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100509 ; Align 3680769 360 13 ; Align 3680755 373 1 ; Align 3680753 374 8 ; Align 3680745 383 11 ; Align 3680733 394 7 ; Align 3680726 402 18 ; Align 3680708 422 5 ; Align 3680703 431 14 ; Align 3680689 447 21
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100509 length=471 alnlen=108
+>scaffold00027 length=3733184 alnlen=101
+vulgar: gnl|Amborella|b4_c100637 47 381 + scaffold00014 2703517 2873996 + 278 M 15 15 G 1 0 M 8 8 G 4 0 M 1 1 G 1 0 M 7 7 G 2 0 M 5 5 G 4 0 M 9 9 G 0 2 M 26 26 G 0 2 M 22 22 G 3 0 M 1 1 G 2 0 M 3 3 G 1 0 M 5 5 G 2 0 M 4 4 G 1 0 M 22 22 G 3 0 M 10 10 G 1 0 M 4 4 G 0 2 M 19 19 G 3 0 M 9 9 5 0 2 I 0 130480 3 0 2 M 4 4 G 1 0 M 38 38 5 0 2 I 0 39690 3 0 2 M 39 39 G 2 0 M 6 6 G 5 0 M 3 3 G 2 0 M 17 17 G 1 0 M 18 18
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00014	exonerate:est2genome	gene	2703518	2873996	278	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100637 ; gene_orientation +
+scaffold00014	exonerate:est2genome	utr5	2703518	2703693	.	+	.	
+scaffold00014	exonerate:est2genome	exon	2703518	2703693	.	+	.	insertions 6 ; deletions 28
+scaffold00014	exonerate:est2genome	splice5	2703694	2703695	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00014	exonerate:est2genome	intron	2703694	2834177	.	+	.	intron_id 1
+scaffold00014	exonerate:est2genome	splice3	2834176	2834177	.	+	.	intron_id 0 ; splice_site "AC"
+scaffold00014	exonerate:est2genome	utr5	2834178	2834219	.	+	.	
+scaffold00014	exonerate:est2genome	exon	2834178	2834219	.	+	.	insertions 0 ; deletions 1
+scaffold00014	exonerate:est2genome	splice5	2834220	2834221	.	+	.	intron_id 2 ; splice_site "GA"
+scaffold00014	exonerate:est2genome	intron	2834220	2873913	.	+	.	intron_id 2
+scaffold00014	exonerate:est2genome	splice3	2873912	2873913	.	+	.	intron_id 1 ; splice_site "AG"
+scaffold00014	exonerate:est2genome	exon	2873914	2873996	.	+	.	insertions 0 ; deletions 10
+scaffold00014	exonerate:est2genome	similarity	2703518	2873996	278	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100637 ; Align 2703518 48 15 ; Align 2703533 64 8 ; Align 2703541 76 1 ; Align 2703542 78 7 ; Align 2703549 87 5 ; Align 2703554 96 9 ; Align 2703565 105 26 ; Align 2703593 131 22 ; Align 2703615 156 1 ; Align 2703616 159 3 ; Align 2703619 163 5 ; Align 2703624 170 4 ; Align 2703628 175 22 ; Align 2703650 200 10 ; Align 2703660 211 4 ; Align 2703666 215 19 ; Align 2703685 237 9 ; Align 2834178 246 4 ; Align 2834182 251 38 ; Align 2873914 289 39 ; Align 2873953 330 6 ; Align 2873959 341 3 ; Align 2873962 346 17 ; Align 2873979 364 18
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100637 length=395 alnlen=334
+>scaffold00014 length=4941325 alnlen=170479
+vulgar: gnl|Amborella|b4_c100637 31 390 + scaffold00096 1177336 1123830 - 273 M 12 12 G 1 0 M 17 17 G 3 0 M 19 19 G 0 1 M 2 2 G 0 1 M 46 46 G 2 0 M 7 7 G 1 0 M 5 5 G 0 2 M 8 8 G 1 0 M 7 7 G 2 0 M 19 19 G 0 1 M 9 9 G 0 1 M 4 4 G 0 1 M 6 6 G 0 5 M 3 3 G 0 2 M 6 6 G 1 0 M 2 2 G 0 2 M 10 10 G 0 1 M 17 17 G 1 0 M 19 19 G 2 0 M 9 9 5 0 2 I 0 53145 3 0 2 M 4 4 G 2 0 M 61 61 G 1 0 M 7 7 G 1 0 M 9 9 G 0 1 M 22 22 G 1 0 M 3 3 G 1 0 M 6 6
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00096	exonerate:est2genome	gene	1123831	1177336	273	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100637 ; gene_orientation +
+scaffold00096	exonerate:est2genome	utr5	1177093	1177336	.	-	.	
+scaffold00096	exonerate:est2genome	exon	1177093	1177336	.	-	.	insertions 17 ; deletions 14
+scaffold00096	exonerate:est2genome	splice5	1177091	1177092	.	-	.	intron_id 1 ; splice_site "AT"
+scaffold00096	exonerate:est2genome	intron	1123944	1177092	.	-	.	intron_id 1
+scaffold00096	exonerate:est2genome	splice3	1123944	1123945	.	-	.	intron_id 0 ; splice_site "AA"
+scaffold00096	exonerate:est2genome	exon	1123831	1123943	.	-	.	insertions 1 ; deletions 6
+scaffold00096	exonerate:est2genome	similarity	1123831	1177336	273	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100637 ; Align 1177337 32 12 ; Align 1177325 45 17 ; Align 1177308 65 19 ; Align 1177288 84 2 ; Align 1177285 86 46 ; Align 1177239 134 7 ; Align 1177232 142 5 ; Align 1177225 147 8 ; Align 1177217 156 7 ; Align 1177210 165 19 ; Align 1177190 184 9 ; Align 1177180 193 4 ; Align 1177175 197 6 ; Align 1177164 203 3 ; Align 1177159 206 6 ; Align 1177153 213 2 ; Align 1177149 215 10 ; Align 1177138 225 17 ; Align 1177121 243 19 ; Align 1177102 264 9 ; Align 1123944 273 4 ; Align 1123940 279 61 ; Align 1123879 341 7 ; Align 1123872 349 9 ; Align 1123862 358 22 ; Align 1123840 381 3 ; Align 1123837 385 6
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100637 length=395 alnlen=359
+>scaffold00096 length=2266112 alnlen=53506
+vulgar: gnl|Amborella|b4_c100637 20 367 + scaffold00052 1183928 1317232 + 247 M 20 20 G 0 1 M 3 3 G 1 0 M 6 6 G 3 0 M 23 23 G 0 2 M 5 5 G 0 1 M 28 28 G 0 2 M 2 2 G 0 2 M 10 10 G 0 2 M 10 10 G 0 1 M 6 6 3 0 2 I 0 132920 5 0 2 M 1 1 G 0 1 M 4 4 G 2 0 M 9 9 G 1 0 M 12 12 G 2 0 M 8 8 G 0 4 M 3 3 G 0 2 M 6 6 G 0 1 M 2 2 G 0 4 M 23 23 G 0 1 M 16 16 G 0 7 M 21 21 G 2 0 M 1 1 G 1 0 M 7 7 G 1 0 M 10 10 G 1 0 M 25 25 G 0 4 M 19 19 G 0 4 M 5 5 G 0 8 M 48 48
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00052	exonerate:est2genome	gene	1183929	1317232	247	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100637 ; gene_orientation -
+scaffold00052	exonerate:est2genome	utr5	1183929	1184052	.	+	.	
+scaffold00052	exonerate:est2genome	exon	1183929	1184052	.	+	.	insertions 11 ; deletions 4
+scaffold00052	exonerate:est2genome	splice3	1184053	1184054	.	+	.	intron_id -1 ; splice_site "CT"
+scaffold00052	exonerate:est2genome	splice5	1316975	1316976	.	+	.	intron_id 1 ; splice_site "ag"
+scaffold00052	exonerate:est2genome	exon	1316977	1317232	.	+	.	insertions 36 ; deletions 10
+scaffold00052	exonerate:est2genome	similarity	1183929	1317232	247	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100637 ; Align 1183929 21 20 ; Align 1183950 41 3 ; Align 1183953 45 6 ; Align 1183959 54 23 ; Align 1183984 77 5 ; Align 1183990 82 28 ; Align 1184020 110 2 ; Align 1184024 112 10 ; Align 1184036 122 10 ; Align 1184047 132 6 ; Align 1316977 138 1 ; Align 1316979 139 4 ; Align 1316983 145 9 ; Align 1316992 155 12 ; Align 1317004 169 8 ; Align 1317016 177 3 ; Align 1317021 180 6 ; Align 1317028 186 2 ; Align 1317034 188 23 ; Align 1317058 211 16 ; Align 1317081 227 21 ; Align 1317102 250 1 ; Align 1317103 252 7 ; Align 1317110 260 10 ; Align 1317120 271 25 ; Align 1317149 296 19 ; Align 1317172 315 5 ; Align 1317185 320 48
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100637 length=395 alnlen=347
+>scaffold00052 length=3020488 alnlen=133304
+vulgar: gnl|Amborella|b4_c100637 29 388 + scaffold00004 4555830 4883850 + 245 M 5 5 G 1 0 M 6 6 G 1 0 M 14 14 G 2 0 M 2 2 G 4 0 M 19 19 G 0 4 M 11 11 G 0 1 M 18 18 G 1 0 M 7 7 G 0 1 M 10 10 G 0 1 M 11 11 G 2 0 M 2 2 G 1 0 M 3 3 G 2 0 M 3 3 G 1 0 M 2 2 G 3 0 M 12 12 G 0 1 M 7 7 5 0 2 I 0 145325 3 0 2 M 12 12 G 1 0 M 37 37 G 2 0 M 20 20 G 2 0 M 13 13 G 0 1 M 28 28 G 0 2 M 4 4 5 0 2 I 0 182339 3 0 2 M 34 34 G 0 1 M 1 1 G 0 2 M 6 6 G 1 0 M 4 4 G 0 2 M 11 11 G 3 0 M 14 14 G 1 0 M 11 11 G 0 1 M 4 4
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00004	exonerate:est2genome	gene	4555831	4883850	245	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100637 ; gene_orientation +
+scaffold00004	exonerate:est2genome	utr5	4555831	4555970	.	+	.	
+scaffold00004	exonerate:est2genome	exon	4555831	4555970	.	+	.	insertions 8 ; deletions 18
+scaffold00004	exonerate:est2genome	splice5	4555971	4555972	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00004	exonerate:est2genome	intron	4555971	4701299	.	+	.	intron_id 1
+scaffold00004	exonerate:est2genome	splice3	4701298	4701299	.	+	.	intron_id 0 ; splice_site "AT"
+scaffold00004	exonerate:est2genome	utr5	4701300	4701416	.	+	.	
+scaffold00004	exonerate:est2genome	exon	4701300	4701416	.	+	.	insertions 3 ; deletions 5
+scaffold00004	exonerate:est2genome	splice5	4701417	4701418	.	+	.	intron_id 2 ; splice_site "GT"
+scaffold00004	exonerate:est2genome	intron	4701417	4883759	.	+	.	intron_id 2
+scaffold00004	exonerate:est2genome	splice3	4883758	4883759	.	+	.	intron_id 1 ; splice_site "AA"
+scaffold00004	exonerate:est2genome	exon	4883760	4883850	.	+	.	insertions 6 ; deletions 5
+scaffold00004	exonerate:est2genome	similarity	4555831	4883850	245	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100637 ; Align 4555831 30 5 ; Align 4555836 36 6 ; Align 4555842 43 14 ; Align 4555856 59 2 ; Align 4555858 65 19 ; Align 4555881 84 11 ; Align 4555893 95 18 ; Align 4555911 114 7 ; Align 4555919 121 10 ; Align 4555930 131 11 ; Align 4555941 144 2 ; Align 4555943 147 3 ; Align 4555946 152 3 ; Align 4555949 156 2 ; Align 4555951 161 12 ; Align 4555964 173 7 ; Align 4701300 180 12 ; Align 4701312 193 37 ; Align 4701349 232 20 ; Align 4701369 254 13 ; Align 4701383 267 28 ; Align 4701413 295 4 ; Align 4883760 299 34 ; Align 4883795 333 1 ; Align 4883798 334 6 ; Align 4883804 341 4 ; Align 4883810 345 11 ; Align 4883821 359 14 ; Align 4883835 374 11 ; Align 4883847 385 4
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100637 length=395 alnlen=359
+>scaffold00004 length=6882163 alnlen=328020
+vulgar: gnl|Amborella|b4_c100637 3 365 + scaffold00031 1776414 1653086 - 244 M 6 6 G 0 3 M 14 14 G 4 0 M 7 7 G 0 1 M 14 14 G 1 0 M 5 5 G 1 0 M 6 6 G 2 0 M 6 6 G 0 1 M 4 4 G 2 0 M 2 2 G 2 0 M 15 15 G 0 1 M 10 10 G 0 1 M 9 9 G 3 0 M 6 6 G 2 0 M 32 32 G 0 1 M 26 26 G 1 0 M 2 2 G 2 0 M 7 7 G 1 0 M 10 10 G 0 3 M 5 5 G 0 3 M 9 9 G 0 3 M 21 21 G 0 1 M 10 10 G 0 5 M 5 5 G 1 0 M 18 18 3 0 2 I 0 122967 5 0 2 M 37 37 G 8 0 M 41 41 G 0 2 M 5 5
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00031	exonerate:est2genome	gene	1653087	1776414	244	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100637 ; gene_orientation -
+scaffold00031	exonerate:est2genome	utr5	1776143	1776414	.	-	.	
+scaffold00031	exonerate:est2genome	exon	1776143	1776414	.	-	.	insertions 23 ; deletions 22
+scaffold00031	exonerate:est2genome	splice3	1776141	1776142	.	-	.	intron_id -1 ; splice_site "CT"
+scaffold00031	exonerate:est2genome	splice5	1653172	1653173	.	-	.	intron_id 1 ; splice_site "TC"
+scaffold00031	exonerate:est2genome	exon	1653087	1653171	.	-	.	insertions 2 ; deletions 8
+scaffold00031	exonerate:est2genome	similarity	1653087	1776414	244	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100637 ; Align 1776415 4 6 ; Align 1776406 10 14 ; Align 1776392 28 7 ; Align 1776384 35 14 ; Align 1776370 50 5 ; Align 1776365 56 6 ; Align 1776359 64 6 ; Align 1776352 70 4 ; Align 1776348 76 2 ; Align 1776346 80 15 ; Align 1776330 95 10 ; Align 1776319 105 9 ; Align 1776310 117 6 ; Align 1776304 125 32 ; Align 1776271 157 26 ; Align 1776245 184 2 ; Align 1776243 188 7 ; Align 1776236 196 10 ; Align 1776223 206 5 ; Align 1776215 211 9 ; Align 1776203 220 21 ; Align 1776181 241 10 ; Align 1776166 251 5 ; Align 1776161 257 18 ; Align 1653172 275 37 ; Align 1653135 320 41 ; Align 1653092 361 5
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100637 length=395 alnlen=362
+>scaffold00031 length=3776357 alnlen=123328
+vulgar: gnl|Amborella|b4_c100893 4 434 + scaffold00029 1705470 1702864 - 2083 M 157 157 5 0 2 I 0 229 3 0 2 M 84 84 5 0 2 I 0 1835 3 0 2 M 159 159 5 0 2 I 0 100 3 0 2 M 30 30
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00029	exonerate:est2genome	gene	1702865	1705470	2083	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation +
+scaffold00029	exonerate:est2genome	utr5	1705314	1705470	.	-	.	
+scaffold00029	exonerate:est2genome	exon	1705314	1705470	.	-	.	insertions 0 ; deletions 0
+scaffold00029	exonerate:est2genome	splice5	1705312	1705313	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00029	exonerate:est2genome	intron	1705081	1705313	.	-	.	intron_id 1
+scaffold00029	exonerate:est2genome	splice3	1705081	1705082	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00029	exonerate:est2genome	utr5	1704997	1705080	.	-	.	
+scaffold00029	exonerate:est2genome	exon	1704997	1705080	.	-	.	insertions 0 ; deletions 0
+scaffold00029	exonerate:est2genome	splice5	1704995	1704996	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00029	exonerate:est2genome	intron	1703158	1704996	.	-	.	intron_id 2
+scaffold00029	exonerate:est2genome	splice3	1703158	1703159	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00029	exonerate:est2genome	utr5	1702999	1703157	.	-	.	
+scaffold00029	exonerate:est2genome	exon	1702999	1703157	.	-	.	insertions 0 ; deletions 0
+scaffold00029	exonerate:est2genome	splice5	1702997	1702998	.	-	.	intron_id 3 ; splice_site "GT"
+scaffold00029	exonerate:est2genome	intron	1702895	1702998	.	-	.	intron_id 3
+scaffold00029	exonerate:est2genome	splice3	1702895	1702896	.	-	.	intron_id 2 ; splice_site "AG"
+scaffold00029	exonerate:est2genome	exon	1702865	1702894	.	-	.	insertions 0 ; deletions 0
+scaffold00029	exonerate:est2genome	similarity	1702865	1705470	2083	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 1705471 5 157 ; Align 1705081 162 84 ; Align 1703158 246 159 ; Align 1702895 405 30
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=430
+>scaffold00029 length=4082488 alnlen=2606
+vulgar: gnl|Amborella|b4_c100893 101 263 + scaffold00025 2238772 1864812 - 238 M 22 22 G 0 1 M 1 1 G 0 3 M 1 1 G 0 1 M 6 6 G 1 0 M 21 21 3 0 2 I 0 191667 5 0 2 M 27 27 G 0 1 M 1 1 3 0 2 I 0 182118 5 0 2 M 23 23 G 0 1 M 4 4 G 0 1 M 11 11 G 0 2 M 31 31 G 4 0 M 9 9
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00025	exonerate:est2genome	gene	1864813	2238772	238	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation -
+scaffold00025	exonerate:est2genome	utr5	2238717	2238772	.	-	.	
+scaffold00025	exonerate:est2genome	exon	2238717	2238772	.	-	.	insertions 5 ; deletions 1
+scaffold00025	exonerate:est2genome	splice3	2238715	2238716	.	-	.	intron_id -1 ; splice_site "CT"
+scaffold00025	exonerate:est2genome	splice5	2047046	2047047	.	-	.	intron_id 1 ; splice_site "AT"
+scaffold00025	exonerate:est2genome	utr5	2047017	2047045	.	-	.	
+scaffold00025	exonerate:est2genome	exon	2047017	2047045	.	-	.	insertions 1 ; deletions 0
+scaffold00025	exonerate:est2genome	splice3	2047015	2047016	.	-	.	intron_id -1 ; splice_site "CT"
+scaffold00025	exonerate:est2genome	splice5	1864895	1864896	.	-	.	intron_id 1 ; splice_site "AC"
+scaffold00025	exonerate:est2genome	exon	1864813	1864894	.	-	.	insertions 4 ; deletions 4
+scaffold00025	exonerate:est2genome	similarity	1864813	2238772	238	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 2238773 102 22 ; Align 2238750 124 1 ; Align 2238746 125 1 ; Align 2238744 126 6 ; Align 2238738 133 21 ; Align 2047046 154 27 ; Align 2047018 181 1 ; Align 1864895 182 23 ; Align 1864871 205 4 ; Align 1864866 209 11 ; Align 1864853 220 31 ; Align 1864822 255 9
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=162
+>scaffold00025 length=4066092 alnlen=373960
+vulgar: gnl|Amborella|b4_c100893 104 425 + scaffold00026 724008 869185 + 211 M 49 49 G 0 6 M 4 4 G 0 1 M 7 7 G 1 0 M 10 10 G 1 0 M 12 12 G 0 1 M 15 15 G 1 0 M 2 2 G 1 0 M 21 21 G 2 0 M 23 23 G 0 1 M 4 4 G 0 5 M 7 7 G 1 0 M 11 11 G 3 0 M 6 6 G 1 0 M 9 9 G 0 1 M 4 4 G 0 1 M 21 21 G 0 2 M 24 24 G 1 0 M 8 8 G 1 0 5 0 2 I 0 144849 3 0 2 M 23 23 G 1 0 M 28 28 G 2 0 M 3 3 G 0 1 M 14 14
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00026	exonerate:est2genome	gene	724009	869185	211	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation +
+scaffold00026	exonerate:est2genome	utr5	724009	724263	.	+	.	
+scaffold00026	exonerate:est2genome	exon	724009	724263	.	+	.	insertions 18 ; deletions 13
+scaffold00026	exonerate:est2genome	splice5	724264	724265	.	+	.	intron_id 1 ; splice_site "GA"
+scaffold00026	exonerate:est2genome	intron	724264	869116	.	+	.	intron_id 1
+scaffold00026	exonerate:est2genome	splice3	869115	869116	.	+	.	intron_id 0 ; splice_site "TG"
+scaffold00026	exonerate:est2genome	exon	869117	869185	.	+	.	insertions 1 ; deletions 3
+scaffold00026	exonerate:est2genome	similarity	724009	869185	211	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 724009 105 49 ; Align 724064 154 4 ; Align 724069 158 7 ; Align 724076 166 10 ; Align 724086 177 12 ; Align 724099 189 15 ; Align 724114 205 2 ; Align 724116 208 21 ; Align 724137 231 23 ; Align 724161 254 4 ; Align 724170 258 7 ; Align 724177 266 11 ; Align 724188 280 6 ; Align 724194 287 9 ; Align 724204 296 4 ; Align 724209 300 21 ; Align 724232 321 24 ; Align 724256 346 8 ; Align 869117 355 23 ; Align 869140 379 28 ; Align 869168 409 3 ; Align 869172 412 14
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=321
+>scaffold00026 length=3986384 alnlen=145177
+vulgar: gnl|Amborella|b4_c100893 75 316 + scaffold00086 1525025 1340578 - 200 M 11 11 G 2 0 M 6 6 G 0 1 M 4 4 G 0 1 M 16 16 G 0 1 M 13 13 G 0 7 M 14 14 G 0 2 M 40 40 G 0 1 M 3 3 5 0 2 I 0 19360 3 0 2 M 6 6 G 1 0 M 2 2 G 1 0 M 15 15 G 0 2 M 8 8 G 0 3 M 5 5 G 1 0 M 16 16 5 0 2 I 0 164832 3 0 2 M 13 13 G 2 0 M 13 13 G 1 0 M 7 7 G 1 0 M 6 6 G 1 0 M 7 7 G 2 0 M 24 24
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00086	exonerate:est2genome	gene	1340579	1525025	200	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation +
+scaffold00086	exonerate:est2genome	utr5	1524906	1525025	.	-	.	
+scaffold00086	exonerate:est2genome	exon	1524906	1525025	.	-	.	insertions 13 ; deletions 2
+scaffold00086	exonerate:est2genome	splice5	1524904	1524905	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00086	exonerate:est2genome	intron	1505542	1524905	.	-	.	intron_id 1
+scaffold00086	exonerate:est2genome	splice3	1505542	1505543	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00086	exonerate:est2genome	utr5	1505485	1505541	.	-	.	
+scaffold00086	exonerate:est2genome	exon	1505485	1505541	.	-	.	insertions 5 ; deletions 3
+scaffold00086	exonerate:est2genome	splice5	1505483	1505484	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00086	exonerate:est2genome	intron	1340649	1505484	.	-	.	intron_id 2
+scaffold00086	exonerate:est2genome	splice3	1340649	1340650	.	-	.	intron_id 1 ; splice_site "AA"
+scaffold00086	exonerate:est2genome	exon	1340579	1340648	.	-	.	insertions 0 ; deletions 7
+scaffold00086	exonerate:est2genome	similarity	1340579	1525025	200	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 1525026 76 11 ; Align 1525015 89 6 ; Align 1525008 95 4 ; Align 1525003 99 16 ; Align 1524986 115 13 ; Align 1524966 128 14 ; Align 1524950 142 40 ; Align 1524909 182 3 ; Align 1505542 185 6 ; Align 1505536 192 2 ; Align 1505534 195 15 ; Align 1505517 210 8 ; Align 1505506 218 5 ; Align 1505501 224 16 ; Align 1340649 240 13 ; Align 1340636 255 13 ; Align 1340623 269 7 ; Align 1340616 277 6 ; Align 1340610 284 7 ; Align 1340603 293 24
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=241
+>scaffold00086 length=2424996 alnlen=184447
+vulgar: gnl|Amborella|b4_c100893 134 403 + scaffold00073 1574262 1695560 + 198 M 25 25 G 0 2 M 19 19 G 7 0 M 25 25 3 0 2 I 0 121044 5 0 2 M 11 11 G 1 0 M 6 6 G 3 0 M 50 50 G 0 2 M 3 3 G 2 0 M 22 22 G 1 0 M 5 5 G 1 0 M 2 2 G 4 0 M 2 2 G 1 0 M 20 20 G 1 0 M 9 9 G 2 0 M 47 47
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00073	exonerate:est2genome	gene	1574263	1695560	198	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation -
+scaffold00073	exonerate:est2genome	utr5	1574263	1574333	.	+	.	
+scaffold00073	exonerate:est2genome	exon	1574263	1574333	.	+	.	insertions 2 ; deletions 7
+scaffold00073	exonerate:est2genome	splice3	1574334	1574335	.	+	.	intron_id -1 ; splice_site "GT"
+scaffold00073	exonerate:est2genome	splice5	1695380	1695381	.	+	.	intron_id 1 ; splice_site "AC"
+scaffold00073	exonerate:est2genome	exon	1695382	1695560	.	+	.	insertions 2 ; deletions 16
+scaffold00073	exonerate:est2genome	similarity	1574263	1695560	198	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 1574263 135 25 ; Align 1574290 160 19 ; Align 1574309 186 25 ; Align 1695382 211 11 ; Align 1695393 223 6 ; Align 1695399 232 50 ; Align 1695451 282 3 ; Align 1695454 287 22 ; Align 1695476 310 5 ; Align 1695481 316 2 ; Align 1695483 322 2 ; Align 1695485 325 20 ; Align 1695505 346 9 ; Align 1695514 357 47
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=269
+>scaffold00073 length=2741554 alnlen=121298
+vulgar: gnl|Amborella|b4_c100893 63 402 + scaffold00046 1001013 983756 - 198 M 13 13 G 0 2 M 4 4 G 1 0 M 27 27 G 0 1 M 8 8 G 1 0 M 8 8 G 2 0 M 3 3 G 1 0 M 2 2 G 1 0 M 2 2 G 1 0 M 14 14 G 1 0 M 1 1 G 3 0 M 16 16 G 0 1 M 17 17 G 0 1 M 1 1 G 0 2 M 10 10 G 0 5 M 5 5 G 0 2 M 13 13 G 0 1 M 16 16 G 0 1 M 14 14 G 0 1 M 13 13 G 0 2 M 4 4 G 0 3 M 10 10 G 0 1 M 2 2 G 0 1 M 19 19 G 1 0 M 8 8 G 1 0 M 2 2 G 1 0 M 6 6 G 1 0 M 2 2 G 1 0 M 11 11 G 0 2 M 2 2 G 0 1 M 5 5 G 0 1 M 2 2 3 0 2 I 0 16888 5 0 2 M 5 5 G 0 1 M 2 2 G 0 1 M 4 4 G 0 1 M 10 10 G 0 4 M 4 4 G 0 4 M 11 11 G 0 3 M 27 27
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00046	exonerate:est2genome	gene	983757	1001013	198	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c100893 ; gene_orientation -
+scaffold00046	exonerate:est2genome	utr5	1000726	1001013	.	-	.	
+scaffold00046	exonerate:est2genome	exon	1000726	1001013	.	-	.	insertions 28 ; deletions 16
+scaffold00046	exonerate:est2genome	splice3	1000724	1000725	.	-	.	intron_id -1 ; splice_site "CT"
+scaffold00046	exonerate:est2genome	splice5	983834	983835	.	-	.	intron_id 1 ; splice_site "AC"
+scaffold00046	exonerate:est2genome	exon	983757	983833	.	-	.	insertions 14 ; deletions 0
+scaffold00046	exonerate:est2genome	similarity	983757	1001013	198	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c100893 ; Align 1001014 64 13 ; Align 1000999 77 4 ; Align 1000995 82 27 ; Align 1000967 109 8 ; Align 1000959 118 8 ; Align 1000951 128 3 ; Align 1000948 132 2 ; Align 1000946 135 2 ; Align 1000944 138 14 ; Align 1000930 153 1 ; Align 1000929 157 16 ; Align 1000912 173 17 ; Align 1000894 190 1 ; Align 1000891 191 10 ; Align 1000876 201 5 ; Align 1000869 206 13 ; Align 1000855 219 16 ; Align 1000838 235 14 ; Align 1000823 249 13 ; Align 1000808 262 4 ; Align 1000801 266 10 ; Align 1000790 276 2 ; Align 1000787 278 19 ; Align 1000768 298 8 ; Align 1000760 307 2 ; Align 1000758 310 6 ; Align 1000752 317 2 ; Align 1000750 320 11 ; Align 1000737 331 2 ; Align 1000734 333 5 ; Align 1000728 338 2 ; Align 983834 340 5 ; Align 983828 345 2 ; Align 983825 347 4 ; Align 983820 351 10 ; Align 983806 361 4 ; Align 983798 365 11 ; Align 983784 376 27
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c100893 length=437 alnlen=339
+>scaffold00046 length=3634697 alnlen=17257
+vulgar: gnl|Amborella|b4_c101021 33 220 + scaffold00027 3193984 3194148 + 140 M 28 28 G 1 0 M 2 2 G 3 0 M 10 10 G 0 2 M 3 3 G 3 0 M 3 3 G 2 0 M 9 9 G 1 0 M 9 9 G 0 1 M 18 18 G 1 0 M 5 5 G 2 0 M 13 13 G 3 0 M 3 3 G 3 0 M 2 2 G 1 0 M 20 20 G 2 0 M 1 1 G 4 0 M 5 5 G 1 0 M 4 4 G 1 0 M 15 15 G 0 2 M 9 9
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00027	exonerate:est2genome	gene	3193985	3194148	140	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101021 ; gene_orientation .
+scaffold00027	exonerate:est2genome	exon	3193985	3194148	.	+	.	insertions 5 ; deletions 28
+scaffold00027	exonerate:est2genome	similarity	3193985	3194148	140	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101021 ; Align 3193985 34 28 ; Align 3194013 63 2 ; Align 3194015 68 10 ; Align 3194027 78 3 ; Align 3194030 84 3 ; Align 3194033 89 9 ; Align 3194042 99 9 ; Align 3194052 108 18 ; Align 3194070 127 5 ; Align 3194075 134 13 ; Align 3194088 150 3 ; Align 3194091 156 2 ; Align 3194093 159 20 ; Align 3194113 181 1 ; Align 3194114 186 5 ; Align 3194119 192 4 ; Align 3194123 197 15 ; Align 3194140 212 9
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101021 length=240 alnlen=187
+>scaffold00027 length=3733184 alnlen=164
+vulgar: gnl|Amborella|b4_c101021 54 204 + scaffold00008 919503 919667 + 130 M 20 20 G 0 1 M 7 7 G 0 4 M 1 1 G 0 1 M 10 10 G 0 1 M 4 4 G 0 3 M 15 15 G 1 0 M 9 9 G 0 1 M 2 2 G 0 1 M 18 18 G 1 0 M 14 14 G 0 2 M 8 8 G 2 0 M 3 3 G 0 1 M 8 8 G 0 4 M 14 14 G 1 0 M 12 12
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00008	exonerate:est2genome	gene	919504	919667	130	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101021 ; gene_orientation .
+scaffold00008	exonerate:est2genome	exon	919504	919667	.	+	.	insertions 19 ; deletions 5
+scaffold00008	exonerate:est2genome	similarity	919504	919667	130	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101021 ; Align 919504 55 20 ; Align 919525 75 7 ; Align 919536 82 1 ; Align 919538 83 10 ; Align 919549 93 4 ; Align 919556 97 15 ; Align 919571 113 9 ; Align 919581 122 2 ; Align 919584 124 18 ; Align 919602 143 14 ; Align 919618 157 8 ; Align 919626 167 3 ; Align 919630 170 8 ; Align 919642 178 14 ; Align 919656 193 12
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101021 length=240 alnlen=150
+>scaffold00008 length=5853705 alnlen=164
+vulgar: gnl|Amborella|b4_c101021 0 224 + scaffold00064 332214 332430 + 125 M 8 8 G 3 0 M 15 15 G 0 1 M 6 6 G 1 0 M 16 16 G 1 0 M 11 11 G 1 0 M 12 12 G 1 0 M 2 2 G 1 0 M 2 2 G 4 0 M 3 3 G 1 0 M 6 6 G 1 0 M 59 59 G 1 0 M 3 3 G 0 3 M 5 5 G 0 1 M 8 8 G 0 2 M 53 53
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00064	exonerate:est2genome	gene	332215	332430	125	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101021 ; gene_orientation .
+scaffold00064	exonerate:est2genome	exon	332215	332430	.	+	.	insertions 7 ; deletions 15
+scaffold00064	exonerate:est2genome	similarity	332215	332430	125	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101021 ; Align 332215 1 8 ; Align 332223 12 15 ; Align 332239 27 6 ; Align 332245 34 16 ; Align 332261 51 11 ; Align 332272 63 12 ; Align 332284 76 2 ; Align 332286 79 2 ; Align 332288 85 3 ; Align 332291 89 6 ; Align 332297 96 59 ; Align 332356 156 3 ; Align 332362 159 5 ; Align 332368 164 8 ; Align 332378 172 53
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101021 length=240 alnlen=224
+>scaffold00064 length=2795855 alnlen=216
+vulgar: gnl|Amborella|b4_c101021 65 223 + scaffold00010 3332558 3332404 - 125 M 35 35 G 1 0 M 7 7 G 1 0 M 3 3 G 1 0 M 8 8 G 0 2 M 6 6 G 2 0 M 4 4 G 2 0 M 6 6 G 1 0 M 14 14 G 0 1 M 17 17 G 0 1 M 9 9 G 1 0 M 1 1 G 1 0 M 9 9 G 0 2 M 3 3 G 0 1 M 1 1 G 0 1 M 19 19 G 2 0 M 4 4
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00010	exonerate:est2genome	gene	3332405	3332558	125	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101021 ; gene_orientation .
+scaffold00010	exonerate:est2genome	exon	3332405	3332558	.	-	.	insertions 8 ; deletions 12
+scaffold00010	exonerate:est2genome	similarity	3332405	3332558	125	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101021 ; Align 3332559 66 35 ; Align 3332524 102 7 ; Align 3332517 110 3 ; Align 3332514 114 8 ; Align 3332504 122 6 ; Align 3332498 130 4 ; Align 3332494 136 6 ; Align 3332488 143 14 ; Align 3332473 157 17 ; Align 3332455 174 9 ; Align 3332446 184 1 ; Align 3332445 186 9 ; Align 3332434 195 3 ; Align 3332430 198 1 ; Align 3332428 199 19 ; Align 3332409 220 4
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101021 length=240 alnlen=158
+>scaffold00010 length=5611942 alnlen=154
+vulgar: gnl|Amborella|b4_c101021 148 180 + scaffold00029 1105632 1105665 + 112 M 10 10 G 0 1 M 22 22
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00029	exonerate:est2genome	gene	1105633	1105665	112	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101021 ; gene_orientation .
+scaffold00029	exonerate:est2genome	exon	1105633	1105665	.	+	.	insertions 1 ; deletions 0
+scaffold00029	exonerate:est2genome	similarity	1105633	1105665	112	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101021 ; Align 1105633 149 10 ; Align 1105644 159 22
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101021 length=240 alnlen=32
+>scaffold00029 length=4082488 alnlen=33
+vulgar: gnl|Amborella|b4_c101277 1 460 + scaffold00072 1283872 1283293 - 947 M 11 11 G 1 0 M 14 14 G 1 0 M 47 47 G 0 2 M 19 19 5 0 2 I 0 94 3 0 2 M 54 54 G 0 10 M 72 72 G 0 4 M 4 4 G 0 3 M 2 2 G 0 6 M 20 20 G 0 1 M 75 75 G 1 0 M 51 51 G 1 0 M 32 32 G 1 0 M 17 17 G 0 1 M 36 36
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00072	exonerate:est2genome	gene	1283294	1283872	947	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101277 ; gene_orientation +
+scaffold00072	exonerate:est2genome	utr5	1283780	1283872	.	-	.	
+scaffold00072	exonerate:est2genome	exon	1283780	1283872	.	-	.	insertions 2 ; deletions 2
+scaffold00072	exonerate:est2genome	splice5	1283778	1283779	.	-	.	intron_id 1 ; splice_site "TT"
+scaffold00072	exonerate:est2genome	intron	1283682	1283779	.	-	.	intron_id 1
+scaffold00072	exonerate:est2genome	splice3	1283682	1283683	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00072	exonerate:est2genome	exon	1283294	1283681	.	-	.	insertions 25 ; deletions 3
+scaffold00072	exonerate:est2genome	similarity	1283294	1283872	947	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101277 ; Align 1283873 2 11 ; Align 1283862 14 14 ; Align 1283848 29 47 ; Align 1283799 76 19 ; Align 1283682 95 54 ; Align 1283618 149 72 ; Align 1283542 221 4 ; Align 1283535 225 2 ; Align 1283527 227 20 ; Align 1283506 247 75 ; Align 1283431 323 51 ; Align 1283380 375 32 ; Align 1283348 408 17 ; Align 1283330 425 36
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101277 length=460 alnlen=459
+>scaffold00072 length=2598836 alnlen=579
+vulgar: gnl|Amborella|b4_c101277 0 458 + scaffold00011 1387151 1387712 + 932 M 10 10 G 2 0 M 34 34 G 0 2 M 22 22 G 5 0 M 18 18 G 0 1 M 18 18 G 0 1 M 33 33 G 0 10 M 79 79 G 0 6 M 6 6 3 0 2 I 0 85 5 0 2 M 71 71 G 0 1 M 7 7 G 0 1 M 8 8 G 1 0 M 53 53 G 0 1 M 42 42 G 1 0 M 48 48
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00011	exonerate:est2genome	gene	1387152	1387712	932	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101277 ; gene_orientation -
+scaffold00011	exonerate:est2genome	utr5	1387152	1387391	.	+	.	
+scaffold00011	exonerate:est2genome	exon	1387152	1387391	.	+	.	insertions 20 ; deletions 7
+scaffold00011	exonerate:est2genome	splice3	1387392	1387393	.	+	.	intron_id -1 ; splice_site "CT"
+scaffold00011	exonerate:est2genome	splice5	1387479	1387480	.	+	.	intron_id 1 ; splice_site "AC"
+scaffold00011	exonerate:est2genome	exon	1387481	1387712	.	+	.	insertions 3 ; deletions 2
+scaffold00011	exonerate:est2genome	similarity	1387152	1387712	932	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101277 ; Align 1387152 1 10 ; Align 1387162 13 34 ; Align 1387198 47 22 ; Align 1387220 74 18 ; Align 1387239 92 18 ; Align 1387258 110 33 ; Align 1387301 143 79 ; Align 1387386 222 6 ; Align 1387481 228 71 ; Align 1387553 299 7 ; Align 1387561 306 8 ; Align 1387569 315 53 ; Align 1387623 368 42 ; Align 1387665 411 48
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101277 length=460 alnlen=458
+>scaffold00011 length=5850111 alnlen=561
+vulgar: gnl|Amborella|b4_c101277 10 459 + scaffold00043 1689782 1690241 + 805 M 10 10 G 0 4 M 20 20 G 1 0 M 7 7 G 5 0 M 5 5 G 1 0 M 20 20 G 0 1 M 69 69 G 0 3 M 2 2 G 0 1 M 6 6 G 0 4 M 6 6 G 0 2 M 59 59 G 0 6 M 4 4 G 0 7 M 77 77 G 2 0 M 7 7 G 0 2 M 63 63 G 10 0 M 12 12 G 1 0 M 4 4 G 1 0 M 10 10 G 1 0 M 9 9 G 0 1 M 28 28 G 0 1 M 9 9
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00043	exonerate:est2genome	gene	1689783	1690241	805	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101277 ; gene_orientation .
+scaffold00043	exonerate:est2genome	exon	1689783	1690241	.	+	.	insertions 32 ; deletions 22
+scaffold00043	exonerate:est2genome	similarity	1689783	1690241	805	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101277 ; Align 1689783 11 10 ; Align 1689797 21 20 ; Align 1689817 42 7 ; Align 1689824 54 5 ; Align 1689829 60 20 ; Align 1689850 80 69 ; Align 1689922 149 2 ; Align 1689925 151 6 ; Align 1689935 157 6 ; Align 1689943 163 59 ; Align 1690008 222 4 ; Align 1690019 226 77 ; Align 1690096 305 7 ; Align 1690105 312 63 ; Align 1690168 385 12 ; Align 1690180 398 4 ; Align 1690184 403 10 ; Align 1690194 414 9 ; Align 1690204 423 28 ; Align 1690233 451 9
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101277 length=460 alnlen=449
+>scaffold00043 length=3280751 alnlen=459
+vulgar: gnl|Amborella|b4_c101277 103 459 + scaffold00018 1658316 1657934 - 765 M 46 46 G 0 7 M 7 7 G 0 3 M 30 30 G 0 2 M 11 11 G 2 0 M 13 13 G 0 1 M 7 7 G 0 4 M 11 11 G 0 3 M 2 2 G 0 5 M 3 3 G 0 1 M 215 215 G 0 2 M 9 9
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00018	exonerate:est2genome	gene	1657935	1658316	765	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101277 ; gene_orientation .
+scaffold00018	exonerate:est2genome	exon	1657935	1658316	.	-	.	insertions 28 ; deletions 2
+scaffold00018	exonerate:est2genome	similarity	1657935	1658316	765	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101277 ; Align 1658317 104 46 ; Align 1658264 150 7 ; Align 1658254 157 30 ; Align 1658222 187 11 ; Align 1658211 200 13 ; Align 1658197 213 7 ; Align 1658186 220 11 ; Align 1658172 231 2 ; Align 1658165 233 3 ; Align 1658161 236 215 ; Align 1657944 451 9
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101277 length=460 alnlen=356
+>scaffold00018 length=4546196 alnlen=382
+vulgar: gnl|Amborella|b4_c101277 13 459 + scaffold00012 1583457 1582993 - 764 M 10 10 G 0 1 M 17 17 G 0 5 M 9 9 G 0 1 M 9 9 G 1 0 M 20 20 G 0 1 M 70 70 G 0 1 M 7 7 G 0 7 M 6 6 G 0 1 M 3 3 G 0 1 M 10 10 G 3 0 M 45 45 G 0 2 M 5 5 G 0 6 M 2 2 G 0 5 M 147 147 G 6 0 M 4 4 G 4 0 M 5 5 G 1 0 M 12 12 G 1 0 M 11 11 G 0 2 M 29 29 G 0 1 M 9 9
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00012	exonerate:est2genome	gene	1582994	1583457	764	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101277 ; gene_orientation .
+scaffold00012	exonerate:est2genome	exon	1582994	1583457	.	-	.	insertions 34 ; deletions 16
+scaffold00012	exonerate:est2genome	similarity	1582994	1583457	764	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101277 ; Align 1583458 14 10 ; Align 1583447 24 17 ; Align 1583425 41 9 ; Align 1583415 50 9 ; Align 1583406 60 20 ; Align 1583385 80 70 ; Align 1583314 150 7 ; Align 1583300 157 6 ; Align 1583293 163 3 ; Align 1583289 166 10 ; Align 1583279 179 45 ; Align 1583232 224 5 ; Align 1583221 229 2 ; Align 1583214 231 147 ; Align 1583067 384 4 ; Align 1583063 392 5 ; Align 1583058 398 12 ; Align 1583046 411 11 ; Align 1583033 422 29 ; Align 1583003 451 9
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101277 length=460 alnlen=446
+>scaffold00012 length=5373207 alnlen=464
+vulgar: gnl|Amborella|b4_c101405 0 280 + scaffold00070 2301167 2301448 + 1388 M 121 121 G 0 1 M 159 159
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00070	exonerate:est2genome	gene	2301168	2301448	1388	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101405 ; gene_orientation .
+scaffold00070	exonerate:est2genome	exon	2301168	2301448	.	+	.	insertions 1 ; deletions 0
+scaffold00070	exonerate:est2genome	similarity	2301168	2301448	1388	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101405 ; Align 2301168 1 121 ; Align 2301290 122 159
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101405 length=280 alnlen=280
+>scaffold00070 length=2429005 alnlen=281
+vulgar: gnl|Amborella|b4_c101405 13 280 + scaffold00070 2295975 2295703 - 1107 M 109 109 G 0 1 M 18 18 G 1 0 M 74 74 G 0 5 M 65 65
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00070	exonerate:est2genome	gene	2295704	2295975	1107	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101405 ; gene_orientation .
+scaffold00070	exonerate:est2genome	exon	2295704	2295975	.	-	.	insertions 6 ; deletions 1
+scaffold00070	exonerate:est2genome	similarity	2295704	2295975	1107	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101405 ; Align 2295976 14 109 ; Align 2295866 123 18 ; Align 2295848 142 74 ; Align 2295769 216 65
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101405 length=280 alnlen=267
+>scaffold00070 length=2429005 alnlen=272
+vulgar: gnl|Amborella|b4_c101405 70 279 + scaffold00024 1527359 1527573 + 633 M 52 52 G 0 1 M 90 90 G 0 1 M 1 1 G 0 2 M 2 2 G 0 1 M 64 64
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00024	exonerate:est2genome	gene	1527360	1527573	633	+	.	gene_id 0 ; sequence gnl|Amborella|b4_c101405 ; gene_orientation .
+scaffold00024	exonerate:est2genome	exon	1527360	1527573	.	+	.	insertions 5 ; deletions 0
+scaffold00024	exonerate:est2genome	similarity	1527360	1527573	633	+	.	alignment_id 0 ; Query gnl|Amborella|b4_c101405 ; Align 1527360 71 52 ; Align 1527413 123 90 ; Align 1527504 213 1 ; Align 1527507 214 2 ; Align 1527510 216 64
+# --- END OF GFF DUMP ---
+#
+>gnl|Amborella|b4_c101405 length=280 alnlen=209
+>scaffold00024 length=3822896 alnlen=214
+vulgar: gnl|Amborella|b4_c101405 28 204 + scaffold00004 1980196 1844162 - 215 M 19 19 G 1 0 M 13 13 G 3 0 M 3 3 G 1 0 M 11 11 G 0 1 M 12 12 5 0 2 I 0 135851 3 0 2 M 26 26 G 0 1 M 18 18 G 0 2 M 5 5 G 0 2 M 17 17 G 0 1 M 7 7 G 0 2 M 9 9 G 0 3 M 6 6 G 3 0 M 16 16 G 1 0 M 5 5
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:est2genome 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00004	exonerate:est2genome	gene	1844163	1980196	215	-	.	gene_id 0 ; sequence gnl|Amborella|b4_c101405 ; gene_orientation +
+scaffold00004	exonerate:est2genome	utr5	1980138	1980196	.	-	.	
+scaffold00004	exonerate:est2genome	exon	1980138	1980196	.	-	.	insertions 1 ; deletions 5
+scaffold00004	exonerate:est2genome	splice5	1980136	1980137	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00004	exonerate:est2genome	intron	1844283	1980137	.	-	.	intron_id 1
+scaffold00004	exonerate:est2genome	splice3	1844283	1844284	.	-	.	intron_id 0 ; splice_site "AT"
+scaffold00004	exonerate:est2genome	exon	1844163	1844282	.	-	.	insertions 11 ; deletions 4
+scaffold00004	exonerate:est2genome	similarity	1844163	1980196	215	-	.	alignment_id 0 ; Query gnl|Amborella|b4_c101405 ; Align 1980197 29 19 ; Align 1980178 49 13 ; Align 1980165 65 3 ; Align 1980162 69 11 ; Align 1980150 80 12 ; Align 1844283 92 26 ; Align 1844256 118 18 ; Align 1844236 136 5 ; Align 1844229 141 17 ; Align 1844211 158 7 ; Align 1844202 165 9 ; Align 1844190 174 6 ; Align 1844184 183 16 ; Align 1844168 200 5
+# --- END OF GFF DUMP ---
+#
+
+

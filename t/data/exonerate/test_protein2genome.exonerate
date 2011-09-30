@@ -1,0 +1,996 @@
+Command line: [exonerate --bestn 5 --showtargetgff yes --model protein2genome --showvulgar yes --softmaskquery yes --softmasktarget yes --ryo >%qi length=%ql alnlen=%qal\n>%ti length=%tl alnlen=%tal\n --showalignment no at_167_part2.fasta first_100_scaffolds.fasta]
+Hostname: [compute-8-26.local]
+vulgar: AT1G02120.1|PACid:19652540 272 447 . scaffold00059 1815333 1811829 - 483 M 10 30 5 0 2 I 0 99 3 0 2 M 29 87 S 0 1 5 0 2 I 0 436 3 0 2 S 1 2 M 28 84 S 0 1 5 0 2 I 0 191 3 0 2 S 1 2 M 17 51 S 0 2 5 0 2 I 0 107 3 0 2 S 1 1 M 22 66 5 0 2 I 0 1016 3 0 2 M 33 99 S 0 1 5 0 2 I 0 994 3 0 2 S 1 2 M 20 60 5 0 2 I 0 108 3 0 2 M 12 36
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00059	exonerate:protein2genome:local	gene	1811830	1815333	483	-	.	gene_id 0 ; sequence AT1G02120.1|PACid:19652540 ; gene_orientation +
+scaffold00059	exonerate:protein2genome:local	cds	1815304	1815333	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1815304	1815333	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1815302	1815303	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1815201	1815303	.	-	.	intron_id 1
+scaffold00059	exonerate:protein2genome:local	splice3	1815201	1815202	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1815113	1815200	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1815113	1815200	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1815111	1815112	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1814673	1815112	.	-	.	intron_id 2
+scaffold00059	exonerate:protein2genome:local	splice3	1814673	1814674	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1814586	1814672	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1814586	1814672	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1814584	1814585	.	-	.	intron_id 3 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1814391	1814585	.	-	.	intron_id 3
+scaffold00059	exonerate:protein2genome:local	splice3	1814391	1814392	.	-	.	intron_id 2 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1814336	1814390	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1814336	1814390	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1814334	1814335	.	-	.	intron_id 4 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1814225	1814335	.	-	.	intron_id 4
+scaffold00059	exonerate:protein2genome:local	splice3	1814225	1814226	.	-	.	intron_id 3 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1814158	1814224	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1814158	1814224	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1814156	1814157	.	-	.	intron_id 5 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1813138	1814157	.	-	.	intron_id 5
+scaffold00059	exonerate:protein2genome:local	splice3	1813138	1813139	.	-	.	intron_id 4 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1813038	1813137	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1813038	1813137	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1813036	1813037	.	-	.	intron_id 6 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1812040	1813037	.	-	.	intron_id 6
+scaffold00059	exonerate:protein2genome:local	splice3	1812040	1812041	.	-	.	intron_id 5 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1811978	1812039	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1811978	1812039	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1811976	1811977	.	-	.	intron_id 7 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1811866	1811977	.	-	.	intron_id 7
+scaffold00059	exonerate:protein2genome:local	splice3	1811866	1811867	.	-	.	intron_id 6 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1811830	1811865	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1811830	1811865	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	similarity	1811830	1815333	483	-	.	alignment_id 0 ; Query AT1G02120.1|PACid:19652540 ; Align 1815334 273 30 ; Align 1815201 283 87 ; Align 1814671 313 84 ; Align 1814389 342 51 ; Align 1814224 360 66 ; Align 1813138 382 99 ; Align 1812038 416 60 ; Align 1811866 436 36
+# --- END OF GFF DUMP ---
+#
+>AT1G02120.1|PACid:19652540 length=599 alnlen=175
+>scaffold00059 length=2959053 alnlen=3504
+vulgar: AT1G02120.1|PACid:19652540 66 173 . scaffold00059 1819718 1817593 - 414 M 16 48 5 0 2 I 0 510 3 0 2 M 17 51 5 0 2 I 0 294 3 0 2 M 22 66 5 0 2 I 0 508 3 0 2 M 32 96 5 0 2 I 0 476 3 0 2 M 20 60
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00059	exonerate:protein2genome:local	gene	1817594	1819718	414	-	.	gene_id 0 ; sequence AT1G02120.1|PACid:19652540 ; gene_orientation +
+scaffold00059	exonerate:protein2genome:local	cds	1819671	1819718	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1819671	1819718	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1819669	1819670	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1819157	1819670	.	-	.	intron_id 1
+scaffold00059	exonerate:protein2genome:local	splice3	1819157	1819158	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1819106	1819156	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1819106	1819156	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1819104	1819105	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1818808	1819105	.	-	.	intron_id 2
+scaffold00059	exonerate:protein2genome:local	splice3	1818808	1818809	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1818742	1818807	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1818742	1818807	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1818740	1818741	.	-	.	intron_id 3 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1818230	1818741	.	-	.	intron_id 3
+scaffold00059	exonerate:protein2genome:local	splice3	1818230	1818231	.	-	.	intron_id 2 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1818134	1818229	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1818134	1818229	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1818132	1818133	.	-	.	intron_id 4 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	1817654	1818133	.	-	.	intron_id 4
+scaffold00059	exonerate:protein2genome:local	splice3	1817654	1817655	.	-	.	intron_id 3 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1817594	1817653	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1817594	1817653	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	similarity	1817594	1819718	414	-	.	alignment_id 0 ; Query AT1G02120.1|PACid:19652540 ; Align 1819719 67 48 ; Align 1819157 83 51 ; Align 1818808 100 66 ; Align 1818230 122 96 ; Align 1817654 154 60
+# --- END OF GFF DUMP ---
+#
+>AT1G02120.1|PACid:19652540 length=599 alnlen=107
+>scaffold00059 length=2959053 alnlen=2125
+vulgar: AT1G02120.1|PACid:19652540 507 589 . scaffold00059 1901175 1810773 - 111 M 12 36 5 0 2 I 0 90146 3 0 2 M 25 75 G 0 6 M 45 135
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00059	exonerate:protein2genome:local	gene	1810774	1901175	111	-	.	gene_id 0 ; sequence AT1G02120.1|PACid:19652540 ; gene_orientation +
+scaffold00059	exonerate:protein2genome:local	cds	1901140	1901175	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1901140	1901175	.	-	.	insertions 0 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	splice5	1901138	1901139	.	-	.	intron_id 1 ; splice_site "TT"
+scaffold00059	exonerate:protein2genome:local	intron	1810990	1901139	.	-	.	intron_id 1
+scaffold00059	exonerate:protein2genome:local	splice3	1810990	1810991	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	1810774	1810989	.	-	.	
+scaffold00059	exonerate:protein2genome:local	exon	1810774	1810989	.	-	.	insertions 6 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	similarity	1810774	1901175	111	-	.	alignment_id 0 ; Query AT1G02120.1|PACid:19652540 ; Align 1901176 508 36 ; Align 1810990 520 75 ; Align 1810909 545 135
+# --- END OF GFF DUMP ---
+#
+>AT1G02120.1|PACid:19652540 length=599 alnlen=82
+>scaffold00059 length=2959053 alnlen=90402
+vulgar: AT1G02550.1|PACid:19651132 90 243 . scaffold00002 6232453 6231994 - 264 M 153 459
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:protein2genome:local	gene	6231995	6232453	264	-	.	gene_id 0 ; sequence AT1G02550.1|PACid:19651132 ; gene_orientation .
+scaffold00002	exonerate:protein2genome:local	cds	6231995	6232453	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6231995	6232453	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	similarity	6231995	6232453	264	-	.	alignment_id 0 ; Query AT1G02550.1|PACid:19651132 ; Align 6232454 91 459
+# --- END OF GFF DUMP ---
+#
+>AT1G02550.1|PACid:19651132 length=243 alnlen=153
+>scaffold00002 length=7536074 alnlen=459
+vulgar: AT1G02980.1|PACid:19650620 324 654 . scaffold00033 1421014 1421992 + 475 M 16 48 G 0 3 M 39 117 G 3 0 M 19 57 G 2 0 M 89 267 G 2 0 M 75 225 G 0 3 M 53 159 G 0 3 M 32 96
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00033	exonerate:protein2genome:local	gene	1421015	1421992	475	+	.	gene_id 0 ; sequence AT1G02980.1|PACid:19650620 ; gene_orientation .
+scaffold00033	exonerate:protein2genome:local	cds	1421015	1421992	.	+	.	
+scaffold00033	exonerate:protein2genome:local	exon	1421015	1421992	.	+	.	insertions 9 ; deletions 7
+scaffold00033	exonerate:protein2genome:local	similarity	1421015	1421992	475	+	.	alignment_id 0 ; Query AT1G02980.1|PACid:19650620 ; Align 1421015 325 48 ; Align 1421066 341 117 ; Align 1421183 383 57 ; Align 1421240 404 267 ; Align 1421507 495 225 ; Align 1421735 570 159 ; Align 1421897 623 96
+# --- END OF GFF DUMP ---
+#
+>AT1G02980.1|PACid:19650620 length=743 alnlen=330
+>scaffold00033 length=3941990 alnlen=978
+vulgar: AT1G02980.1|PACid:19650620 71 317 . scaffold00033 1420297 1421032 + 306 M 72 216 G 0 6 M 36 108 G 2 0 M 6 18 G 1 0 M 129 387
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00033	exonerate:protein2genome:local	gene	1420298	1421032	306	+	.	gene_id 0 ; sequence AT1G02980.1|PACid:19650620 ; gene_orientation .
+scaffold00033	exonerate:protein2genome:local	cds	1420298	1421032	.	+	.	
+scaffold00033	exonerate:protein2genome:local	exon	1420298	1421032	.	+	.	insertions 6 ; deletions 3
+scaffold00033	exonerate:protein2genome:local	similarity	1420298	1421032	306	+	.	alignment_id 0 ; Query AT1G02980.1|PACid:19650620 ; Align 1420298 72 216 ; Align 1420520 144 108 ; Align 1420628 182 18 ; Align 1420646 189 387
+# --- END OF GFF DUMP ---
+#
+>AT1G02980.1|PACid:19650620 length=743 alnlen=246
+>scaffold00033 length=3941990 alnlen=735
+vulgar: AT1G02980.1|PACid:19650620 417 654 . scaffold00035 838038 837334 - 216 M 85 255 G 2 0 M 31 93 F 0 2 G 1 0 M 33 99 G 0 3 M 66 198 G 1 0 M 18 54
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00035	exonerate:protein2genome:local	gene	837335	838038	216	-	.	gene_id 0 ; sequence AT1G02980.1|PACid:19650620 ; gene_orientation .
+scaffold00035	exonerate:protein2genome:local	cds	837335	838038	.	-	.	
+scaffold00035	exonerate:protein2genome:local	exon	837335	838038	.	-	.	insertions 3 ; deletions 4 ; frameshifts 2
+scaffold00035	exonerate:protein2genome:local	similarity	837335	838038	216	-	.	alignment_id 0 ; Query AT1G02980.1|PACid:19650620 ; Align 838039 418 255 ; Align 837784 505 93 ; Align 837689 537 99 ; Align 837587 570 198 ; Align 837389 637 54
+# --- END OF GFF DUMP ---
+#
+>AT1G02980.1|PACid:19650620 length=743 alnlen=237
+>scaffold00035 length=3569570 alnlen=704
+vulgar: AT1G04130.1|PACid:19656252 32 238 . scaffold00012 4751379 4764550 + 644 M 74 222 5 0 2 I 0 12467 3 0 2 M 64 192 5 0 2 I 0 78 3 0 2 M 68 204
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00012	exonerate:protein2genome:local	gene	4751380	4764550	644	+	.	gene_id 0 ; sequence AT1G04130.1|PACid:19656252 ; gene_orientation +
+scaffold00012	exonerate:protein2genome:local	cds	4751380	4751601	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	4751380	4751601	.	+	.	insertions 0 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	splice5	4751602	4751603	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00012	exonerate:protein2genome:local	intron	4751602	4764072	.	+	.	intron_id 1
+scaffold00012	exonerate:protein2genome:local	splice3	4764071	4764072	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00012	exonerate:protein2genome:local	cds	4764073	4764264	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	4764073	4764264	.	+	.	insertions 0 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	splice5	4764265	4764266	.	+	.	intron_id 2 ; splice_site "GT"
+scaffold00012	exonerate:protein2genome:local	intron	4764265	4764346	.	+	.	intron_id 2
+scaffold00012	exonerate:protein2genome:local	splice3	4764345	4764346	.	+	.	intron_id 1 ; splice_site "AG"
+scaffold00012	exonerate:protein2genome:local	cds	4764347	4764550	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	4764347	4764550	.	+	.	insertions 0 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	similarity	4751380	4764550	644	+	.	alignment_id 0 ; Query AT1G04130.1|PACid:19656252 ; Align 4751380 33 222 ; Align 4764073 107 192 ; Align 4764347 171 204
+# --- END OF GFF DUMP ---
+#
+>AT1G04130.1|PACid:19656252 length=361 alnlen=206
+>scaffold00012 length=5373207 alnlen=13171
+vulgar: AT1G04130.1|PACid:19656252 303 359 . scaffold00012 4775849 4776101 + 193 M 33 99 S 0 1 5 0 2 I 0 80 3 0 2 S 1 2 M 22 66
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00012	exonerate:protein2genome:local	gene	4775850	4776101	193	+	.	gene_id 0 ; sequence AT1G04130.1|PACid:19656252 ; gene_orientation +
+scaffold00012	exonerate:protein2genome:local	cds	4775850	4775949	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	4775850	4775949	.	+	.	insertions 0 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	splice5	4775950	4775951	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00012	exonerate:protein2genome:local	intron	4775950	4776033	.	+	.	intron_id 1
+scaffold00012	exonerate:protein2genome:local	splice3	4776032	4776033	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00012	exonerate:protein2genome:local	cds	4776034	4776101	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	4776034	4776101	.	+	.	insertions 0 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	similarity	4775850	4776101	193	+	.	alignment_id 0 ; Query AT1G04130.1|PACid:19656252 ; Align 4775850 304 99 ; Align 4776036 338 66
+# --- END OF GFF DUMP ---
+#
+>AT1G04130.1|PACid:19656252 length=361 alnlen=56
+>scaffold00012 length=5373207 alnlen=252
+vulgar: AT1G04130.1|PACid:19656252 71 142 . scaffold00096 900100 899887 - 103 M 71 213
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00096	exonerate:protein2genome:local	gene	899888	900100	103	-	.	gene_id 0 ; sequence AT1G04130.1|PACid:19656252 ; gene_orientation .
+scaffold00096	exonerate:protein2genome:local	cds	899888	900100	.	-	.	
+scaffold00096	exonerate:protein2genome:local	exon	899888	900100	.	-	.	insertions 0 ; deletions 0
+scaffold00096	exonerate:protein2genome:local	similarity	899888	900100	103	-	.	alignment_id 0 ; Query AT1G04130.1|PACid:19656252 ; Align 900101 72 213
+# --- END OF GFF DUMP ---
+#
+>AT1G04130.1|PACid:19656252 length=361 alnlen=71
+>scaffold00096 length=2266112 alnlen=213
+vulgar: AT1G05670.2|PACid:19649596 35 735 . scaffold00026 582163 580070 - 1873 M 70 210 F 0 2 G 1 0 M 48 144 G 1 0 M 68 204 G 1 0 M 511 1533
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00026	exonerate:protein2genome:local	gene	580071	582163	1873	-	.	gene_id 0 ; sequence AT1G05670.2|PACid:19649596 ; gene_orientation .
+scaffold00026	exonerate:protein2genome:local	cds	580071	582163	.	-	.	
+scaffold00026	exonerate:protein2genome:local	exon	580071	582163	.	-	.	insertions 0 ; deletions 3 ; frameshifts 2
+scaffold00026	exonerate:protein2genome:local	similarity	580071	582163	1873	-	.	alignment_id 0 ; Query AT1G05670.2|PACid:19649596 ; Align 582164 36 210 ; Align 581952 107 144 ; Align 581808 156 204 ; Align 581604 225 1533
+# --- END OF GFF DUMP ---
+#
+>AT1G05670.2|PACid:19649596 length=742 alnlen=700
+>scaffold00026 length=3986384 alnlen=2093
+vulgar: AT1G05670.2|PACid:19649596 208 697 . scaffold00027 2991545 2993009 + 818 M 14 42 G 1 0 M 474 1422
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00027	exonerate:protein2genome:local	gene	2991546	2993009	818	+	.	gene_id 0 ; sequence AT1G05670.2|PACid:19649596 ; gene_orientation .
+scaffold00027	exonerate:protein2genome:local	cds	2991546	2993009	.	+	.	
+scaffold00027	exonerate:protein2genome:local	exon	2991546	2993009	.	+	.	insertions 0 ; deletions 1
+scaffold00027	exonerate:protein2genome:local	similarity	2991546	2993009	818	+	.	alignment_id 0 ; Query AT1G05670.2|PACid:19649596 ; Align 2991546 209 42 ; Align 2991588 224 1422
+# --- END OF GFF DUMP ---
+#
+>AT1G05670.2|PACid:19649596 length=742 alnlen=489
+>scaffold00027 length=3733184 alnlen=1464
+vulgar: AT1G05670.2|PACid:19649596 159 700 . scaffold00026 3743175 3741552 - 805 M 541 1623
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00026	exonerate:protein2genome:local	gene	3741553	3743175	805	-	.	gene_id 0 ; sequence AT1G05670.2|PACid:19649596 ; gene_orientation .
+scaffold00026	exonerate:protein2genome:local	cds	3741553	3743175	.	-	.	
+scaffold00026	exonerate:protein2genome:local	exon	3741553	3743175	.	-	.	insertions 0 ; deletions 0
+scaffold00026	exonerate:protein2genome:local	similarity	3741553	3743175	805	-	.	alignment_id 0 ; Query AT1G05670.2|PACid:19649596 ; Align 3743176 160 1623
+# --- END OF GFF DUMP ---
+#
+>AT1G05670.2|PACid:19649596 length=742 alnlen=541
+>scaffold00026 length=3986384 alnlen=1623
+vulgar: AT1G05670.2|PACid:19649596 244 713 . scaffold00027 2991755 2993162 + 789 M 469 1407
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00027	exonerate:protein2genome:local	gene	2991756	2993162	789	+	.	gene_id 0 ; sequence AT1G05670.2|PACid:19649596 ; gene_orientation .
+scaffold00027	exonerate:protein2genome:local	cds	2991756	2993162	.	+	.	
+scaffold00027	exonerate:protein2genome:local	exon	2991756	2993162	.	+	.	insertions 0 ; deletions 0
+scaffold00027	exonerate:protein2genome:local	similarity	2991756	2993162	789	+	.	alignment_id 0 ; Query AT1G05670.2|PACid:19649596 ; Align 2991756 245 1407
+# --- END OF GFF DUMP ---
+#
+>AT1G05670.2|PACid:19649596 length=742 alnlen=469
+>scaffold00027 length=3733184 alnlen=1407
+vulgar: AT1G05670.2|PACid:19649596 192 673 . scaffold00051 1713325 1711885 - 780 M 41 123 G 1 0 M 439 1317
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00051	exonerate:protein2genome:local	gene	1711886	1713325	780	-	.	gene_id 0 ; sequence AT1G05670.2|PACid:19649596 ; gene_orientation .
+scaffold00051	exonerate:protein2genome:local	cds	1711886	1713325	.	-	.	
+scaffold00051	exonerate:protein2genome:local	exon	1711886	1713325	.	-	.	insertions 0 ; deletions 1
+scaffold00051	exonerate:protein2genome:local	similarity	1711886	1713325	780	-	.	alignment_id 0 ; Query AT1G05670.2|PACid:19649596 ; Align 1713326 193 123 ; Align 1713203 235 1317
+# --- END OF GFF DUMP ---
+#
+>AT1G05670.2|PACid:19649596 length=742 alnlen=481
+>scaffold00051 length=3553047 alnlen=1440
+vulgar: AT1G05710.4|PACid:19654716 38 131 . scaffold00013 4451727 4452918 + 230 M 21 63 5 0 2 I 0 111 3 0 2 M 22 66 5 0 2 I 0 793 3 0 2 M 50 150
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00013	exonerate:protein2genome:local	gene	4451728	4452918	230	+	.	gene_id 0 ; sequence AT1G05710.4|PACid:19654716 ; gene_orientation +
+scaffold00013	exonerate:protein2genome:local	cds	4451728	4451790	.	+	.	
+scaffold00013	exonerate:protein2genome:local	exon	4451728	4451790	.	+	.	insertions 0 ; deletions 0
+scaffold00013	exonerate:protein2genome:local	splice5	4451791	4451792	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00013	exonerate:protein2genome:local	intron	4451791	4451905	.	+	.	intron_id 1
+scaffold00013	exonerate:protein2genome:local	splice3	4451904	4451905	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00013	exonerate:protein2genome:local	cds	4451906	4451971	.	+	.	
+scaffold00013	exonerate:protein2genome:local	exon	4451906	4451971	.	+	.	insertions 0 ; deletions 0
+scaffold00013	exonerate:protein2genome:local	splice5	4451972	4451973	.	+	.	intron_id 2 ; splice_site "GT"
+scaffold00013	exonerate:protein2genome:local	intron	4451972	4452768	.	+	.	intron_id 2
+scaffold00013	exonerate:protein2genome:local	splice3	4452767	4452768	.	+	.	intron_id 1 ; splice_site "AA"
+scaffold00013	exonerate:protein2genome:local	cds	4452769	4452918	.	+	.	
+scaffold00013	exonerate:protein2genome:local	exon	4452769	4452918	.	+	.	insertions 0 ; deletions 0
+scaffold00013	exonerate:protein2genome:local	similarity	4451728	4452918	230	+	.	alignment_id 0 ; Query AT1G05710.4|PACid:19654716 ; Align 4451728 39 63 ; Align 4451906 60 66 ; Align 4452769 82 150
+# --- END OF GFF DUMP ---
+#
+>AT1G05710.4|PACid:19654716 length=150 alnlen=93
+>scaffold00013 length=4831202 alnlen=1191
+vulgar: AT1G05710.4|PACid:19654716 14 133 . scaffold00003 5188676 5192776 + 203 M 24 72 G 0 3 M 21 63 5 0 2 I 0 1222 3 0 2 M 26 78 5 0 2 I 0 2510 3 0 2 M 48 144
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00003	exonerate:protein2genome:local	gene	5188677	5192776	203	+	.	gene_id 0 ; sequence AT1G05710.4|PACid:19654716 ; gene_orientation +
+scaffold00003	exonerate:protein2genome:local	cds	5188677	5188814	.	+	.	
+scaffold00003	exonerate:protein2genome:local	exon	5188677	5188814	.	+	.	insertions 3 ; deletions 0
+scaffold00003	exonerate:protein2genome:local	splice5	5188815	5188816	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00003	exonerate:protein2genome:local	intron	5188815	5190040	.	+	.	intron_id 1
+scaffold00003	exonerate:protein2genome:local	splice3	5190039	5190040	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00003	exonerate:protein2genome:local	cds	5190041	5190118	.	+	.	
+scaffold00003	exonerate:protein2genome:local	exon	5190041	5190118	.	+	.	insertions 0 ; deletions 0
+scaffold00003	exonerate:protein2genome:local	splice5	5190119	5190120	.	+	.	intron_id 2 ; splice_site "AT"
+scaffold00003	exonerate:protein2genome:local	intron	5190119	5192632	.	+	.	intron_id 2
+scaffold00003	exonerate:protein2genome:local	splice3	5192631	5192632	.	+	.	intron_id 1 ; splice_site "AG"
+scaffold00003	exonerate:protein2genome:local	cds	5192633	5192776	.	+	.	
+scaffold00003	exonerate:protein2genome:local	exon	5192633	5192776	.	+	.	insertions 0 ; deletions 0
+scaffold00003	exonerate:protein2genome:local	similarity	5188677	5192776	203	+	.	alignment_id 0 ; Query AT1G05710.4|PACid:19654716 ; Align 5188677 15 72 ; Align 5188752 39 63 ; Align 5190041 60 78 ; Align 5192633 86 144
+# --- END OF GFF DUMP ---
+#
+>AT1G05710.4|PACid:19654716 length=150 alnlen=119
+>scaffold00003 length=6477571 alnlen=4100
+vulgar: AT1G05710.4|PACid:19654716 38 138 . scaffold00031 1767487 1637001 - 187 M 21 63 5 0 2 I 0 685 3 0 2 M 23 69 S 0 1 5 0 2 I 0 2183 3 0 2 S 1 2 M 46 138 5 0 2 I 0 127306 3 0 2 M 9 27
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00031	exonerate:protein2genome:local	gene	1637002	1767487	187	-	.	gene_id 0 ; sequence AT1G05710.4|PACid:19654716 ; gene_orientation +
+scaffold00031	exonerate:protein2genome:local	cds	1767425	1767487	.	-	.	
+scaffold00031	exonerate:protein2genome:local	exon	1767425	1767487	.	-	.	insertions 0 ; deletions 0
+scaffold00031	exonerate:protein2genome:local	splice5	1767423	1767424	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00031	exonerate:protein2genome:local	intron	1766736	1767424	.	-	.	intron_id 1
+scaffold00031	exonerate:protein2genome:local	splice3	1766736	1766737	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00031	exonerate:protein2genome:local	cds	1766666	1766735	.	-	.	
+scaffold00031	exonerate:protein2genome:local	exon	1766666	1766735	.	-	.	insertions 0 ; deletions 0
+scaffold00031	exonerate:protein2genome:local	splice5	1766664	1766665	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00031	exonerate:protein2genome:local	intron	1764479	1766665	.	-	.	intron_id 2
+scaffold00031	exonerate:protein2genome:local	splice3	1764479	1764480	.	-	.	intron_id 1 ; splice_site "TG"
+scaffold00031	exonerate:protein2genome:local	cds	1764339	1764478	.	-	.	
+scaffold00031	exonerate:protein2genome:local	exon	1764339	1764478	.	-	.	insertions 0 ; deletions 0
+scaffold00031	exonerate:protein2genome:local	splice5	1764337	1764338	.	-	.	intron_id 3 ; splice_site "GT"
+scaffold00031	exonerate:protein2genome:local	intron	1637029	1764338	.	-	.	intron_id 3
+scaffold00031	exonerate:protein2genome:local	splice3	1637029	1637030	.	-	.	intron_id 2 ; splice_site "CA"
+scaffold00031	exonerate:protein2genome:local	cds	1637002	1637028	.	-	.	
+scaffold00031	exonerate:protein2genome:local	exon	1637002	1637028	.	-	.	insertions 0 ; deletions 0
+scaffold00031	exonerate:protein2genome:local	similarity	1637002	1767487	187	-	.	alignment_id 0 ; Query AT1G05710.4|PACid:19654716 ; Align 1767488 39 63 ; Align 1766736 60 69 ; Align 1764477 84 138 ; Align 1637029 130 27
+# --- END OF GFF DUMP ---
+#
+>AT1G05710.4|PACid:19654716 length=150 alnlen=100
+>scaffold00031 length=3776357 alnlen=130486
+vulgar: AT1G05710.4|PACid:19654716 97 131 . scaffold00049 17993 17891 - 103 M 34 102
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00049	exonerate:protein2genome:local	gene	17892	17993	103	-	.	gene_id 0 ; sequence AT1G05710.4|PACid:19654716 ; gene_orientation .
+scaffold00049	exonerate:protein2genome:local	cds	17892	17993	.	-	.	
+scaffold00049	exonerate:protein2genome:local	exon	17892	17993	.	-	.	insertions 0 ; deletions 0
+scaffold00049	exonerate:protein2genome:local	similarity	17892	17993	103	-	.	alignment_id 0 ; Query AT1G05710.4|PACid:19654716 ; Align 17994 98 102
+# --- END OF GFF DUMP ---
+#
+>AT1G05710.4|PACid:19654716 length=150 alnlen=34
+>scaffold00049 length=3032705 alnlen=102
+vulgar: AT1G06700.1|PACid:19650236 49 290 . scaffold00002 6243328 6242015 - 532 M 54 162 G 1 0 M 27 81 G 0 6 M 24 72 S 0 1 5 0 2 I 0 468 3 0 2 S 1 2 M 85 255 S 0 2 5 0 2 I 0 111 3 0 2 S 1 1 M 48 144
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:protein2genome:local	gene	6242016	6243328	532	-	.	gene_id 0 ; sequence AT1G06700.1|PACid:19650236 ; gene_orientation +
+scaffold00002	exonerate:protein2genome:local	cds	6243007	6243328	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6243007	6243328	.	-	.	insertions 6 ; deletions 1
+scaffold00002	exonerate:protein2genome:local	splice5	6243005	6243006	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00002	exonerate:protein2genome:local	intron	6242535	6243006	.	-	.	intron_id 1
+scaffold00002	exonerate:protein2genome:local	splice3	6242535	6242536	.	-	.	intron_id 0 ; splice_site "AT"
+scaffold00002	exonerate:protein2genome:local	cds	6242276	6242534	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6242276	6242534	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	splice5	6242274	6242275	.	-	.	intron_id 2 ; splice_site "NN"
+scaffold00002	exonerate:protein2genome:local	intron	6242161	6242275	.	-	.	intron_id 2
+scaffold00002	exonerate:protein2genome:local	splice3	6242161	6242162	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00002	exonerate:protein2genome:local	cds	6242016	6242160	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6242016	6242160	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	similarity	6242016	6243328	532	-	.	alignment_id 0 ; Query AT1G06700.1|PACid:19650236 ; Align 6243329 50 162 ; Align 6243167 105 81 ; Align 6243080 132 72 ; Align 6242533 157 255 ; Align 6242160 243 144
+# --- END OF GFF DUMP ---
+#
+>AT1G06700.1|PACid:19650236 length=362 alnlen=241
+>scaffold00002 length=7536074 alnlen=1313
+vulgar: AT1G06700.1|PACid:19650236 168 347 . scaffold00018 81910 82999 + 491 M 73 219 S 0 2 5 0 2 I 0 545 3 0 2 S 1 1 M 54 162 G 0 3 M 51 153
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00018	exonerate:protein2genome:local	gene	81911	82999	491	+	.	gene_id 0 ; sequence AT1G06700.1|PACid:19650236 ; gene_orientation +
+scaffold00018	exonerate:protein2genome:local	cds	81911	82131	.	+	.	
+scaffold00018	exonerate:protein2genome:local	exon	81911	82131	.	+	.	insertions 0 ; deletions 0
+scaffold00018	exonerate:protein2genome:local	splice5	82132	82133	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00018	exonerate:protein2genome:local	intron	82132	82680	.	+	.	intron_id 1
+scaffold00018	exonerate:protein2genome:local	splice3	82679	82680	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00018	exonerate:protein2genome:local	cds	82681	82999	.	+	.	
+scaffold00018	exonerate:protein2genome:local	exon	82681	82999	.	+	.	insertions 3 ; deletions 0
+scaffold00018	exonerate:protein2genome:local	similarity	81911	82999	491	+	.	alignment_id 0 ; Query AT1G06700.1|PACid:19650236 ; Align 81911 169 219 ; Align 82682 243 162 ; Align 82847 297 153
+# --- END OF GFF DUMP ---
+#
+>AT1G06700.1|PACid:19650236 length=362 alnlen=179
+>scaffold00018 length=4546196 alnlen=1089
+vulgar: AT1G06700.1|PACid:19650236 168 359 . scaffold00029 1862005 1862710 + 480 M 123 369 5 0 2 I 0 125 3 0 2 M 8 24 G 0 3 M 60 180
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00029	exonerate:protein2genome:local	gene	1862006	1862710	480	+	.	gene_id 0 ; sequence AT1G06700.1|PACid:19650236 ; gene_orientation +
+scaffold00029	exonerate:protein2genome:local	cds	1862006	1862374	.	+	.	
+scaffold00029	exonerate:protein2genome:local	exon	1862006	1862374	.	+	.	insertions 0 ; deletions 0
+scaffold00029	exonerate:protein2genome:local	splice5	1862375	1862376	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00029	exonerate:protein2genome:local	intron	1862375	1862503	.	+	.	intron_id 1
+scaffold00029	exonerate:protein2genome:local	splice3	1862502	1862503	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00029	exonerate:protein2genome:local	cds	1862504	1862710	.	+	.	
+scaffold00029	exonerate:protein2genome:local	exon	1862504	1862710	.	+	.	insertions 3 ; deletions 0
+scaffold00029	exonerate:protein2genome:local	similarity	1862006	1862710	480	+	.	alignment_id 0 ; Query AT1G06700.1|PACid:19650236 ; Align 1862006 169 369 ; Align 1862504 292 24 ; Align 1862531 300 180
+# --- END OF GFF DUMP ---
+#
+>AT1G06700.1|PACid:19650236 length=362 alnlen=191
+>scaffold00029 length=4082488 alnlen=705
+vulgar: AT1G06700.1|PACid:19650236 168 347 . scaffold00012 3756154 3766304 + 476 M 64 192 G 1 0 M 8 24 S 0 2 5 0 2 I 0 9609 3 0 2 S 1 1 M 54 162 G 0 3 M 51 153
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00012	exonerate:protein2genome:local	gene	3756155	3766304	476	+	.	gene_id 0 ; sequence AT1G06700.1|PACid:19650236 ; gene_orientation +
+scaffold00012	exonerate:protein2genome:local	cds	3756155	3756372	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	3756155	3756372	.	+	.	insertions 0 ; deletions 1
+scaffold00012	exonerate:protein2genome:local	splice5	3756373	3756374	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00012	exonerate:protein2genome:local	intron	3756373	3765985	.	+	.	intron_id 1
+scaffold00012	exonerate:protein2genome:local	splice3	3765984	3765985	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00012	exonerate:protein2genome:local	cds	3765986	3766304	.	+	.	
+scaffold00012	exonerate:protein2genome:local	exon	3765986	3766304	.	+	.	insertions 3 ; deletions 0
+scaffold00012	exonerate:protein2genome:local	similarity	3756155	3766304	476	+	.	alignment_id 0 ; Query AT1G06700.1|PACid:19650236 ; Align 3756155 169 192 ; Align 3756347 234 24 ; Align 3765987 243 162 ; Align 3766152 297 153
+# --- END OF GFF DUMP ---
+#
+>AT1G06700.1|PACid:19650236 length=362 alnlen=179
+>scaffold00012 length=5373207 alnlen=10150
+vulgar: AT1G06700.1|PACid:19650236 168 346 . scaffold00069 2362271 2366497 + 471 M 123 369 5 0 2 I 0 3685 3 0 2 M 7 21 G 0 3 M 48 144
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00069	exonerate:protein2genome:local	gene	2362272	2366497	471	+	.	gene_id 0 ; sequence AT1G06700.1|PACid:19650236 ; gene_orientation +
+scaffold00069	exonerate:protein2genome:local	cds	2362272	2362640	.	+	.	
+scaffold00069	exonerate:protein2genome:local	exon	2362272	2362640	.	+	.	insertions 0 ; deletions 0
+scaffold00069	exonerate:protein2genome:local	splice5	2362641	2362642	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00069	exonerate:protein2genome:local	intron	2362641	2366329	.	+	.	intron_id 1
+scaffold00069	exonerate:protein2genome:local	splice3	2366328	2366329	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00069	exonerate:protein2genome:local	cds	2366330	2366497	.	+	.	
+scaffold00069	exonerate:protein2genome:local	exon	2366330	2366497	.	+	.	insertions 3 ; deletions 0
+scaffold00069	exonerate:protein2genome:local	similarity	2362272	2366497	471	+	.	alignment_id 0 ; Query AT1G06700.1|PACid:19650236 ; Align 2362272 169 369 ; Align 2366330 292 21 ; Align 2366354 299 144
+# --- END OF GFF DUMP ---
+#
+>AT1G06700.1|PACid:19650236 length=362 alnlen=178
+>scaffold00069 length=2835031 alnlen=4226
+vulgar: AT1G07170.2|PACid:19655868 0 111 . scaffold00004 2185817 2186150 + 625 M 111 333
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00004	exonerate:protein2genome:local	gene	2185818	2186150	625	+	.	gene_id 0 ; sequence AT1G07170.2|PACid:19655868 ; gene_orientation .
+scaffold00004	exonerate:protein2genome:local	cds	2185818	2186150	.	+	.	
+scaffold00004	exonerate:protein2genome:local	exon	2185818	2186150	.	+	.	insertions 0 ; deletions 0
+scaffold00004	exonerate:protein2genome:local	similarity	2185818	2186150	625	+	.	alignment_id 0 ; Query AT1G07170.2|PACid:19655868 ; Align 2185818 1 333
+# --- END OF GFF DUMP ---
+#
+>AT1G07170.2|PACid:19655868 length=111 alnlen=111
+>scaffold00004 length=6882163 alnlen=333
+vulgar: AT1G07630.1|PACid:19654204 481 663 . scaffold00064 1430486 1432451 + 700 M 17 51 5 0 2 I 0 411 3 0 2 M 38 114 5 0 2 I 0 892 3 0 2 M 88 264 S 0 1 5 0 2 I 0 104 3 0 2 S 1 2 M 38 114
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00064	exonerate:protein2genome:local	gene	1430487	1432451	700	+	.	gene_id 0 ; sequence AT1G07630.1|PACid:19654204 ; gene_orientation +
+scaffold00064	exonerate:protein2genome:local	cds	1430487	1430537	.	+	.	
+scaffold00064	exonerate:protein2genome:local	exon	1430487	1430537	.	+	.	insertions 0 ; deletions 0
+scaffold00064	exonerate:protein2genome:local	splice5	1430538	1430539	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00064	exonerate:protein2genome:local	intron	1430538	1430952	.	+	.	intron_id 1
+scaffold00064	exonerate:protein2genome:local	splice3	1430951	1430952	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00064	exonerate:protein2genome:local	cds	1430953	1431066	.	+	.	
+scaffold00064	exonerate:protein2genome:local	exon	1430953	1431066	.	+	.	insertions 0 ; deletions 0
+scaffold00064	exonerate:protein2genome:local	splice5	1431067	1431068	.	+	.	intron_id 2 ; splice_site "gT"
+scaffold00064	exonerate:protein2genome:local	intron	1431067	1431962	.	+	.	intron_id 2
+scaffold00064	exonerate:protein2genome:local	splice3	1431961	1431962	.	+	.	intron_id 1 ; splice_site "AG"
+scaffold00064	exonerate:protein2genome:local	cds	1431963	1432227	.	+	.	
+scaffold00064	exonerate:protein2genome:local	exon	1431963	1432227	.	+	.	insertions 0 ; deletions 0
+scaffold00064	exonerate:protein2genome:local	splice5	1432228	1432229	.	+	.	intron_id 3 ; splice_site "GT"
+scaffold00064	exonerate:protein2genome:local	intron	1432228	1432335	.	+	.	intron_id 3
+scaffold00064	exonerate:protein2genome:local	splice3	1432334	1432335	.	+	.	intron_id 2 ; splice_site "AG"
+scaffold00064	exonerate:protein2genome:local	cds	1432336	1432451	.	+	.	
+scaffold00064	exonerate:protein2genome:local	exon	1432336	1432451	.	+	.	insertions 0 ; deletions 0
+scaffold00064	exonerate:protein2genome:local	similarity	1430487	1432451	700	+	.	alignment_id 0 ; Query AT1G07630.1|PACid:19654204 ; Align 1430487 482 51 ; Align 1430953 499 114 ; Align 1431963 537 264 ; Align 1432338 626 114
+# --- END OF GFF DUMP ---
+#
+>AT1G07630.1|PACid:19654204 length=663 alnlen=182
+>scaffold00064 length=2795855 alnlen=1965
+vulgar: AT1G07630.1|PACid:19654204 495 660 . scaffold00002 6325403 6321536 - 598 M 41 123 5 0 2 I 0 1420 3 0 2 M 88 264 S 0 1 5 0 2 I 0 1944 3 0 2 S 1 2 M 35 105
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:protein2genome:local	gene	6321537	6325403	598	-	.	gene_id 0 ; sequence AT1G07630.1|PACid:19654204 ; gene_orientation +
+scaffold00002	exonerate:protein2genome:local	cds	6325281	6325403	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6325281	6325403	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	splice5	6325279	6325280	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00002	exonerate:protein2genome:local	intron	6323857	6325280	.	-	.	intron_id 1
+scaffold00002	exonerate:protein2genome:local	splice3	6323857	6323858	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00002	exonerate:protein2genome:local	cds	6323592	6323856	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6323592	6323856	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	splice5	6323590	6323591	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00002	exonerate:protein2genome:local	intron	6321644	6323591	.	-	.	intron_id 2
+scaffold00002	exonerate:protein2genome:local	splice3	6321644	6321645	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00002	exonerate:protein2genome:local	cds	6321537	6321643	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6321537	6321643	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	similarity	6321537	6325403	598	-	.	alignment_id 0 ; Query AT1G07630.1|PACid:19654204 ; Align 6325404 496 123 ; Align 6323857 537 264 ; Align 6321642 626 105
+# --- END OF GFF DUMP ---
+#
+>AT1G07630.1|PACid:19654204 length=663 alnlen=165
+>scaffold00002 length=7536074 alnlen=3867
+vulgar: AT1G07630.1|PACid:19654204 248 442 . scaffold00059 651404 652796 + 499 M 69 207 F 0 5 M 12 36 S 0 2 5 0 2 I 0 798 3 0 2 S 1 1 M 30 90 G 0 3 M 82 246
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00059	exonerate:protein2genome:local	gene	651405	652796	499	+	.	gene_id 0 ; sequence AT1G07630.1|PACid:19654204 ; gene_orientation +
+scaffold00059	exonerate:protein2genome:local	cds	651405	651654	.	+	.	
+scaffold00059	exonerate:protein2genome:local	exon	651405	651654	.	+	.	insertions 0 ; deletions 0 ; frameshifts 5
+scaffold00059	exonerate:protein2genome:local	splice5	651655	651656	.	+	.	intron_id 1 ; splice_site "GT"
+scaffold00059	exonerate:protein2genome:local	intron	651655	652456	.	+	.	intron_id 1
+scaffold00059	exonerate:protein2genome:local	splice3	652455	652456	.	+	.	intron_id 0 ; splice_site "AG"
+scaffold00059	exonerate:protein2genome:local	cds	652457	652796	.	+	.	
+scaffold00059	exonerate:protein2genome:local	exon	652457	652796	.	+	.	insertions 3 ; deletions 0
+scaffold00059	exonerate:protein2genome:local	similarity	651405	652796	499	+	.	alignment_id 0 ; Query AT1G07630.1|PACid:19654204 ; Align 651405 249 207 ; Align 651617 318 36 ; Align 652458 331 90 ; Align 652551 361 246
+# --- END OF GFF DUMP ---
+#
+>AT1G07630.1|PACid:19654204 length=663 alnlen=194
+>scaffold00059 length=2959053 alnlen=1392
+vulgar: AT1G07630.1|PACid:19654204 252 443 . scaffold00002 6329430 6328236 - 479 M 65 195 S 0 1 5 0 2 I 0 611 3 0 2 S 1 2 M 58 174 G 0 6 M 67 201
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00002	exonerate:protein2genome:local	gene	6328237	6329430	479	-	.	gene_id 0 ; sequence AT1G07630.1|PACid:19654204 ; gene_orientation +
+scaffold00002	exonerate:protein2genome:local	cds	6329235	6329430	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6329235	6329430	.	-	.	insertions 0 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	splice5	6329233	6329234	.	-	.	intron_id 1 ; splice_site "AT"
+scaffold00002	exonerate:protein2genome:local	intron	6328620	6329234	.	-	.	intron_id 1
+scaffold00002	exonerate:protein2genome:local	splice3	6328620	6328621	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00002	exonerate:protein2genome:local	cds	6328237	6328619	.	-	.	
+scaffold00002	exonerate:protein2genome:local	exon	6328237	6328619	.	-	.	insertions 6 ; deletions 0
+scaffold00002	exonerate:protein2genome:local	similarity	6328237	6329430	479	-	.	alignment_id 0 ; Query AT1G07630.1|PACid:19654204 ; Align 6329431 253 195 ; Align 6328618 319 174 ; Align 6328438 377 201
+# --- END OF GFF DUMP ---
+#
+>AT1G07630.1|PACid:19654204 length=663 alnlen=191
+>scaffold00002 length=7536074 alnlen=1194
+vulgar: AT1G07630.1|PACid:19654204 235 318 . scaffold00064 1429838 1430087 + 366 M 83 249
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00064	exonerate:protein2genome:local	gene	1429839	1430087	366	+	.	gene_id 0 ; sequence AT1G07630.1|PACid:19654204 ; gene_orientation .
+scaffold00064	exonerate:protein2genome:local	cds	1429839	1430087	.	+	.	
+scaffold00064	exonerate:protein2genome:local	exon	1429839	1430087	.	+	.	insertions 0 ; deletions 0
+scaffold00064	exonerate:protein2genome:local	similarity	1429839	1430087	366	+	.	alignment_id 0 ; Query AT1G07630.1|PACid:19654204 ; Align 1429839 236 249
+# --- END OF GFF DUMP ---
+#
+>AT1G07630.1|PACid:19654204 length=663 alnlen=83
+>scaffold00064 length=2795855 alnlen=249
+vulgar: AT1G08080.1|PACid:19649212 182 234 . scaffold00007 1191393 1191237 - 127 M 52 156
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00007	exonerate:protein2genome:local	gene	1191238	1191393	127	-	.	gene_id 0 ; sequence AT1G08080.1|PACid:19649212 ; gene_orientation .
+scaffold00007	exonerate:protein2genome:local	cds	1191238	1191393	.	-	.	
+scaffold00007	exonerate:protein2genome:local	exon	1191238	1191393	.	-	.	insertions 0 ; deletions 0
+scaffold00007	exonerate:protein2genome:local	similarity	1191238	1191393	127	-	.	alignment_id 0 ; Query AT1G08080.1|PACid:19649212 ; Align 1191394 183 156
+# --- END OF GFF DUMP ---
+#
+>AT1G08080.1|PACid:19649212 length=276 alnlen=52
+>scaffold00007 length=5476743 alnlen=156
+vulgar: AT1G08080.1|PACid:19649212 94 143 . scaffold00007 1192008 1191861 - 100 M 49 147
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00007	exonerate:protein2genome:local	gene	1191862	1192008	100	-	.	gene_id 0 ; sequence AT1G08080.1|PACid:19649212 ; gene_orientation .
+scaffold00007	exonerate:protein2genome:local	cds	1191862	1192008	.	-	.	
+scaffold00007	exonerate:protein2genome:local	exon	1191862	1192008	.	-	.	insertions 0 ; deletions 0
+scaffold00007	exonerate:protein2genome:local	similarity	1191862	1192008	100	-	.	alignment_id 0 ; Query AT1G08080.1|PACid:19649212 ; Align 1192009 95 147
+# --- END OF GFF DUMP ---
+#
+>AT1G08080.1|PACid:19649212 length=276 alnlen=49
+>scaffold00007 length=5476743 alnlen=147
+vulgar: AT1G09420.1|PACid:19653948 262 363 . scaffold00060 2020717 2020309 - 232 M 75 225 5 0 2 I 0 101 3 0 2 M 26 78
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00060	exonerate:protein2genome:local	gene	2020310	2020717	232	-	.	gene_id 0 ; sequence AT1G09420.1|PACid:19653948 ; gene_orientation +
+scaffold00060	exonerate:protein2genome:local	cds	2020493	2020717	.	-	.	
+scaffold00060	exonerate:protein2genome:local	exon	2020493	2020717	.	-	.	insertions 0 ; deletions 0
+scaffold00060	exonerate:protein2genome:local	splice5	2020491	2020492	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00060	exonerate:protein2genome:local	intron	2020388	2020492	.	-	.	intron_id 1
+scaffold00060	exonerate:protein2genome:local	splice3	2020388	2020389	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00060	exonerate:protein2genome:local	cds	2020310	2020387	.	-	.	
+scaffold00060	exonerate:protein2genome:local	exon	2020310	2020387	.	-	.	insertions 0 ; deletions 0
+scaffold00060	exonerate:protein2genome:local	similarity	2020310	2020717	232	-	.	alignment_id 0 ; Query AT1G09420.1|PACid:19653948 ; Align 2020718 263 225 ; Align 2020388 338 78
+# --- END OF GFF DUMP ---
+#
+>AT1G09420.1|PACid:19653948 length=626 alnlen=101
+>scaffold00060 length=3300129 alnlen=408
+vulgar: AT1G09500.2|PACid:19651388 3 184 . scaffold00010 629549 616607 - 515 M 56 168 G 1 0 M 3 9 5 0 2 I 0 1064 3 0 2 M 64 192 5 0 2 I 0 11330 3 0 2 M 57 171
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00010	exonerate:protein2genome:local	gene	616608	629549	515	-	.	gene_id 0 ; sequence AT1G09500.2|PACid:19651388 ; gene_orientation +
+scaffold00010	exonerate:protein2genome:local	cds	629373	629549	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	629373	629549	.	-	.	insertions 0 ; deletions 1
+scaffold00010	exonerate:protein2genome:local	splice5	629371	629372	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	628305	629372	.	-	.	intron_id 1
+scaffold00010	exonerate:protein2genome:local	splice3	628305	628306	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00010	exonerate:protein2genome:local	cds	628113	628304	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	628113	628304	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	splice5	628111	628112	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	616779	628112	.	-	.	intron_id 2
+scaffold00010	exonerate:protein2genome:local	splice3	616779	616780	.	-	.	intron_id 1 ; splice_site "ag"
+scaffold00010	exonerate:protein2genome:local	cds	616608	616778	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	616608	616778	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	similarity	616608	629549	515	-	.	alignment_id 0 ; Query AT1G09500.2|PACid:19651388 ; Align 629550 4 168 ; Align 629382 61 9 ; Align 628305 64 192 ; Align 616779 128 171
+# --- END OF GFF DUMP ---
+#
+>AT1G09500.2|PACid:19651388 length=292 alnlen=181
+>scaffold00010 length=5611942 alnlen=12942
+vulgar: AT1G09500.2|PACid:19651388 5 184 . scaffold00010 594471 590776 - 510 M 54 162 G 1 0 M 3 9 5 0 2 I 0 1763 3 0 2 M 64 192 5 0 2 I 0 1390 3 0 2 M 57 171
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00010	exonerate:protein2genome:local	gene	590777	594471	510	-	.	gene_id 0 ; sequence AT1G09500.2|PACid:19651388 ; gene_orientation +
+scaffold00010	exonerate:protein2genome:local	cds	594301	594471	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	594301	594471	.	-	.	insertions 0 ; deletions 1
+scaffold00010	exonerate:protein2genome:local	splice5	594299	594300	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	592534	594300	.	-	.	intron_id 1
+scaffold00010	exonerate:protein2genome:local	splice3	592534	592535	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00010	exonerate:protein2genome:local	cds	592342	592533	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	592342	592533	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	splice5	592340	592341	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	590948	592341	.	-	.	intron_id 2
+scaffold00010	exonerate:protein2genome:local	splice3	590948	590949	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00010	exonerate:protein2genome:local	cds	590777	590947	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	590777	590947	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	similarity	590777	594471	510	-	.	alignment_id 0 ; Query AT1G09500.2|PACid:19651388 ; Align 594472 6 162 ; Align 594310 61 9 ; Align 592534 64 192 ; Align 590948 128 171
+# --- END OF GFF DUMP ---
+#
+>AT1G09500.2|PACid:19651388 length=292 alnlen=179
+>scaffold00010 length=5611942 alnlen=3695
+vulgar: AT1G09500.2|PACid:19651388 2 183 . scaffold00010 669443 663011 - 386 M 52 156 S 0 2 5 0 2 I 0 1441 3 0 2 S 1 1 M 72 216 5 0 2 I 0 4440 3 0 2 M 56 168
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00010	exonerate:protein2genome:local	gene	663012	669443	386	-	.	gene_id 0 ; sequence AT1G09500.2|PACid:19651388 ; gene_orientation +
+scaffold00010	exonerate:protein2genome:local	cds	669286	669443	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	669286	669443	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	splice5	669284	669285	.	-	.	intron_id 1 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	667841	669285	.	-	.	intron_id 1
+scaffold00010	exonerate:protein2genome:local	splice3	667841	667842	.	-	.	intron_id 0 ; splice_site "AC"
+scaffold00010	exonerate:protein2genome:local	cds	667624	667840	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	667624	667840	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	splice5	667622	667623	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00010	exonerate:protein2genome:local	intron	663180	667623	.	-	.	intron_id 2
+scaffold00010	exonerate:protein2genome:local	splice3	663180	663181	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00010	exonerate:protein2genome:local	cds	663012	663179	.	-	.	
+scaffold00010	exonerate:protein2genome:local	exon	663012	663179	.	-	.	insertions 0 ; deletions 0
+scaffold00010	exonerate:protein2genome:local	similarity	663012	669443	386	-	.	alignment_id 0 ; Query AT1G09500.2|PACid:19651388 ; Align 669444 3 156 ; Align 667840 56 216 ; Align 663180 128 168
+# --- END OF GFF DUMP ---
+#
+>AT1G09500.2|PACid:19651388 length=292 alnlen=181
+>scaffold00010 length=5611942 alnlen=6432
+vulgar: AT1G09500.2|PACid:19651388 6 238 . scaffold00095 1515425 1493524 - 361 M 57 171 5 0 2 I 0 19705 3 0 2 M 17 51 G 1 0 M 20 60 G 1 0 M 25 75 5 0 2 I 0 964 3 0 2 M 54 162 S 0 1 5 0 2 I 0 527 3 0 2 S 1 2 M 11 33 G 0 3 M 45 135
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00095	exonerate:protein2genome:local	gene	1493525	1515425	361	-	.	gene_id 0 ; sequence AT1G09500.2|PACid:19651388 ; gene_orientation +
+scaffold00095	exonerate:protein2genome:local	cds	1515255	1515425	.	-	.	
+scaffold00095	exonerate:protein2genome:local	exon	1515255	1515425	.	-	.	insertions 0 ; deletions 0
+scaffold00095	exonerate:protein2genome:local	splice5	1515253	1515254	.	-	.	intron_id 1 ; splice_site "GC"
+scaffold00095	exonerate:protein2genome:local	intron	1495546	1515254	.	-	.	intron_id 1
+scaffold00095	exonerate:protein2genome:local	splice3	1495546	1495547	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00095	exonerate:protein2genome:local	cds	1495360	1495545	.	-	.	
+scaffold00095	exonerate:protein2genome:local	exon	1495360	1495545	.	-	.	insertions 0 ; deletions 2
+scaffold00095	exonerate:protein2genome:local	splice5	1495358	1495359	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00095	exonerate:protein2genome:local	intron	1494392	1495359	.	-	.	intron_id 2
+scaffold00095	exonerate:protein2genome:local	splice3	1494392	1494393	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00095	exonerate:protein2genome:local	cds	1494229	1494391	.	-	.	
+scaffold00095	exonerate:protein2genome:local	exon	1494229	1494391	.	-	.	insertions 0 ; deletions 0
+scaffold00095	exonerate:protein2genome:local	splice5	1494227	1494228	.	-	.	intron_id 3 ; splice_site "GT"
+scaffold00095	exonerate:protein2genome:local	intron	1493698	1494228	.	-	.	intron_id 3
+scaffold00095	exonerate:protein2genome:local	splice3	1493698	1493699	.	-	.	intron_id 2 ; splice_site "AG"
+scaffold00095	exonerate:protein2genome:local	cds	1493525	1493697	.	-	.	
+scaffold00095	exonerate:protein2genome:local	exon	1493525	1493697	.	-	.	insertions 3 ; deletions 0
+scaffold00095	exonerate:protein2genome:local	similarity	1493525	1515425	361	-	.	alignment_id 0 ; Query AT1G09500.2|PACid:19651388 ; Align 1515426 7 171 ; Align 1495546 64 51 ; Align 1495495 82 60 ; Align 1495435 103 75 ; Align 1494392 128 162 ; Align 1493696 183 33 ; Align 1493660 194 135
+# --- END OF GFF DUMP ---
+#
+>AT1G09500.2|PACid:19651388 length=292 alnlen=232
+>scaffold00095 length=2549230 alnlen=21901
+vulgar: AT1G09500.2|PACid:19651388 5 184 . scaffold00015 2840552 2836317 - 342 M 58 174 5 0 2 I 0 1669 3 0 2 M 40 120 G 1 0 M 23 69 5 0 2 I 0 2024 3 0 2 M 57 171
+# --- START OF GFF DUMP ---
+#
+#
+##gff-version 2
+##source-version exonerate:protein2genome:local 2.2.0
+##date 2011-09-17
+##type DNA
+#
+#
+# seqname source feature start end score strand frame attributes
+#
+scaffold00015	exonerate:protein2genome:local	gene	2836318	2840552	342	-	.	gene_id 0 ; sequence AT1G09500.2|PACid:19651388 ; gene_orientation +
+scaffold00015	exonerate:protein2genome:local	cds	2840379	2840552	.	-	.	
+scaffold00015	exonerate:protein2genome:local	exon	2840379	2840552	.	-	.	insertions 0 ; deletions 0
+scaffold00015	exonerate:protein2genome:local	splice5	2840377	2840378	.	-	.	intron_id 1 ; splice_site "GC"
+scaffold00015	exonerate:protein2genome:local	intron	2838706	2840378	.	-	.	intron_id 1
+scaffold00015	exonerate:protein2genome:local	splice3	2838706	2838707	.	-	.	intron_id 0 ; splice_site "AG"
+scaffold00015	exonerate:protein2genome:local	cds	2838517	2838705	.	-	.	
+scaffold00015	exonerate:protein2genome:local	exon	2838517	2838705	.	-	.	insertions 0 ; deletions 1
+scaffold00015	exonerate:protein2genome:local	splice5	2838515	2838516	.	-	.	intron_id 2 ; splice_site "GT"
+scaffold00015	exonerate:protein2genome:local	intron	2836489	2838516	.	-	.	intron_id 2
+scaffold00015	exonerate:protein2genome:local	splice3	2836489	2836490	.	-	.	intron_id 1 ; splice_site "AG"
+scaffold00015	exonerate:protein2genome:local	cds	2836318	2836488	.	-	.	
+scaffold00015	exonerate:protein2genome:local	exon	2836318	2836488	.	-	.	insertions 0 ; deletions 0
+scaffold00015	exonerate:protein2genome:local	similarity	2836318	2840552	342	-	.	alignment_id 0 ; Query AT1G09500.2|PACid:19651388 ; Align 2840553 6 174 ; Align 2838706 64 120 ; Align 2838586 105 69 ; Align 2836489 128 171
+# --- END OF GFF DUMP ---
+
+
