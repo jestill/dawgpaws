@@ -43,6 +43,8 @@ use File::Spec;                # Convert a relative path to an abosolute path
 # PROGRAM VARIABLES           |
 #-----------------------------+
 my ($VERSION) = q$Rev$ =~ /(\d+)/;
+# Get GFF version from environment, GFF2 is DEFAULT
+my $gff_ver = uc($ENV{DP_GFF}) || "GFF2";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -66,22 +68,41 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "gff-ver=s"   => \$gff_ver,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
 		    # ADDITIONAL INFORMATION
 		    "usage"       => \$show_usage,
-		    "test"        => \$test,
+		    "test"        => \$do_test,
 		    "version"     => \$show_version,
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
 
+
+
+ 
 #-----------------------------+
-# SHOW REQUESTED HELP         |
+# STANDARDIZE GFF VERSION     |
 #-----------------------------+
+unless ($gff_ver =~ "GFF3" || 
+	$gff_ver =~ "GFF2") {
+    # Attempt to standardize GFF format names
+    if ($gff_ver =~ "3") {
+	$gff_ver = "GFF3";
+    }
+    elsif ($gff_ver =~ "2") {
+	$gff_ver = "GFF2";
+    }
+    else {
+	print "\a";
+	die "The gff-version \'$gff_ver\' is not recognized\n".
+	    "The options GFF2 or GFF3 are supported\n";
+    }
+}
 
 
 #-----------------------------+
-# MAIN PROGRAM BODY           |
+# PRINT REQUESTED HELP        |
 #-----------------------------+
 if ( ($show_usage) ) {
 #    print_help ("usage", File::Spec->rel2abs($0) );
@@ -104,6 +125,10 @@ if ($show_version) {
 	"Version: $VERSION\n\n";
     exit;
 }
+
+#-----------------------------+
+# MAIN PROGRAM BODY           |
+#-----------------------------+
 
 exit 0;
 
