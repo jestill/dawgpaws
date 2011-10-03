@@ -98,19 +98,18 @@ else {
  # write each entry in the input file to the new output file
 my $seq_count = 0;
 while (my $inseq = $seq_in->next_seq) {
+ 
+#    if ($min_len) {
+#	if ( $inseq->length < $min_length ) {
+#	    next;
+#	}
+#    }
     
-    if ($min_len) {
-	if ( $inseq->length < $min_length ) {
-	    next;
-	}
-    }
-
     $seq_out->write_seq($inseq);
     $seq_count++;
 
     last if $seq_count == $num_seqs;
     
-
 }
 
 print STDERR "$seq_count sequences were processed\n";
