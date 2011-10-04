@@ -1,76 +1,76 @@
 ##gff-version 3
-scaffold00029	exonerate:est2genome	match	711236	711378	131	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100125_1; Name=gnl|Amborella|b4_c100125
-scaffold00096	exonerate:est2genome	match	1839807	1839866	124	+	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100125_2; Name=gnl|Amborella|b4_c100125
-scaffold00025	exonerate:est2genome	match	2063501	2063563	110	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100125_3; Name=gnl|Amborella|b4_c100125
-scaffold00074	exonerate:est2genome	match	1080742	1080779	106	+	.	Id=scaffold00074_ex_gnl|Amborella|b4_c100125_4; Name=gnl|Amborella|b4_c100125
-scaffold00049	exonerate:est2genome	match	1530525	1530661	103	+	.	Id=scaffold00049_ex_gnl|Amborella|b4_c100125_5; Name=gnl|Amborella|b4_c100125
-scaffold00002	exonerate:est2genome	match	6214784	6215108	1609	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c10013_6; Name=gnl|Amborella|b4_c10013
-scaffold00097	exonerate:est2genome	match	1563337	1563471	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7; Name=gnl|Amborella|b4_c10013
-scaffold00097	exonerate:est2genome	match	1691006	1691182	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7; Name=gnl|Amborella|b4_c10013
-scaffold00097	exonerate:est2genome	match	1871705	1871752	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7; Name=gnl|Amborella|b4_c10013
-scaffold00087	exonerate:est2genome	match	2111965	2112004	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8; Name=gnl|Amborella|b4_c10013
-scaffold00087	exonerate:est2genome	match	1920410	1920446	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8; Name=gnl|Amborella|b4_c10013
-scaffold00087	exonerate:est2genome	match	1815329	1815523	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8; Name=gnl|Amborella|b4_c10013
-scaffold00087	exonerate:est2genome	match	1758787	1758799	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8; Name=gnl|Amborella|b4_c10013
-scaffold00019	exonerate:est2genome	match	137992	138019	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9; Name=gnl|Amborella|b4_c10013
-scaffold00019	exonerate:est2genome	match	139202	139252	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9; Name=gnl|Amborella|b4_c10013
-scaffold00019	exonerate:est2genome	match	141446	141576	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9; Name=gnl|Amborella|b4_c10013
-scaffold00019	exonerate:est2genome	match	311077	311161	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9; Name=gnl|Amborella|b4_c10013
-scaffold00086	exonerate:est2genome	match	1834266	1834386	229	+	.	Id=scaffold00086_ex_gnl|Amborella|b4_c10013_10; Name=gnl|Amborella|b4_c10013
-scaffold00086	exonerate:est2genome	match	1835859	1836030	229	+	.	Id=scaffold00086_ex_gnl|Amborella|b4_c10013_10; Name=gnl|Amborella|b4_c10013
-scaffold00042	exonerate:est2genome	match	121429	121680	745	+	.	Id=scaffold00042_ex_gnl|Amborella|b4_c100253_11; Name=gnl|Amborella|b4_c100253
-scaffold00075	exonerate:est2genome	match	2422763	2422812	205	+	.	Id=scaffold00075_ex_gnl|Amborella|b4_c100253_12; Name=gnl|Amborella|b4_c100253
-scaffold00020	exonerate:est2genome	match	2986311	2986416	156	+	.	Id=scaffold00020_ex_gnl|Amborella|b4_c100253_13; Name=gnl|Amborella|b4_c100253
-scaffold00004	exonerate:est2genome	match	4094812	4095092	153	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100253_14; Name=gnl|Amborella|b4_c100253
-scaffold00029	exonerate:est2genome	match	519853	520015	146	+	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100253_15; Name=gnl|Amborella|b4_c100253
-scaffold00061	exonerate:est2genome	match	878281	878330	134	-	.	Id=scaffold00061_ex_gnl|Amborella|b4_c100509_16; Name=gnl|Amborella|b4_c100509
-scaffold00020	exonerate:est2genome	match	2366367	2366421	127	+	.	Id=scaffold00020_ex_gnl|Amborella|b4_c100509_17; Name=gnl|Amborella|b4_c100509
-scaffold00082	exonerate:est2genome	match	593364	593459	114	+	.	Id=scaffold00082_ex_gnl|Amborella|b4_c100509_18; Name=gnl|Amborella|b4_c100509
-scaffold00002	exonerate:est2genome	match	1434247	1434270	113	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c100509_19; Name=gnl|Amborella|b4_c100509
-scaffold00002	exonerate:est2genome	match	1521720	1521838	113	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c100509_19; Name=gnl|Amborella|b4_c100509
-scaffold00027	exonerate:est2genome	match	3680668	3680768	113	-	.	Id=scaffold00027_ex_gnl|Amborella|b4_c100509_20; Name=gnl|Amborella|b4_c100509
-scaffold00014	exonerate:est2genome	match	2703518	2703693	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21; Name=gnl|Amborella|b4_c100637
-scaffold00014	exonerate:est2genome	match	2834178	2834219	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21; Name=gnl|Amborella|b4_c100637
-scaffold00014	exonerate:est2genome	match	2873914	2873996	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21; Name=gnl|Amborella|b4_c100637
-scaffold00096	exonerate:est2genome	match	1177093	1177336	273	-	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100637_22; Name=gnl|Amborella|b4_c100637
-scaffold00096	exonerate:est2genome	match	1123831	1123943	273	-	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100637_22; Name=gnl|Amborella|b4_c100637
-scaffold00052	exonerate:est2genome	match	1183929	1184052	247	+	.	Id=scaffold00052_ex_gnl|Amborella|b4_c100637_23; Name=gnl|Amborella|b4_c100637
-scaffold00052	exonerate:est2genome	match	1316977	1317232	247	+	.	Id=scaffold00052_ex_gnl|Amborella|b4_c100637_23; Name=gnl|Amborella|b4_c100637
-scaffold00004	exonerate:est2genome	match	4555831	4555970	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24; Name=gnl|Amborella|b4_c100637
-scaffold00004	exonerate:est2genome	match	4701300	4701416	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24; Name=gnl|Amborella|b4_c100637
-scaffold00004	exonerate:est2genome	match	4883760	4883850	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24; Name=gnl|Amborella|b4_c100637
-scaffold00031	exonerate:est2genome	match	1776143	1776414	244	-	.	Id=scaffold00031_ex_gnl|Amborella|b4_c100637_25; Name=gnl|Amborella|b4_c100637
-scaffold00031	exonerate:est2genome	match	1653087	1653171	244	-	.	Id=scaffold00031_ex_gnl|Amborella|b4_c100637_25; Name=gnl|Amborella|b4_c100637
-scaffold00029	exonerate:est2genome	match	1705314	1705470	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26; Name=gnl|Amborella|b4_c100893
-scaffold00029	exonerate:est2genome	match	1704997	1705080	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26; Name=gnl|Amborella|b4_c100893
-scaffold00029	exonerate:est2genome	match	1702999	1703157	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26; Name=gnl|Amborella|b4_c100893
-scaffold00029	exonerate:est2genome	match	1702865	1702894	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26; Name=gnl|Amborella|b4_c100893
-scaffold00025	exonerate:est2genome	match	2238717	2238772	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27; Name=gnl|Amborella|b4_c100893
-scaffold00025	exonerate:est2genome	match	2047017	2047045	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27; Name=gnl|Amborella|b4_c100893
-scaffold00025	exonerate:est2genome	match	1864813	1864894	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27; Name=gnl|Amborella|b4_c100893
-scaffold00026	exonerate:est2genome	match	724009	724263	211	+	.	Id=scaffold00026_ex_gnl|Amborella|b4_c100893_28; Name=gnl|Amborella|b4_c100893
-scaffold00026	exonerate:est2genome	match	869117	869185	211	+	.	Id=scaffold00026_ex_gnl|Amborella|b4_c100893_28; Name=gnl|Amborella|b4_c100893
-scaffold00086	exonerate:est2genome	match	1524906	1525025	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29; Name=gnl|Amborella|b4_c100893
-scaffold00086	exonerate:est2genome	match	1505485	1505541	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29; Name=gnl|Amborella|b4_c100893
-scaffold00086	exonerate:est2genome	match	1340579	1340648	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29; Name=gnl|Amborella|b4_c100893
-scaffold00073	exonerate:est2genome	match	1574263	1574333	198	+	.	Id=scaffold00073_ex_gnl|Amborella|b4_c100893_30; Name=gnl|Amborella|b4_c100893
-scaffold00073	exonerate:est2genome	match	1695382	1695560	198	+	.	Id=scaffold00073_ex_gnl|Amborella|b4_c100893_30; Name=gnl|Amborella|b4_c100893
-scaffold00046	exonerate:est2genome	match	1000726	1001013	198	-	.	Id=scaffold00046_ex_gnl|Amborella|b4_c100893_31; Name=gnl|Amborella|b4_c100893
-scaffold00046	exonerate:est2genome	match	983757	983833	198	-	.	Id=scaffold00046_ex_gnl|Amborella|b4_c100893_31; Name=gnl|Amborella|b4_c100893
-scaffold00027	exonerate:est2genome	match	3193985	3194148	140	+	.	Id=scaffold00027_ex_gnl|Amborella|b4_c101021_32; Name=gnl|Amborella|b4_c101021
-scaffold00008	exonerate:est2genome	match	919504	919667	130	+	.	Id=scaffold00008_ex_gnl|Amborella|b4_c101021_33; Name=gnl|Amborella|b4_c101021
-scaffold00064	exonerate:est2genome	match	332215	332430	125	+	.	Id=scaffold00064_ex_gnl|Amborella|b4_c101021_34; Name=gnl|Amborella|b4_c101021
-scaffold00010	exonerate:est2genome	match	3332405	3332558	125	-	.	Id=scaffold00010_ex_gnl|Amborella|b4_c101021_35; Name=gnl|Amborella|b4_c101021
-scaffold00029	exonerate:est2genome	match	1105633	1105665	112	+	.	Id=scaffold00029_ex_gnl|Amborella|b4_c101021_36; Name=gnl|Amborella|b4_c101021
-scaffold00072	exonerate:est2genome	match	1283780	1283872	947	-	.	Id=scaffold00072_ex_gnl|Amborella|b4_c101277_37; Name=gnl|Amborella|b4_c101277
-scaffold00072	exonerate:est2genome	match	1283294	1283681	947	-	.	Id=scaffold00072_ex_gnl|Amborella|b4_c101277_37; Name=gnl|Amborella|b4_c101277
-scaffold00011	exonerate:est2genome	match	1387152	1387391	932	+	.	Id=scaffold00011_ex_gnl|Amborella|b4_c101277_38; Name=gnl|Amborella|b4_c101277
-scaffold00011	exonerate:est2genome	match	1387481	1387712	932	+	.	Id=scaffold00011_ex_gnl|Amborella|b4_c101277_38; Name=gnl|Amborella|b4_c101277
-scaffold00043	exonerate:est2genome	match	1689783	1690241	805	+	.	Id=scaffold00043_ex_gnl|Amborella|b4_c101277_39; Name=gnl|Amborella|b4_c101277
-scaffold00018	exonerate:est2genome	match	1657935	1658316	765	-	.	Id=scaffold00018_ex_gnl|Amborella|b4_c101277_40; Name=gnl|Amborella|b4_c101277
-scaffold00012	exonerate:est2genome	match	1582994	1583457	764	-	.	Id=scaffold00012_ex_gnl|Amborella|b4_c101277_41; Name=gnl|Amborella|b4_c101277
-scaffold00070	exonerate:est2genome	match	2301168	2301448	1388	+	.	Id=scaffold00070_ex_gnl|Amborella|b4_c101405_42; Name=gnl|Amborella|b4_c101405
-scaffold00070	exonerate:est2genome	match	2295704	2295975	1107	-	.	Id=scaffold00070_ex_gnl|Amborella|b4_c101405_43; Name=gnl|Amborella|b4_c101405
-scaffold00024	exonerate:est2genome	match	1527360	1527573	633	+	.	Id=scaffold00024_ex_gnl|Amborella|b4_c101405_44; Name=gnl|Amborella|b4_c101405
-scaffold00004	exonerate:est2genome	match	1980138	1980196	215	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c101405_45; Name=gnl|Amborella|b4_c101405
-scaffold00004	exonerate:est2genome	match	1844163	1844282	215	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c101405_45; Name=gnl|Amborella|b4_c101405
+scaffold00029	exonerate:est2genome	match	711236	711378	131	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100125_1;Name=gnl|Amborella|b4_c100125;Target=gnl|Amborella|b4_c100125
+scaffold00096	exonerate:est2genome	match	1839807	1839866	124	+	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100125_2;Name=gnl|Amborella|b4_c100125;Target=gnl|Amborella|b4_c100125
+scaffold00025	exonerate:est2genome	match	2063501	2063563	110	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100125_3;Name=gnl|Amborella|b4_c100125;Target=gnl|Amborella|b4_c100125
+scaffold00074	exonerate:est2genome	match	1080742	1080779	106	+	.	Id=scaffold00074_ex_gnl|Amborella|b4_c100125_4;Name=gnl|Amborella|b4_c100125;Target=gnl|Amborella|b4_c100125
+scaffold00049	exonerate:est2genome	match	1530525	1530661	103	+	.	Id=scaffold00049_ex_gnl|Amborella|b4_c100125_5;Name=gnl|Amborella|b4_c100125;Target=gnl|Amborella|b4_c100125
+scaffold00002	exonerate:est2genome	match	6214784	6215108	1609	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c10013_6;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00097	exonerate:est2genome	match	1563337	1563471	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00097	exonerate:est2genome	match	1691006	1691182	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00097	exonerate:est2genome	match	1871705	1871752	274	+	.	Id=scaffold00097_ex_gnl|Amborella|b4_c10013_7;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00087	exonerate:est2genome	match	2111965	2112004	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00087	exonerate:est2genome	match	1920410	1920446	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00087	exonerate:est2genome	match	1815329	1815523	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00087	exonerate:est2genome	match	1758787	1758799	261	-	.	Id=scaffold00087_ex_gnl|Amborella|b4_c10013_8;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00019	exonerate:est2genome	match	137992	138019	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00019	exonerate:est2genome	match	139202	139252	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00019	exonerate:est2genome	match	141446	141576	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00019	exonerate:est2genome	match	311077	311161	230	+	.	Id=scaffold00019_ex_gnl|Amborella|b4_c10013_9;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00086	exonerate:est2genome	match	1834266	1834386	229	+	.	Id=scaffold00086_ex_gnl|Amborella|b4_c10013_10;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00086	exonerate:est2genome	match	1835859	1836030	229	+	.	Id=scaffold00086_ex_gnl|Amborella|b4_c10013_10;Name=gnl|Amborella|b4_c10013;Target=gnl|Amborella|b4_c10013
+scaffold00042	exonerate:est2genome	match	121429	121680	745	+	.	Id=scaffold00042_ex_gnl|Amborella|b4_c100253_11;Name=gnl|Amborella|b4_c100253;Target=gnl|Amborella|b4_c100253
+scaffold00075	exonerate:est2genome	match	2422763	2422812	205	+	.	Id=scaffold00075_ex_gnl|Amborella|b4_c100253_12;Name=gnl|Amborella|b4_c100253;Target=gnl|Amborella|b4_c100253
+scaffold00020	exonerate:est2genome	match	2986311	2986416	156	+	.	Id=scaffold00020_ex_gnl|Amborella|b4_c100253_13;Name=gnl|Amborella|b4_c100253;Target=gnl|Amborella|b4_c100253
+scaffold00004	exonerate:est2genome	match	4094812	4095092	153	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100253_14;Name=gnl|Amborella|b4_c100253;Target=gnl|Amborella|b4_c100253
+scaffold00029	exonerate:est2genome	match	519853	520015	146	+	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100253_15;Name=gnl|Amborella|b4_c100253;Target=gnl|Amborella|b4_c100253
+scaffold00061	exonerate:est2genome	match	878281	878330	134	-	.	Id=scaffold00061_ex_gnl|Amborella|b4_c100509_16;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00020	exonerate:est2genome	match	2366367	2366421	127	+	.	Id=scaffold00020_ex_gnl|Amborella|b4_c100509_17;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00082	exonerate:est2genome	match	593364	593459	114	+	.	Id=scaffold00082_ex_gnl|Amborella|b4_c100509_18;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00002	exonerate:est2genome	match	1434247	1434270	113	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c100509_19;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00002	exonerate:est2genome	match	1521720	1521838	113	+	.	Id=scaffold00002_ex_gnl|Amborella|b4_c100509_19;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00027	exonerate:est2genome	match	3680668	3680768	113	-	.	Id=scaffold00027_ex_gnl|Amborella|b4_c100509_20;Name=gnl|Amborella|b4_c100509;Target=gnl|Amborella|b4_c100509
+scaffold00014	exonerate:est2genome	match	2703518	2703693	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00014	exonerate:est2genome	match	2834178	2834219	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00014	exonerate:est2genome	match	2873914	2873996	278	+	.	Id=scaffold00014_ex_gnl|Amborella|b4_c100637_21;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00096	exonerate:est2genome	match	1177093	1177336	273	-	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100637_22;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00096	exonerate:est2genome	match	1123831	1123943	273	-	.	Id=scaffold00096_ex_gnl|Amborella|b4_c100637_22;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00052	exonerate:est2genome	match	1183929	1184052	247	+	.	Id=scaffold00052_ex_gnl|Amborella|b4_c100637_23;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00052	exonerate:est2genome	match	1316977	1317232	247	+	.	Id=scaffold00052_ex_gnl|Amborella|b4_c100637_23;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00004	exonerate:est2genome	match	4555831	4555970	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00004	exonerate:est2genome	match	4701300	4701416	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00004	exonerate:est2genome	match	4883760	4883850	245	+	.	Id=scaffold00004_ex_gnl|Amborella|b4_c100637_24;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00031	exonerate:est2genome	match	1776143	1776414	244	-	.	Id=scaffold00031_ex_gnl|Amborella|b4_c100637_25;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00031	exonerate:est2genome	match	1653087	1653171	244	-	.	Id=scaffold00031_ex_gnl|Amborella|b4_c100637_25;Name=gnl|Amborella|b4_c100637;Target=gnl|Amborella|b4_c100637
+scaffold00029	exonerate:est2genome	match	1705314	1705470	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00029	exonerate:est2genome	match	1704997	1705080	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00029	exonerate:est2genome	match	1702999	1703157	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00029	exonerate:est2genome	match	1702865	1702894	2083	-	.	Id=scaffold00029_ex_gnl|Amborella|b4_c100893_26;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00025	exonerate:est2genome	match	2238717	2238772	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00025	exonerate:est2genome	match	2047017	2047045	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00025	exonerate:est2genome	match	1864813	1864894	238	-	.	Id=scaffold00025_ex_gnl|Amborella|b4_c100893_27;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00026	exonerate:est2genome	match	724009	724263	211	+	.	Id=scaffold00026_ex_gnl|Amborella|b4_c100893_28;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00026	exonerate:est2genome	match	869117	869185	211	+	.	Id=scaffold00026_ex_gnl|Amborella|b4_c100893_28;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00086	exonerate:est2genome	match	1524906	1525025	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00086	exonerate:est2genome	match	1505485	1505541	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00086	exonerate:est2genome	match	1340579	1340648	200	-	.	Id=scaffold00086_ex_gnl|Amborella|b4_c100893_29;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00073	exonerate:est2genome	match	1574263	1574333	198	+	.	Id=scaffold00073_ex_gnl|Amborella|b4_c100893_30;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00073	exonerate:est2genome	match	1695382	1695560	198	+	.	Id=scaffold00073_ex_gnl|Amborella|b4_c100893_30;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00046	exonerate:est2genome	match	1000726	1001013	198	-	.	Id=scaffold00046_ex_gnl|Amborella|b4_c100893_31;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00046	exonerate:est2genome	match	983757	983833	198	-	.	Id=scaffold00046_ex_gnl|Amborella|b4_c100893_31;Name=gnl|Amborella|b4_c100893;Target=gnl|Amborella|b4_c100893
+scaffold00027	exonerate:est2genome	match	3193985	3194148	140	+	.	Id=scaffold00027_ex_gnl|Amborella|b4_c101021_32;Name=gnl|Amborella|b4_c101021;Target=gnl|Amborella|b4_c101021
+scaffold00008	exonerate:est2genome	match	919504	919667	130	+	.	Id=scaffold00008_ex_gnl|Amborella|b4_c101021_33;Name=gnl|Amborella|b4_c101021;Target=gnl|Amborella|b4_c101021
+scaffold00064	exonerate:est2genome	match	332215	332430	125	+	.	Id=scaffold00064_ex_gnl|Amborella|b4_c101021_34;Name=gnl|Amborella|b4_c101021;Target=gnl|Amborella|b4_c101021
+scaffold00010	exonerate:est2genome	match	3332405	3332558	125	-	.	Id=scaffold00010_ex_gnl|Amborella|b4_c101021_35;Name=gnl|Amborella|b4_c101021;Target=gnl|Amborella|b4_c101021
+scaffold00029	exonerate:est2genome	match	1105633	1105665	112	+	.	Id=scaffold00029_ex_gnl|Amborella|b4_c101021_36;Name=gnl|Amborella|b4_c101021;Target=gnl|Amborella|b4_c101021
+scaffold00072	exonerate:est2genome	match	1283780	1283872	947	-	.	Id=scaffold00072_ex_gnl|Amborella|b4_c101277_37;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00072	exonerate:est2genome	match	1283294	1283681	947	-	.	Id=scaffold00072_ex_gnl|Amborella|b4_c101277_37;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00011	exonerate:est2genome	match	1387152	1387391	932	+	.	Id=scaffold00011_ex_gnl|Amborella|b4_c101277_38;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00011	exonerate:est2genome	match	1387481	1387712	932	+	.	Id=scaffold00011_ex_gnl|Amborella|b4_c101277_38;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00043	exonerate:est2genome	match	1689783	1690241	805	+	.	Id=scaffold00043_ex_gnl|Amborella|b4_c101277_39;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00018	exonerate:est2genome	match	1657935	1658316	765	-	.	Id=scaffold00018_ex_gnl|Amborella|b4_c101277_40;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00012	exonerate:est2genome	match	1582994	1583457	764	-	.	Id=scaffold00012_ex_gnl|Amborella|b4_c101277_41;Name=gnl|Amborella|b4_c101277;Target=gnl|Amborella|b4_c101277
+scaffold00070	exonerate:est2genome	match	2301168	2301448	1388	+	.	Id=scaffold00070_ex_gnl|Amborella|b4_c101405_42;Name=gnl|Amborella|b4_c101405;Target=gnl|Amborella|b4_c101405
+scaffold00070	exonerate:est2genome	match	2295704	2295975	1107	-	.	Id=scaffold00070_ex_gnl|Amborella|b4_c101405_43;Name=gnl|Amborella|b4_c101405;Target=gnl|Amborella|b4_c101405
+scaffold00024	exonerate:est2genome	match	1527360	1527573	633	+	.	Id=scaffold00024_ex_gnl|Amborella|b4_c101405_44;Name=gnl|Amborella|b4_c101405;Target=gnl|Amborella|b4_c101405
+scaffold00004	exonerate:est2genome	match	1980138	1980196	215	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c101405_45;Name=gnl|Amborella|b4_c101405;Target=gnl|Amborella|b4_c101405
+scaffold00004	exonerate:est2genome	match	1844163	1844282	215	-	.	Id=scaffold00004_ex_gnl|Amborella|b4_c101405_45;Name=gnl|Amborella|b4_c101405;Target=gnl|Amborella|b4_c101405
