@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/30/2011                                       |
-# UPDATED: 10/3/2011                                        |
+# UPDATED: 10/4/2011                                        |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert exonerate output to GFF format output. Exonerate |
@@ -18,7 +18,7 @@
 # USAGE:                                                    |
 #  cnv_exonerate2gff.pl -i infile.txt -o outfile.gff        |
 #                                                           |
-# VERSION: $Rev$                                            |
+# VERSION: $Rev$                                     |
 #                                                           |
 #                                                           |
 # LICENSE:                                                  |
@@ -290,7 +290,9 @@ sub exonerate2gff {
 
 		$feat_attributes = "Id=".$feat_seqid."_".
 		    "ex_".$feat_match_id."_".$gene_num.
-		    "; Name=".$feat_match_id;
+		    ";Name=".$feat_match_id.
+		    ";Target=".$feat_match_id;
+
 		
 		$feat_type = "match";
 		# Allow override of feature type at cmd line
@@ -610,7 +612,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 09/30/2011
 
-UPDATED: 10/03/2011
+UPDATED: 10/04/2011
 
 VERSION: $Rev$
 
