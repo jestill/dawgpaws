@@ -1,0 +1,221 @@
+PileUp
+
+
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 0400000dc50190000cffffffffffff000000000000000000808080c0c0c0
+GDC ffffff000000000000f43f000000000000f43f000000000000f03f000000
+GDC 000000f03f00A000300000190000cA54696d6573204e657720526f6d616e
+GDC 00A00320002000000000000000000000401444e45510002535400034b524
+GDC 800044659574c49564d504741002843696e66756c2d312c0d0a4772616e6
+GDC 465312d342c0d0a546174342d312c0d0a546674322c0d0a526574726f536
+GDC f72312c0d0a52495245322c0d0a42313134374130342e352c0d0a4174686
+GDC 96c61342d312c0d0a4379636c6f70732d322c0d0a43616c7970736f2c0d0
+GDC a426167792d322c0d0a4f6772652c0d0a47616c61647269656c2c0d0a446
+GDC 56c2c0d0a506561626f64792c0d0a426167792d312c0d0a526574726f736
+GDC 1742d322c0d0a47696d6c692c0d0a476c6f696e2c0d0a496667372c0d0a5
+GDC 265696e612c0d0a4d6f6e6b65792c0d0a426565746c65312c0d0a43524d2
+GDC c0d0a546d612c0d0a4c65676f6c61732c0d0a4373524e312c0d0a426f756
+GDC 4696363612c0d0a4b6162756b692c0d0a576453562c0d0a4153534253562
+GDC c0d0a5a464552562d322c0d0a536e52562c0d0a58454e312c0d0a47414c5
+GDC 62c0d0a424145564d2c0d0a4d754c562c0d0a5245562c0d0a4d6445562c0
+GDC d0a504552562d4d534c2c0d0a4b6f52562c0d0a53757368692d696368692
+GDC c0d0a416d6e2d73616e2c0d0a416d6e2d6e692c0d0a416d6e2d696368692
+GDC c0d0a436572312c0d0a3431322c0d0a4d6467312c0d0a576f6f742c0d0a5
+GDC 446322c0d0a5446312c0d0a4d616767792c0d0a43677265742c0d0a44616
+GDC e652d312c0d0a50797265742c0d0a4366742d312c0d0a536b697070792c0
+GDC d0a6d617259312c0d0a536b69707065722c0d0a5479332d312c0d0a54736
+GDC 5332c0d0a4d6963726f7069612c0d0a4d6467332c0d0a426c6173746f706
+GDC 9612c0d0a44696173706f72612c0d0a52454d312c0d0a476d72312c0d0a7
+GDC 2476d72312c0d0a546f7234612c0d0a546f72322c0d0a424956293b0d0a0
+GDC 0BBAABAAA0000002a000a00020001B20AAA000a203a2000203a200000000
+GDC 000000059400000000000000000000c5058000000ffff000047580000ff0
+GDC 0ff000041475358000000ffffff0056434147444e535450580000ff00fff
+GDC f00484b525800ff00000000ff4659574858000000ff8080804544580000f
+GDC f000000ff484b5245445800ffffff0000ff48524551444e425a5800ff000
+GDC 000ff005957484b524551444e5354425a580000000000ff00494c5641580
+GDC 0ff0000808080494c564341474d4659574854505800ffffff0000000c505
+GDC 800000000000000475800000000000000414347535800000000000000564
+GDC 147444e5354505800000000000000484b525800000000000000465957485
+GDC 80000000000000045445800000000000000484b524544580000000000000
+GDC 048524551444e425a5800000000000000435957484b524551444e5354425
+GDC a5800000000000000494c56415800000000000000494c564341474d46595
+GDC 748545058000000000000000300ffffff00000000ffffff8080800000000
+GDC 0c0c0c00000ABBBBBBBBBBBBBB00ff00A004700010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001A0018AA000000000000000000000003A00ff00A
+GDC 000000000080564000000000008051400000000000004940000002000000
+GDC 0000001440A0000000098b20c41000000001025064100000000189806410
+GDC 000000078b10b4100AAABB00005374616e646172640046464c4c53535353
+GDC 59592a2a43432a574c4c4c4c5050505048485151525252524949494d5454
+GDC 54544e4e4b4b5353525256565656414141414444454547474747002d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d4d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d00BBBBB000000000000004700000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 0000000000003000000000000BBAB0047000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000005000
+GDC 001b7B000000000000594000000000000054400000000000004e4000DAAB
+GDC 000000ffffff0302014445484b524e5153540000ff00ff0000024c49564d
+GDC 4659574147435000ff000000ff0004014445484b520000ff00ff0000024e
+GDC 5153540000ff00ff8000034c49564d46595700ff000000ff0004414700ff
+GDC 0000008000080144450000ff00ff000002484b5200ffffffff0000034e51
+GDC 0000ff00ff800004535400ffffffff8000054c495600ff000000ff000646
+GDC 595700ffffff00ff0007414700ff0000008000084d4300ffffff00800000
+GDC 00000000Affffff80808000A
+ Direct_4_41_2009.msf  MSF: 5  Type: P  July 26, 2010  13:38  Check: 2596 ..
+
+ Name: Cinful-1         Len:     5  Check: 1106  Weight:   0.00
+ Name: Grande1-4        Len:     5  Check: 1108  Weight: 100.00
+ Name: Tat4-1           Len:     5  Check: 1203  Weight: 100.00
+ Name: Tft2             Len:     5  Check: 1203  Weight: 100.00
+ Name: RetroSor1        Len:     5  Check: 1203  Weight: 100.00
+ Name: RIRE2            Len:     5  Check: 1108  Weight: 100.00
+ Name: B1147A04.5       Len:     5  Check: 1203  Weight: 100.00
+ Name: Athila4-1        Len:     5  Check: 1136  Weight: 100.00
+ Name: Cyclops-2        Len:     5  Check: 1136  Weight: 100.00
+ Name: Calypso          Len:     5  Check: 1169  Weight: 100.00
+ Name: Bagy-2           Len:     5  Check: 1187  Weight: 100.00
+ Name: Ogre             Len:     5  Check: 1205  Weight: 100.00
+ Name: Galadriel        Len:     5  Check: 1108  Weight: 100.00
+ Name: Del              Len:     5  Check: 1140  Weight: 100.00
+ Name: Peabody          Len:     5  Check: 1194  Weight: 100.00
+ Name: Bagy-1           Len:     5  Check: 1118  Weight: 100.00
+ Name: Retrosat-2       Len:     5  Check: 1220  Weight: 100.00
+ Name: Gimli            Len:     5  Check: 1245  Weight: 100.00
+ Name: Gloin            Len:     5  Check: 1134  Weight: 100.00
+ Name: Ifg7             Len:     5  Check: 1245  Weight: 100.00
+ Name: Reina            Len:     5  Check: 1124  Weight: 100.00
+ Name: Monkey           Len:     5  Check: 1110  Weight: 100.00
+ Name: Beetle1          Len:     5  Check: 1102  Weight: 100.00
+ Name: CRM              Len:     5  Check: 1084  Weight: 100.00
+ Name: Tma              Len:     5  Check: 1126  Weight: 100.00
+ Name: Legolas          Len:     5  Check: 1239  Weight: 100.00
+ Name: CsRN1            Len:     5  Check: 1108  Weight: 100.00
+ Name: Boudicca         Len:     5  Check: 1110  Weight: 100.00
+ Name: Kabuki           Len:     5  Check: 1108  Weight: 100.00
+ Name: WdSV             Len:     5  Check: 1108  Weight: 100.00
+ Name: ASSBSV           Len:     5  Check: 1233  Weight: 100.00
+ Name: ZFERV-2          Len:     5  Check: 1198  Weight: 100.00
+ Name: SnRV             Len:     5  Check: 1203  Weight: 100.00
+ Name: XEN1             Len:     5  Check: 1089  Weight: 100.00
+ Name: GALV             Len:     5  Check: 1215  Weight: 100.00
+ Name: BAEVM            Len:     5  Check: 1215  Weight: 100.00
+ Name: MuLV             Len:     5  Check: 1215  Weight: 100.00
+ Name: REV              Len:     5  Check: 1201  Weight: 100.00
+ Name: MdEV             Len:     5  Check: 1215  Weight: 100.00
+ Name: PERV-MSL         Len:     5  Check: 1215  Weight: 100.00
+ Name: KoRV             Len:     5  Check: 1215  Weight: 100.00
+ Name: Sushi-ichi       Len:     5  Check: 1192  Weight: 100.00
+ Name: Amn-san          Len:     5  Check: 1105  Weight: 100.00
+ Name: Amn-ni           Len:     5  Check: 1099  Weight: 100.00
+ Name: Amn-ichi         Len:     5  Check: 1194  Weight: 100.00
+ Name: Cer1             Len:     5  Check: 1231  Weight: 100.00
+ Name: 412              Len:     5  Check: 1235  Weight: 100.00
+ Name: Mdg1             Len:     5  Check: 1219  Weight: 100.00
+ Name: Woot             Len:     5  Check: 1233  Weight: 100.00
+ Name: TF2              Len:     5  Check: 1083  Weight: 100.00
+ Name: TF1              Len:     5  Check: 1083  Weight: 100.00
+ Name: Maggy            Len:     5  Check: 1113  Weight: 100.00
+ Name: Cgret            Len:     5  Check: 1110  Weight: 100.00
+ Name: Dane-1           Len:     5  Check: 1081  Weight: 100.00
+ Name: Pyret            Len:     5  Check: 1110  Weight: 100.00
+ Name: Cft-1            Len:     5  Check: 1130  Weight: 100.00
+ Name: Skippy           Len:     5  Check: 1194  Weight: 100.00
+ Name: marY1            Len:     5  Check: 1105  Weight: 100.00
+ Name: Skipper          Len:     5  Check: 1095  Weight: 100.00
+ Name: Ty3-1            Len:     5  Check: 1144  Weight: 100.00
+ Name: Tse3             Len:     5  Check: 1148  Weight: 100.00
+ Name: Micropia         Len:     5  Check: 1117  Weight: 100.00
+ Name: Mdg3             Len:     5  Check: 1200  Weight: 100.00
+ Name: Blastopia        Len:     5  Check: 1219  Weight: 100.00
+ Name: Diaspora         Len:     5  Check: 1116  Weight: 100.00
+ Name: REM1             Len:     5  Check: 1237  Weight: 100.00
+ Name: Gmr1             Len:     5  Check: 1227  Weight: 100.00
+ Name: rGmr1            Len:     5  Check: 1215  Weight: 100.00
+ Name: Tor4a            Len:     5  Check: 1105  Weight: 100.00
+ Name: Tor2             Len:     5  Check: 1237  Weight: 100.00
+ Name: BIV              Len:     5  Check: 1215  Weight: 100.00
+
+//
+
+            1         5 
+  Cinful-1  WDGPF     
+ Grande1-4  WEGPF     
+    Tat4-1  WEGPY     
+      Tft2  WEGPY     
+ RetroSor1  WEGPY     
+     RIRE2  WEGPF     
+B1147A04.5  WEGPY     
+ Athila4-1  WSGPF     
+ Cyclops-2  WSGPF     
+   Calypso  WSRPF     
+    Bagy-2  WEGLY     
+      Ogre  YEGPY     
+ Galadriel  YDGPF     
+       Del  YTGPF     
+   Peabody  FIGPY     
+    Bagy-1  YIGPF     
+Retrosat-2  FVGPY     
+     Gimli  YYGPY     
+     Gloin  YYGLF     
+      Ifg7  YYGPY     
+     Reina  YFGSF     
+    Monkey  YEGPF     
+   Beetle1  SDGPF     
+       CRM  ADGPF     
+       Tma  YMGPF     
+   Legolas  YVGPY     
+     CsRN1  YDGPF     
+  Boudicca  YEGPF     
+    Kabuki  YDGPF     
+      WdSV  WEGPF     
+    ASSBSV  WTGPY     
+   ZFERV-2  REGPY     
+      SnRV  WEGPY     
+      XEN1  FDGPF     
+      GALV  WKGPY     
+     BAEVM  WKGPY     
+      MuLV  WKGPY     
+       REV  WDGPY     
+      MdEV  WKGPY     
+  PERV-MSL  WKGPY     
+      KoRV  WKGPY     
+Sushi-ichi  DIGPY     
+   Amn-san  FLGPF     
+    Amn-ni  FIGPF     
+  Amn-ichi  FIGPY     
+      Cer1  WSGPY     
+       412  YTGPY     
+      Mdg1  YLGPY     
+      Woot  YSGPY     
+       TF2  FAGPF     
+       TF1  FAGPF     
+     Maggy  NLGPF     
+     Cgret  KLGPF     
+    Dane-1  .LGPF     
+     Pyret  KLGPF     
+     Cft-1  KVGPF     
+    Skippy  FIGPY     
+     marY1  FLGPF     
+   Skipper  NCGPF     
+     Ty3-1  YVGPF     
+      Tse3  WYGPF     
+  Micropia  FRGPF     
+      Mdg3  HKGPY     
+ Blastopia  YLGPY     
+  Diaspora  WIGPF     
+      REM1  WVGPY     
+      Gmr1  WQGPY     
+     rGmr1  WKGPY     
+     Tor4a  FLGPF     
+      Tor2  WVGPY     
+       BIV  WKGPY     
+
+

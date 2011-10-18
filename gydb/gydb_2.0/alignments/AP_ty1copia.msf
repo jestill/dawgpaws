@@ -1,0 +1,356 @@
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 0400000dd90190000cffffffffffff000000000000000000808080c0c0c0
+GDC ffffff000000000000f43f000000000000f43f000000000000f03f000000
+GDC 000000f03f00A000300000190000cA54696d6573204e657720526f6d616e
+GDC 00A00320002000000000000000000000401444e45510002535400034b524
+GDC 800044c49564d4659574750410028547365312c0d0a547931422c0d0a546
+GDC b6d312c0d0a7043616c2c0d0a5479322c0d0a546468322c0d0a5479342c0
+GDC d0a4f7279636f312d312c0d0a506f636f2c0d0a4f7279636f312d322c0d0
+GDC a56697469636f312d312c0d0a417261636f2c0d0a466f7572662c0d0a426
+GDC 1746174612c0d0a53746f2d342c0d0a546f726b342c0d0a54746f312c0d0
+GDC a52547672322c0d0a546e742d312c0d0a5631322c0d0a456e646f7669723
+GDC 12d312c0d0a53495245312d342c0d0a4f7069652d322c0d0a5453492d392
+GDC c0d0a546f52544c312c0d0a48756d6e756d2c0d0a4d74616e67612c0d0a4
+GDC 36f7069612c0d0a4b6f636f2c0d0a596f6b6f7a756e612c0d0a547269636
+GDC f7069612c0d0a4879647261312d322c0d0a4879647261312d312c0d0a313
+GDC 733312c0d0a58616e74686961732c0d0a70437265746f362c0d0a7043726
+GDC 5746f332c0d0a507952453147312c0d0a4f737365722c0d0a436f4469362
+GDC e312c0d0a436f4469362e372c0d0a436f4469362e362c0d0a436f4469362
+GDC e342c0d0a436f4469362e332c0d0a436f4469362e322c0d0a436f4469362
+GDC e352c0d0a5a65636f312c0d0a47616c4561312c0d0a4369636f312c0d0a5
+GDC a65636f322c0d0a4f6c636f312c0d0a436f4469342e342c0d0a436f44693
+GDC 32e312c0d0a436f4469322e342c0d0a436f4469342e312c0d0a436f44693
+GDC 42e352c0d0a436f4469342e332c0d0a436f4469372e312c0d0a436f44693
+GDC 52e322c0d0a436f4469352e332c0d0a436f4469352e312c0d0a436f44693
+GDC 52e342c0d0a436f4469352e352c0d0a436f4469352e362c0d0a526574726
+GDC f6669742c0d0a4b6f616c612c0d0a486f7073636f7463682c0d0a4d656c6
+GDC d6f74682c0d0a56697469636f312d32293b0d0a00BBAABAAA0000002a000
+GDC a00020001B20AAA000a203a2000203a20000000000000005940000000000
+GDC 0000000000c5058000000ffff000047580000ff00ff00004147535800000
+GDC 0ffffff0056434147444e535450580000ff00ffff00484b525800ff00000
+GDC 000ff4544580000ff000000ff484b5245445800ffffff0000ff485245514
+GDC 44e425a5800ff000000ff005957484b524551444e5354425a58000000000
+GDC 0ff00494c56415800ff00008080804659574858000000ff808080494c564
+GDC 341474d4659574854505800ffffff0000000c50580000000000000047580
+GDC 0000000000000414347535800000000000000564147444e5354505800000
+GDC 000000000484b52580000000000000045445800000000000000484b52454
+GDC 4580000000000000048524551444e425a5800000000000000435957484b5
+GDC 24551444e5354425a5800000000000000494c56415800000000000000465
+GDC 957485800000000000000494c564341474d4659574854505800000000000
+GDC 0000300ffffff00000000ffffff80808000000000c0c0c00000ABBBBBBBB
+GDC BBBBBB00ff00A00450001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 10001000100010001000100010001000100010001000100010001A0018AA
+GDC 000000000000000000000003A00ff00A0000000000805640000000000080
+GDC 514000000000000049400000020000000000001440A0000000098b20c410
+GDC 00000001025064100000000189806410000000078b10b4100AAABB000053
+GDC 74616e646172640046464c4c5353535359592a2a43432a574c4c4c4c5050
+GDC 505048485151525252524949494d545454544e4e4b4b5353525256565656
+GDC 414141414444454547474747002d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d4d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d00BBBBB0000000000000045000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 0000000000000000000000000000000000003000000000000BBAB0045000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 00000000000000005000001b7B0000000000005940000000000000544000
+GDC 00000000004e4000DAAB000000ffffff0302014445484b524e5153540000
+GDC ff00ff0000024c49564d4659574147435000ff000000ff0004014445484b
+GDC 520000ff00ff0000024e5153540000ff00ff8000034c49564d46595700ff
+GDC 000000ff0004414700ff0000008000080144450000ff00ff000002484b52
+GDC 00ffffffff0000034e510000ff00ff800004535400ffffffff8000054c49
+GDC 5600ff000000ff000646595700ffffff00ff0007414700ff000000800008
+GDC 4d4300ffffff0080000000000000Affffff80808000A
+ AP_ty1copia.msf  MSF: 146  Type: P  April 23, 2010  15:02  Check: 3392 ..
+
+ Name: Tse1             Len:   146  Check: 4114  Weight:   1.00
+ Name: Ty1B             Len:   146  Check: 7609  Weight:   1.00
+ Name: Tkm1             Len:   146  Check: 7698  Weight:   1.00
+ Name: pCal             Len:   146  Check: 5899  Weight:   1.00
+ Name: Ty2              Len:   146  Check: 6226  Weight:   1.00
+ Name: Tdh2             Len:   146  Check: 1262  Weight:   1.00
+ Name: Ty4              Len:   146  Check: 7353  Weight:   1.00
+ Name: Oryco1-1         Len:   146  Check: 6848  Weight:   1.00
+ Name: Poco             Len:   146  Check: 9580  Weight:   1.00
+ Name: Oryco1-2         Len:   146  Check: 9577  Weight:   1.00
+ Name: Vitico1-1        Len:   146  Check: 1618  Weight:   1.00
+ Name: Araco            Len:   146  Check: 8571  Weight:   1.00
+ Name: Fourf            Len:   146  Check: 4497  Weight:   1.00
+ Name: Batata           Len:   146  Check: 3242  Weight:   1.00
+ Name: Sto-4            Len:   146  Check: 4958  Weight:   1.00
+ Name: Tork4            Len:   146  Check: 3553  Weight:   1.00
+ Name: Tto1             Len:   146  Check: 1508  Weight:   1.00
+ Name: RTvr2            Len:   146  Check: 2136  Weight:   1.00
+ Name: Tnt-1            Len:   146  Check: 2982  Weight:   1.00
+ Name: V12              Len:   146  Check: 1827  Weight:   1.00
+ Name: Endovir1-1       Len:   146  Check: 7442  Weight:   1.00
+ Name: SIRE1-4          Len:   146  Check: 5833  Weight:   1.00
+ Name: Opie-2           Len:   146  Check: 6855  Weight:   1.00
+ Name: TSI-9            Len:   146  Check: 5354  Weight:   1.00
+ Name: ToRTL1           Len:   146  Check: 5558  Weight:   1.00
+ Name: Humnum           Len:   146  Check: 6734  Weight:   1.00
+ Name: Mtanga           Len:   146  Check: 5084  Weight:   1.00
+ Name: Copia            Len:   146  Check: 9027  Weight:   1.00
+ Name: Koco             Len:   146  Check: 8045  Weight:   1.00
+ Name: Yokozuna         Len:   146  Check: 2232  Weight:   1.00
+ Name: Tricopia         Len:   146  Check: 5178  Weight:   1.00
+ Name: Hydra1-2         Len:   146  Check: 3958  Weight:   1.00
+ Name: Hydra1-1         Len:   146  Check: 5484  Weight:   1.00
+ Name: 1731             Len:   146  Check: 8469  Weight:   1.00
+ Name: Xanthias         Len:   146  Check: 5534  Weight:   1.00
+ Name: pCretro6         Len:   146  Check: 3817  Weight:   1.00
+ Name: pCretro3         Len:   146  Check: 7895  Weight:   1.00
+ Name: PyRE1G1          Len:   146  Check: 1303  Weight:   1.00
+ Name: Osser            Len:   146  Check: 1018  Weight:   1.00
+ Name: CoDi6.1          Len:   146  Check: 7285  Weight:   1.00
+ Name: CoDi6.7          Len:   146  Check: 5341  Weight:   1.00
+ Name: CoDi6.6          Len:   146  Check: 6167  Weight:   1.00
+ Name: CoDi6.4          Len:   146  Check: 5020  Weight:   1.00
+ Name: CoDi6.3          Len:   146  Check: 3351  Weight:   1.00
+ Name: CoDi6.2          Len:   146  Check: 8393  Weight:   1.00
+ Name: CoDi6.5          Len:   146  Check: 5582  Weight:   1.00
+ Name: Zeco1            Len:   146  Check: 6735  Weight:   1.00
+ Name: GalEa1           Len:   146  Check: 3249  Weight:   1.00
+ Name: Cico1            Len:   146  Check: 4822  Weight:   1.00
+ Name: Zeco2            Len:   146  Check: 6299  Weight:   1.00
+ Name: Olco1            Len:   146  Check: 5138  Weight:   1.00
+ Name: CoDi4.4          Len:   146  Check: 6308  Weight:   1.00
+ Name: CoDi3.1          Len:   146  Check: 2704  Weight:   1.00
+ Name: CoDi2.4          Len:   146  Check: 8629  Weight:   1.00
+ Name: CoDi4.1          Len:   146  Check: 4122  Weight:   1.00
+ Name: CoDi4.5          Len:   146  Check: 665   Weight:   1.00
+ Name: CoDi4.3          Len:   146  Check: 5764  Weight:   1.00
+ Name: CoDi7.1          Len:   146  Check: 9938  Weight:   1.00
+ Name: CoDi5.2          Len:   146  Check: 3543  Weight:   1.00
+ Name: CoDi5.3          Len:   146  Check: 4370  Weight:   1.00
+ Name: CoDi5.1          Len:   146  Check: 2966  Weight:   1.00
+ Name: CoDi5.4          Len:   146  Check: 3024  Weight:   1.00
+ Name: CoDi5.5          Len:   146  Check: 587   Weight:   1.00
+ Name: CoDi5.6          Len:   146  Check: 4058  Weight:   1.00
+ Name: Retrofit         Len:   146  Check: 8474  Weight:   1.00
+ Name: Koala            Len:   146  Check: 9151  Weight:   1.00
+ Name: Hopscotch        Len:   146  Check: 229   Weight:   1.00
+ Name: Melmoth          Len:   146  Check: 6963  Weight:   1.00
+ Name: Vitico1-2        Len:   146  Check: 8637  Weight:   1.00
+
+//
+
+            1                                                   50 
+      Tse1  VDSGAEISVI .RDI.SFL.. ..TGINHNPT D.R.L..L.G AGDQ...EL. 
+      Ty1B  LDSGASRTLI .RSA.HHI.. ..HSASSNP. DIN.V..V.D AQKR...NI. 
+      Tkm1  LDGGATVSVI .YDK.KLI.. ..HNFTSES. ..NQIL.V.D VQQN...EV. 
+      pCal  YDTGATISVV .NNK.DIL.. ..LNVK.DAT I.E.VS.V.. ADGA...TL. 
+       Ty2  IDSGASQTLV .RSA.HYL.. ..HHATPNSE I.N.I..V.D AQKQ...DI. 
+      Tdh2  FDSGASVTVV .NDI.KQL.. ..INIKEDLE DSERLF.Y.T V.SNV..PI. 
+       Ty4  IDTG.SGVNI .TNDKTLL.. ..HNYE.DSN RSTRFF.G.I G.KNS..SV. 
+  Oryco1-1  IDSGCTNHMA .ADP.NLF.. ...RE.MD.. ..S....S.Y HAK.....I. 
+      Poco  IDSGCTNHMT .NDE.NLF.. ...KQ.LD.. ..K....S.S VSK.....V. 
+  Oryco1-2  LDTGATNYMT .GSR.SAF.. ...AE.LD.. ..T....A.V SGT.....V. 
+ Vitico1-1  LDSGCSNHMT .GIK.SLF.. ...KE.LD.. ..E....S.H KLK.....V. 
+     Araco  LDSGASNHMC .GRK.SMF.. ...AE.LD.. ..E....S.V RGN.....V. 
+     Fourf  MDSGANIHVC .ADA.SMF.. ...TS.YQ.. ..V....G.R SG......AL 
+    Batata  VDSGAAYHVT .PRK.EFF.. ...TS..... .......Y.T PGDFGE..LR 
+     Sto-4  IDSSATVHVA .NSL.QGL.. ..RTS..Q.. ..R....L.P KGRRT...IR 
+     Tork4  LDSGASYHIC .PRR.EWF.. ...TT.YE.. ..Q....V.D GGS.....IS 
+      Tto1  IDSGATIHAT .PRR.ELF.. ...SS.YT.. ..L....G.D FGRVK...M. 
+     RTvr2  IDSGATLQVT .SRK.ESF.. ...TS.YT.. ..L....G.D FGV.....LK 
+     Tnt-1  VDTAASHHAT .PVR.DLF.. ...CR.YV.. ..A....G.D FGT.....VK 
+       V12  VDTAASFHIT .ARR.DFF.. ...SS.YT.. ..S....G.S FGW.....VR 
+Endovir1-1  FDSGASRHMT .GSQ.ANL.. ...NN.YS.. ..S....V.K ESN.....V. 
+   SIRE1-4  LDSGCSRHMT .GVK.EFL.. ...LN.IE.. ..P....C.S TSY.....V. 
+    Opie-2  LDSGCTQHMT .GDR.AMF.. ...TT.FE.. .......V.. GGNEQEK.V. 
+     TSI-9  MDSGCSRHMT .GDD.KWF.. ...SS.LT.. .......P.A SGKEY...I. 
+    ToRTL1  MDSGCSKHMI .GDV.KNF.. ...LS.LK.. ..T....L.Q GGG.....V. 
+    Humnum  IDSGASVHLT .ANE.EWL.. ...LN.MS.. ..R......N HKIKE...I. 
+    Mtanga  IDSGATSHMC .CDR.AFF.. ...DEL.... ..K....Q.S TG.VS...I. 
+     Copia  LDSGASDHLI .NDE.SLY.. ...TDSVE.. .......L.V PPLK....I. 
+      Koco  LDSGATDHLI .NDE.SLY.. ...SDSVE.. .......L.E PPLK....I. 
+  Yokozuna  IDSGASQNLV .IDSYEKY.. ..MSN.IE.. ..Y....L.E TKTK....I. 
+  Tricopia  LDSGATTHMC .NKS.GQF.. ...QE.IS.. ..C....V.K QGS.....L. 
+  Hydra1-2  VDTGATSHII .TDL.KKF.. ...KQ.FD.. ..D....K.F QPEKHY..I. 
+  Hydra1-1  KDK.A..KA. ......YF.. ...TY.ID.. ..E....Y.F KPEEHF..I. 
+      1731  LDSGATSHMC .CDR.SVF.. ......TE.. .......F.E .EHTEK..I. 
+  Xanthias  VDSGATSHMC .CDK.GLF.. ...TSFIN.. .........K .ETS....I. 
+  pCretro6  ADSGATTHVA .NAR.ELF.. ...HK.YQ.. .......P.T AGGAS...I. 
+  pCretro3  GDSASERHIV .RDR.AAF.. ...KN.LT.. .......P.T PG......H. 
+   PyRE1G1  VDSGATHHLA .TGK.GVF.. ...V.A.... ..K.G..A.K PNDE....V. 
+     Osser  LDSGAIYHVT .PDARSLRDY KPCDPIPL.. ..K.C..G.. GGEVH...Y. 
+   CoDi6.1  IDNHASRTLS ..PS..KD.. ....HFEDLI ..L....H.. NTTT...TV. 
+   CoDi6.7  VDNCATRSIT ..NS.EAD.. ....CIGPM. ..K....P.. .IMR...KV. 
+   CoDi6.6  LDTGCSFSCT ..FD.KRD.. ....FVGPII ..R....G.. NFGN....A. 
+   CoDi6.4  ADSGATCHVW ..NS..AK.. ....ELRDQ. ..E....K.. .ISEQV.RV. 
+   CoDi6.3  GDSGASCHIV ..NS...D.. ...NSMYEV. ..E....H.. .IHE...SI. 
+   CoDi6.2  GDTGSSCHIV ..ND...D.. ...TGLYDI. ..T....P.. .ISE...VV. 
+   CoDi6.5  VDSGASGHTF ..KN..AQ.. ....GMYNIK S......P.. IIKN....V. 
+     Zeco1  IDTACTRTVC .GEK..WL.. ..ENYIDDLT QDQ.VNQLMQ TETRSCRPF. 
+    GalEa1  LDSGCSTTVC .GAD..WY.. ..GNFIQDLS DVER.DNIFV EESTS..TF. 
+     Cico1  LDTACTKTVC .GEN..WF.. ..RPYFENLD QKLK.SKVKF GSHES..IF. 
+     Zeco2  IDTACTRTVC .GEK..WL.. ..ENYIDDLT QDQ.VNQLMQ TETRSCRPF. 
+     Olco1  IDTACTRSVC .GQE..WL.. ..DNFTNQLN QNG.VKHLKK SEMHSCKPF. 
+   CoDi4.4  LDSHADTCIM .GKV.FHI.. ...YSSTGQK C.T.VM.P.Y SDKYKPRVV. 
+   CoDi3.1  IDTGADTVCV .GAG.YSV.. ...LSYTGRS V.S.LR.G.F HDDGET.FE. 
+   CoDi2.4  VDRGANGGLA .GSD.VMV.. ...LHKTGRS A.T.IT.G.I NDHT...LS. 
+   CoDi4.1  LDSHADTCVA .GAN.TIL.. ...ISDSQKS V.T.VR.P.F SGEYL..AMT 
+   CoDi4.5  LDSHADTCVV .GKH.ALV.. ...VHEHNRM V.N.V....F SYDP...KS. 
+   CoDi4.3  LDSHADTCCV .GRH.AYI.. ...FQETSRT V.D.VS.A.F LSTFGQ.AR. 
+   CoDi7.1  LDPG.TECDI VGGD.V.... ...WTVLEKV I.G.VE.AQL GGALAGMGKC 
+   CoDi5.2  ADTGCTGHYL ..ST...N.. ...IAHINST PAN....P.. .GI....TV. 
+   CoDi5.3  ADTGCTGHFL ..ST...N.. ...IAHIHCQ P.T.V..P.. .GI....NV. 
+   CoDi5.1  ADTGCTGHYI ..TV...N.. ...CPHTHRH PAN....P.. .SL....AV. 
+   CoDi5.4  LDTAANISLL ..AN...G.. ...APSE.RA NSQ.LT.P.. ..K....SV. 
+   CoDi5.5  LDSGATSTFI ..RE...E.. ...DCNNNIC VK...T.... .GETSSKQV. 
+   CoDi5.6  GDAGATGTFL ..LP...G.. ...APVINMQ PA..AH.P.. ..L....TI. 
+  Retrofit  IDTGATDHIT .GEL.EKL.. ...TT.KE.. ..K....Y.N .GGEQ...I. 
+     Koala  IDTGATDHVT .SEI.GKL.. ...ST.RE.. ..K....Y.K .GRDQ...I. 
+ Hopscotch  VDTEATDHIT .GQL.DKL.. ...TT.RE.. ..K....Y.K .GTDQ...I. 
+   Melmoth  IDSGATHHVS .HDR.SLF.. ...SSLDT.. ..S....V.L SA......V. 
+ Vitico1-2  EDK.AK.SSQ .GDK.EKL.. .....QDLS. ..E....Y.K .GRHM...VI 
+
+            51                                                 100 
+      Tse1  KVNAAG.... TL........ .....RLNFG .......KTV I.....K... 
+      Ty1B  PINAIG.... DL........ .....QFHFQ D......NTK T.....S... 
+      Tkm1  AVKGEG.... NL........ .....ELKFK G......KRI ......S... 
+      pCal  EADCIG.... DL........ .....IIRVG I......VSI T.....L... 
+       Ty2  PINAIG.... NL........ .....HFNFQ N......GTK T.....S... 
+      Tdh2  YAKAKG.... DL........ .....VIKIK N......CKF T.....I... 
+       Ty4  SVKGYG.... .Y........ ......IKIK N.....GHNN T...DNK... 
+  Oryco1-1  HM.GNG.... .SIAQS.... ....E.GKG. ......TVAV .QTAD.GP.. 
+      Poco  RI.GNG.... .EYIPV.... ....K.GKG. ......TVAI .EGNS.GI.. 
+  Oryco1-2  KF.GDG.... .SVVHI.... ....E.GHG. ......TVLF .SCRS.REH. 
+ Vitico1-1  KL.GDD.... .KQVXV.... ....E.GKG. ......TVAV ..NNGHGNV. 
+     Araco  AL.GDE.... .SKMEV.... ....K.GKGN ......IL.I .RLKN.GDH. 
+     Fourf  LM.GNGS... .RAHVL.... ......GVG. ......TVIL KFTS..GKT. 
+    Batata  MG.NDGQ... ..VKVT.... ......GTG. ......TVCL .ETSN.GTK. 
+     Sto-4  V..ANGV... ..EAAV.... .....EAIG. ......DIHL KLVN..GFV. 
+     Tork4  .M.ANSS... ..VCKV.... .....VGTG. ......SIKI .RTHD.GSF. 
+      Tto1  .G.ANFS... ...TVV.... ......GKG. ......DVCL .ETMN.GMK. 
+     RTvr2  MG.NDGV... ..SKII.... ......GVG. ......DDHL .QTNM.GMQ. 
+     Tnt-1  MG.NTSY... ..SKIA.... ......GIG. ......DICI .KTNV.GCT. 
+       V12  MG.NEAK... ..CEIV.... ......GMR. ......DVEL .ETSI.GCK. 
+Endovir1-1  MF.GGG.... .AKGRI.... ....K.GKG. ........DL .T.ET..EK. 
+   SIRE1-4  TF.GDG.... .SKGKI.... ....I.GMG. ........KL ..VHD.GL.. 
+    Opie-2  TF.GDN.... .SKGKV.... ....I.GLG. ........KI .AISN.DL.. 
+     TSI-9  TF.GDN.... .SKGKV.... ....L.AHG. ........CI ..KVT.DK.. 
+    ToRTL1  SF.GDG.... .KNGYI.... ....L.GVG. ........KV .GRSL.ED.. 
+    Humnum  VV.ANQD... ..KIPV.... .....LCTGD ...VQITTKT .RA.C.EYD. 
+    Mtanga  TL.ADGNE.. ..TVVK.... ....GVGSGH ....LYYYEE .NG.D.RRK. 
+     Copia  AV.AKQGE.. ..FIYAT... ......KRG. ......IVRL .R..N.DHE. 
+      Koco  AV.AKGE... ..YIYAT... ......KRG. ......IVRL .H..N.GFQ. 
+  Yokozuna  YV.ANGQ... ..YLFSS... ......KKG. ......ILNV .KY.N.NLP. 
+  Tricopia  NL.ANN.... .SSTVTT... ......GEG. ......TVQF .FANV.YGEK 
+  Hydra1-2  EL.ADG...T KASGVAQ... ......RRGD .....AEVHL .IDS..AGHK 
+  Hydra1-1  EL.ADG...T RTNNIAK... ......KRG. ......TVKT .LLRT.KNDE 
+      1731  SL.GNG.... ..FLLAK... ......GIG. ......TVKL .KTD..LC.. 
+  Xanthias  ML.AD..... .KFVKSS... ......GIG. ......TVML .KSQN.V.N. 
+  pCretro6  SG.G.G.... .VSRIA.... ......GRG. ......SVKL .KCK..VGNR 
+  pCretro3  TI.GVG.... ..STAAL... ......GQGD VDVVFTTPKG .KI....... 
+   PyRE1G1  AL.ASG.... .GTLATT... ......GRGE ......AILV .AGD..GDNK 
+     Osser  AV.GYG.... DLLVEVVKEQ TDCYSFHIGN ....NYYHKQ .KGP..VVIK 
+   CoDi6.1  .G.GIGSGLS IKGVGT..FV F.KIEDDDGG ....VHCIKI .......... 
+   CoDi6.7  KG.IGG..VK VTEMFEVTIE W.TIADDHGK ....PHKIRL .......... 
+   CoDi6.6  QG.ISGTS.P LTARGI..AS Y.TVFDPHG. .....TTYTI .......... 
+   CoDi6.4  .G.KSDTFVH VTMQGT..VY L.ETK..DGA ......KLKL .......... 
+   CoDi6.3  .G.GIGSDVK ATKKGK..LR S.LIKQADGT .....STVKV .......... 
+   CoDi6.2  GG.IGGQSIR ATMMGR..LN V.VIKQADGT .....QVKRV .......... 
+   CoDi6.5  IV.GNGVNCK IEKSGS..IS F.QDSETKT. ......IIEA .......... 
+     Zeco1  RF.GDG.... NLVYST.... ....KNVKLP .......AKI ......G... 
+    GalEa1  TF.ADG.... VTVPSI.... ....MRVTLP ......CVIN ......G... 
+     Cico1  KF.GDG.... NKVKST.... ....QQAIIP .......VQI ......G... 
+     Zeco2  RF.GDG.... N.IYST.... ....KNVKLP .......AKI ......G... 
+     Olco1  RF.GDG.... KVVNST.... ....KRLKIP .......AKI ......G... 
+   CoDi4.4  DV.ADG...C TA........ .....FDDPV T....GETFI ......L... 
+   CoDi3.1  RI.PVV.... TAATAY.... ....DYDDG. T......TVI ......L... 
+   CoDi2.4  DL.DIV.... TAAGYT.... ....ESQNG. .......PII ......L... 
+   CoDi4.1  NI.PIG...T VATAYT.... ....VPDDGR .......VVI ......L... 
+   CoDi4.5  KGKP.A...K IVDALV.... ....KYVDPF T....GAESL ......I... 
+   CoDi4.3  SV.PIV...S AALA...... .....FDHPY T....YETFI ......L... 
+   CoDi7.1  SL.PLV...N AVAAY..... ......DHPK E....GTILI ......G... 
+   CoDi5.2  TL.PDG.... STIVSS.... ..HVTELDIP .......DLP ......L... 
+   CoDi5.3  VL.PDG.... RTITSS.... ..HITELNIP .......SLP ......P... 
+   CoDi5.1  RV.PNG.... AVLRSS.... ..HVATLALP ......GFSP ......A... 
+   CoDi5.4  MQ.PKG.... DRLFTT.... ..ETLLLLLN .......KVP ......L... 
+   CoDi5.5  YM.PDG.... SSAGAT.... ....EKARLP .....MTALR ......A... 
+   CoDi5.6  TL.PDG.... QCIQST.... ..HTCNLDIP .......WLP ......P... 
+  Retrofit  HT.ASG.... .AGMDI.... ....S.HIGH ......TI.V .HTPS.RN.. 
+     Koala  HA.ANG.... .AGMKI.... ....T.HIGH ......SV.V .NTPF.RD.. 
+ Hopscotch  HT.ASG.... .EGMDI.... ....Q.HIGH ......SY.V .PTSS.RP.. 
+   Melmoth  NL.PTG.... .PTVKI.... ....S.GVG. ......TLKL ....N.DD.. 
+ Vitico1-2  TT.NSK.... .LPI...... ....A.HIGN ......TVVS .SQYNTND.. 
+
+            101                                            146 
+      Tse1  .......IK. ..ALV.SPDS ...TC.N.LI SLHDLEKA.G LI.IDL 
+      Ty1B  .......IK. ..VLH.TPNI ...AY.D.LL SLNELA.AVD IT.ACF 
+      Tkm1  .......LP. ..AIY.APST ...HT.N.II SVEDLTKSQA YL.D.L 
+      pCal  .......EN. ..TLY.LPES ...SF.N.LV SLKQIEE.RG FN.VLI 
+       Ty2  .......IK. ..ALH.TPNI ...AY.D.LL SLSELA.NQN IT.ACF 
+      Tdh2  .......NN. ..AYY.IPGI ...QS.N.LI SFNDLLNKGF LI.L.F 
+       Ty4  ......CLL. ..TYY.VPEE ...ES.T.II SCYDLAKTTK MV.L.. 
+  Oryco1-1  ...KF..IKD ..VLL.VPDL ...KQ.N.LL SIGQLLEHGY A..VYF 
+      Poco  ...KL..ISD ..VLF.VPEI ...DQ.N.LL SVGQLLEKGY S..LVF 
+  Oryco1-2  ...RG..ITG ..IYY.IPWL ...TV.N.IV SLGQLDHSGS N..LDI 
+ Vitico1-1  ...KL..LYN ..VYF.IPSL ...TQ.N.LL SVGQLMVSGY S..ILF 
+     Araco  ...QF..ISN ..VYY.IPSM ...KT.N.IL SLGQLLEKGY D..IRL 
+     Fourf  ...VP..LKS ..VQH.VPSI ...KK.N.LV SASMLCR.DG YK.VVL 
+    Batata  ...LV..LKN ..VKH.APDI ...RL.N.LI STGKLDD.DG FC.CFF 
+     Sto-4  ...LL..LRD ..VLY.VPSL ...RR.N.LI SVSRLDD.QH IH.CHF 
+     Tork4  ...CT..LNE ..VRH.VPLM ...TK.N.LI SLSLLDS.KG FS.WSG 
+      Tto1  ...LL..LRD ..VRH.VPDM ...RL.N.LI SVDKLDE.EG YC.NTF 
+     RTvr2  ...LL..LRG ..VKH.APDV ...RF.N.LI SVQVLDG.GG F..YNH 
+     Tnt-1  ...LV..LKD ..VRH.VPDL ...RM.N.LI SGIALDR.DG Y..ESY 
+       V12  ...LV..LKD ..VRH.VPEM ...RF.S.LI SVGKLDD.EG Y..HSH 
+Endovir1-1  ...PH..LTN ..VYF.VEGL ...TA.N.LI SVSQLCDEGL T..VSF 
+   SIRE1-4  ...PS..LNK ..VLL.VKGL ...TA.N.LI SISQLCDEGF N..VNF 
+    Opie-2  ....S..IDN ..VSL.VKSL ...NF.N.LL SVAQICDLVL S..CAF 
+     TSI-9  ...FI..LKD ..VAK.VQNL ...HY.N.LL SVSQLLEDDF E..VSF 
+    ToRTL1  ....S..IDN ..VYH.VDGL ...KY.S.WL SVSQICDKGN E..VKF 
+    Humnum  ...IT..VEG ..VLC.VPKL ...TT.N.LL SVSQLISKGN T..VSF 
+    Mtanga  ...IT..LND ..VYY.VPEL ...ES.N.LI SVGKLVNKGA K..VTF 
+     Copia  ...IT..LED ..VLF.CKEA ...AG.N.LM SVKRLQEAGM S..IEF 
+      Koco  ...II..LED ..VLY.CREA ...AG.N.LM SVKRLQEAEM S..VMF 
+  Yokozuna  ...IK..IE. ..ALL.VKGL ...SH.N.IL SVKKLLEKGN S..VRF 
+  Tricopia  .THVT..LNN ..TLQ.VPDL ...RS.N.LM SVSKITDRGF E..VCF 
+  Hydra1-2  VKTI...LKN ..ALY.IPSY ...PQ.N.IF SVKAATTNGA S..ISF 
+  Hydra1-1  LVTVT..LEN ..TLY.IPTY ...PQ.C.IF SVQAATAKGA R..INF 
+      1731  ..TLV..LNN ..VLF.VPDL ...NG.N.FM SVSRAAQYKC F..VNF 
+  Xanthias  ...IE..LRD ..VIY.VPSL ...HM.N.FL SVSKSAEYEN I..TTF 
+  pCretro6  IRKIW..LHN ..VVH.VPGA ...PH.N.LL SLTRADDAHC R..YVG 
+  pCretro3  ..TAT..LRN ..CLW.SPNL ...PH.N.LL ALGRLTSAGM S..FHG 
+   PyRE1G1  .STIT..LKD ..TYR.VPGL ...RE.N.LM SVG.LVDKAG GA.VLF 
+     Osser  .......IRN ..VYY.VPGF ...KF.R.LL SLKQLTNNGA ....QF 
+   CoDi6.1  .......PNS ..LYV..PGL ...KT.V.LL SPQHWAQ.EA RD.HHP 
+   CoDi6.7  .......PKS ..FLI..PSS ...PT.R.LL SPQHWSQ.SA RD.IRP 
+   CoDi6.6  ...TC..PA. ..FLM..PAS ...NQ.R.LV SPQQYAQ..F HN.LSD 
+   CoDi6.4  .......LK. ..VKY.SPDF ...EK.R.II SVGCLLDQGC SV.TKM 
+   CoDi6.3  .......LQ. ..VKY.CARA ...NE.N.LF SITQELSKGA KL.GSD 
+   CoDi6.2  .......LYP ..VKY.CLGA ...TE.R.IW SLNQEVN.DA RL.STD 
+   CoDi6.5  .......TEI ..HHV..PNM ...TK.N.LL SLSRLIDDGW NP.QFT 
+     Zeco1  ..LTKCLIHT EVVKVDIP.L ........LL SKTSLKT.AG TI.LDM 
+    GalEa1  ..MSAK.IVT DVVKYNIP.L ........LL SKTSMKR.AE MI.VNF 
+     Cico1  ..QTLYYIQT SIIRGNVP.L ........LL SKTTLQK.AK TK.LNM 
+     Zeco2  ..LTKCLIDT EVVKVDIP.L ........LL SKTSLKT.AG TI.LDM 
+     Olco1  ..QTKCHIET EVVPAKIP.L ........LL SKESMKR.AG TV.LDM 
+   CoDi4.4  ...D...VFQ ..ALDMTG.D ...LQDPSLL CPNQLRA.NG L..IVD 
+   CoDi3.1  ...I...FHE ..ALN.LGP. ...TQTTSLI NLNQIRH.AG H..QTD 
+   CoDi2.4  ...I...MNQ ..YAH.LGQG ...KTIHS.. SA.Q.LE.HY RN.HVE 
+   CoDi4.1  ...I...INQ ..ALY.FGDR ...LK.NTLL TPNQMRD.YG I..EVD 
+   CoDi4.5  ...M...INQ ..AIH..VD. ...YLDHNLI CPMQCRL.NG V..TVN 
+   CoDi4.3  ...V...IHQ ..ALH.FPTM ...EH.A.LL NPNQIRL.ND V..EVN 
+   CoDi7.1  .......... ..AGN.VGYD ERSTQTESLF NTHELRK.HG V..IVS 
+   CoDi5.2  ...E...ARI ..AHI.FPKL ...SS.GSLI SIGQLCD.HG CT.ATF 
+   CoDi5.3  ...A...ART ..AHI.FPGL ...SN.GSLI SIGQLCD.HG CT.ATF 
+   CoDi5.1  .......ACQ ..AHI.FPGL ...AS.HPLL SIGQLCD.DG CT.ATF 
+   CoDi5.4  ...E...ARE ..AHR.APGI ...TN.N.LL SASALAD.AG CE.LFF 
+   CoDi5.5  ...E...ARL ..GDV.LPAL ...KH.NSLV S.VNVLDENG YC.TVF 
+   CoDi5.6  ...A...ATK ..AHI.VPGL ...AH.TSLV SIKQLCD.NG CR.VIY 
+  Retrofit  ...IH..LNN ..VLY.VPQA ...KK.N.LI SASQLAA.DN S..AFL 
+     Koala  ...LH..LNN ..VLC.VPNA ...KK.N.LV SAQRLVS.DN H..AYL 
+ Hopscotch  ...LH..LKN ..ILH.VPKA ...SK.N.LI SVHRLVA.DN Y..AFL 
+   Melmoth  ...IL..LKN ..VLF.IPEF ...RL.N.LI SISSLTD.DI GS.RVI 
+ Vitico1-2  ...VS..LQN ..VYH.VPGM ...KK.N.LL SVAQLTS..S GHFVLE 
+
+

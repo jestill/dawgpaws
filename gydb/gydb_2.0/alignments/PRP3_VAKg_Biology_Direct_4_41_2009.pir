@@ -1,0 +1,9 @@
+>P1;Copia
+VAKQ
+*
+>P1;Koco
+VAKG
+*
+>P1;Tor1
+AAKG
+*

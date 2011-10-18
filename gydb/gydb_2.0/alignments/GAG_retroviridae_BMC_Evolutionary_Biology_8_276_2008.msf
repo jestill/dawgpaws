@@ -1,0 +1,753 @@
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 010a2b01900009ffffffffffff000000000000000000808080c0c0c0ffff
+GDC ff000000000000f43f000000000000f43f000000000000f03f0000000000
+GDC 00f03f00A000300000190000cA54696d6573204e657720526f6d616e00A0
+GDC 0320002000000000000000000000401444e45510002535400034b5248000
+GDC 44c49564d4750414659570028576453562c0d0a47414c562c0d0a4b6f525
+GDC 62c0d0a5245562c0d0a484552562d452c0d0a5254564c2d49612c0d0a4d6
+GDC 445562c0d0a504552562d4d534c2c0d0a46654c562c0d0a5243484f2d4b3
+GDC 12c0d0a424145564d2c0d0a4d754c562c0d0a4d504d562c0d0a484552562
+GDC d4b31302c0d0a4d4d54562c0d0a534552562c0d0a5352562d312c0d0a4a5
+GDC 352562c0d0a4c5044562c0d0a5253562c0d0a534d52562d482c0d0a53546
+GDC 34c56325050313636342c0d0a48544c562d322c0d0a48544c562d312c0d0
+GDC a424c562c0d0a4849562d322c0d0a4849562d312c0d0a5349564d41432c0
+GDC d0a53495641474d2c0d0a5349564d4e442c0d0a564d562c0d0a53412d4f4
+GDC d56562c0d0a434145562c0d0a4649562c0d0a4249562c0d0a454941562c0
+GDC d0a4846562c0d0a5346562d312c0d0a4d754552562d4c293b0d0a00BBAAB
+GDC AAA0000002a000a00020001B20AAA000a203a2000203a200000000000000
+GDC 059400000000000000000000c5058000000ffff000047580000ff00ff000
+GDC 041475358000000ffffff0056434147444e535450580000ff00ffff00484
+GDC b525800ff00000000ff4544580000ff000000ff484b5245445800ffffff0
+GDC 000ff48524551444e425a5800ff000000ff005957484b524551444e53544
+GDC 25a580000000000ff00494c56415800ff00008080804659574858000000f
+GDC f808080494c564341474d4659574854505800ffffff0000000c505800000
+GDC 000000000475800000000000000414347535800000000000000564147444
+GDC e5354505800000000000000484b525800000000000000454458000000000
+GDC 00000484b524544580000000000000048524551444e425a5800000000000
+GDC 000435957484b524551444e5354425a5800000000000000494c564158000
+GDC 00000000000465957485800000000000000494c564341474d46595748545
+GDC 058000000000000000300ffffff00000000ffffff80808000000000c0c0c
+GDC 00000ABBBBBBBBBBBBBB00ff00A002700010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 0010001A0018AA000000000000000000000003A00ff00A00000000008056
+GDC 40000000000080514000000000000049400000020000000000001440A000
+GDC 0000098b20c41000000001025064100000000189806410000000078b10b4
+GDC 100AAABB00005374616e646172640046464c4c5353535359592a2a43432a
+GDC 574c4c4c4c5050505048485151525252524949494d545454544e4e4b4b53
+GDC 53525256565656414141414444454547474747002d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d4d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d00BBBBB00000
+GDC 000000000270000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000003000000000
+GDC 000BBAB00270000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000201b7B000000000000594000000000
+GDC 000054400000000000004e4000DAAB000000ffffff0302014445484b524e
+GDC 5153540000ff00ff0000024c49564d4659574147435000ff000000ff0004
+GDC 014445484b520000ff00ff0000024e5153540000ff00ff8000034c49564d
+GDC 46595700ff000000ff0004414700ff0000008000080144450000ff00ff00
+GDC 0002484b5200ffffffff0000034e510000ff00ff800004535400ffffffff
+GDC 8000054c495600ff000000ff000646595700ffffff00ff0007414700ff00
+GDC 00008000084d4300ffffff0080000000000000Affffff80808000A
+ GAG_retroviridae3.msf  MSF: 764  Type: P  May 5, 2006  10:09  Check: 2747 ..
+
+ Name: WdSV             Len:   764  Check: 5976  Weight:   1.00
+ Name: GALV             Len:   764  Check: 2533  Weight:   1.00
+ Name: KoRV             Len:   764  Check: 4943  Weight:   1.00
+ Name: REV              Len:   764  Check: 1626  Weight:   1.00
+ Name: HERV-E           Len:   764  Check: 9796  Weight:   1.00
+ Name: RTVL-Ia          Len:   764  Check: 3328  Weight:   1.00
+ Name: MdEV             Len:   764  Check: 7370  Weight:   1.00
+ Name: PERV-MSL         Len:   764  Check: 5931  Weight:   1.00
+ Name: FeLV             Len:   764  Check: 1544  Weight:   1.00
+ Name: RCHO-K1          Len:   764  Check: 1792  Weight:   1.00
+ Name: BAEVM            Len:   764  Check: 6646  Weight:   1.00
+ Name: MuLV             Len:   764  Check: 9803  Weight:   1.00
+ Name: MPMV             Len:   764  Check: 791   Weight:   1.00
+ Name: HERV-K10         Len:   764  Check: 7757  Weight:   1.00
+ Name: MMTV             Len:   764  Check: 9835  Weight:   1.00
+ Name: SERV             Len:   764  Check: 1971  Weight:   1.00
+ Name: SRV-1            Len:   764  Check: 9620  Weight:   1.00
+ Name: JSRV             Len:   764  Check: 6667  Weight:   1.00
+ Name: LPDV             Len:   764  Check: 7097  Weight:   1.00
+ Name: RSV              Len:   764  Check: 7556  Weight:   1.00
+ Name: SMRV-H           Len:   764  Check: 5208  Weight:   1.00
+ Name: STcLV2PP1664     Len:   764  Check: 813   Weight:   1.00
+ Name: HTLV-2           Len:   764  Check: 3663  Weight:   1.00
+ Name: HTLV-1           Len:   764  Check: 5607  Weight:   1.00
+ Name: BLV              Len:   764  Check: 3883  Weight:   1.00
+ Name: HIV-2            Len:   764  Check: 693   Weight:   1.00
+ Name: HIV-1            Len:   764  Check: 3372  Weight:   1.00
+ Name: SIVMAC           Len:   764  Check: 448   Weight:   1.00
+ Name: SIVAGM           Len:   764  Check: 6425  Weight:   1.00
+ Name: SIVMND           Len:   764  Check: 9211  Weight:   1.00
+ Name: VMV              Len:   764  Check: 400   Weight:   1.00
+ Name: SA-OMVV          Len:   764  Check: 1720  Weight:   1.00
+ Name: CAEV             Len:   764  Check: 8158  Weight:   1.00
+ Name: FIV              Len:   764  Check: 632   Weight:   1.00
+ Name: BIV              Len:   764  Check: 1775  Weight:   1.00
+ Name: EIAV             Len:   764  Check: 9349  Weight:   1.00
+ Name: HFV              Len:   764  Check: 4256  Weight:   1.00
+ Name: SFV-1            Len:   764  Check: 4724  Weight:   1.00
+ Name: MuERV-L          Len:   764  Check: 9828  Weight:   1.00
+
+//
+
+              1                                                   50 
+        WdSV  ...QYPLWPD QGTCATKHWE QAVLIPLDSV SEETAKVLNF LRVKIQARKG 
+        GALV  ...TLNHWRD VRTRAHNLSV EIKKGKWQTF CSSEWPTFGV GWPPEGTFNL 
+        KoRV  ...TLDHWKD VKTRAHNLSV EIRKGKWQTF CSSEWPTFEV GWPPEGTFNP 
+         REV  ...ILKNFSD FKKRAGDYGE DVDSFTLRKL CELEWPTFGV GWPKEGTLDF 
+      HERV-E  ...MLKNF.. KKGFNGDYGV TMTPGKLRTL CEIDWPTLEV GWPSEGSLDG 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  ...TLEHWKE VKIRAHNQSV EVRKGPWQTF CASEWPTFGV GWPPEGAFDL 
+    PERV-MSL  ...TLDHWTE VKSRAHNLSV QVKKGPWQTF CVSEWPTFDV GWPSEGTFNS 
+        FeLV  ...TLDHWSE VRARAHNQGV EVRKKKWITL CEAEWVMMNV GWPREGTFSL 
+     RCHO-K1  ...TLSHWRD VQDYAHNQSV DVRKRKWITL CSSEWPAFDV GWPRDGTFNL 
+       BAEVM  ...TLTHFSD VRARAHNLSV GVRKGRWQTF CSSEWPTLHV GWPRDGTFDL 
+        MuLV  ...TLEHWGD VQRIASNQSV DVKKRRWVTF CSAEWPTFDV GWPQDGTFNL 
+        MPMV  YVEQLKQALK TRGVKVKYAD LLKFFDFVKD TCPWFPQEGT IDIKRWRRVG 
+    HERV-K10  YLSFIKILLK RGGVKVSTKN LIKLFQIIEQ FCPWFPEQGT SDLKDWKRIG 
+        MMTV  FVSVLQRLLS ERGLHVKESS AIEFYQFLIK VSPWFPEEGG LNLQDWKRVG 
+        SERV  YVGQLKEALK IRGVKVKGND LFKFFDFVKD TCPWFPQEGT IDIKRWRRVG 
+       SRV-1  YVEQLKQALK TRGVKVKYAD LLKFFDFVKD TCPWFPQEGT IDIKRWRRVG 
+        JSRV  FVHMLSVMLK HRGITVSKTK LINFLSFIEE VCPWFPREGT VNLETWKKVG 
+        LPDV  ASQTFAEAA. ..SL.IDTAE AMNDLSQ.EG AETERNVTEI RESSQNDTVD 
+         RSV  TSPSKKEIGA MLSLLQKEGL LMSPSDLYSP GS.WDPITA. ALSQRAMILG 
+      SMRV-H  SKTLHNSGSQ DDQLNPADQA DLEEAAAQYN NPDWPQLTNT PALPPFRPPS 
+STcLV2PP1664  ..MGQTYGLS SSPIPKAPRG .LSTHHWLNF LQAAYRLQPG PSDFDFQQLR 
+      HTLV-2  ..MGQIHGLS PTPIPKAPRG .LSTHHWLNF LQAAYRLQPG PSDFDFQQLR 
+      HTLV-1  ..MGQIFSRS ASPIPRPPRG .LAAHHWLNF LQAAYRLEPG PSSYDFHQLK 
+         BLV  ..MGN..... .SPSYNPPAG .ISPSDWLNL RQSAQRLNPR PSPSDFTDLK 
+       HIV-2  SVLRGKKADE LERI.RL.RP GG.KKKYRLK HIVWAANKLD R...FGLAES 
+       HIV-1  SVLSGGKLDA WEKI.RL.RP GG.KKKYRMK HLVWASRELE R...FALNPG 
+      SIVMAC  SVLSGKKADE LEKI.RL.RP GG.KKKYMLK HVVWAANELD R...FGLAES 
+      SIVAGM  SALSGRNLDT FEKI.RL.RP NG.KKKYQLK HLIWAGKKME R...FGLHEK 
+      SIVMND  SALLGTDLDK FEKI.RL.KR GG.KKCYRLK HLCWCKGELD R...FGLSDK 
+         VMV  YPELKEVIKA TCKI.RV..G PG.KETLTEG NCLWALKTID F...IFEDLK 
+     SA-OMVV  YPELKEVIKT TCKI.KV..G PG.KETLTEG NCLWALKTLD F...IFEDIK 
+        CAEV  YPELEKCIKH ACKI.KV.RL RG..EHLTEG NCLWCLKTLD Y...MFEDHK 
+         FIV  KMAIKRCSNV A....VG..V GGKSKKFGEG NFRWAIRMAN V...STGREP 
+         BIV  .MKRRELEKK LRKV.RV..T PQQDKYYTIG NLQWAIRMIN L...MGIKCV 
+        EIAV  .LTWSKALKK LEKV.TV... QG.SQKLTTG NCNWALSLVD L..FHDTNFV 
+         HFV  ELDVEALVVI LRDRNIPRNP LHGEVIGLRL TEGWWGQIER FQMVRLILQD 
+       SFV-1  DLDVQALANL FNDLGINRNP RHREVIALRM TGGWWGPATR YNLVSLLLQD 
+     MuERV-L  NLLKYWNWLV DPPALSTIET SPDSLPPGSS ENFEDPWLKL YSELKEANDL 
+
+              51                                                 100 
+        WdSV  ETARQMTAHT IKKLIVGTI. .DKNKQQTEI LQK....... TDESDEEMDT 
+        GALV  SVIFAVKKIV FQENG.GHP. .DQVPYIVVW QDL....... AQNPPPWVPA 
+        KoRV  SIISAVKRIV FQETG.GHP. .DQVPYIIVW QDL....... SNSPPPWVPP 
+         REV  RVVAAVRNIV FGNP..GHP. .DQVIYITVW IDI....... TIERPKYLKD 
+      HERV-E  SLVSKVWHKV TSKS..GHS. .DQFPYIDTW LQL....... VLDPPQWLRG 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  SLIAAVRRIV FQEEG.GHP. .DQIPYIVTW QSL....... VQFPPSWVKP 
+    PERV-MSL  EIILAVKAVI FQTGPGSHP. .DQEPYILTW QDL....... AEDPPPWVKP 
+        FeLV  DNISQVEKKI FAPGPYGHP. .DQVPYITTW RSL....... ATDPPSWVRP 
+     RCHO-K1  QTIFQVKEKT MDPGPQGHP. .DQVAYIVTW EAL....... VQTPPPWIRP 
+       BAEVM  SVILQVKTKV MDPGPHGHP. .DQVAYIITW EDL....... VRNPPPWVKP 
+        MuLV  DIILQVKSKV FSPGPHGHP. .DQVPYIVTW EAL....... AYDPPPWVKP 
+        MPMV  DCFQDYYN.T FGPEKVPVT. ..AFSYWNLI KEL....... IDKKEVNPQV 
+    HERV-K10  KELKQAG..R KGNII.PLT. ..VWNDWAII KAALEPFQTE EDSISVSDAP 
+        MMTV  REMKRYAA.E HGTDSIPKQ. ..AYPIWLQL REIL...... TEQSDLVLLS 
+        SERV  DCFQDYYN.T FGPEKIPVT. ..AFSYWNLI RDL....... IDKKEADPQV 
+       SRV-1  DCFQDYYN.T FGPEKVPVT. ..AFSYWNLI KEL....... IDKKEVNPQV 
+        JSRV  EQIRTHY.TL HGPEKVPVE. ..TLSFWTLI RDC....... LDFDNDELKR 
+        LPDV  SESDPPAA.. .LPVRPLR.. .......... .......... ......DSQD 
+         RSV  KSGE.LKT.. WGL..VL... .......GAL KAA....... REEQVTSEQA 
+      SMRV-H  YVSTAVP... .......... .......... .......... .......PVA 
+STcLV2PP1664  RFLKLALKTP IWL....... .NPIDYSLLA SLI....... ....PK...G 
+      HTLV-2  RFLKLALKTP IWL....... .NPIDYSLLA SLI....... ....PK...G 
+      HTLV-1  KFLKIALETP VWI....... .CPINYSLLA SLL....... ....PK...G 
+         BLV  NYIHWFHKTQ KKP....... .WTFTSGGPA SC........ ....PP...G 
+       HIV-2  ..LLESKE.. .......... .GCQKILTVL DPM....... VPTGSEN... 
+       HIV-1  ..LLETAE.. .......... .GCQQIIEQL QST....... LKTGSEE... 
+      SIVMAC  ..LLENKE.. .......... .GCQKILSVL APL....... VPTGSEN... 
+      SIVAGM  ..LLETKE.. .......... .GCQKIIEVL SPL....... EPTGSEG... 
+      SIVMND  ..LLETQQ.. .......... .GCEKILSVC WPL....... YDQGSDN... 
+         VMV  ...TEPW... .......... .TITKMYTVW DRL....... KGLTPEE.T. 
+     SA-OMVV  ...TEPW... .......... .TLTKMYTVW EKL....... KQVTPEE.T. 
+        CAEV  ...EEPW... .......... .TKVKFRTIW QKV....... KNLTPEE.S. 
+         FIV  ..GDIPE... .......... .TLDQLRLVI CDL....... .QERREKFG. 
+         BIV  ..CDEECSAA .......... .EVALIITQF SAL....... DLENSPI... 
+        EIAV  ..KEKDW... .......... .QLRDVIPLL EDV....... TQTLSGQ... 
+         HFV  DDNEPLQRPR YEVIQRAVNP HTMFMISGPL AEL....... QLAFQDLDLP 
+       SFV-1  DQGQPLPQPR WRAEGRAANP AVMFTLEAPW QDL....... RLAFDNIDVG 
+     MuERV-L  DFLNELGDSV HKAFYKMGK. KSENDFT.GW LLL....... VSVEKMMN.. 
+
+              101                                                150 
+        WdSV  TNTMLFIARN KRERIAQQQQ AD...LAAQQ QVLLLQREQQ REQREKDI.. 
+        GALV  ........SA ...KVAVVSD TRR..PVAG. RP..SAPPRP PIYPATD... 
+        KoRV  ........LA ...KIAVASG QDNGRKSAGG RP..SAPSRL PIYPETDSLF 
+         REV  C..GCKPTGP SKVLLASQKV NPR.RPVLPS APESPPRIRR AQFLDERP.. 
+      HERV-E  ........QA ...AAVLVAK GQIVKEGFCS TRGKSTPEVL FDQTSED..P 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  W..TPNPSKL ...TVAVAQS D.....AAEK SG.PSAPPKI YPEIDD.... 
+    PERV-MSL  W..LNKPRKP GPRILA.... ......LGEK NK.HSAE.KV KPSPHIYP.E 
+        FeLV  FLPPPKPPTP LPQPLSPQPS APLTSSLYPV LP.KSDPPKP PV.LPPD..P 
+     RCHO-K1  FLHPKGSPSL PPSNRSNNRP IPSTPTLSNP QLPPHSSLYP TAVRTIKLFP 
+       BAEVM  FLHTPS..TS KSTLLALEVP KNRTLDPPKP VLPDESQQDL LFQDPLPHPP 
+        MuLV  FVSPKPPPLP TAPVLPPGPS AQPPSRSALY PALTPSIKTK PPKPQVLPDN 
+        MPMV  MAAVAQTEEI LKSNS..... ..QTDLTKTS QNPDLDLISL DSDDEGAKSS 
+    HERV-K10  GSCLIDCNEN TRKKS..... QKETESLHCE YVAEPVMAQS TQNVDYNQLQ 
+        MMTV  AEAKSVTEEE LEEGLT.... ........GL LSTSSQEKTY GTRGTAYA.. 
+        SERV  MAAVAQTEHI LKVSS..... .RSNLAKPPQ DTEE.DLISL ESDHEEIKSP 
+       SRV-1  MAAVAQTEEI LKTSS..... .HTELTTKPS QNPDLDLISL DSDDEGAKGS 
+        JSRV  LGNLLKQEED PLHTP..... .......... ....DSVPSY D......... 
+        LPDV  WRGGSGAGES YTASS...GS GAESSMETFR EVPTAPPPPV MGPGQEPPP. 
+         RSV  KFWLGLGGG. RVS....... .......... .......PPG PECIEKPA.. 
+      SMRV-H  VAAPV..... .......... .......... ...LHAPTSG VPGSP..... 
+STcLV2PP1664  Y...PGRTIE IINVLIKNQT SPT....... .......... .......... 
+      HTLV-2  Y...PGRVVE IINILVKNQV SPS....... .......... .......... 
+      HTLV-1  Y...PGRVNE ILHILIQTQA QIP....... .......... .......... 
+         BLV  K...FGRVPL VLA.TLNEVL SN........ .......... .......... 
+       HIV-2  .LKSLFNTVC VIWCIHAEEK VKD....... .......... .......... 
+       HIV-1  .LKSLFNTMA VLWCVHQRIE VKD....... .......... .......... 
+      SIVMAC  .LKSLYNTVC VIWCIHAEEK VKH....... .......... .......... 
+      SIVAGM  .LKSLFNLCC VIWCIHAEQK VKD....... .......... .......... 
+      SIVMND  .LKALVGTVC VVACIHAGIE IKS....... .......... .......... 
+         VMV  SKREFASLQA TLACIMCSQM GMK....... .......... .......... 
+     SA-OMVV  SKREFASLQA TLACIMCSQM GMR....... .......... .......... 
+        CAEV  NKKDFMSLQA TLAGLMCCQM GMR....... .......... .......... 
+         FIV  SSKEIDMAIT TLKVFAVVGL LNM....... .......... .......... 
+         BIV  RGKEEVAIKN TLKVFWSLLA GYK....... .......... .......... 
+        EIAV  .EREAFER.. TWWAISAVKM GLQ....... .......... .......... 
+         HFV  EGPLRFGPLA NGHYVQGDPY SSSYRPVTMA ETAQMTRDEL EDVLNTQSEI 
+       SFV-1  EGTLRFGPLA NGNYIPGDEF SLEFLPPAMQ EITQMQRDEL EEVLDVVGQI 
+     MuERV-L  ERKELCDKIE RLQTQVNDLK VAK.CVLEEN LLSCSNRAQV AENQTETLIV 
+
+              151                                                200 
+        WdSV  ..KKRDEKKK KLLPDT.... ..TQKVEQTD IGEASSSDAS AQKPISTDNN 
+        GALV  ..DLLLLSEP TPPPYP.... .......... AALPPPLAPQ AIGPPSGQMP 
+        KoRV  LLSEPPPYPT SPPPPP.... .......... APHAARPAPG LMAEGLG... 
+         REV  ....LSPAPA PPPPYP.... .......... ...EVP.AI. AEEGEEGQQP 
+      HERV-E  LQEMAPVIPV LPSPYQG... .....ERLPT FESTV.LAPL P......... 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  ....LLWMDS QPPPYP.... ....LPQQPP AAAPPVAAPQ PEPTASGAQ. 
+    PERV-MSL  IEEPPAWPEP QSVPPP.... .....PYLAQ GAARGPFAPP GAPAVEGPAA 
+        FeLV  SSPLIDLLTE EPPPYP.... ......GGHG PPPSGPRTPT ASPIASRLRE 
+     RCHO-K1  REKLLADLLT EEPPTP.... .......... AAAPAVSAET ASAPPPD... 
+       BAEVM  HNPLLEPPPY NSPSPP.... .VLSPVSPTT PSAPTPSSLV SSSTPPSSPA 
+        MuLV  GGPLIDLLTE DPPPYGAQPS SSARGNDEEE AAATSEVSPP SPM....... 
+        MPMV  SLQDKGLSST KK........ .....PKRFP VLLTAQTSKD PEDPNPSEVD 
+    HERV-K10  EVIYPETLKL EGKGPELMGP ..SESKPRGT SPLPAGQVLV RLQPQKQVKE 
+        MMTV  .......... .......... ......EIDT EVDKLSEHIY .DEPYE...E 
+        SERV  SVTDKEMPHE NK........ .....PKKYP ILQMLQKEEE INKPNQSDIN 
+       SRV-1  SLKDKNLSCT KK........ .....PKRFP VLLTAQTSAD PEDPNPSEVD 
+        JSRV  .......... .......... ......PPPP PPPSLKMHPS DNDDSLSSTD 
+        LPDV  NYPWEELRAA FERMG..... ........TG GRTTQGHQDS LKNSTRISGG 
+         RSV  .......... .......... .......... .TERRIDKGE EVGETTVQRD 
+      SMRV-H  .......... .......... ......TAPN LPGVALAKPS GPI.DETVSL 
+STcLV2PP1664  .......... .......... ......PPPA PSLPEPANPP PLQQPSA..P 
+      HTLV-2  .......... .......... ......APAA P.VPTPICPT TTPPPPPPPS 
+      HTLV-1  .......... .......... ......SRPA PPPP.SSSTH D.PPDSD... 
+         BLV  .......... .......... ......DEGA PGAS...... ..APEEQ... 
+       HIV-2  .......... .......... ......TEGA KQIVRRHLVA .ETGTAEKMP 
+       HIV-1  .......... .......... ......TKEA LDKI...... .EEAQKRSQQ 
+      SIVMAC  .......... .......... ......TEEA KQIVQRHLVM .ETGTAETMP 
+      SIVAGM  .......... .......... ......TEEA VVLVKQRCHL VEKEKTAAAP 
+      SIVMND  .......... .......... ......TQDA LKKLKVITRK .EEKQEDESK 
+         VMV  .......... .......... ......PETV QAAKGIISMK .EGLHENKEA 
+     SA-OMVV  .......... .......... ......PETV QAARGIISMK .EGLHEKQED 
+        CAEV  .......... .......... ......PETL QDAMATVIMK .DGLLEQEEK 
+         FIV  .......... .......... ......TVST AAAAENMYTQ .MGLDTRPST 
+         BIV  .......... .......... ......PEST ETALGYWEAF TYREREARAD 
+        EIAV  .......... .......... ......INNV VDGKASFQLL .RAKYEKKTA 
+         HFV  EIQMINLLEL YEVETR.... ......ALRR QLAERSSTGQ GGISPGAPRS 
+       SFV-1  TMQMNDLIGM QDAQIR.... ......GLEG QLRGLRGNLP VAGTPPPP.. 
+     MuERV-L  RLAELQRKFK .......... .......... .......... .......... 
+
+              201                                                250 
+        WdSV  PDLKVDGV.. LTRSQHTTVP SNITIKKDGT SVQYQHPIRN YPTGEGNLT. 
+        GALV  DSSDPEGPAA GTRSR.RARS PADNSGPDST VILPLRAIGP PAEPNGLV.. 
+        KoRV  ....SEGPAA GTRSR.RPRS PTGDTGPDST VALPLRAVGP PAEPNGLV.. 
+         REV  DSTV...MAS PPHTR....S GLEFGAQGPS GMYPLRETG. ERDMGGR... 
+      HERV-E  .........D KCIPR..PL. RVDKRGGEAS GETPPLA.AH LRPKTGIQM. 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  ......GPAG GTRSR.RGRS PAEEGGPDST VALPLRAHVG GPTPGPNDLI 
+    PERV-MSL  .......... GTRSR.RGAT PE...RTDEI ATLPLRT.YG PPTPGGQLQ. 
+        FeLV  .......... .......... .....RREN. PAEESQALPL REGPNN.... 
+     RCHO-K1  .......... ..PSPMAHRL RG...RRE.Q PAPDSTALPL RTGPNG.... 
+       BAEVM  PP........ ELTPRTPPQT PRLRLRRAEG QDGPSTWQSS LFPLRTVNR. 
+        MuLV  .......... ..VS...... .RLRGRRDP. PAADSTSSQA FPLRMGGDG. 
+        MPMV  WDGLEDEAAK YHN....... .......... ........PD WPPFLTRPPP 
+    HERV-K10  NKTQPQVAYQ YCR....... .......... .......... .WLNFS...I 
+        MMTV  KEKADKNEEK DHV....... .......... ......RKIK KVVQRKE... 
+        SERV  WDDLKEEAAK YHN....... .......... ........PD LPPFTSYPPP 
+       SRV-1  WDGLEDEAAK YHN....... .......... ........PD WPPFLTRPPP 
+        JSRV  EAELDEEAAK YHQ....... .......... ........ED WG.FL..... 
+        LPDV  SQQQQEMAAV KPKKEVSWGQ PLKTSDA... SMGDGSSDTE SGDDEDLLDW 
+         RSV  AKMAPEEAAT PK........ .......... .......... .......... 
+      SMRV-H  LDGVKTLVTK LSD....... .......... .......LAL LPPAGVMAFP 
+STcLV2PP1664  PEPHT..... ...PP.PYIK .......... PPATHCLPIL HPHGAPSAHS 
+      HTLV-2  PEAHV..... ...PP.PYAE .......... PTTTQCFPIL HPPGAPSAHR 
+      HTLV-1  ..PQI..... ...PP.PYVE .......... PTAPQVLPVM HPHGAPPNHR 
+         BLV  .......... ...PP.PYDP .......... P.AIL..PII SE.GNRNRHR 
+       HIV-2  STSRPT.... .......... .......... ........AP SSEKGG.NYP 
+       HIV-1  KTQQAAAGT. .......... .......... .........G SNSKVSQNYP 
+      SIVMAC  KTSRPT.... .......... .......... .........A PFSGRGGNYP 
+      SIVAGM  SGGQQQNYNT AATP...... .......... .......... .SGRHG.NYP 
+      SIVMND  .......... .......... .......... .......... .......NFP 
+         VMV  KGEKVEQLYP NL........ .......... .......... .EKHRE.VYP 
+     SA-OMVV  KEKKVEQLYP NL........ .......... .......... .EKHRE.VYP 
+        CAEV  KEDK...... .......... .......... .......... .REKEESVFP 
+         FIV  KEAGGK.... .......... .......... .......... .EEGPPQAYP 
+         BIV  KEGEIKSIYP SLTQNTQNKK .......... ........QT SNQTNTQSLP 
+        EIAV  NKKQS..... .......... .......... .......... ..EPSE.EYP 
+         HFV  RPP....... .......... .......... VSSFSGLPSL PSIPGIHPR. 
+       SFV-1  .......... .......... .......... PPSLDLQPAA ASSPYVAP.. 
+     MuERV-L  .......... .......... ........SQ PQSVSTVKVR ALIG...... 
+
+              251                                                300 
+        WdSV  .......... .......... .......... .......... .......... 
+        GALV  .......... .......... .......... .......... .......... 
+        KoRV  .......... .......... .......... .......... .......... 
+         REV  .......... .......... .......... .......... .......... 
+      HERV-E  .....PLREQ QYTGIDEDGH MVESR..... .......... .......... 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  .......... .......... .......... .......... .......... 
+    PERV-MSL  .......... .......... .......... .......... .......... 
+        FeLV  .......... .......... .......... .......... .......... 
+     RCHO-K1  .......... .......... .......... .......... .......... 
+       BAEVM  .......... .......... .......... .......... .......... 
+        MuLV  .......... .......... .......... .......... .......... 
+        MPMV  Y...NKATPS APTVMAVVNP KEELKEKIAQ LEEQIKLEEL HQALISKLQK 
+    HERV-K10  GHPQKVSMDI QECPQHHRAG RHTISRPLGD LILWHHLVDR VVNY....MK 
+        MMTV  .....NSEGK RKEKDSKAFL ATDWNDDDLS PEDWDDLEEQ AAHYHDDDEL 
+        SERV  YNK.TYNEAS APIVMAAIDP KEELKQKIAQ LEEQIKLEEL HQSLIIRLQK 
+       SRV-1  YNK...ATPS APTVMAVVNP KEELKEKIAQ LEEQIKLEEL HQALISKLQK 
+        JSRV  ....AQEKGA LTSKDELVEC FKNLTIALQN AGIQLPSNNN TFPSAPPFPP 
+        LPDV  LPGKPIKKSR RRDYKQEMGG AEKSPKFEQE GEELLELL.. .KRVKQEVER 
+         RSV  ......TVGT SCYHCGTAVG C.NCATATAS APPPPY..VG SGLY.PSLAG 
+      SMRV-H  V......... .TRSQGQVSS NTTGRASP.H PDTHTIPEEE EADSGESDSE 
+STcLV2PP1664  .......... .......... .......... .......... .......... 
+      HTLV-2  .......... .......... .......... .......... .......... 
+      HTLV-1  .......... .......... .......... .......... .......... 
+         BLV  .......... .......... .......... .......... .......... 
+       HIV-2  VQHVGGN... .......... .......... .......... .......... 
+       HIV-1  IVQNAQG... .......... .......... .......... .......... 
+      SIVMAC  VQQIGGN... .......... .......... .......... .......... 
+      SIVAGM  VVQQNNQ... .......... .......... .......... .......... 
+      SIVMND  VQRDAAG... .......... .......... .......... .......... 
+         VMV  IVNLQAG... .......... .......... .......... .......... 
+     SA-OMVV  IVNLQAG... .......... .......... .......... .......... 
+        CAEV  IVVQAAG... .......... .......... .......... .......... 
+         FIV  IQTVNGA... .......... .......... .......... .......... 
+         BIV  AITTQDG... .......... .......... .......... .......... 
+        EIAV  IMIDGAG... .......... .......... .......... .......... 
+         HFV  .......... .......... .......... .......... .......... 
+       SFV-1  .......... .......... .......... .......... .......... 
+     MuERV-L  .......... .......... .......... .......... .......... 
+
+              301                                                350 
+        WdSV  .......... ........AQ VRNPFRPLEL QQLRKDCPAL .PEG.IPQLA 
+        GALV  .......... ........PL QYWPFSSADL YNWKSNHPSF .SEN..PAGL 
+        KoRV  .......... ........PL QYWPFSSADL YNWKSNHPSF .SEN..PTGL 
+         REV  .......... .......PMR TYVPFTTSDL YNWKNQNPSF .SQA..PDEV 
+      HERV-E  .......... ........VF VYQPFTSADL LNWKNNTPSY .TEK..PQAL 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  .......... ........PL QYWPFSSSDL YNWKTNHPPF .SEN..PSGL 
+    PERV-MSL  .......... ........PL QYWPFSSADL YNWKTNHPPF .SED..PQRL 
+        FeLV  .......... ........RP QYWPFSASDL YNWKSHNPPF .SQD..PVAL 
+     RCHO-K1  .......... ........QP QYWPFSASDL YNWKNNNPSF .SAD..PVRL 
+       BAEVM  .......... ........TI QYWPFSASDL YNWKTHNPSF .SQD..PQAL 
+        MuLV  .......... ........QL QYWPFSSSDL YNWKNNNPSF .SED..PGKL 
+        MPMV  LKTGNETVTH PDTAGGLSRT PHWPGQHIPK GKCCAS.RE. .KEEQIPKDI 
+    HERV-K10  LL.INQERKE ILRHGNSQMP PAPQGRAPYH QPPTRRLNPM APPSRQGSEL 
+        MMTV  ILPVKRKVVK KK.PQALRRK PL.PPVGFAG AMAEAREK.. .GDL.TFTFP 
+        SERV  LKTGNEKIPN SDAMEGSLRP PQRPGQHVPR GGLVASRR.. .KENSSPKDV 
+       SRV-1  LKTGNETVTS PETAGGFSRT PHWPGQHIPK GKCCASRE.. .KEEQTPKDI 
+        JSRV  ...AYTPTVM AGLDPPPGFP PPSKHMSPLQ KALRQAQRL. .GEV.VSDFS 
+        LPDV  QSAAIQGS.R QISRATKITP IPLT.DWGLV ATEC.KLGGL .KLE..VPLP 
+         RSV  V..GEQQGQ. GDRAEQPREE PGHAGQAPGP ALTDWARVRE ELASTGPPV. 
+      SMRV-H  ...DDE.... .......... .......... .......... .EESSEPT.. 
+STcLV2PP1664  .......... .......... .PWQMK..DL QAIKQE.VST .SA...PGSP 
+      HTLV-2  .......... .......... .PWQMK..DL QAIKQE.VSS .SA...PGSP 
+      HTLV-1  .......... .......... .PWQMK..DL QAIKQE.VSQ .AA...PGSP 
+         BLV  .......... .......... .AWALR..EL QDIKKE.IEN .KA...PGSQ 
+       HIV-2  .......... .........Y THIPLSPRTL NAWVKLVEEK .KFG..AEVV 
+       HIV-1  .......... ........QM VHQPLSPRTL NAWVKVVEEK .GFN..PEVI 
+      SIVMAC  .......... .........Y THLPLSPRTL NAWVKLIEEK .KFG..AEVV 
+      SIVAGM  .......... .........W VHTPLSPRTL NAWVKTVEEK .RFG..AEIV 
+      SIVMND  .......... ........QY QYTPISPRII QTWVKTVEEK .KWK..PEVI 
+         VMV  .......... ........GR SWKAVESVVF QQLQTVAMQH .GLV..SEDF 
+     SA-OMVV  .......... ........GR SWKAVESVTF QQLQTVAMQH .GLV..SEDF 
+        CAEV  .......... ........GR SWKAVDSVMF QQLQTVAMQH .GLV..SEDF 
+         FIV  .......... ........P. QYVALDPKMV SIFMEKAREG .LGG..EE.V 
+         BIV  .......... .......TPR FDPDL.MKQL KIWS.DATER .NGV..DLHA 
+        EIAV  .......... ........NR NFRPLTPRGY TTWVNTIQTN .GLL..NEAS 
+         HFV  ......APSP PRATSTPGNI PWSLG...DD SPPSSSFPGP .SQP.RVSFH 
+       SFV-1  ......APSA PAASAAAADL GWFAG...GP GPGSLDPRLA RVAYN.PFLP 
+     MuERV-L  .......... .........K EWDPTTW.DG DVW.ED.HVE ..AEN....F 
+
+              351                                                400 
+        WdSV  EWLTQTMAI. .YNC...... .......... .......... .......... 
+        GALV  TGLLESLMF. SHQP...... .......... .......... .......... 
+        KoRV  TGLLESLMF. SHQP...... .......... .......... .......... 
+         REV  ISLLESVFY. THQP...... .......... .......... .......... 
+      HERV-E  IDLLQTIIQ. THNP...... .......... .......... .......... 
+     RTVL-Ia  .......... .......... .......... .......... .......... 
+        MdEV  TGLLESLMF. SHQP...... .......... .......... .......... 
+    PERV-MSL  TGLVESLMF. SHQP...... .......... .......... .......... 
+        FeLV  TNLIESILV. THQP...... .......... .......... .......... 
+     RCHO-K1  TSLIESVLT. THQP...... .......... .......... .......... 
+       BAEVM  TSLIESILL. THQP...... .......... .......... .......... 
+        MuLV  TALIESVLI. THQP...... .......... .......... .......... 
+        MPMV  ..FPVTET.V DGQGQAW... .......... .......... .......RHH 
+    HERV-K10  HEIIDKSR.K EGDTEAW... ...QFPVTLE PMPPGEGAQE GEPPTVEARY 
+        MMTV  .VVFMGES.D EDDTPVW... .......... .......... .........E 
+        SERV  ..FPVTET.T DEQGQAWR.. .......... .......... ........HH 
+       SRV-1  ..FPVTET.V DGQGQAWR.. .......... .......... ........HH 
+        JSRV  LAFPVFE... .NNNQRYY.. .......... .......... .........E 
+        LPDV  RVAPVRQMA. GGQ.IEW... .......... .......... .......... 
+         RSV  VAMPVVI... KTEGPAW... .......... .......... .......... 
+      SMRV-H  ..EP.TYT.. ....HSY... .......... .......... ........KR 
+STcLV2PP1664  QFMQTVRLA. IQQFDP.... .......... .......... .......... 
+      HTLV-2  QFMQTLRLA. VQQFDP.... .......... .......... .......... 
+      HTLV-1  QFMQTIRLA. VQQFDP.... .......... .......... .......... 
+         BLV  VWIQTLRLA. ILQADP.... .......... .......... .......... 
+       HIV-2  PG...FQAL. SEGC...... .......... .......... .......... 
+       HIV-1  PM...FSAL. SEGA...... .......... .......... .......... 
+      SIVMAC  SG...FQAL. SEGC...... .......... .......... .......... 
+      SIVAGM  PM...FQAL. SEGC...... .......... .......... .......... 
+      SIVMND  PL...FSAL. TEGA...... .......... .......... .......... 
+         VMV  ER..QLAYY. ATTW...... .......... .......... .......... 
+     SA-OMVV  ER..QLAYY. ATTW...... .......... .......... .......... 
+        CAEV  ER..QLAYY. ATTW...... .......... .......... .......... 
+         FIV  QL..WFTAF. SANL...... .......... .......... .......... 
+         BIV  VN..ILGVI. TANL...... .......... .......... .......... 
+        EIAV  QN..LFGIL. SVDC...... .......... .......... .......... 
+         HFV  PGNPFVEEE. GHRPRSQSRE RRREILPAPV PSAPPMIQYI PVPPPPPIGT 
+       SFV-1  GPSDGSGAA. PAQP.SAPPV ASPLPSLLPA QPMQPVIQYV HPPPINPAQQ 
+     MuERV-L  ESSDSQGFAP PEEVVP.... .......... .......... .......... 
+
+              401                                                450 
+        WdSV  DEADVEQLAR VIF.PTP..V RQIAGVINGH AAANTAA..K IQ........ 
+        GALV  TWDDCQQLLQ ILF.TTE..E RERILLEARK NVLGDNGA.P TQ........ 
+        KoRV  TWDDCQQLLQ VLF.TTE..E RERILLEARK NVLGVNGA.P TQ........ 
+         REV  TWDDCQQLLR TLF.TTE..E RERVRTESRR EVRNDQGVQV TD........ 
+      HERV-E  TWADCHQLLM FLFKTDE..R RVLQAATKWL EEHALADYQN PQ........ 
+     RTVL-Ia  SVGLLWQFGN MTL...L... .VKTFLLWTK H......... .......... 
+        MdEV  TWDDCQQLLQ VLF.TTE..E RERILMEARK NVLGEDGT.P TA........ 
+    PERV-MSL  TWDDCQQLLQ TLF.TTE..E RERILLEARK NVPGADGR.P TR........ 
+        FeLV  TWDDCQQLLQ ALL.TGE..E RQRVLLEARK QVPGEDGR.P TQ........ 
+     RCHO-K1  TWDDCEQILQ VLL.TSE..E KQRVLLEARK NVPGANGQ.P TQ........ 
+       BAEVM  TWDDCQQLLQ VLL.TTE..E RQRVLLEARK NVPGPGGL.P TQ........ 
+        MuLV  TWDDCQQLLG TLL.TGE..E KQRVLLEARK AVRGNDGR.P TQ........ 
+        MPMV  NGFDFAVIKE LKTAASQYGA TAPYTLAIVE SVADNWLT.P TDWNTLVRAV 
+    HERV-K10  KSFSIKMLKD MKEGVKQYGP NSPYMRTLLD SIAYGHRLIP YDWEILAKSS 
+        MMTV  PLP.LKTLKE LQSAVRTMGP SAPYTLQVVD MVASQWLT.P SDWHQTARAT 
+        SERV  TGFDFTIIKE LKTAASHYGA TAPYTLAIVK SVANNWLT.P TDWNTLVRAV 
+       SRV-1  NGFDFTVIKE LKTAASQYGA TAPYTLAIVE SVADNWLT.P TDWNTLVRAV 
+        JSRV  SL.PFKQLKE LKIACSQYGP TAPFTIAMIE SLGTQALP.P NDWKQTARAC 
+        LPDV  TPLDPKMVKQ LKEAIQEEGT TGPLASVLLD QVHQIALT.P SDLRQLARIV 
+         RSV  TPLEPKLITR LADTVRTKGL RSPITMAEVE ALMSSPLL.P HDVTNLMRVI 
+      SMRV-H  .LNLKTIEK. IKTAVANYGP TAPFTVALVE SLSERWLT.P SDWFFLSRAA 
+STcLV2PP1664  TAKDLQDLLQ YLC......S SLVVSLH..H QQF.HTLIT. .......... 
+      HTLV-2  TAKDLQDLLQ YLC......S SLVVSLH..H QQL.NTLIT. .......... 
+      HTLV-1  TAKDLQDLLQ YLC......S SLVASLH..H QQL.DSLIS. .......... 
+         BLV  TPADLEQLCQ YIA......S PVDQTAH..M TSL.TAAIA. .......... 
+       HIV-2  TPYDINQMLN CVG.DHQ.AA MQ.IIREIIN EEAAEWDV.Q HPIPGPLPA. 
+       HIV-1  TPQDLNMMLN IVG.GHQ.AA MQ.MLKETIN EEAAEWDR.I HPVHAGPIPP 
+      SIVMAC  LPYDINQMLN CVG.DHQ.AA MQ.IIRDIIN EEAADWDL.Q HP.QQAPQQ. 
+      SIVAGM  LSYDINQMLN VIG.DHQ.GA MQ.IIKEVIN DEAAQWDI.T HPPPAGPLPA 
+      SIVMND  ISHDLNIMLN AVG.DHQ.GA MQ.VLKDVIN EQAAEWDL.T HPQQQPAQPG 
+         VMV  TSKDILEVLA MMP.GNR.AQ KE.LIQGKLN EEAERWVR.Q NPP....... 
+     SA-OMVV  TSKDILEVLA MMP.GNR.AQ KE.LIQGKLN EEAERWVR.Q NPP....... 
+        CAEV  TSKDILEVLA MMP.GNR.AQ KE.LIQGKLN EEAERWRR.N NPPP...... 
+         FIV  TPTDMATLIM AAP.GCA.AD KE.ILDESLK QLTAEYDR.T NPPDGPR... 
+         BIV  VQEEIKLLLN STP.KWR.LD VQ.LIESKVR EKE.NAHR.T WKQHH..... 
+        EIAV  TSEEMNAFLD VVP.GQA.GQ KQ.ILLDAID KIADDWDN.R HPLPNAPLVA 
+         HFV  VIPIQHIRSV TGEPPRNPRE IPIWLGRNAP AIDGVFPVTT PDLRCRIINA 
+       SFV-1  VIPIQHIRAV TGNAPSNPRE IPMWIGRNAS AIEGVFPIPT SDIRSRVINA 
+     MuERV-L  SAPPLEIMPS PHEEINFA.E SDKP.AMTFT TDVSQ.GPPI VSSR..PVTR 
+
+              451                                                500 
+        WdSV  NYVTAC.RQ. .HYPAV.... ........CD WGT..IQ..A ..FT..YK.P 
+        GALV  ..LENL.IN. .E.AFP.... ........LN RPH..WD..Y N..T..AA.G 
+        KoRV  ..LENL.IN. .E.AFP.... ........LN RPQ..WD..H N..T..AE.G 
+         REV  ...ERE..I. .EAQFP.... ........AT RPD..WD..P N..T..GR.G 
+      HERV-E  ....EY.VR. .T.QLP.... ........GT DPQ..WD..P N..R..ED.M 
+     RTVL-Ia  .......... ...LLP.... .........Q DSW..WD... N..S..NA.A 
+        MdEV  ..LPNL.VD. .E.AFP.... ........LN RPN..WD..Y N..T..AE.G 
+    PERV-MSL  ..LQNE.ID. .M.GFP.... ........LT RPG..WD..Y N..T..AE.G 
+        FeLV  ..LPNV.ID. .E.TFP.... ........LT RPN..WD..F A..T..PA.G 
+     RCHO-K1  ..LPNE.ID. .A.ACP.... ........LE RPE..WD..F T..T..EA.G 
+       BAEVM  ..LPNE.ID. .E.GFP.... ........LT RPD..WD..Y E..T..AP.G 
+        MuLV  ..LPNE.VN. .A.AFP.... ........LE RPD..WD..Y T..T..TE.G 
+        MPMV  LSGGDHLLWK SE.FFENCRD TAK...RNQQ AGN.GWD..F DMLT..GS.G 
+    HERV-K10  LSPSQFLQFK TW.WIDGVQE QVR.RNRAAN PPV.NID.AD QLLG..IG.Q 
+        MMTV  LSPGDYVLWR TE.YEEKSKE MVQ...KAAG KRK.GKV.SL DMLL..GT.G 
+        SERV  LSGGDHLIWK SE.FFENCRD TTK...KNQQ AGN.GWD..F DMLT..GS.G 
+       SRV-1  LSGGDHLLWK SE.FFENCRE TAK...RNQQ AGN.GWD..F DMLT..GS.G 
+        JSRV  LSGGDYLLWK SE.FFEQCAR IAD...VNRQ QGI.QTS..Y EMLI..GE.G 
+        LPDV  LSPVMAALWK SE.WTERLQA RVTTATHDRR DPLHGVTVAV LKGSDPAM.A 
+         RSV  LGPAPYALWM DA.WGVQLQT VIAAATRDPR HPANGQGRGE RTNLDRLKGL 
+      SMRV-H  LSGGDNILWK SE.YEDISKQ FAE...RTRV RPP.PKDG.P LKIP..GA.S 
+STcLV2PP1664  ....EA.ET. RG.MTG.... .........Y NPM..AG..P L..R..MQ.A 
+      HTLV-2  ....EA.ET. RG.MTG.... .........Y NPM..AG..P L..R..MQ.A 
+      HTLV-1  ....EA.ET. RG.ITG.... .........Y NPL..AG..P L..R..VQ.A 
+         BLV  ....AA.EAA NT.LQG.... .........F NPQ..NG..T L..T..QQ.S 
+       HIV-2  GQLREPRGS. D..IAG.... .........T TST..VE... ..EQ..IQ.W 
+       HIV-1  GQMREPRGS. D..IAG.... .........T TSN..LQ... ..EQ..IG.W 
+      SIVMAC  GQLREPSGS. D..IAG.... .........T TST..VE... ..EQ..IQ.W 
+      SIVAGM  GQLRDPRGS. D..IAG.... .........T TSS..VA... ..EQ..IE.W 
+      SIVMND  GGLRTPSGS. D..IAG.... .........T TST..VE... ..EQ..LA.W 
+         VMV  ..G.PNVLTV DQ.IMG.... .........V GQT..NQ... ...Q..AS.Q 
+     SA-OMVV  ..G.PNVLTV DQ.IMG.... .......... VGQ..TN... ..QQ..AS.Q 
+        CAEV  ..PAGGGLTV DQ.IMG.... .......... VGQ..TN... ..QA..AA.Q 
+         FIV  ..PLPY.FTA AE.IMG.... .......... IGL..TQ... ..EQ..QA.E 
+         BIV  ..PEAP.KT. DE.IIG.... .........K GLS..SA... ..EQ..AT.L 
+        EIAV  PPQGPIPMTA RF.IRG.... .......... LGV..PR... .ERQ..ME.P 
+         HFV  ILGGNI...G LS.LTP.... ........GD CLT..WD... ...S..AV.. 
+       SFV-1  LLGRQL...G LN.LDP.... ........QH CIT..WA... ...S..AI.. 
+     MuERV-L  LKAKQA..PR GE.VESVVH. ......EEIR YTT..KE..L ..NE.FANSF 
+
+              501                                                550 
+        WdSV  PQ........ ........TA HEYVK.HAEI IFKNNS...G LEW..QHATV 
+        GALV  RE........ ........RL LVYRR.TLVA GLKG.A...A RRP.TNLAK. 
+        KoRV  RE........ ........RL LVYRR.TLVA GLKG.A...A RRP.TNLAK. 
+         REV  ND........ ........NL ERYRQ.ILLR GLRA.A...A RKP.TNLSK. 
+      HERV-E  QR........ .........L NRYRK.ALLE GLKR.R...A QKA.TNINK. 
+     RTVL-Ia  HE........ ........NM QDLRE.IIIK GISE.S...I PRT.QKLSK. 
+        MdEV  RG........ ........RL LVYRR.TLVA GLRG.A...A RRP.TNLAK. 
+    PERV-MSL  RE........ ........SL KIYRQ.ALVA GLRG.A...S RRP.TNLAK. 
+        FeLV  RE........ ........HL RLYRQ.LLLA GLRG.A...A RRP.TNLAQ. 
+     RCHO-K1  RT........ ........HL RLYRQ.LLVA GLRG.A...G RRP.TNLAQ. 
+       BAEVM  RE........ ........SL RIYRQ.ALLA GLKG.A...G KRP.TNLAK. 
+        MuLV  RN........ ........HL VLYRQ.LLLA GLQN.A...G RSP.TNLAK. 
+        MPMV  NYSSTDAQM. QYDP...GLF AQIQA.AATK AWRK.L...P VKG.DPGAS. 
+    HERV-K10  NWSTISQQA. LMQN...EAI EQVRA.ICLR AWEK.I...Q DPG.STCPS. 
+        MMTV  QFLSPSSQI. KLSK...DVL KDVTT.NAVL AWRA.IPPPG VKK.TVLA.. 
+        SERV  NYANTRAQM. QYDP...GLF SQIQA.AATK AWRK.L...P VKG.DPGAS. 
+       SRV-1  NYSSTDAQM. QYDP...GLF AQIQA.AATK AWRK.L...P VKG.DPGAS. 
+        JSRV  PYQATDTQL. NFLP...GAY AQISN.AARQ AWKK.L...P SSS.TKTED. 
+        LPDV  TP...QLQAA RMRG..REIQ ASCQA.SVSI CGGRTV..GK RTD..PWTK. 
+         RSV  ADGMVGNPQG QA..ALLRPG ELVAITASAL QAFREVA.RL AEPAGPWAD. 
+      SMRV-H  PYQNNDKQA. QFPP...GLL TQIQS.AGLK AWKR.L...P QKG.AATTS. 
+STcLV2PP1664  NN..PAQQ.. .......GLR REYQN.LWLA AFSALP.GNT RDP..SWAA. 
+      HTLV-2  NN..PAQQ.. .......GLR REYQN.LWLA AFSTLP.GNT RDP..SWAA. 
+      HTLV-1  NN..PQQQ.. .......GLR REYQQ.LWLA AFAALP.GSA KDP..SWAS. 
+         BLV  AQ..PNAG.. .......DLR SQYQN.LWLQ AWKNLP...T RPSVQPWST. 
+       HIV-2  MF...RPQNP V......PVG NIYRR.WIQI GLQKCVR..M YNP.TNILD. 
+       HIV-1  M....TNNPP I......PVG DIYKR.WIIL GLNKIVR..M YSP.VSILD. 
+      SIVMAC  MY...RQQNP I......PVG NIYRR.WIQL GLQKCVR..M YNP.TNILD. 
+      SIVAGM  TF...NANPR V......DVG RIYRG.WVIL GLQKCVK..M YNP.ISVLD. 
+      SIVMND  MN...MQQNA I......NVG TIYKS.WIIL GMNRLVK..S HCP.ISITD. 
+         VMV  AN...MDQ.. ........AR QICLQ.WVIT AL.RSVRHMS HRP.GNPML. 
+     SA-OMVV  AN...MDQ.. ........AR QLCLQ.WVIT AL.RSVRHMS HRP.GNPML. 
+        CAEV  AN...MDQ.. ........AR QICLQ.WVIN AL.RAVRHMA HRP.GNPML. 
+         FIV  AR...FAP.. ........AR MQCRA.WYLE AL.GKLAAIK AKS.PRAVQ. 
+         BIV  I....SVE.. ........CR ETFRQ.WVLQ AA.MEVAQAK HAT.PGPIN. 
+        EIAV  A....FDQ.. ........FR QTYRQ.WIIE AM.SEGIKVM IGK.PKAQN. 
+         HFV  .......... .........A TLF...IRTH GTF..P...M HQL.GNVIK. 
+       SFV-1  .......... .........A TLY...VRTH GSY..P...L HQL.AEVLR. 
+     MuERV-L  KQ........ ........KP GEYVWEWILR VWDK.G.GRN IK..LEQAE. 
+
+              551                                                600 
+        WdSV  PFINMVVQG. ..L.PPKVTR SLMSGNP..D WS..T..KTI .P.....QII 
+        GALV  .VRE.VLQG. PAEPPSVFLE RLMEAYR..R Y...T..PFD .P.SSEGQQA 
+        KoRV  .VRE.VLQG. PTEPPSVFLE RLMEAYR..R Y...T..PFD .P.SSEGQKA 
+         REV  .ITE.VRQG. ADESPTAYLE RLYQAYR..T W...S..PID .P.RAPENQA 
+      HERV-E  .VSE.VIQG. KEESPAKFHE RLCEAYC..M Y...T..PFD .P.DSPENQR 
+     RTVL-Ia  .AFD.IQQE. KDEGPIRFLD RLKEQMK..Q Y...T..GLN .L.EDPLGQR 
+        MdEV  .VRE.VLQG. QTEPPSVFLE RLMEAYR..R Y...T..PFD .P.SSEGQKA 
+    PERV-MSL  .VRE.VMQG. PNEPPSVFLE RLLEAFR..R Y...T..PFD .P.TSEAQKA 
+        FeLV  .VKQ.VVQG. KEETPAAFLE RLKEAYR..M Y...T..PYD .P.EDPGQAA 
+     RCHO-K1  .VKQ.VIQG. AEESPATFLE RLKGAYR..M Y...T..PYD .P.EDPGQAT 
+       BAEVM  .VRT.ITQG. KDESPAAFME RLLEGFR..M Y...T..PFD .P.EAPEHKA 
+        MuLV  .VKG.ITQG. PNESPSAFLE RLKEAYR..R Y...T..PYD .P.EDPGQET 
+        MPMV  .LTG.VKQG. PDEPFADFVH RLITTAG..R IFG....SAE .A....GVDY 
+    HERV-K10  .FNT.VRQG. SKEPYPDFVA RLQDVAQ..K .S.....IAD .E...KAGKV 
+        MMTV  .G...LKQG. NEESYETFIS RLEEAVY..R MMPRG.EGSD .........I 
+        SERV  .LTA.VKQG. PNEPFSDFVH RLMTTAG..R IFGNAETGVD .......... 
+       SRV-1  .LTG.VKQG. PDEPFADFVH RLITTAG..R IFGSAEAGVD .......... 
+        JSRV  .LSK.VRQG. PDEPYQDFVA RLLDTIG..K I......MSD EKA....GMV 
+        LPDV  .....VTQG. LGEPFLSFAE RLLNAYE..K SQLPE.AAKN .A........ 
+         RSV  .....ITQG. PSESFVDFAN RLIKAVE..G SDLPP.TAR. .A...PVIID 
+      SMRV-H  .LAK.IRQG. PDESYSDFVS RLQETAD.RL F...G..SGE .SE.....SS 
+STcLV2PP1664  .....ILQG. LEEPYCAFVE RLNVALDNGL PE.....GT. .P.....KEP 
+      HTLV-2  .....ILQG. LEEPYCAFVE RLNVALDNGL PE.....GT. .P.....KEP 
+      HTLV-1  .....ILQG. LEEPYHAFVE RLNIALDNGL PE.....GT. .P.....KDP 
+         BLV  .....IVQG. PAESYVEFVN RLQISLADNL PD.....GV. .P.....KEP 
+       HIV-2  .....IKQG. PKEPFQSYVD RFYKSLR..A EQ.....TDP .A....VKNW 
+       HIV-1  .....IRQG. PKEPFRDYVD RFYKTLR..A EQ.....ATQ .E....VKNW 
+      SIVMAC  .....VKQG. PKEPFQSYVD RFYKSLR..A EQ.....TDP .A....VKNW 
+      SIVAGM  .....IRQG. AKEPFKDYVD RFYQALR..A EQ.....TPQ .D....VKNW 
+      SIVMND  .....VRQG. PKEAFKDYVD RFYNVMR..A EQ.....ASG .E....VKMW 
+         VMV  .....VKQK. NTESYEDFIA RLLEAID..A EP.....VTD .P....IKTY 
+     SA-OMVV  .....IKQK. NSESYEDFIA RLLEAID..T EP.....VTD .P....IKTY 
+        CAEV  .....VKQK. TNEPYEDFAA RLLEAID..A EP.....VTQ .P....IKDY 
+         FIV  .....LRQG. AKEDYSSFID RLFAQID..Q EQ.....NTA .E....VKLY 
+         BIV  .....IHQG. PKEPYTDFIN RLVAALE..G MA.....APE .T....TKEY 
+        EIAV  .....IRQG. AKEPYPEFVD RLLSQIK..S EG.....HPQ .E....ISKF 
+         HFV  .GIV.DQEGV ATA.YTLGMM LSGQNYQ..L VS..G..IIR .G.YLPGQAV 
+       SFV-1  .RVS.NSEGA AAA.WQLGMM LTNQDYN..L VW..G..MVR .P.LLPGQAV 
+     MuERV-L  .F...IDMGP LSR.DSRFN. ..TEARI... ....V..KKG ....VKSLFE 
+
+              601                                                650 
+        WdSV  PLMQ..HYLN LQSRQDAKIK Q.TPLVL... QLAMPAQTMN GNKGYVGSYP 
+        GALV  AVAMA.FIGQ SAPDIKKKLQ ..RLEG.... .........L QDYSLQDLVK 
+        KoRV  AVAMS.FIGQ SAPDIKKKLQ ..RLEG.... .........L QDHSLQDLIK 
+         REV  AIVIQ.FVSQ SAPDIRKKIQ ..KIDG.... .........F QGKSLSELVA 
+      HERV-E  MINMA.LVSQ STEDIRRKLQ ..KKAG.... .........F AGMNTSQLLE 
+     RTVL-Ia  MLKIH.FVTK GWPDVSKKLQ .KAQKVYVRR DREKQKQKSK PMLSTFQQVA 
+        MdEV  AVAMA.FIGQ SAPDIKKKLQ ..RLEGL... .......... QDYTLQDLVK 
+    PERV-MSL  SVALA.FIGQ SALDIRKKLQ ..RLEGL... .......... QEAELRDLVK 
+        FeLV  SVILS.FIYQ SSPDIRNKLQ ..RLEGL... .......... QGFTLSDLLK 
+     RCHO-K1  TLALS.LIWQ SAPDIRNKLQ ..RLENL... .......... QGYTLQDLLK 
+       BAEVM  TVAMS.FIDQ AALDIKGKLQ ..RLDGI... .......... QTHGLQELVR 
+        MuLV  NVSMS.FIWQ SAPDIGRKLE ..RLEDL... .......... KSKTLGDLVR 
+        MPMV  V.KQL.AYEN ANPACQAAIR ..PYRK.... .........K TD..LTGYIR 
+    HERV-K10  IVELM.AYEN ANPECQSAIK ..PLKG.... .........K VP..AGSDVI 
+        MMTV  LIKQL.AWEN ANSLCQDLIR PIRKTG.... .......... T...IQDYIR 
+        SERV  YVKQL.AYEN ANPACQAAIR ..PYRK.... .........K TD..LTGYIR 
+       SRV-1  YVKQL.AYEN ANPACQAAIR ..PYRK.... .........K TD..LTGYIR 
+        JSRV  LAKQL.AFEN ANSACQAALR ..PYRK.... .........K GD..LSDFIR 
+        LPDV  VFRDC.VKQQ GNMLTQQYML ..GAPSTEN. .......... TA.ELVKYLL 
+         RSV  CFRQK...SQ ..PDIQQLIR ..AAPS.... .......TLT TPGEIIKYVL 
+      SMRV-H  FVKHL.AYEN ANPACQSAIR ..PFRQ.... ......KELS TMSPLLWYCS 
+STcLV2PP1664  ILRSL.AYSN ANKDCQK.LL ..QARG.... .........H TNSPLGDMLR 
+      HTLV-2  ILRSL.AYSN ANKECQK.IL ..QARG.... .........H TNSPLGEMLR 
+      HTLV-1  ILRSL.AYSN ANKECQK.LL ..QARG.... .........H TNSPLGDMLR 
+         BLV  IIDSL.SYAN ANKECQQ.IL ..QGRG.... .........L VAAPVGQKLQ 
+       HIV-2  MTQTL.LVQN ANPDC.KLVL ..KGLG.... .......... MNPTLEEMLT 
+       HIV-1  MTETL.LVQN ANPDC.KSIL ..KALG.... .......... TGATLEEMMT 
+      SIVMAC  MTQTL.LIQN ANPDC.KLVL ..KGLG.... .......... TNPTLEEMLT 
+      SIVAGM  MTETL.LIQN ANPDC.KLVL ..KGLG.... .......... IHPTLEEMLT 
+      SIVMND  MQQHL.LIEN ANPEC.KQIL ..RSLG.... .......... KGATLEEMLE 
+         VMV  LKVTL.SYTN ASTDCQKQMD ..RTLGTR.. .........V QQATVEEKMQ 
+     SA-OMVV  LKVTL.SFTN ASTDCQKQMD ..RVLGTR.. .........V QQASVEEKMQ 
+        CAEV  LKLTL.SYTN ASADCQKQMD ..RTLGQR.. .........V QQASVEEKMQ 
+         FIV  LKQSL.SIAN ANAECKKAMS ..HLKP.... .......... .ESTLEEKLR 
+         BIV  LLQHL.SIDH ANEDC.QSIL ..RPLG.... .......... PNTPMEKKLE 
+        EIAV  LTDTL.TIQN ANEECRNAMR ..HLRP.... .......... .EDTLEEKMY 
+         HFV  VTALQQRLDQ EIDDQTRAE. .......... .......... ......TFIQ 
+       SFV-1  VTAMQHRLDQ EVSDAARIV. .......... .......... ......SFVN 
+     MuERV-L  WLAEV.FI.. ......KRW. ...PTG.... .......... NDLEMPDIPW 
+
+              651                                                700 
+        WdSV  TNEPYY.... ......SFQQ QQ........ .......... .......... 
+        GALV  EAEKVY...H KRET..EEER QERE...... .....KKEAE EKERRRDRPK 
+        KoRV  EA..EKVY.H KRET..EEE. KQERE..... .....KKETE ERERRRDRRQ 
+         REV  IAQKVF...D QRE...DPA. .......... .....KATHE LTQ....... 
+      HERV-E  IANQVF...V NRDA....AS R......... .....KETTR MN...VRPGE 
+     RTVL-Ia  P.NPYA...T KGFQ...GAR NY........ .....KRSQA SQTQFRETKP 
+        MdEV  EAEKVY...H KRET..EEER QERE...... .....KKEVE ERENRRDRRQ 
+    PERV-MSL  EAEKVY...Y KRET..EEER EQRKE..... .....REREE REERRNKRQE 
+        FeLV  EAEKIY...N KRET..PEER EE........ .....RLWQR QEER..DKKR 
+     RCHO-K1  EAERIS...N KRET..QTER EERW...... .....RKEAR RR....DRKR 
+       BAEVM  EAEKVY...N KRET..PEER EARLI..... .....KEQEE REDRR.DRKR 
+        MuLV  EAEKIF...N KRET..PEER EERIRRETEE KEER.RRAED EQREK.ERDR 
+        MPMV  LCSDIGPSYQ QGLA..MAAA FSGQTV.... .....KDFLN NKNKEK.... 
+    HERV-K10  SE.YVKACDG IGGA..MHKA MLMAQAIT.. .....GVVLG GQVRTF.... 
+        MMTV  ACLDASPAVV QGMA..YAAA MRGQKYSTFV .....KQTYG GGKGGQGAE. 
+        SERV  LCSDIGPSYQ QGLA..MTAA FSGQTV.... .....RDFLI NKGKD..... 
+       SRV-1  LCSDIGPSYQ QGLA..MAAA FSGQTV.... .....KDFLN NKNKEK.... 
+        JSRV  ICADIGPSYM QGIA..MAAA LQGKSI.... .....KEVLF QQQARNKKGL 
+        LPDV  KRENEGA..A QGNA..AAIV AAL....... .....KEARA .......... 
+         RSV  DRQKTAPL.T DQGI..AAAM SSAIQPLVMA ..VVNRERDG QTGSGGRA.. 
+      SMRV-H  AHAVGL...A IGAALQNLAP AQLLEP.... .....RPAFA IIVT..NP.A 
+STcLV2PP1664  ACQ.AWTPKD KAR...VLVV .......... ...QPRKPPP .......... 
+      HTLV-2  TCQ.AWTPKD KTK...VLVV .......... ...QPRKPPP .......... 
+      HTLV-1  ACQ.AWTPKD KTK...VLVV .......... ...QPKKPPP .......... 
+         BLV  ACA.HWAPKV KQP...AILV HTPGPKMPGP R.QPAPKRPP .......... 
+       HIV-2  ACQGVGGPGQ KARL..MAEA LKEVIGPAPI ...PFAAAQQ RK........ 
+       HIV-1  ACQGVGGPSH KARV..LAEA MSQAQHTNIM M.QRGNFKGQ R......... 
+      SIVMAC  ACQGVGGPGQ KARL..MAEA LKEALAPAPI ...PFAAAQQ KGPRK..... 
+      SIVAGM  ACQGVGGPGH KAKL..MVEA MQQMQGVNMV ...QGAPRGG RGRGRG.... 
+      SIVMND  ACQGVGGPQH KARL..MAEM MRTVVGQSQN FVQQRGPQRG PVRQPTGR.. 
+         VMV  ACRDVGSEGF KMQL..LAQA LRPQ...... ...GKAGHKG V......... 
+     SA-OMVV  ACRDVGSEGF KMQL..LAQA LRPP...... ...RKEGKQG .......... 
+        CAEV  ACRDVGSEGF KMQL..LAQA LRPG...... ...KGKGNGQ .......... 
+         FIV  ACQEIGSPGY KMQL..LAEA LTKVQ..... ...VVQSKGS .......... 
+         BIV  ACRVVGSQKS KMQF..LVAA MKEMGIQSPI P..AVLPHTP EAYASQTSGP 
+        EIAV  ACRDIGTTKQ KMML..LAKA LQTGLAGPFK GG.ALKGGPL KA........ 
+         HFV  HLNAVY.... ..EI..LGLN ARGQSIRASV T.PQP..... .......... 
+       SFV-1  HLNAVY.... ..EL..LGLN ARGQNLRVST G.GQTTARTS AG........ 
+     MuERV-L  LSVDEG..IL R.....LREI AM........ .......... .......... 
+
+              701                                                750 
+        WdSV  ......RPAP RAPP...... .......... .......... ...GNVPSNT 
+        GALV  KKNLTKILAA VVSREGSTGR QTGNLSNQA. .....KKTPR DGRPPLDKDQ 
+        KoRV  EKNLTKILAA VVSEKGFRGR QAGNLSNRAM ......RAPR EGRPPLDKDQ 
+         REV  .KMA.KVLLA QESRAERGSK KTPPGK.... .......... .GRPPLGKNQ 
+      HERV-E  TRLL...AAA IRGVPPKEAR .QKGGPGKET Q........P G.CQSLQCNQ 
+     RTVL-Ia  SARGPKSTFP RPPKEHRKAR .PKNP..... .........K TERGEGQ.DK 
+        MdEV  ERNLSKILAA VINDRQSE.K .GRTGFLGNR AVKPP...GG RKTP.LEKDQ 
+    PERV-MSL  KNLTKILAAV VEGKSNTE.R .ERDFRKIRS GPRQSGN.LG NRTP.LDKDQ 
+        FeLV  HKEMT.KVLA TVVAQNRD.K DREESKLGDQ RK.I...... ...P.LGKDQ 
+     RCHO-K1  NREMS.RLLA TVVTGQRQNR .QRDGRRG.. .......... ...PHLDRDQ 
+       BAEVM  DKHLT.KILA AVVTEKRAGK .SGETRRR.. .......... ...PKVDKDQ 
+        MuLV  HREMS.KLLA TVVSGQRQDR QGGERRR... .......... ...PQLDKDQ 
+        MPMV  ......GGC. .CFKCGKKGH FAKNCHEH.. ...AHNNAEP KVPG.....L 
+    HERV-K10  ......GGK. .CYNCGQIGH LKKNCPVLNK QNITIQATTT GREPP...DL 
+        MMTV  ......GPV. .CFSCGKTGH IRKDCKD... .....EKGSK RAPPG....L 
+        SERV  ......KGG. .CFRCGKRGH FAKDCHENQ. ....NKNPEA KIPG.....L 
+       SRV-1  ......GGC. .CFKCGRKGH FAKNCHEHI. ....HNNSET KAPG.....L 
+        JSRV  QKS..GNSG. .CFVCGQPGH RAAVCPQK.. ......HQTS VNTP....NL 
+        LPDV  ......GAN. .CFKCGAVGH MRRDCPSL.. .........N KRDG...GAR 
+         RSV  ......RGL. .CYTCGSPGH YQAQCPKKR. .....KSGNS RER....... 
+      SMRV-H  IFQET.APK. .KIQPPTQLP TQPNAPQA.. .......SLI KNLGPTTK.. 
+STcLV2PP1664  ......TQP. .CFRCGKTGH WSRDC..... .......TLP RPPPG....P 
+      HTLV-2  ......TQP. .CFRCGKIGH WSRDC..... .......TQP RPPPG....P 
+      HTLV-1  ......NQP. .CFRCGKAGH WSRDC..... .......TQP RPPPG....P 
+         BLV  ......PGP. .CYRCLKEGH WARDCP.... ......TKTT GPPPG....P 
+       HIV-2  ......AFK. .CWNCGKEGH SARQCRA... .........P RRQG...... 
+       HIV-1  ......KIK. .CFNCGREGH LARNCRA... .........P RKKG...... 
+      SIVMAC  ......PIK. .CWNCGKEGH SARQCRA... .........P RRQG...... 
+      SIVAGM  ......PPR. .CFKCGQIGH IQKDC..... .......... PRAG...PNK 
+      SIVMND  ......KPI. .CFNCNKEGH VARFFKA... .........P RRKG...... 
+         VMV  ......NQK. .CYNCGKPGH LARQC..... .......... RQ.G....II 
+     SA-OMVV  ......VQK. .CYYCGKPGH LARQC..... .......... RQ.G....II 
+        CAEV  ......PQR. .CYNCGKPGH QARQC..... .......... RQ.G....II 
+         FIV  ......GPV. .CFNCKKPGH LARQC..... .......... RD.V....KK 
+         BIV  ED....GRR. .CYGCGKTGH LKRNC..... .......... KQQ......K 
+        EIAV  ......AQT. .CYNCGKPGH LSSQC..... .......... RA.P....KV 
+         HFV  ......RPS. .RG.RGRGQN TSRP.S.Q.. ......GPAN SGRG....RQ 
+       SFV-1  ......RGA. .RGRRSQQGT PGRQSSGQ.. ...APPQGRR SSQG.....Q 
+     MuERV-L  ......LEW. .IY.CV...K ..HNC..... .........P QWEG...PED 
+
+              751         764 
+        WdSV  CFFCKQPGHW KADC    
+        GALV  CAYCKEKGHW AREC    
+        KoRV  CAYCKERGHW AREC    
+         REV  CAYCKEEGHW KKNC    
+      HERV-E  CAYRKEIGYW KNKC    
+     RTVL-Ia  CYKCGRTAPF KREC    
+        MdEV  CAFCKEKGHW AKDC    
+    PERV-MSL  CAYCKERGHW ARNC    
+        FeLV  CAYCKEKGHW VRDC    
+     RCHO-K1  CAYCKEKGHW AKEC    
+       BAEVM  CAYCKERGHW IKDC    
+        MuLV  CAYCKEKGHW AKDC    
+        MPMV  CPRCKRGKHW ANEC    
+    HERV-K10  CPRCKKGKHW ASQC    
+        MMTV  CPRCKKGYHW KSEC    
+        SERV  CPRCKRGRHW ANEC    
+       SRV-1  CPRCKRGKHW ANEC    
+        JSRV  CPRCKKGKHW ARDC    
+        LPDV  CWSCGGAGHL ARDC    
+         RSV  CQLCDGMGHN AKQC    
+      SMRV-H  CPRCKKGFHW ASEC    
+STcLV2PP1664  CPLCKDPSHW KRDC    
+      HTLV-2  CPLCQEPSHW KRDC    
+      HTLV-1  CPLCQDPTHW KRDC    
+         BLV  CPIC...... KRSF    
+       HIV-2  CWKCGKPGHI MTNC    
+       HIV-1  CWKCGKEGHQ MKDC    
+      SIVMAC  CWKCGKMDHV MAKC    
+      SIVAGM  CLKCGKPGHL AKDC    
+      SIVMND  CWNCGAMDHQ KAQC    
+         VMV  CHHCGKRGHM QKDC    
+     SA-OMVV  CHHCGKRGHM QKDC    
+        CAEV  CHNCGKRGHM QKEC    
+         FIV  CNKCGKPGHL AAKC    
+         BIV  CYHCGKPGHQ ARNC    
+        EIAV  CFKCKQPGHF SKQC    
+         HFV  RPASGQSNRG SSTQ    
+       SFV-1  QPRQSESGDQ .NNQ    
+     MuERV-L  MP...FTSSI RRKL    
+
+

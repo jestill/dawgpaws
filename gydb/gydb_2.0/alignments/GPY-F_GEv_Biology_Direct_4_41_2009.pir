@@ -1,0 +1,12 @@
+>P1;CFG1
+WKSGEI
+*
+>P1;Cer4
+WEHGEV
+*
+>P1;Tamy
+WPRGEV
+*
+>P1;Gabel
+FKAWEG
+*

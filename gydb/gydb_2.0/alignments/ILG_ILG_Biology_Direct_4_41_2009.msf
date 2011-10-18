@@ -1,0 +1,501 @@
+PileUp
+
+
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 040000197b0190000cffffffffffff000000000000000000808080c0c0c0
+GDC ffffff000000000000f43f000000000000f43f000000000000f03f000000
+GDC 000000f03f00A000300000190000cA54696d6573204e657720526f6d616e
+GDC 00A00320002000000000000000000000401444e45510002535400034b524
+GDC 800044659574c49564d5047410028417468696c61342d312c0d0a4469617
+GDC 3706f72612c0d0a4379636c6f70732d322c0d0a426167792d322c0d0a436
+GDC 16c7970736f2c0d0a4273435642562c0d0a536342494d562c0d0a436f6d5
+GDC 94d562c0d0a4442562c0d0a43594d562c0d0a42534f4c562c0d0a5461425
+GDC 62c0d0a435353562c0d0a4353564d562c0d0a545643562c0d0a4b5453562
+GDC c0d0a525442562c0d0a42534746562c0d0a42535641562c0d0a42534d795
+GDC 62c0d0a434c4e562c0d0a44724d562c0d0a43614d562c0d0a455643562c0
+GDC d0a4c4c4441562c0d0a434552562c0d0a464d562c0d0a4d694d562c0d0a5
+GDC 35642562c0d0a52754644562c0d0a5362434d562c0d0a504353562c0d0a4
+GDC 25252562c0d0a436d594c43562c0d0a505643562c0d0a476c6f696e2c0d0
+GDC a496667372c0d0a5265696e612c0d0a47696d6c692c0d0a4d6f6e6b65792
+GDC c0d0a47616c61647269656c2c0d0a44656c2c0d0a506561626f64792c0d0
+GDC a526574726f7361742d322c0d0a426167792d312c0d0a546d612c0d0a4c6
+GDC 5676f6c61732c0d0a4365726562612c0d0a43524d2c0d0a426565746c653
+GDC 12c0d0a472d52686f646f2c0d0a53757368692d696368692c0d0a416d6e2
+GDC d696368692c0d0a416d6e2d73616e2c0d0a416d6e2d6e692c0d0a44616e6
+GDC 52d312c0d0a4d616767792c0d0a6d617259312c0d0a43677265742c0d0a4
+GDC 366742d312c0d0a50797265742c0d0a536b697070792c0d0a5265616c2c0
+GDC d0a4d474c52332c0d0a4772617373686f707065722c0d0a50796767792c0
+GDC d0a547365332c0d0a5479332d312c0d0a546f7234612c0d0a546f72322c0
+GDC d0a546f72312c0d0a436572312c0d0a436572322c0d0a436572332c0d0a4
+GDC 36967722d312c0d0a4373524e312c0d0a4b6162756b692c0d0a426f75646
+GDC 96363612c0d0a4f7376616c646f2c0d0a576f6f742c0d0a556c797373657
+GDC 32c0d0a43697263652c0d0a476d72312c0d0a72476d72312c0d0a5265747
+GDC 26f536f72312c0d0a43696e66756c2d312c0d0a42313134374130342e352
+GDC c0d0a4f6772652c0d0a4772616e6465312d342c0d0a546174342d312c0d0
+GDC a546674322c0d0a52495245322c0d0a4d61672c0d0a47756c6c697665722
+GDC c0d0a44524d2c0d0a434647312c0d0a4879647261322d312c0d0a53504d2
+GDC c0d0a5355524c2c0d0a436572342c0d0a436572352c0d0a436572362c0d0
+GDC a3431322c0d0a4d6467312c0d0a484d532d426561676c652c0d0a596f796
+GDC f2c0d0a47797073797669722c0d0a427572646f636b2c0d0a4e6f6d61642
+GDC c0d0a47797073792c0d0a3239372c0d0a31372e362c0d0a5476312c0d0a5
+GDC 465642c0d0a5a616d2c0d0a4964656669782c0d0a546f6d2c0d0a5370726
+GDC 96e6765722c0d0a426c6173746f7069612c0d0a4d6963726f7069612c0d0
+GDC a4d6467332c0d0a484552562d4b31302c0d0a4d504d562c0d0a4d4d54562
+GDC c0d0a534552562c0d0a5352562d312c0d0a4a5352562c0d0a534d52562d4
+GDC 82c0d0a4b2d484552562c0d0a50794552562c0d0a4c5044562c0d0a52535
+GDC 62c0d0a5354634c56325050313636342c0d0a48544c562d322c0d0a48544
+GDC c562d312c0d0a424c562c0d0a4849562d322c0d0a4849562d312c0d0a454
+GDC 941562c0d0a5349564d41432c0d0a53495641474d2c0d0a5349564d4e442
+GDC c0d0a564d562c0d0a53412d4f4d56562c0d0a434145562c0d0a4649562c0
+GDC d0a4249562c0d0a4b6f52562c0d0a5245562c0d0a484552562d452c0d0a5
+GDC 254564c2d49612c0d0a4d6445562c0d0a504552562d4d534c2c0d0a46654
+GDC c562c0d0a5243484f2d4b312c0d0a424145564d2c0d0a4d754c562c0d0a4
+GDC 7414c562c0d0a576453562c0d0a58454e312c0d0a5a464552562c0d0a415
+GDC 3534253562c0d0a5a464552562d322c0d0a536e52562c0d0a4d754552562
+GDC d4c2c0d0a436572372c0d0a4d6162656c2c0d0a5461732c0d0a436572313
+GDC 02d312c0d0a537069726f62656c2c0d0a4879647261332d312c0d0a50616
+GDC f2c0d0a4e696e6a612c0d0a54616d792c0d0a437562656c2c0d0a5a65626
+GDC 56c2c0d0a53696e6261642c0d0a536163692d362c0d0a4b6f62656c2c0d0
+GDC a50757262656c2c0d0a4d6f6f73652c0d0a4d61782c0d0a54726962656c2
+GDC c0d0a4e6162656c2c0d0a526f6f2c0d0a42656c293b0d0a00BBAABAAA000
+GDC 0002a000a00020001B20AAA000a203a2000203a200000000000000059400
+GDC 000000000000000000c5058000000ffff000047580000ff00ff000041475
+GDC 358000000ffffff0056434147444e535450580000ff00ffff00484b52580
+GDC 0ff00000000ff4659574858000000ff8080804544580000ff000000ff484
+GDC b5245445800ffffff0000ff48524551444e425a5800ff000000ff0059574
+GDC 84b524551444e5354425a580000000000ff00494c56415800ff000080808
+GDC 0494c564341474d4659574854505800ffffff0000000c505800000000000
+GDC 000475800000000000000414347535800000000000000564147444e53545
+GDC 05800000000000000484b525800000000000000465957485800000000000
+GDC 00045445800000000000000484b524544580000000000000048524551444
+GDC e425a5800000000000000435957484b524551444e5354425a58000000000
+GDC 00000494c56415800000000000000494c564341474d46595748545058000
+GDC 000000000000300ffffff00000000ffffff80808000000000c0c0c00000A
+GDC BBBBBBBBBBBBBB00ff00A00ba00010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 100010001000100010001000100010001000100010001000100010001000
+GDC 1000100010001000100010001000100010001000100010001A0018AA0000
+GDC 00000000000000000003A00ff00A00000000008056400000000000805140
+GDC 00000000000049400000020000000000001440A0000000098b20c4100000
+GDC 0001025064100000000189806410000000078b10b4100AAABB0000537461
+GDC 6e646172640046464c4c5353535359592a2a43432a574c4c4c4c50505050
+GDC 48485151525252524949494d545454544e4e4b4b53535252565656564141
+GDC 41414444454547474747002d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d4d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d00BBBBB00000000000000ba0000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000003000000000000BBAB00ba0000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000500000
+GDC 1b7B000000000000594000000000000054400000000000004e4000DAAB00
+GDC 0000ffffff0302014445484b524e5153540000ff00ff0000024c49564d46
+GDC 59574147435000ff000000ff0004014445484b520000ff00ff0000024e51
+GDC 53540000ff00ff8000034c49564d46595700ff000000ff0004414700ff00
+GDC 00008000080144450000ff00ff000002484b5200ffffffff0000034e5100
+GDC 00ff00ff800004535400ffffffff8000054c495600ff000000ff00064659
+GDC 5700ffffff00ff0007414700ff0000008000084d4300ffffff0080000000
+GDC 000000Affffff80808000A
+ Direct_4_41_2009.msf  MSF: 3  Type: P  July 26, 2010  13:45  Check: 1802 ..
+
+ Name: Athila4-1        Len:     3  Check: 438   Weight:   0.00
+ Name: Diaspora         Len:     3  Check: 438   Weight: 100.00
+ Name: Cyclops-2        Len:     3  Check: 438   Weight: 100.00
+ Name: Bagy-2           Len:     3  Check: 426   Weight: 100.00
+ Name: Calypso          Len:     3  Check: 438   Weight: 100.00
+ Name: BsCVBV           Len:     3  Check: 432   Weight: 100.00
+ Name: ScBIMV           Len:     3  Check: 435   Weight: 100.00
+ Name: ComYMV           Len:     3  Check: 432   Weight: 100.00
+ Name: DBV              Len:     3  Check: 432   Weight: 100.00
+ Name: CYMV             Len:     3  Check: 438   Weight: 100.00
+ Name: BSOLV            Len:     3  Check: 432   Weight: 100.00
+ Name: TaBV             Len:     3  Check: 438   Weight: 100.00
+ Name: CSSV             Len:     3  Check: 438   Weight: 100.00
+ Name: CSVMV            Len:     3  Check: 432   Weight: 100.00
+ Name: TVCV             Len:     3  Check: 441   Weight: 100.00
+ Name: KTSV             Len:     3  Check: 438   Weight: 100.00
+ Name: RTBV             Len:     3  Check: 432   Weight: 100.00
+ Name: BSGFV            Len:     3  Check: 432   Weight: 100.00
+ Name: BSVAV            Len:     3  Check: 432   Weight: 100.00
+ Name: BSMyV            Len:     3  Check: 432   Weight: 100.00
+ Name: CLNV             Len:     3  Check: 438   Weight: 100.00
+ Name: DrMV             Len:     3  Check: 435   Weight: 100.00
+ Name: CaMV             Len:     3  Check: 432   Weight: 100.00
+ Name: EVCV             Len:     3  Check: 451   Weight: 100.00
+ Name: LLDAV            Len:     3  Check: 438   Weight: 100.00
+ Name: CERV             Len:     3  Check: 441   Weight: 100.00
+ Name: FMV              Len:     3  Check: 435   Weight: 100.00
+ Name: MiMV             Len:     3  Check: 441   Weight: 100.00
+ Name: SVBV             Len:     3  Check: 449   Weight: 100.00
+ Name: RuFDV            Len:     3  Check: 426   Weight: 100.00
+ Name: SbCMV            Len:     3  Check: 432   Weight: 100.00
+ Name: PCSV             Len:     3  Check: 438   Weight: 100.00
+ Name: BRRV             Len:     3  Check: 432   Weight: 100.00
+ Name: CmYLCV           Len:     3  Check: 445   Weight: 100.00
+ Name: PVCV             Len:     3  Check: 435   Weight: 100.00
+ Name: Gloin            Len:     3  Check: 438   Weight: 100.00
+ Name: Ifg7             Len:     3  Check: 451   Weight: 100.00
+ Name: Reina            Len:     3  Check: 438   Weight: 100.00
+ Name: Gimli            Len:     3  Check: 451   Weight: 100.00
+ Name: Monkey           Len:     3  Check: 438   Weight: 100.00
+ Name: Galadriel        Len:     3  Check: 438   Weight: 100.00
+ Name: Del              Len:     3  Check: 441   Weight: 100.00
+ Name: Peabody          Len:     3  Check: 438   Weight: 100.00
+ Name: Retrosat-2       Len:     3  Check: 438   Weight: 100.00
+ Name: Bagy-1           Len:     3  Check: 438   Weight: 100.00
+ Name: Tma              Len:     3  Check: 438   Weight: 100.00
+ Name: Legolas          Len:     3  Check: 438   Weight: 100.00
+ Name: Cereba           Len:     3  Check: 441   Weight: 100.00
+ Name: CRM              Len:     3  Check: 441   Weight: 100.00
+ Name: Beetle1          Len:     3  Check: 441   Weight: 100.00
+ Name: G-Rhodo          Len:     3  Check: 438   Weight: 100.00
+ Name: Sushi-ichi       Len:     3  Check: 451   Weight: 100.00
+ Name: Amn-ichi         Len:     3  Check: 438   Weight: 100.00
+ Name: Amn-san          Len:     3  Check: 451   Weight: 100.00
+ Name: Amn-ni           Len:     3  Check: 438   Weight: 100.00
+ Name: Dane-1           Len:     3  Check: 438   Weight: 100.00
+ Name: Maggy            Len:     3  Check: 451   Weight: 100.00
+ Name: marY1            Len:     3  Check: 438   Weight: 100.00
+ Name: Cgret            Len:     3  Check: 451   Weight: 100.00
+ Name: Cft-1            Len:     3  Check: 451   Weight: 100.00
+ Name: Pyret            Len:     3  Check: 438   Weight: 100.00
+ Name: Skippy           Len:     3  Check: 451   Weight: 100.00
+ Name: Real             Len:     3  Check: 454   Weight: 100.00
+ Name: MGLR3            Len:     3  Check: 458   Weight: 100.00
+ Name: Grasshopper      Len:     3  Check: 438   Weight: 100.00
+ Name: Pyggy            Len:     3  Check: 454   Weight: 100.00
+ Name: Tse3             Len:     3  Check: 439   Weight: 100.00
+ Name: Ty3-1            Len:     3  Check: 435   Weight: 100.00
+ Name: Tor4a            Len:     3  Check: 438   Weight: 100.00
+ Name: Tor2             Len:     3  Check: 432   Weight: 100.00
+ Name: Tor1             Len:     3  Check: 438   Weight: 100.00
+ Name: Cer1             Len:     3  Check: 432   Weight: 100.00
+ Name: Cer2             Len:     3  Check: 426   Weight: 100.00
+ Name: Cer3             Len:     3  Check: 432   Weight: 100.00
+ Name: Cigr-1           Len:     3  Check: 438   Weight: 100.00
+ Name: CsRN1            Len:     3  Check: 432   Weight: 100.00
+ Name: Kabuki           Len:     3  Check: 438   Weight: 100.00
+ Name: Boudicca         Len:     3  Check: 432   Weight: 100.00
+ Name: Osvaldo          Len:     3  Check: 451   Weight: 100.00
+ Name: Woot             Len:     3  Check: 438   Weight: 100.00
+ Name: Ulysses          Len:     3  Check: 454   Weight: 100.00
+ Name: Circe            Len:     3  Check: 436   Weight: 100.00
+ Name: Gmr1             Len:     3  Check: 435   Weight: 100.00
+ Name: rGmr1            Len:     3  Check: 441   Weight: 100.00
+ Name: RetroSor1        Len:     3  Check: 426   Weight: 100.00
+ Name: Cinful-1         Len:     3  Check: 432   Weight: 100.00
+ Name: B1147A04.5       Len:     3  Check: 451   Weight: 100.00
+ Name: Ogre             Len:     3  Check: 441   Weight: 100.00
+ Name: Grande1-4        Len:     3  Check: 432   Weight: 100.00
+ Name: Tat4-1           Len:     3  Check: 438   Weight: 100.00
+ Name: Tft2             Len:     3  Check: 438   Weight: 100.00
+ Name: RIRE2            Len:     3  Check: 438   Weight: 100.00
+ Name: Mag              Len:     3  Check: 441   Weight: 100.00
+ Name: Gulliver         Len:     3  Check: 441   Weight: 100.00
+ Name: DRM              Len:     3  Check: 423   Weight: 100.00
+ Name: CFG1             Len:     3  Check: 441   Weight: 100.00
+ Name: Hydra2-1         Len:     3  Check: 435   Weight: 100.00
+ Name: SPM              Len:     3  Check: 443   Weight: 100.00
+ Name: SURL             Len:     3  Check: 441   Weight: 100.00
+ Name: Cer4             Len:     3  Check: 441   Weight: 100.00
+ Name: Cer5             Len:     3  Check: 441   Weight: 100.00
+ Name: Cer6             Len:     3  Check: 435   Weight: 100.00
+ Name: 412              Len:     3  Check: 432   Weight: 100.00
+ Name: Mdg1             Len:     3  Check: 432   Weight: 100.00
+ Name: HMS-Beagle       Len:     3  Check: 438   Weight: 100.00
+ Name: Yoyo             Len:     3  Check: 438   Weight: 100.00
+ Name: Gypsyvir         Len:     3  Check: 432   Weight: 100.00
+ Name: Burdock          Len:     3  Check: 432   Weight: 100.00
+ Name: Nomad            Len:     3  Check: 432   Weight: 100.00
+ Name: Gypsy            Len:     3  Check: 432   Weight: 100.00
+ Name: 297              Len:     3  Check: 435   Weight: 100.00
+ Name: 17.6             Len:     3  Check: 441   Weight: 100.00
+ Name: Tv1              Len:     3  Check: 435   Weight: 100.00
+ Name: Ted              Len:     3  Check: 435   Weight: 100.00
+ Name: Zam              Len:     3  Check: 435   Weight: 100.00
+ Name: Idefix           Len:     3  Check: 441   Weight: 100.00
+ Name: Tom              Len:     3  Check: 435   Weight: 100.00
+ Name: Springer         Len:     3  Check: 458   Weight: 100.00
+ Name: Blastopia        Len:     3  Check: 458   Weight: 100.00
+ Name: Micropia         Len:     3  Check: 435   Weight: 100.00
+ Name: Mdg3             Len:     3  Check: 438   Weight: 100.00
+ Name: HERV-K10         Len:     3  Check: 463   Weight: 100.00
+ Name: MPMV             Len:     3  Check: 463   Weight: 100.00
+ Name: MMTV             Len:     3  Check: 463   Weight: 100.00
+ Name: SERV             Len:     3  Check: 463   Weight: 100.00
+ Name: SRV-1            Len:     3  Check: 463   Weight: 100.00
+ Name: JSRV             Len:     3  Check: 463   Weight: 100.00
+ Name: SMRV-H           Len:     3  Check: 463   Weight: 100.00
+ Name: K-HERV           Len:     3  Check: 463   Weight: 100.00
+ Name: PyERV            Len:     3  Check: 463   Weight: 100.00
+ Name: LPDV             Len:     3  Check: 438   Weight: 100.00
+ Name: RSV              Len:     3  Check: 438   Weight: 100.00
+ Name: STcLV2PP1664     Len:     3  Check: 432   Weight: 100.00
+ Name: HTLV-2           Len:     3  Check: 432   Weight: 100.00
+ Name: HTLV-1           Len:     3  Check: 432   Weight: 100.00
+ Name: BLV              Len:     3  Check: 438   Weight: 100.00
+ Name: HIV-2            Len:     3  Check: 426   Weight: 100.00
+ Name: HIV-1            Len:     3  Check: 432   Weight: 100.00
+ Name: EIAV             Len:     3  Check: 438   Weight: 100.00
+ Name: SIVMAC           Len:     3  Check: 426   Weight: 100.00
+ Name: SIVAGM           Len:     3  Check: 458   Weight: 100.00
+ Name: SIVMND           Len:     3  Check: 432   Weight: 100.00
+ Name: VMV              Len:     3  Check: 451   Weight: 100.00
+ Name: SA-OMVV          Len:     3  Check: 451   Weight: 100.00
+ Name: CAEV             Len:     3  Check: 451   Weight: 100.00
+ Name: FIV              Len:     3  Check: 441   Weight: 100.00
+ Name: BIV              Len:     3  Check: 429   Weight: 100.00
+ Name: KoRV             Len:     3  Check: 441   Weight: 100.00
+ Name: REV              Len:     3  Check: 441   Weight: 100.00
+ Name: HERV-E           Len:     3  Check: 441   Weight: 100.00
+ Name: RTVL-Ia          Len:     3  Check: 441   Weight: 100.00
+ Name: MdEV             Len:     3  Check: 441   Weight: 100.00
+ Name: PERV-MSL         Len:     3  Check: 441   Weight: 100.00
+ Name: FeLV             Len:     3  Check: 441   Weight: 100.00
+ Name: RCHO-K1          Len:     3  Check: 441   Weight: 100.00
+ Name: BAEVM            Len:     3  Check: 441   Weight: 100.00
+ Name: MuLV             Len:     3  Check: 441   Weight: 100.00
+ Name: GALV             Len:     3  Check: 441   Weight: 100.00
+ Name: WdSV             Len:     3  Check: 438   Weight: 100.00
+ Name: XEN1             Len:     3  Check: 441   Weight: 100.00
+ Name: ZFERV            Len:     3  Check: 441   Weight: 100.00
+ Name: ASSBSV           Len:     3  Check: 441   Weight: 100.00
+ Name: ZFERV-2          Len:     3  Check: 441   Weight: 100.00
+ Name: SnRV             Len:     3  Check: 438   Weight: 100.00
+ Name: MuERV-L          Len:     3  Check: 432   Weight: 100.00
+ Name: Cer7             Len:     3  Check: 432   Weight: 100.00
+ Name: Mabel            Len:     3  Check: 435   Weight: 100.00
+ Name: Tas              Len:     3  Check: 435   Weight: 100.00
+ Name: Cer10-1          Len:     3  Check: 451   Weight: 100.00
+ Name: Spirobel         Len:     3  Check: 435   Weight: 100.00
+ Name: Hydra3-1         Len:     3  Check: 435   Weight: 100.00
+ Name: Pao              Len:     3  Check: 435   Weight: 100.00
+ Name: Ninja            Len:     3  Check: 435   Weight: 100.00
+ Name: Tamy             Len:     3  Check: 435   Weight: 100.00
+ Name: Cubel            Len:     3  Check: 441   Weight: 100.00
+ Name: Zebel            Len:     3  Check: 435   Weight: 100.00
+ Name: Sinbad           Len:     3  Check: 435   Weight: 100.00
+ Name: Saci-6           Len:     3  Check: 435   Weight: 100.00
+ Name: Kobel            Len:     3  Check: 435   Weight: 100.00
+ Name: Purbel           Len:     3  Check: 461   Weight: 100.00
+ Name: Moose            Len:     3  Check: 435   Weight: 100.00
+ Name: Max              Len:     3  Check: 435   Weight: 100.00
+ Name: Tribel           Len:     3  Check: 435   Weight: 100.00
+ Name: Nabel            Len:     3  Check: 435   Weight: 100.00
+ Name: Roo              Len:     3  Check: 432   Weight: 100.00
+ Name: Bel              Len:     3  Check: 458   Weight: 100.00
+
+//
+
+              1         3 
+   Athila4-1  ILG     
+    Diaspora  ILG     
+   Cyclops-2  ILG     
+      Bagy-2  IFG     
+     Calypso  ILG     
+      BsCVBV  IIG     
+      ScBIMV  LIG     
+      ComYMV  IIG     
+         DBV  IIG     
+        CYMV  ILG     
+       BSOLV  IIG     
+        TaBV  ILG     
+        CSSV  ILG     
+       CSVMV  IIG     
+        TVCV  LLG     
+        KTSV  ILG     
+        RTBV  IIG     
+       BSGFV  IIG     
+       BSVAV  IIG     
+       BSMyV  IIG     
+        CLNV  ILG     
+        DrMV  LIG     
+        CaMV  IIG     
+        EVCV  VLG     
+       LLDAV  ILG     
+        CERV  LLG     
+         FMV  LIG     
+        MiMV  LLG     
+        SVBV  TLG     
+       RuFDV  IFG     
+       SbCMV  IIG     
+        PCSV  ILG     
+        BRRV  IIG     
+      CmYLCV  VIG     
+        PVCV  LIG     
+       Gloin  ILG     
+        Ifg7  VLG     
+       Reina  ILG     
+       Gimli  VLG     
+      Monkey  ILG     
+   Galadriel  ILG     
+         Del  LLG     
+     Peabody  ILG     
+  Retrosat-2  ILG     
+      Bagy-1  ILG     
+         Tma  ILG     
+     Legolas  ILG     
+      Cereba  LLG     
+         CRM  LLG     
+     Beetle1  LLG     
+     G-Rhodo  ILG     
+  Sushi-ichi  VLG     
+    Amn-ichi  ILG     
+     Amn-san  VLG     
+      Amn-ni  ILG     
+      Dane-1  ILG     
+       Maggy  VLG     
+       marY1  ILG     
+       Cgret  VLG     
+       Cft-1  VLG     
+       Pyret  ILG     
+      Skippy  VLG     
+        Real  YLG     
+       MGLR3  IVG     
+ Grasshopper  ILG     
+       Pyggy  YLG     
+        Tse3  VFG     
+       Ty3-1  LIG     
+       Tor4a  ILG     
+        Tor2  IIG     
+        Tor1  ILG     
+        Cer1  IIG     
+        Cer2  IFG     
+        Cer3  IIG     
+      Cigr-1  ILG     
+       CsRN1  IIG     
+      Kabuki  ILG     
+    Boudicca  IIG     
+     Osvaldo  VLG     
+        Woot  ILG     
+     Ulysses  YLG     
+       Circe  GLG     
+        Gmr1  LIG     
+       rGmr1  LLG     
+   RetroSor1  IFG     
+    Cinful-1  IIG     
+  B1147A04.5  VLG     
+        Ogre  LLG     
+   Grande1-4  IIG     
+      Tat4-1  ILG     
+        Tft2  ILG     
+       RIRE2  ILG     
+         Mag  LLG     
+    Gulliver  LLG     
+         DRM  LCG     
+        CFG1  LLG     
+    Hydra2-1  LIG     
+         SPM  LMG     
+        SURL  LLG     
+        Cer4  LLG     
+        Cer5  LLG     
+        Cer6  LIG     
+         412  IIG     
+        Mdg1  IIG     
+  HMS-Beagle  ILG     
+        Yoyo  ILG     
+    Gypsyvir  IIG     
+     Burdock  IIG     
+       Nomad  IIG     
+       Gypsy  IIG     
+         297  LIG     
+        17.6  LLG     
+         Tv1  LIG     
+         Ted  LIG     
+         Zam  LIG     
+      Idefix  LLG     
+         Tom  LIG     
+    Springer  IVG     
+   Blastopia  IVG     
+    Micropia  LIG     
+        Mdg3  ILG     
+    HERV-K10  LWG     
+        MPMV  LWG     
+        MMTV  LWG     
+        SERV  LWG     
+       SRV-1  LWG     
+        JSRV  LWG     
+      SMRV-H  LWG     
+      K-HERV  LWG     
+       PyERV  LWG     
+        LPDV  ILG     
+         RSV  ILG     
+STcLV2PP1664  IIG     
+      HTLV-2  IIG     
+      HTLV-1  IIG     
+         BLV  ILG     
+       HIV-2  IFG     
+       HIV-1  IIG     
+        EIAV  ILG     
+      SIVMAC  IFG     
+      SIVAGM  IVG     
+      SIVMND  IIG     
+         VMV  VLG     
+     SA-OMVV  VLG     
+        CAEV  VLG     
+         FIV  LLG     
+         BIV  LFG     
+        KoRV  LLG     
+         REV  LLG     
+      HERV-E  LLG     
+     RTVL-Ia  LLG     
+        MdEV  LLG     
+    PERV-MSL  LLG     
+        FeLV  LLG     
+     RCHO-K1  LLG     
+       BAEVM  LLG     
+        MuLV  LLG     
+        GALV  LLG     
+        WdSV  ILG     
+        XEN1  LLG     
+       ZFERV  LLG     
+      ASSBSV  LLG     
+     ZFERV-2  LLG     
+        SnRV  ILG     
+     MuERV-L  IIG     
+        Cer7  IIG     
+       Mabel  LIG     
+         Tas  LIG     
+     Cer10-1  VLG     
+    Spirobel  LIG     
+    Hydra3-1  LIG     
+         Pao  LIG     
+       Ninja  LIG     
+        Tamy  LIG     
+       Cubel  LLG     
+       Zebel  LIG     
+      Sinbad  LIG     
+      Saci-6  LIG     
+       Kobel  LIG     
+      Purbel  LVG     
+       Moose  LIG     
+         Max  LIG     
+      Tribel  LIG     
+       Nabel  LIG     
+         Roo  IIG     
+         Bel  IVG     
+
+

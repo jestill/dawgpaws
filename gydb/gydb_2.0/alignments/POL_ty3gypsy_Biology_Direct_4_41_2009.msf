@@ -1,0 +1,2239 @@
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 0110690190000cffffffffffff000000000000000000808080c0c0c0ffff
+GDC ff000000000000f43f000000000000f43f000000000000f03f0000000000
+GDC 00f03f00A000300000190000cA54696d6573204e657720526f6d616e00A0
+GDC 0320002000000000000000000000401444e45510002535400034b5248000
+GDC 44c49564d46595747504100284d61672c0d0a47756c6c697665722c0d0a4
+GDC 4524d2c0d0a434647312c0d0a4879647261322d312c0d0a53504d2c0d0a5
+GDC 355524c2c0d0a436572342c0d0a436572352c0d0a436572362c0d0a484d5
+GDC 32d426561676c652c0d0a596f796f2c0d0a47797073797669722c0d0a427
+GDC 572646f636b2c0d0a4e6f6d61642c0d0a47797073792c0d0a3239372c0d0
+GDC a31372e362c0d0a5476312c0d0a5465642c0d0a5a616d2c0d0a496465666
+GDC 9782c0d0a546f6d2c0d0a537072696e6765722c0d0a417468696c61342d3
+GDC 12c0d0a44696173706f72612c0d0a4379636c6f70732d322c0d0a4261677
+GDC 92d322c0d0a43616c7970736f2c0d0a476c6f696e2c0d0a496667372c0d0
+GDC a5265696e612c0d0a47696d6c692c0d0a4d6f6e6b65792c0d0a546e746f6
+GDC d312c0d0a47616c61647269656c2c0d0a44656c2c0d0a506561626f64792
+GDC c0d0a526574726f7361742d322c0d0a426167792d312c0d0a546d612c0d0
+GDC a4c65676f6c61732c0d0a4365726562612c0d0a43524d2c0d0a426565746
+GDC c65312c0d0a52454d312c0d0a472d52686f646f2c0d0a53757368692d696
+GDC 368692c0d0a416d6e2d696368692c0d0a416d6e2d73616e2c0d0a416d6e2
+GDC d6e692c0d0a44616e652d312c0d0a4d616767792c0d0a6d617259312c0d0
+GDC a43677265742c0d0a4366742d312c0d0a50797265742c0d0a536b6970707
+GDC 92c0d0a5265616c2c0d0a4d474c52332c0d0a4772617373686f707065722
+GDC c0d0a50796767792c0d0a547365332c0d0a5479332d312c0d0a536b69707
+GDC 065722c0d0a5446322c0d0a5446312c0d0a546f7234612c0d0a546f72322
+GDC c0d0a546f72312c0d0a436572312c0d0a436572322c0d0a436572332c0d0
+GDC a436967722d312c0d0a4373524e312c0d0a4b6162756b692c0d0a426f756
+GDC 4696363612c0d0a4f7376616c646f2c0d0a576f6f742c0d0a556c7973736
+GDC 5732c0d0a43697263652c0d0a476d72312c0d0a72476d72312c0d0a52657
+GDC 4726f536f72312c0d0a43696e66756c2d312c0d0a42313134374130342e3
+GDC 52c0d0a4f6772652c0d0a4772616e6465312d342c0d0a546174342d312c0
+GDC d0a546674322c0d0a52495245322c0d0a3431322c0d0a4d6467312c0d0a4
+GDC 26c6173746f7069612c0d0a4d6963726f7069612c0d0a4d646733293b0d0
+GDC a00BBAABAAA0000002a000a00020001B20AAA000a203a2000203a2000000
+GDC 00000000059400000000000000000000c5058000000ffff000047580000f
+GDC f00ff000041475358000000ffffff0056434147444e535450580000ff00f
+GDC fff00484b525800ff00000000ff4544580000ff000000ff484b524544580
+GDC 0ffffff0000ff48524551444e425a5800ff000000ff005957484b5245514
+GDC 44e5354425a580000000000ff00494c56415800ff0000808080465957485
+GDC 8000000ff808080494c564341474d4659574854505800ffffff0000000c5
+GDC 058000000000000004758000000000000004143475358000000000000005
+GDC 64147444e5354505800000000000000484b5258000000000000004544580
+GDC 0000000000000484b524544580000000000000048524551444e425a58000
+GDC 00000000000435957484b524551444e5354425a5800000000000000494c5
+GDC 6415800000000000000465957485800000000000000494c564341474d465
+GDC 95748545058000000000000000300ffffff00000000ffffff80808000000
+GDC 000c0c0c00000ABBBBBBBBBBBBBB00ff00A0060000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001A0018AA000000000000000000000003A00ff00A000000000080564000
+GDC 0000000080514000000000000049400000020000000000001440A0000000
+GDC 098b20c41000000001025064100000000189806410000000078b10b4100A
+GDC AABB00005374616e646172640046464c4c5353535359592a2a43432a574c
+GDC 4c4c4c5050505048485151525252524949494d545454544e4e4b4b535352
+GDC 5256565656414141414444454547474747002d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d4d2d2d2d2d2d2d
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d00BBBBB000000000
+GDC 000006000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 00000000000000000000000000000000003000000000000BBAB006000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 00000000201b7B000000000000594000000000000054400000000000004e
+GDC 4000DAAB000000ffffff0302014445484b524e5153540000ff00ff000002
+GDC 4c49564d4659574147435000ff000000ff0004014445484b520000ff00ff
+GDC 0000024e5153540000ff00ff8000034c49564d46595700ff000000ff0004
+GDC 414700ff0000008000080144450000ff00ff000002484b5200ffffffff00
+GDC 00034e510000ff00ff800004535400ffffffff8000054c495600ff000000
+GDC ff000646595700ffffff00ff0007414700ff0000008000084d4300ffffff
+GDC 0080000000000000Affffff80808000A
+ POL_gypsy.msf  MSF: 1001  Type: P  April 21, 2009  00:41  Check:  426 ..
+
+ Name: Mag              Len:  1001  Check: 1567  Weight:   1.00
+ Name: Gulliver         Len:  1001  Check: 6525  Weight:   1.00
+ Name: DRM              Len:  1001  Check: 4875  Weight:   1.00
+ Name: CFG1             Len:  1001  Check: 8858  Weight:   1.00
+ Name: Hydra2-1         Len:  1001  Check: 5941  Weight:   1.00
+ Name: SPM              Len:  1001  Check: 3874  Weight:   1.00
+ Name: SURL             Len:  1001  Check: 9497  Weight:   1.00
+ Name: Cer4             Len:  1001  Check: 686   Weight:   1.00
+ Name: Cer5             Len:  1001  Check: 5580  Weight:   1.00
+ Name: Cer6             Len:  1001  Check: 6320  Weight:   1.00
+ Name: HMS-Beagle       Len:  1001  Check: 3527  Weight:   1.00
+ Name: Yoyo             Len:  1001  Check: 9879  Weight:   1.00
+ Name: Gypsyvir         Len:  1001  Check: 4620  Weight:   1.00
+ Name: Burdock          Len:  1001  Check: 8284  Weight:   1.00
+ Name: Nomad            Len:  1001  Check: 1402  Weight:   1.00
+ Name: Gypsy            Len:  1001  Check: 7752  Weight:   1.00
+ Name: 297              Len:  1001  Check: 1062  Weight:   1.00
+ Name: 17.6             Len:  1001  Check: 2370  Weight:   1.00
+ Name: Tv1              Len:  1001  Check: 8228  Weight:   1.00
+ Name: Ted              Len:  1001  Check: 9378  Weight:   1.00
+ Name: Zam              Len:  1001  Check: 9814  Weight:   1.00
+ Name: Idefix           Len:  1001  Check: 4552  Weight:   1.00
+ Name: Tom              Len:  1001  Check: 865   Weight:   1.00
+ Name: Springer         Len:  1001  Check: 8591  Weight:   1.00
+ Name: Athila4-1        Len:  1001  Check: 4311  Weight:   1.00
+ Name: Diaspora         Len:  1001  Check: 9957  Weight:   1.00
+ Name: Cyclops-2        Len:  1001  Check: 8657  Weight:   1.00
+ Name: Bagy-2           Len:  1001  Check: 8158  Weight:   1.00
+ Name: Calypso          Len:  1001  Check: 8589  Weight:   1.00
+ Name: Gloin            Len:  1001  Check: 9270  Weight:   1.00
+ Name: Ifg7             Len:  1001  Check: 3839  Weight:   1.00
+ Name: Reina            Len:  1001  Check: 6228  Weight:   1.00
+ Name: Gimli            Len:  1001  Check: 3294  Weight:   1.00
+ Name: Monkey           Len:  1001  Check: 5586  Weight:   1.00
+ Name: Tntom1           Len:  1001  Check: 8700  Weight:   1.00
+ Name: Galadriel        Len:  1001  Check: 6959  Weight:   1.00
+ Name: Del              Len:  1001  Check: 3950  Weight:   1.00
+ Name: Peabody          Len:  1001  Check: 9742  Weight:   1.00
+ Name: Retrosat-2       Len:  1001  Check: 8241  Weight:   1.00
+ Name: Bagy-1           Len:  1001  Check: 2194  Weight:   1.00
+ Name: Tma              Len:  1001  Check: 2350  Weight:   1.00
+ Name: Legolas          Len:  1001  Check: 9107  Weight:   1.00
+ Name: Cereba           Len:  1001  Check: 5269  Weight:   1.00
+ Name: CRM              Len:  1001  Check: 2787  Weight:   1.00
+ Name: Beetle1          Len:  1001  Check: 8242  Weight:   1.00
+ Name: REM1             Len:  1001  Check: 5649  Weight:   1.00
+ Name: G-Rhodo          Len:  1001  Check: 4656  Weight:   1.00
+ Name: Sushi-ichi       Len:  1001  Check: 2816  Weight:   1.00
+ Name: Amn-ichi         Len:  1001  Check: 2902  Weight:   1.00
+ Name: Amn-san          Len:  1001  Check: 8866  Weight:   1.00
+ Name: Amn-ni           Len:  1001  Check: 5466  Weight:   1.00
+ Name: Dane-1           Len:  1001  Check: 5833  Weight:   1.00
+ Name: Maggy            Len:  1001  Check: 6971  Weight:   1.00
+ Name: marY1            Len:  1001  Check: 295   Weight:   1.00
+ Name: Cgret            Len:  1001  Check: 7728  Weight:   1.00
+ Name: Cft-1            Len:  1001  Check: 8674  Weight:   1.00
+ Name: Pyret            Len:  1001  Check: 7597  Weight:   1.00
+ Name: Skippy           Len:  1001  Check: 8224  Weight:   1.00
+ Name: Real             Len:  1001  Check: 7353  Weight:   1.00
+ Name: MGLR3            Len:  1001  Check: 845   Weight:   1.00
+ Name: Grasshopper      Len:  1001  Check: 7120  Weight:   1.00
+ Name: Pyggy            Len:  1001  Check: 3842  Weight:   1.00
+ Name: Tse3             Len:  1001  Check: 9924  Weight:   1.00
+ Name: Ty3-1            Len:  1001  Check: 4755  Weight:   1.00
+ Name: Skipper          Len:  1001  Check: 5903  Weight:   1.00
+ Name: TF2              Len:  1001  Check: 3740  Weight:   1.00
+ Name: TF1              Len:  1001  Check: 4885  Weight:   1.00
+ Name: Tor4a            Len:  1001  Check: 6546  Weight:   1.00
+ Name: Tor2             Len:  1001  Check: 4797  Weight:   1.00
+ Name: Tor1             Len:  1001  Check: 3662  Weight:   1.00
+ Name: Cer1             Len:  1001  Check: 5288  Weight:   1.00
+ Name: Cer2             Len:  1001  Check: 8696  Weight:   1.00
+ Name: Cer3             Len:  1001  Check: 7523  Weight:   1.00
+ Name: Cigr-1           Len:  1001  Check: 3220  Weight:   1.00
+ Name: CsRN1            Len:  1001  Check: 3     Weight:   1.00
+ Name: Kabuki           Len:  1001  Check: 7704  Weight:   1.00
+ Name: Boudicca         Len:  1001  Check: 6590  Weight:   1.00
+ Name: Osvaldo          Len:  1001  Check: 5     Weight:   1.00
+ Name: Woot             Len:  1001  Check: 4940  Weight:   1.00
+ Name: Ulysses          Len:  1001  Check: 8674  Weight:   1.00
+ Name: Circe            Len:  1001  Check: 3093  Weight:   1.00
+ Name: Gmr1             Len:  1001  Check: 2277  Weight:   1.00
+ Name: rGmr1            Len:  1001  Check: 8262  Weight:   1.00
+ Name: RetroSor1        Len:  1001  Check: 9289  Weight:   1.00
+ Name: Cinful-1         Len:  1001  Check: 9734  Weight:   1.00
+ Name: B1147A04.5       Len:  1001  Check: 7087  Weight:   1.00
+ Name: Ogre             Len:  1001  Check: 5683  Weight:   1.00
+ Name: Grande1-4        Len:  1001  Check: 903   Weight:   1.00
+ Name: Tat4-1           Len:  1001  Check: 9803  Weight:   1.00
+ Name: Tft2             Len:  1001  Check: 1431  Weight:   1.00
+ Name: RIRE2            Len:  1001  Check: 2253  Weight:   1.00
+ Name: 412              Len:  1001  Check: 5805  Weight:   1.00
+ Name: Mdg1             Len:  1001  Check: 5655  Weight:   1.00
+ Name: Blastopia        Len:  1001  Check: 513   Weight:   1.00
+ Name: Micropia         Len:  1001  Check: 8275  Weight:   1.00
+ Name: Mdg3             Len:  1001  Check: 9194  Weight:   1.00
+
+//
+
+             1                                                   50 
+        Mag  VDTGSAL.SC I.SK.NV..Y ..DK....YF .S...KEKLQ A.C.L...LN 
+   Gulliver  VDTGSDI.TM T.SE.AT..W ...L....MI .G...RPVLL ....PTS..H 
+        DRM  IDTGAAV.SI I.SE.KE..F ...KA...VF .P..TEP.LE V...ARV..K 
+       CFG1  IDTGASK.TV V.GE.PA..F ..ER....LT .K...CDKVT L.K.PSNT.K 
+   Hydra2-1  LDTGASV.SV MSLE.TFTSL ..KK.....K .G...LTRKE I.I.PT...K 
+        SPM  PNTAAAV.SV I.SE.KE..Y ..NN....SL .G..HIP.LQ R...SSM..K 
+       SURL  IDTGAQA.NL L.PE.TV..Y ..HK....LK .T...KPKLQ K...AKV..K 
+       Cer4  LDTVSDI.TL L.SK.GS..W ..VK....L. .G...SPKLE P.V.P....H 
+       Cer5  LDTGSMI.TL I.SF.KC..W ..EK....V. .G...SPPLE K.V.P....H 
+       Cer6  LDTGSQI.TL I.NV.DS..W ...KE...I. .G....C.LQ K.V.T....H 
+ HMS-Beagle  IDTGSNK.NY I.QP.N...L ..VTNA..I. .P......NN ....K....P 
+       Yoyo  IDTGSNK.NY I.QP.N...L ..VKNS..IP .N......ND ....I....F 
+   Gypsyvir  IDTGAAK.NY V.KP.L..TE ..LKTI..TP .V......AK ....S....F 
+    Burdock  IDTGASK.NY I.QP.L..PE ..LKNI..MP .V......QN ....K....F 
+      Nomad  IDTGANK.NF I.SR.R...L ..AAGC..TT .V......RK ....P....F 
+      Gypsy  IDTDAAK.NY I.RP.V..KE ..LKNV..MP .V......AS ....P....F 
+        297  LDTGSTI.NM I.NE.N...I ..FC....LP .I.....QNS ....R....C 
+       17.6  IDTGSTV.NM T.SK.N...I ..FD....LP .I.....QNT ....ST...F 
+        Tv1  IDTGSTI.NL M.KT.N...R ..LNF...PV .Y......NE ....T....L 
+        Ted  IDTGANQ.SF I.SP.QAV.Q ..KYF...SN .Y....SVNY ....DP...F 
+        Zam  IDTGSNN.SF I.DP.ES..A ..NQ....LE .C......TI ....LPTS.T 
+     Idefix  IDTGSSI.NI I.RE.N...F ..EN....LE .E.....KEE ....N....L 
+        Tom  IDTGSTI.SM M.RK.N...F ..FS....LP .I.....HNT ....E....C 
+   Springer  IDTGAAK.NF I.RP.FK..G ..LKGV..RP .V......QS ....P....F 
+  Athila4-1  CDLGASV.SL M.PL.SV..A ..KR....L. .G...FTQYK ....SCN..I 
+   Diaspora  LDLGASV.SV M.PL.SI..F ..NSLS..L. .G.....PLQ ....STD..V 
+  Cyclops-2  IDLGSSI.NL I.PF.SI..V ..KR....L. .G...NIEIK ....SIR..M 
+     Bagy-2  CDMGASV.SA I.PR.SLYDE ..IKDE..I. AP....AELE ....PID..V 
+    Calypso  IDLGASI.NL M.TL.SM..C ..QQ....L. .G...ELEIM ....PTR..M 
+      Gloin  LDSGATH.NF ITPK.V...T ..EKT...KS .G......TQ ....RA...K 
+       Ifg7  IDSGSTH.NF IHCM.V...A ...K....EL .N....CFLY ....PTAE.C 
+      Reina  VDSGSST.SF MSDH.L...M ..GK....VT .G....VQSI LE..P....V 
+      Gimli  VDSGSTH.NF MDPQ.M...A ..KK....L. .G.....CSL L...PSDN.A 
+     Monkey  VDTGATH.NF IADR.E...A ..QR....L. .G.....LTL EKS.P....S 
+     Tntom1  IDTGATH.NY LALT.H...V ..EC....L. .G.....LVV GK..GR...G 
+  Galadriel  VDTGATH.TF VDVK.I...A ..TK....L. .G.....LKL SKS.P....S 
+        Del  IDTGSTH.SF ITPR.I...I ...K....M. .L....EIPV Q...PLGYIL 
+    Peabody  IDTGATH.SF ISLD.CA..V ...K....LK .L....EISL E...MFGSMV 
+ Retrosat-2  FDSGATH.SF ISKK.FV..G ...M....Y. .G....LRKE E...LRT.PM 
+     Bagy-1  FDTGSSH.SF ISES.YA..L ..LHN...MS .FC...DMPI ....PLI... 
+        Tma  FDSGASH.CF ITPE.S...A ..SR...... .G....NIRG D...PGEQLG 
+    Legolas  FDSGATH.CF VSPE.L...V ..ET...... .G....GFRK E...PNTDYG 
+     Cereba  IDGGSCN.NL ASME.M...V ..EK....LS .L....TTRP H...PH..PY 
+        CRM  IDGGSCN.NL ASSD.M...V ..EK....LA .L....TTKP H...PH..PY 
+    Beetle1  IDGGSCT.NV ASSS.M...V ..EK....LN .Y....PTFS H...PK..PY 
+       REM1  ADTGAKC.AE VADGYIS..L ..AKAQQ.A. .G....LRLE A...PPL..L 
+    G-Rhodo  VDSGATD.NF IHSN.....L ..VK....EF .K....LETT A...LED.EI 
+ Sushi-ichi  IDSGADE.SL MD.......F SLARQ...A. .GI..PLV.P LD..RS...L 
+   Amn-ichi  IDSGATN.NF ID.......R EYADS...L. .GLQYHDF.K N...AR...V 
+    Amn-san  LDSGAAG.NF MD.......L AFAKK...V. .G..ISLF.P VT..PS...I 
+     Amn-ni  IDSGAAG.NF MD.......I TLAKD...LN IP.IDSL..P E...P....L 
+     Dane-1  LDTGADGKRF IDQE.W...V EDNH....LE .L....LPLK N...P....I 
+      Maggy  TDCGAEGKCF LDQG.W...A EE.RQ...LQ .M....YPLR N...P....F 
+      marY1  LDSGATG.LF IDSH.L...V QQHR....LN .T....RSLS R...P....I 
+      Cgret  IDSGSEG.DF VSPR.A...V NKLR....I. .P...WHEKR Q...P....Y 
+      Cft-1  IDSGASG.NF ASES.F...V TRNR....I. .A...TCKKK E...G....Y 
+      Pyret  LDNGAQG.NY ISPR.V...V AKRR....I. .P...WQQKK E...P....Y 
+     Skippy  VDSGADM.NF ISPT.T...V NELR....L. .P...WKDKN D...P....Y 
+       Real  VDSGCLC.YS L........V NK.K....FA .Y.RHRLERF QI..PV...R 
+      MGLR3  IDTGANG.YV FISK.Q...L AR.R....L. .YTTLKAPKI VGFHP....Q 
+Grasshopper  VDSGCEC.YA AMSD.KC..A TRLR....I. ....ERIPLP Q...A....R 
+      Pyggy  VDCGCLC.YA L........V NK.K....F. .AYRHHLERF QI..PA...R 
+       Tse3  ADTGASH.NF IEQR.F...I ..QG....M. .G.....LVK QRL.PEQS.V 
+      Ty3-1  FDSGSPT.SF IRRD.I.VEL ..LK....YE .I.......Y ET..P....P 
+    Skipper  LDTGSNV.SL INKR.LISKD ..MK....NH .VH.KTKAKI NF..PL...L 
+        TF2  IDTGAQA.NI ITEE.T.VRA ..HK....L. .P.....TR. ....P....W 
+        TF1  IDTGAQV.NV ITEE.T.VRA ..HK....L. .P.....TR. ....P....W 
+      Tor4a  VDTGSQL.NI I........R ..KKN...V. ......PKNK K.I.EKTK.I 
+       Tor2  CDSGADK.NI L........P ...LNL..L. .P....PAVH R.L.IKP..V 
+       Tor1  LDTGASI.TV A.SL.A...F ..SQNLE.RE .G....FKLN KQT.PA...R 
+       Cer1  LDSGASI.SL M.SK.NT..W ..EKIVE.VN .G...KSWEQ DQI.YEELEY 
+       Cer2  VDTGANI.TV A.SR.N...I ..LK....GL .G...IVRLQ A.A.DN.... 
+       Cer3  VDTGANI.TV T.SK.D...L ..LK....GL .G...ISRTL P.M.LN.... 
+     Cigr-1  LDSGASD.NF L.NK.KV..A ..HR....L. .N....LRVE KSS.A....V 
+      CsRN1  VDTGAEV.SV L........P ..HK.T..PL .H.......D ..S.AS...Y 
+     Kabuki  VDTGANI.SV L..P.V...P ...KIS..KF .I......KN ....PN...Y 
+   Boudicca  VDTDAEV.SV L........P ..ANPD..DK .L......RE ....SV...F 
+    Osvaldo  IDTGASS.SF I.SE.RL..A ..KR.LH.GG .G.....VVR ....ATR..R 
+       Woot  LDTGSEV.SC I.SE.EV..W ..SK.LIE.T .G.....NKP PTL.PVTS.I 
+    Ulysses  LDTGASV.SL L..G.Q...G ..CRELVEKL .G....WEAR ....PYES.. 
+      Circe  VDSGANK.SV I.GG.EL..A ..QQLIS.SK .P.....FNK ....F.KS.. 
+       Gmr1  LDTGSAV.TL V.....R..A ..D..L..AG .G....RPGT ....P....M 
+      rGmr1  LDTGSSV.TL V.QP.GL..I ...KP...RV .G...SKATI ....P..... 
+  RetroSor1  VDSGSSA.DI I.FA.GT..F ..DQ....MK .L..SRSQLQ ....PSES.P 
+   Cinful-1  VDTGSAA.DI I.FA.KA..F ..RQ....M. .QELEDKIHD ....ATH..P 
+ B1147A04.5  IDGGAAL.NI L.SP.AA..F ..DA....I. .K.APGMVLR ....PSQ..P 
+       Ogre  VDTGSSL.NV L.PK.QI..L ..KK....I. .D.VEGFVLT ....PSD..L 
+  Grande1-4  VDGGSSI.NV T.FP.RT..L ..QG....L. .G.VHLKELH ....ESDT.P 
+     Tat4-1  IDTGSSV.NV I.FK.DV..L ..QK....M. .E.VHERHIK ....PSVR.P 
+       Tft2  IDTGSSV.DL I.FL.ST..L ..ER....M. .G.ISRADVV ....GPPS.P 
+      RIRE2  IDGGSAL.NI L.FA.KT..L ..DD....MQ .I..PRSELK ....PSNA.P 
+        412  LDTGADI.SI L.KE.N.SDK ..FSNI..QI ........TN ....K....I 
+       Mdg1  IDTGAEI.SL L.KC.R.NNN ..LNDL..NP ........KN ....T....T 
+  Blastopia  VDTGSDV.TI I.KE.AIFKK ..MKD...VD .L......NR T...A....T 
+   Micropia  FDSGAEC.SL I.KD.D..IS ..SK....LS .G...KRINN T........V 
+       Mdg3  IDSGSPI.SI IKKS.LINET ..MK....LA .L......VN .........T 
+
+             51                                                 100 
+        Mag  .L.K.F.YDG SII...RPLG ......FINT I..VKYQ..G ...VSK.M.L 
+   Gulliver  KT.K.S.ATE EDI...VFLG ......EVLL N..LTFC..G K...SE.F.G 
+        DRM  .L.K.T.YTG ELM...PVLG ......QFEA K..VSYD..G Q...TE.V.L 
+       CFG1  .L.K.T.YTG EMV...PVLG ......RFEV P..VNY...G K...FD.G.V 
+   Hydra2-1  SFLR.T.FTG EVV...LPVG ......EVKL S..VRIN..G Q...TN.... 
+        SPM  .L...T.CYG RIQI..PVLG ......RIQV R..VQYR..N S...AY.Y.L 
+       SURL  .L.T.G.YYE ADI...PVMG ......RCCV Q..VEYK..G ....NR.R.S 
+       Cer4  KI.V.C.ANG SAL...DVLG ......RTKV S..FELK..G ....VE.Y.V 
+       Cer5  RF.S.C.ANG TPM...AVKG ......RCLV K..FKLK..G ....IE.Y.T 
+       Cer6  SI.C.C.ANG TPM...TVKG ......RVRV N..FKLK..E ....VD.Y.T 
+ HMS-Beagle  YI.ADT.PGG DVK...ISHY .......KRA S..L...... ....FD.FEI 
+       Yoyo  YA.T.S.VGG KIK....IT. .......H.H TF.IDL..FG L...KD.ENL 
+   Gypsyvir  SV.N.S.IHG ......STEI ......KR.K CL.MNI.... ....FQ.HTS 
+    Burdock  TV.K.S.LHG .C.....NTV .......KQK C..F.I..KL ....FN.TSV 
+      Nomad  SV.L.S.AAG NIM....IT. .......H.R ...LVG..KF FKPLGN.DSD 
+      Gypsy  SV.S.S.IHG ST......EI ......KH.K C..L.M..KV F...KH.IS. 
+        297  EV.L.T.SNG .P.....ITL .......N.D L..IML...P RNSIFK.KTE 
+       17.6  .I.H.T.SNG .P.....LIV .......N.K S..III...P SKILFP.TTN 
+        Tv1  KV.H.T.ING .V.....IEL .......K.Q S..IRL..GA SK.ICP..SK 
+        Ted  EI.T.N.IHG .....VSRNE .......HSI T..LPC...F QE..FN..ET 
+        Zam  SI.T.TALNS .FK....IEE .......K.A I..FPM...P PE..FK.TEG 
+     Idefix  IV.Y.T.IKG .P.....ITL .......K.R S..III..KP TS..VC.PSA 
+        Tom  EV.F.T.SNG .P.....MTL .......K.D S..ITL...P SNNIFR.TPE 
+   Springer  TI.H.S.IHG .V.....TTI ......TK.K C..F.V.... SI..FN.LKA 
+  Athila4-1  SL.I.L.ADR .SV..RIPHG .....LLENL P..IRI...G A...VE.IPT 
+   Diaspora  VI.H.L.ANR .SV..AYPVG .....FIEDV L..VRV...G E...LI.FPV 
+  Cyclops-2  TL.Q.L.ADK STL..TKTSW ......ATPG W..V.L...D K...FF.FPV 
+     Bagy-2  TI.T.L.ANR DTI...CPVI ......VRDV E..VLC...G K...TK.YPT 
+    Calypso  TL.Q.L.ADR .SI..ARPYG .....VIEDV L..IQV...K Q...LV.FPC 
+      Gloin  GF.N.I.KLG TSI...MVQG .....SGVSK DVHFTV..QG H.E..F..VN 
+       Ifg7  QV.M.V.ANG GTI....... .....NCSGK CHNIKL..SM E.Y..V..LT 
+      Reina  QV.K.V.ADG RCL....WSK Y....FVPGC QW.LCG...G I...TF..HT 
+      Gimli  RV.R.V.ADG YN.....LK. .....VIARI QN.FKW..EI H.NTTF..VA 
+     Monkey  RMKA.V.NSE ARR....ISG .....LAKGV P..IKI...G T....WGGNT 
+     Tntom1  HVKG.I.NSP PQP....VGG .....IANEV P..VKL..WG R....YEGNF 
+  Galadriel  YVKT.V.NAK AQA....IVG .....MAYSV S..MST...G N...WV.GKH 
+        Del  SVIS.P.I.G TSTF...VNQ .....VCKGC M..ITI...G N.Q.EL..TV 
+    Peabody  .IDT.P.AKG SVTT...TS. .....VCLNC P..LSI..FG R...DF..GM 
+ Retrosat-2  RVHT.P.GNS S.TS...VS. .....FSPSV L..IEI...Q R.S.PF..LA 
+     Bagy-1  .VQT.P.GSK WETS..RIT. .....YDNEI L..V.Y.... R.L.VF..LA 
+        Tma  .AVK.V.AGG QFV...AVLG .....RTKGV D..IQI..AG E...SM..PA 
+    Legolas  .MVR.A.AGG QAM...YPTG .....LVRGI S..VVV..NG V...NM..PA 
+     Cereba  YIQW.FNNSG K......VKV .....TRTVR VH.FSI...A ....TYSNFV 
+        CRM  HIQW.LNNSG K......VKV .....TKLVR IN.FAI...G ....SYRDVV 
+    Beetle1  KLHW.L.NDG TV.....WRY ......KQAL IS.FSF...G D...SYNDKV 
+       REM1  QVQV.A.NSG RSQ....VVG ....CVTVNV R..FD...CG ....FR.DDA 
+    G-Rhodo  ILGS.AENTA Q......AEG .....TKPIT ...MEI...G ....RHCKHR 
+ Sushi-ichi  SP.Q.A.IDG RSL....GNI .TH.RTIP.L T..LTL..SG ....NH...I 
+   Amn-ichi  .V.Q.A.IDG RPL..KTGPV .SQ.WSEP.T R..MWI...R ....EH...M 
+    Amn-san  RV.F.A.IDD RPL..STDTI .TL.TTGE.L S..VQI..GA ....LH...L 
+     Amn-ni  SV.T.A.LDG RPL..APGEV .TH.LTSH.L S..LSI...Y ....QH.... 
+     Dane-1  HL.E.S.FDG RES..EEGPI .TH.YVRINL TI.YDY.... .....Y.... 
+      Maggy  DI.E.V.FDG RTA..ESGKC .TH.YVRG.Q ...LRI...K ....DH...I 
+      marY1  PV.Y.N.VDG SPN..EAGAI ..R.EVAD.L V..LRY...K ....DH...S 
+      Cgret  QL.N.N.VEG EQVQYEGGTI .KN.ETAP.L E..MSY...L ....DR...N 
+      Cft-1  EL.I.A.VDG SSL....PSV .ER.ETIP.L P..LAI...Q ....RH...H 
+      Pyret  QL.Q.T.VEK KAVLYGNGTI .KI.ETV.HL WM.ESY...G ....RK.... 
+     Skippy  TV.H.D.GQG ETYLYENGNI .TR.E.IDHL K..VFV...N ....GK...N 
+       Real  II.E.G.VNG KLS.....EI ..N.EVAR.F S..FKL..HG .....H...E 
+      MGLR3  KV.G.G.YDG KAS...QQID .TA.ALAT.F ...V.I..QG ....RR..FR 
+Grasshopper  HV.G.T.AVG RAQ....PMI ..R.ELAK.C E..MDV..DG .........W 
+      Pyggy  LI.E.G.VNG KLS.....EI ..H.KVAR.F S..LRM..HG .....H...E 
+       Tse3  VK.G.A.LNT S......GLI .QHYVRLK.F KHNKDL.... .....Y...E 
+      Ty3-1  LRFR.GFVAT K......SAV .TS.E.AVTI D..LKI.... ....ND...L 
+    Skipper  DVKE.EFVEQ .IN....IQV .NN.E..... .......... ....IH...N 
+        TF2  SKSV.I.YGG .VY....PNK .INRKTIK.L N..ISL..NG ..ISIK...T 
+        TF1  LQSV.I.YGG .VY....PTK .INRKTTK.L I..INL..NG ..ISIK...T 
+      Tor4a  EVMN.YSG.G RIE....IFG ........KV E..AEIVIDG ....TC.W.G 
+       Tor2  NM...TF.NG CGSM..KSVG ........TI Y..GRLSHAA TS..HK.F.D 
+       Tor1  RN.P.VAAKG TEMP..ISF. ........DI I..MTVILRG NPD.IK.F.V 
+       Cer1  KTAR.T.ANN QLF....TLL ......RAVM ...VEI..KM Q...TK...S 
+       Cer2  DNAV.G.FGG NEV...SMIG ......SAIV R..FQI...G S...QV.V.K 
+       Cer3  AQAV.G.LGG HTV...DMVG ......SAVV Q..FKI...G T...HT.I.D 
+     Cigr-1  IG.M.A.TNG LSA...TTQG ......RASA S..ISL..LG ....RD.Y.T 
+      CsRN1  SL.Q.A.ANG TRI...ATYG ......ERSL T..LDL...G L...RRAF.K 
+     Kabuki  KL.Y.A.ANG TEI...ATFG ......EKTL V..LDL...K L...RRAF.R 
+   Boudicca  SL.Q.A.ANG KPI...ATYG ......KRYV Y..LNV...G L...RKPI.H 
+    Osvaldo  RI.R.L.ANG SCS....EVN ......SQLD LK.IRL...G S...RQ.M.E 
+       Woot  HL.R.G.AIG QRS...CQVV ......IQCY LE.IKI..DE ....HL.Y.P 
+    Ulysses  MV.R.TACMG ANR...PILG ......RVVL P..VKY...G ....IE.R.L 
+      Circe  VV.R.T.ADG QTQ...NVAG ......TIQI PKTQRR..FY ....SRTI.V 
+       Gmr1  QV.S.C.VHG DTR.....TY ......ETCH VV.VRT...P ....QGVF.V 
+      rGmr1  .I.T.C.VHG DTR.....YV ......PAQR VT.IAA...G ....NGAW.P 
+  RetroSor1  .L.I.G.FGG KQI...HALG .......K.V A..LPVS.FG TT..EN.ART 
+   Cinful-1  .L.C.G.FGG RQI...VALG .......K.I T..MSVT.FG FI..NN.TRT 
+ B1147A04.5  .I.I.GVTPG HTW....PLG .......H.I D..LPVT.FG GS..AN.FRT 
+       Ogre  .I.VRA.F.D RSK..RSVCG .......E.V T..LPVK.IG .P..EV.F.. 
+  Grande1-4  .F.F.GIVPM EGE...YPLG .......H.I Y..MPVT.FG TP..EN.YRT 
+     Tat4-1  .L.T.G.FDG NTL...MTNG .......T.I K..LPIY.LG GA..AT.WHK 
+       Tft2  .L.V.A.FTS ESL...MSLG .......T.I K..LPVL.AG K...IS.KIV 
+      RIRE2  .F.H.GVIPG LSA...TPLG .......Q.I T..LPVT.FG TR..EN.FRT 
+        412  NI.Q.G.I.G QQK..IQSRG .......Q.T F..IEI.QTG K.YV.....I 
+       Mdg1  NI.S.G.I.G QGT..IQSLG .......T.L H..LEM.CIA N.AA.....I 
+  Blastopia  VL.R.G.L.G NAST..QPIG ......CF.R A..L.I..KT D.Q......V 
+   Micropia  MI.K.G.IGG GSV...CSTL .......Q.. I..LSE...V T.I......N 
+       Mdg3  CY.F.G.LNN CIL...KTHG .....QTT.C Y..V.L..KG S.I......K 
+
+             101                                                150 
+        Mag  .......DLY VIDK...... G.TTN..LLG RQ..WLAELN IN....IKIL 
+   Gulliver  .......KCY VS.K...... ..NCKSDLLG ID..WI.WK. VGF...RDVL 
+        DRM  S......LIV V..K...... G.E.GPSLCG RN..WL.QK. LS....LNWL 
+       CFG1  .......LQA EVVK...... G.D.NPCLLG RD..WL.WH. IQ....LDWL 
+   Hydra2-1  .......LLA LIIT.....P G.K.GPSLIG RN..WL.RK. LK....INWL 
+        SPM  P......LVV VS........ G.D.NVALMG RN..WL.RR. IR....IDWL 
+       SURL  V......PFL VIP....... G.NRQ.PLLG LRTSEE.LY. LV....KRVY 
+       Cer4  D......YAY VSNR...... ..ENN..LLG MS..WV.SHS PE....MRDL 
+       Cer5  E......YVY VCDR...... ..QTN..LLG TS..WL.NLC PQ....MRSQ 
+       Cer6  D......YVY VCDR...... ..DTN..LIG TS..WL.NHS PE....MRAK 
+ HMS-Beagle  K......FF. LLPT....LK T..FD.AILG KD..TMKGMG AQ....IDLL 
+       Yoyo  K......FF. VLPT....LK S..FH.GILG ND..SLKQLE A.....IIFL 
+   Gypsyvir  P......FF. LLDT....LS S..FD.AIIG FD..LLTQAG VK....LNLL 
+    Burdock  Q......FF. ILPS....LS S..FD.AIIG LD..LLKQ.G NA..T.LDFL 
+      Nomad  IT.....FF. VLPN....LH S..FD.GIIG DD..TLKDLK AI....VDRL 
+      Gypsy  P......FF. LLDS....LN A..FD.AIIG LD..LLTQAG VK....LNLL 
+        297  P......F.. YVHR....FS N.NYD.MLIG RK..LLKNAQ SV....INYL 
+       17.6  E......F.. LLHP....FS E.NYD.LLLG RK..LLAEAK AT....ISYL 
+        Tv1  QK.....F.. YIHD....FS E.HYD.VLIG RE..YLEACQ AK....IDYP 
+        Ted  QDIKL..F.. IYH.....FH D.YFD.GLIG LD..LLSKWE AK....IDLL 
+        Zam  Q......IT. LLKF...KFH S.YFN.GLIG MD..LLSHLE AK....VDLL 
+     Idefix  QK.....F.. YIHK....FS D.NYD.FLLG RK..YLEDTK AK....IDYI 
+        Tom  Q......F.. YLHD....FS D.DYD.VLIG RK..LLNKAQ GI....INYL 
+   Springer  T......FF. LLP....DLT ..SFD.AIVG LD..LLKQAG AS....LCLL 
+  Athila4-1  D......FV. VLEM...DEE P.KDP.LILG RH..FLATAG AM....IDVL 
+   Diaspora  D......FY. ILNMEDGFSQ G.SVP.IILG RP..FMKTAR TK....IDVL 
+  Cyclops-2  D......FI. VIDM...EED D.DAP.LILG RP..FMKTAR MM....IDVL 
+     Bagy-2  D......FL. VLAT...AQD S.FCP.IIFG RP..FLNTVN AH....IDCL 
+    Calypso  N......FV. VMDI...EED P.DIP.IILG RP..FMSTTS CV....VDMV 
+      Gloin  D......FI. TLEL...... G.NVD.LILG IA..WH...K TMGDS.NANL 
+       Ifg7  S......PML SIPM...... G.GAD.VVLG VQ..WL.... SLGTTTFNFL 
+      Reina  D......FK. FLPL...... S.GYD.IILG MD..WLE.AH S.P...MKVL 
+      Gimli  D......FM. VIPL...... K.GID.AVLG VH..WL...K PLGP..ITWL 
+     Monkey  N......MM. AVPL...... D.DFQ.VILG ME..FM...H AAKL..VPML 
+     Tntom1  N......LR. VVII...... D.DFE.LIVV LE..FL...R QTNT..MPIE 
+  Galadriel  N......LM. VMPL...... G.DFE.IILG ID..FL..RK YQF...VPFL 
+        Del  D......LI. ILDL...... E.DPD.ILLG MD..WL..AA YHVV..LDCL 
+    Peabody  D......LV. CLPL...... V.QID.VILG MN..WL..VF NRVS..INCL 
+ Retrosat-2  N......LI. LLES...... K.DLD.VILG MD..WLT..K FKGV..IDCL 
+     Bagy-1  S......LL. ALKS...... L.DIN.IILG MD..WMS.AH Y.AK..IDTL 
+        Tma  D......LI. ISPV...... E.LYD.VILG MD..WL..DH YRVH..LDCL 
+    Legolas  D......LI. IVPL...... K.KHD.VILG MD..WL..GK YKAH..IDCL 
+     Cereba  D......CD. EVPM...... Q.ACS.VLLG RP..CQF.DK NYVHP.GRTL 
+        CRM  D......CD. VVPM...... D.ACN.ILLG RP..WQF.DS DCMHH.GRSL 
+    Beetle1  L......CD. VVPM...... N.ACH.ILLG RP..WQS.DK ETLHN.GRTL 
+       REM1  K..LLVLRD. NIPG...... T.DVV.LALE WM..HKRNAH MDVQ..RAAL 
+    G-Rhodo  S......VYT VLDL...... G.DYD.VILG RP..FQ..NY SGAR..IDPY 
+ Sushi-ichi  ESTP...FL. VLHA...... P.TAP.LVLG RP..WLE.RH DPH...ISWL 
+   Amn-ichi  EEIS...FF. VTEV...... P.HFP.VILG IP..WLT.LH DPS...ISWL 
+    Amn-san  EKMS...FL. IIPC...... P.SSP.VVLG LP..WLR.LH NPS...IDWM 
+     Amn-ni  EEKLC..FH. LIQS...... P.EFP.VILG HP..WLL.QH NPH...IDWM 
+     Dane-1  EKKAC..FL. AIQL...... A.HYP.IILG MP..WLE.TH ......ARWL 
+      Maggy  QKNAL..FF. VTQL...... A.HYP.IVLG MP..WLK.QH DPT...IGFL 
+      marY1  ERAL...FA. VTQL...... G.KQK.AILG YP..WLR.DH NPE...VDWL 
+      Cgret  EQLQ...LD. ITNI...... G.EYD.LVLG MP..WLE.KN NPR...IDWL 
+      Cft-1  EEIT...LD. VTDM...... A.SHD.IVLG MP..WLR.KH NPV...IDWL 
+      Pyret  EQIT...LN. ITEI...... G.DKN.VILG IP..WLK.KS NPR...IDWF 
+     Skippy  QGID...FD. IIPV...... W.RYD.LVLG YP..WLL.RY NPQ...FNWI 
+       Real  ETA....YAY VMDL.....S F.GED.IYLG RG..WMN.HN NVS...V.AL 
+      MGLR3  ETP....ML. VLDM...... P..QE.MIVG RL..FLA.EH GIL...TDCL 
+Grasshopper  VTP....MLF YIVP.....G L.ARD.VILG LP..WMT.HR RIS...LDAM 
+      Pyggy  EIA....YAY VMDL.....S S.EED.IYLG RG..WMD.HQ DVT...VAPL 
+       Tse3  E.I....FL. IIDS...... PLPQP.VVFG IG..FFK.QH ......PEII 
+      Ty3-1  QITLA..AY. ILDN...... MDYQ..LLIG NP..ILR..R YPK...I.LL 
+    Skipper  FFIIE..LD. IIDV...... L.FGN.DILK DS..IIN.QK DKI...IKLI 
+        TF2  E......FL. VVKK...... F.SHP.AAIS FTT.LY..DN N.....IEIL 
+        TF1  E......FL. VVKK...... F.SHP.AAIS FTT.LY..DN N.....IEIL 
+      Tor4a  KSE....FFV VSD....... ..ELSP.ILG VP..ALVDNE IL....INLL 
+       Tor2  HVT....FYV VKS....... ..SFPP.IIG RE..FLTSHP DL....ARNV 
+       Tor1  KTR....ISI IK........ GLQAEL.ILG VD..SLQGRT LQ....MRRM 
+       Cer1  E......VIK FHIGD...MD R.E.N.VIIG AG..HF.EQM GIQ...MN.L 
+       Cer2  Q.....RVHF TNGHCMPDID G.SYQ.FIFG ND..LL.SRL PIFM..FDYI 
+       Cer3  H.....RVHF TTGRCMPEIN G.EYQ.FIIG ND..ML.SKL PMFV..FNYI 
+     Cigr-1  NV.....PFQ VLDG.....L C.A.D.IILG HN..FMCRHS EVI...FKML 
+      CsRN1  ......WISL LAD....... ..FKT.PIIG AD..FLTHYN LS....VDVL 
+     Kabuki  ......WNFV LAD....... ..VKQ.AILG AD..FLTSNN LL....VDMQ 
+   Boudicca  ......WIFV VAD....... ..IAM.PIIG ID..LLQYHN LL....IDTR 
+    Osvaldo  V......PLL VLPG.....V ..IDD.LVLG CD..FL.AGM GTP...WNVL 
+       Woot  V......VAL VVKN.....L ..IKP.TILG AD..WL.NE. QRAV..IDFL 
+    Ulysses  D......IVF YMCP....DL R.Q.E.LYLG ID..FW.RA. FEIA..PELL 
+      Circe  DSQKSKFQKV IIDF.....F PSFGN.EGLG ID..KL.MR. NSN...NDFV 
+       Gmr1  AR......AG IVPT.....L P.VP..FLIG RDCPIFTRF. WSSMR.GTAL 
+      rGmr1  LE......VG IVAD.....L P.VP..LLLG RDWPGFEEL. LSLPA.ATPL 
+  RetroSor1  EY...VTFD. VVDL.....H Y.PYN.AIFG RG..FL..NK F.....NAAL 
+   Cinful-1  EQ...VVFD. IVDM.....E Y.PYN.AIIG RG..TL..NA F.....EAIL 
+ B1147A04.5  ER...VNFD. VADL.....S L.PYN.AVLG RP..AL..VK F.....MAAL 
+       Ogre  DI....IFY. VMDI.....Q P.AYS.CLLG RP..WI..HA A.....GAVW 
+  Grande1-4  EF...LRFE. VANF.....D C.GYN.AIIG RP..GL..AK F.....MAIV 
+     Tat4-1  .......FV. VVDK.....P V.IYN.IILG TP..WI..HD M.....QAIL 
+       Tft2  D......FV. VFDK.....P A.AYN.IILG TL..WI..YQ M.....KAVL 
+      RIRE2  EN...ISFE. VADF.....E T.AYH.AILG RP..AL..AK F.....MAVL 
+        412  P..HD..FH. LVDK...NFP I.PCD.GIIG ID..FIKKYN CQ....IDLI 
+       Mdg1  P..YE..FH. IVPN...NFP I.PGD.GIIG LD..FIKKYN CI....LEFI 
+  Blastopia  E..ASHNVL. VVHD....SK F.SCD.GIVG HD..FISKFR LI....CSAV 
+   Micropia  E.NIMEILFH VVPN....EE M.RND.ILIG RE..IL.KQG FY....VILI 
+       Mdg3  I..YFR.LI. IVCD....QS M.RYN.VILG RD..FLTACN LN....LDPL 
+
+             151                                                200 
+        Mag  A....AGV.. ..I....KPV DH..SD.... WAT.PLVVVR KA........ 
+   Gulliver  ER....LY.. ..M....NVI SPV.SYS... VAT.PLVFIK KA........ 
+        DRM  DRLEKAGI.. ..I....TPV KY..SE.... WAA.PIVPVV KK........ 
+       CFG1  DRLVAEGT.. ..I....SPV EF..SE.... WAT.PIVPIV KS........ 
+   Hydra2-1  DRLISSGI.. ..Y....RPV SH..SR.... WAA.PIVPVL KK........ 
+        SPM  DRLGKAGV.. ..I....KKV KN..SR.... WAA.PIVTVP KS........ 
+       SURL  ERL...DV.. ..I....TPV DEP.TD.... WVS.SLVVVM KK........ 
+       Cer4  D....LEV.. ..L....EPI TH..SD.... WAA.PIVVIR KK........ 
+       Cer5  E....MGV.. ..I....VPI TY..AK.... WAA.PIVVIK KK........ 
+       Cer6  D....MGV.. ..I....TPI TY..SK.... WAA.PIVVIR KK........ 
+ HMS-Beagle  HD....GI.. ..I....RP. SR..SP.... YNS.PVWIVP KK........ 
+       Yoyo  ED....GI.. ..I....RP. SR..SP.... YNS.PVWIVD KK........ 
+   Gypsyvir  DD....GI.. ..I....RP. SR..SP.... YNS.PTWVVD KK........ 
+    Burdock  KD....GI.. ..I....RP. SS..SP.... YNN.PVWVVD KK........ 
+      Nomad  QD....GI.. ..I....RP. SN..SP.... YNS.PIWIVP KK........ 
+      Gypsy  KD....GI.. ..I....RP. SR..SP.... YNS.PTWVVD KK........ 
+        297  NQ....GL.. ..I....RE. SN..SP.... YNS.PTWVVP KK........ 
+       17.6  NQ....GI.. ..I....RT. SN..SP.... YNS.PIWVVP KK........ 
+        Tv1  FS....DL.. ..I....KP. ....IP.... NGL.PVIIVP KR........ 
+        Ted  DQ....GI.. ..I....RP. SD..SA.... WSS.PIWVVP KK........ 
+        Zam  DQ....QI.. ..I....RS. SH..SP.... WSA.PVWVVP KK........ 
+     Idefix  EQ....GI.. ..V....RK. SK..SP.... YCS.PIWVVP KK........ 
+        Tom  EQ....GL.. ..I....RE. SN..SP.... YNS.PTWVVP KK........ 
+   Springer  KN....GI.. ..I....QK. SK..SP.... YNN.PIWVVD KK........ 
+  Athila4-1  DA....GV.. ..I....YPI SD..ST.... WVS.PVHCVP KKGGMTVVKN 
+   Diaspora  QA....GI.. ..I....YPI SD..SQ.... WVS.PVQVVP KKTGLTVIKN 
+  Cyclops-2  DA....RM.. ..I....YPI SD..SP.... WVS.PVHVVP KKGGNTVIRN 
+     Bagy-2  EA....GI.. ..I....YPV AH..SD.... WVS.PVHCVP KKGGITVVPN 
+    Calypso  AR....SR.. ..P....HPI SD..SA.... WVS.PVQVVL KKGGMTVIKN 
+      Gloin  QC....GI.. ..I.....RP SK..SP.... FSS.LVLLVK KK........ 
+       Ifg7  EA....GI.. ..I.....QP SQ..SS.... FSD.PVVLVH KK........ 
+      Reina  EQ....GV.. ..I.....QH SS..SP.... FAS.PVLLVK KK........ 
+      Gimli  ES....GI.. ..I.....QP SS..SS.... FAS.PVVLVK KK........ 
+     Monkey  SG....GL.. ..I.....RS SK..AP.... FGA.PVLFQK KQ........ 
+     Tntom1  NA....RH.. ..R....YHR TLQ.VP.... IRV.PCAIPK ET........ 
+  Galadriel  DA....GL.. ..I.....QP SK..AP.... YGA.PVLFQK KQ........ 
+        Del  NK....GF.. ..I.....RG ST..SP.... WGA.HVLFDP KK........ 
+    Peabody  DK....KF.. ..I.....RP SV..SP.... WGA.PVLLVK KK........ 
+ Retrosat-2  QK....GY.. ..I.....RP ST..SP.... WGA.PVIFVE KK........ 
+     Bagy-1  NK....GF.. ..I.....RP SS..SP.... .SC.PVLFVK KK........ 
+        Tma  GK....GF.. ..I.....RP ST..SP.... G.A.PVLFVK KK........ 
+    Legolas  DK....GF.. ..I.....RP SS..SP.... WGA.PVLFVK KK........ 
+     Cereba  DK....GY.. ..I.....RE SL..SP.... CDV.PIILVP KK........ 
+        CRM  DK....GY.. ..V.....RE SL..SP.... CAV.PVILVP KK........ 
+    Beetle1  AK....GF.. ..V.....QE SL..SP.... CAV.PVILVP KK........ 
+       REM1  AK....GM.. ..I.....QP ST..SP.... YGA.PVIFVE KA........ 
+    G-Rhodo  SH....GL.. ..A.....RD SL..SE.... YAS.PVTLAP KP........ 
+ Sushi-ichi  AS....GI.. ..I.....RP SS..SP.... LAA.GFFFVA KE........ 
+   Amn-ichi  RE....FIET N.LRKGFIRP SQ..SP.... .AASPVMFVK KK........ 
+    Amn-san  KE....YISE N.LQRGFIRP ST..SP.... .AGAGFFFVE KK........ 
+     Amn-ni  ES....YIEE S.LAAGIIRQ ST..SP.... .AGAGFFFVG KK........ 
+     Dane-1  RK....GF.. ..I.....RP SS..SP.... TAS.PVLFVK KP........ 
+      Maggy  KK....GF.. ..I.....RP SS..SS.... VAS.PVLFVK KQ........ 
+      marY1  AS....GR.. ..I.....RP SK..SP.... MAS.PFFFVK KK........ 
+      Cgret  KK....GY.. ..I.....RE ST..SP.... AGS.PILFVP KK........ 
+      Cft-1  AK....GW.. ..I.....RR ST..SS.... AGT.PCMFVP KA........ 
+      Pyret  KK....DY.. ..I.....RP SI..SP.... AGY.PILFVP KK........ 
+     Skippy  RK....GY.. ..I.....RP SK..SS.... AGF.PVMFVP KP........ 
+       Real  EK....GF.. ..I.....RV SS..SP.... AAA.PVLFAK KP........ 
+      MGLR3  QK....GF.. ..I.....EP GS..TP.... WAA.PILFAR KG........ 
+Grasshopper  DK....GW.. ..I.....RA SS..SS.... AAA.PVLMVR KA........ 
+      Pyggy  DK....GF.. ..I.....RV SS..LL.... AFL.LVLFAK KL........ 
+       Tse3  AS....GN.. ..V.....IP SE..SP.... YAA.PVIFVQ KK........ 
+      Ty3-1  DN....KF.. ..I.....VP SK..SP.... CSS.PVVLVP KK........ 
+    Skipper  DL....GI.. ..I.....KR SE..SN.... YSS.PIMLLK KR........ 
+        TF2  KS....GI.. ..I.....RE SK..AI.... NAC.PVMFVP KK........ 
+        TF1  KS....GI.. ..I.....RE SK..AI.... NAC.PVMFVP KK........ 
+      Tor4a  D....QFLEN KLI.....EP CS..SP.... WNS.PSLLVR KK........ 
+       Tor2  K....AQIDN .MA...KDGI IEP.CPDGKG FHS.PLVIV. RK........ 
+       Tor1  ED...AGI.I EKA....SG. ....SS.... FNA.PLQLV. RK........ 
+       Cer1  NQ....KV.. ..I.....RE SK..SP.... WSS.PVVLVK KK........ 
+       Cer2  QS....ER.. ..I.....VE SN..TP.... WTS.PIVLVK KK........ 
+       Cer3  QS....GR.. ..I.....VE SN..TP.... WTS.PIVLIK KK........ 
+     Cigr-1  EE....EI.. ..I....EP. SN..SP.... WRA.QVLVA. RE........ 
+      CsRN1  E.....LD.. ..I....IRT S...SSH... WSS.PLHMVP KK........ 
+     Kabuki  E.....LG.. ..I....CRP S..KIA.... WAS.PLHIVP KK........ 
+   Boudicca  S.....RE.. ..L....IRS SN..SP.... WSS.PLHMVP KK........ 
+    Osvaldo  VK....GC.. ..I.....EP SK..SPHTRT YSN.GQ..G. RK........ 
+       Woot  DL....GV.. ..I.....KR EA..SP.... YAS.PMTVGK KK........ 
+    Ulysses  KL....GI.. ..I.....EE SD..SP.... WSN.RTTVVM RP........ 
+      Circe  KS.....I.. ..V.....RL R......... WML.KRH.L. HR........ 
+       Gmr1  KL....GV.. ..I.....EE SR..SA.... WAS.PIVLVP KP........ 
+      rGmr1  KL....GV.. ..I.....EP SR..SP.... WSS.PIVMVP KP........ 
+  RetroSor1  DA....KV.. ..I....REV IY..PE.... WLANVV.LVP KK........ 
+   Cinful-1  SA....GV.. ..I....REV KY..PE.... WLANTV.MVK KA........ 
+ B1147A04.5  V.....SF.. ..L....RAN AD..VFA... WR..PADMP. .......... 
+       Ogre  DA....GF.. ..L....AVT SY..PP.... WMAN.IVPVP KK........ 
+  Grande1-4  AA....GF.. ..I....REV LH..PE.... WLPTLF.LYS KR........ 
+     Tat4-1  GA....GS.. ..I....VEV KY..PE.... WLANPV.VVK KK........ 
+       Tft2  KI....GS.. ..I....REV QY..PD.... WLANTV.VVK KK........ 
+      RIRE2  AA....GF.. ..I....KEV LH..PD.... WLANPV.LVR KK........ 
+        412  KD....KI.. ..V....EP. SV..SQ.... YNS.PLLLVP KK........ 
+       Mdg1  KD....GI.. ..V....EQ. SI..SE.... YNS.PLLLVP KK........ 
+  Blastopia  EQ....SI.. ..V.....RK ST..SN.... VAS.RIVVVR KK........ 
+   Micropia  RC....NI.. ..V.....RP SC..SP.... FAS.PMLLVK KK........ 
+       Mdg3  EN....GF.. ..I.....RP SD..SE.... YAS.PIVLVK KK........ 
+
+             201                                                250 
+        Mag  .......... .DG...GLRI CADYKVT.LN KVLA...IDR FPVPKMEDLF 
+   Gulliver  .......... .DG...KLRV CGDFS.TGLN KALQ...DHL YPLPIPEDLF 
+        DRM  .......... .DK...TLRL CGDYKLT.VN QAVT...TEI YPLPRIEELM 
+       CFG1  .......... .DK...SIRI CGDYKVT.VN KVSK...LDN YPIPKTEDLY 
+   Hydra2-1  .......... .DG...TIRL CGDYKQT.VN QAAM...CDS YPLPRTEDLF 
+        SPM  .......... .DG...SVRL CGDYKQT.VN KVLE...EDV YPLPTCEDLF 
+       SURL  .......... .NG...QLRV CLDPRD..LN RAIK...REH YQLPSRAEIT 
+       Cer4  .......... DTG...KVRV CADFKCSGLN NSLI...EEI HPLPTSDDLF 
+       Cer5  .......... GTG...KIRV CADFKCSGLN AALK...DEF HPLPTSEDIF 
+       Cer6  .......... ESN...KIRV CADFKCSGLN SALK...DEI HPLPTCEDLF 
+ HMS-Beagle  ........LD SSGKK.KYRV VIDYR..KLN MVTV...ADR YPIPDINEVL 
+       Yoyo  ........PD SLGNK.QYRL VIDYR..KLN SVTI...ADR YPIPEINEVL 
+   Gypsyvir  .......GTD SYGNP.KKRL VIDFR..KLN EKTI...PDR YPMPRIPMIL 
+    Burdock  .......GTD EEGNT.KKRL VIDFR..KLN LKTI...DDK YPIPNVVWIL 
+      Nomad  ........PK PNGEK.QYRM VVDFK..RLN TVTI...PDT YPIPDINATL 
+      Gypsy  .......GTD AFGNP.NKRL VIDFR..KLN EKTI...PDR YPMPSIPMIL 
+        297  ........PD ASGAN.KYRV VIDYR..KLN EITI...PDR YPIPNMDEIL 
+       17.6  ........QD ASGKQ.KFRI VIDYR..KLN EITV...GDR HPIPNMDEIL 
+        Tv1  ........ND AFGKP.KFRL VIDYR..HFN ELTI...NDK YPIPIMDEIL 
+        Ted  ........ID ASGKQ.KWRL VVDFR..KLN EKTI...DDK YPIPNISDVL 
+        Zam  ........LD GTGNR.KWRL VIDYR..KLN DKTI...SDR YPIPNINDIL 
+     Idefix  ........AD ASGKQ.KFRL VVDYR..NLN EITV...NDK FPIPRMDEIL 
+        Tom  ........PD ASGKA.KYRV VIDYR..KLN EITI...PDR FPIPNMDEIL 
+   Springer  .......GTD DAGNK.KMRL VLDFR..KLN ERTV...PDR YPMPNISMIL 
+  Athila4-1  EKDELIPTRT ITG....HRM CIDYR..KLN AASR...KDH FPLPFIDQML 
+   Diaspora  EKEELIPTRV QNN....WRV CIHYR..RLN QVTK...KDH FPLPFIDQIL 
+  Cyclops-2  DKDELIPTKV ATG....WRM CIEYR..RLN TATR...KDH FPLPFMDQML 
+     Bagy-2  DKNELIPHRI VTG....YRM VIDFR..KLN KATR...KDH YPLPFIDKML 
+    Calypso  DKDELISTRT VTG....WRM CIDYR..KLN NATW...KDH YPLPFMDHML 
+      Gloin  .......... .DG...SWRF CVDYR..ALN RVTV...LDK FPIPMIDELL 
+       Ifg7  .......... .DG...SWCM CPDYR..ELN KLTI...KDK FPIPVIDELL 
+      Reina  .......... .DG...EWRL CVDYR..RLN AHTV...KNR YPMPVFDEIV 
+      Gimli  .......... .DG...SWRL CVDYR..KVN GITV...KNC FPIPLIEDLM 
+     Monkey  .......... .DG...SLRL CVDYR..ALN KVTV...KNK YPIPLIADLF 
+     Tntom1  .......... WQ....FTTL C.DYR..ALN IITV...KNK YPIPLMAYLF 
+  Galadriel  .......... .DG...TMRM CVDYR..ALN KATI...KNK YSVPLVQDLM 
+        Del  .......... .DD...SKRM CIDYK...LN SVTV...KNK YPLPRIDDLF 
+    Peabody  .......... .EG...TMRL CVDYR..QLN KVTI...KNR YPLPRIDDLM 
+ Retrosat-2  .......... .DK...TKRM CVDYR..ALN EVTI...KNK YPLPRIDDLF 
+     Bagy-1  .......... .DG...MDRM VVDYR..PVN LVTI...KNK YPLPRINDLY 
+        Tma  .......... .DG...SFRL CIDYR..GLN WVTV...KNK YPLPRIDELL 
+    Legolas  .......... .DG...SFRL CIDYR..GLN KVTV...KNK YPLPRIDELM 
+     Cereba  .......... ..G....WYI .AYVC..LLE ALIILLFVIV ILFLGM.ICI 
+        CRM  .......... .DG...TWRM CVDCR..AIN NITI...RYR HPIPRLDDML 
+    Beetle1  .......... .DG...TMRM CVDCR..AIN NITI...KYR YPIPRLDDLL 
+       REM1  .......... .DG...SLRM VLDYR..ALN KITR...KRR YPMPNITELF 
+    G-Rhodo  .......... .DG...TWRF CTDYR..ALN SITQ...EAK FPLPRIDDSL 
+ Sushi-ichi  .......... .DG...GLRP CIDFR..KLN NITV...KNK YPLPLMSSTF 
+   Amn-ichi  .......... .SG...DLRL VVDYR..ALN NITK...RNS YPLPLISDLL 
+    Amn-san  .......... .DG...GLRP CIDYR..GLN KITV...KNR YPLPLISELF 
+     Amn-ni  .......... .DG...GLRP CIDYR..GLN KITI...RNR YPLPLMSTAF 
+     Dane-1  .......... .GG...GLCF CVDYQ..RLN WILV...KDQ YPLPLVKETL 
+      Maggy  .......... .GG...GLRF CVDYR..ALN NITV...KDR YPLPLVRETL 
+      marY1  .......... .DG...SLRP VQDYR..RLN NITV...KNR YPLPLISELV 
+      Cgret  .......... .NG...KLRL CVDYR..MLN EMTI...KNR YPLPLIDELQ 
+      Cft-1  .......... .NG...KLRL VQDYR..KLN EITI...KNR YPLPNIEEAQ 
+      Pyret  .......... .NG...KLRL CVDYR..QLN DITI...KNC YPLPLIREFR 
+     Skippy  .......... .NS.N.KLRL VVDYR..QLN EITE...KDR TSLPLITELK 
+       Real  .......... .GG...GLRL CIDYR..ALN AITK...KDR YPLPLIRETL 
+      MGLR3  .......... .DG...GLRF CVDYR..KLN ALTK...KDV CPLPLIEETL 
+Grasshopper  .......... .SG...GWRL CVDYR..ALN SITM...QDR YPLPLIKETI 
+      Pyggy  .......... .EG...GLRL CIDYW..ALN AITRG..KNR YLLPLIRETL 
+       Tse3  .......... .DG...TKRL CVDYR..GLN DITI...KSK FPLPLIEDVL 
+      Ty3-1  .......... .DG...TFRL CVDYR..TLN KATI...SDP FPLPRIDNLL 
+    Skipper  .......... .DS....WRV VHDYR..QLN KVTV...RDD HPFTPVDSLL 
+        TF2  .......... .EG...TLRM VVDYK..PLN KYVK...PNI YPLPLIEQLL 
+        TF1  .......... .EG...TLRM VVDYK..PLN KYVK...PNI YPLPLIEQLL 
+      Tor4a  .......... .DG...RFRL VIDYR..RLN DATL...QMH HPLPNLEDSI 
+       Tor2  .......... KTG...GLRI CSDFK.SSLN QCLD.ETTDI WPLPQMDHLF 
+       Tor1  .......... SSG...GYRI CVDMR.S.LN NRLA..ESK. WPLPSLAETL 
+       Cer1  .......... .DG...SIRM CIDYR..KVN KVVK...NNA HPLPNIEATL 
+       Cer2  .......... .NG...SLRV CLDFR..KLN EVTI...PDN YPLPRIDAII 
+       Cer3  .......... .NG...SLRV CLDFR..KLN EVTV...PDN YPLPRIDSII 
+     Cigr-1  .......... ..G.SKKPRM VIDYSQ.TVN VFTE...LDA YPLPSIESIV 
+      CsRN1  .......... SKG...DWRP CGDYR..SLN NATI...PDR YPIPHIHDFA 
+     Kabuki  .......... .NG...DLRP CGDYR..QLN AITK...PDR YPIPRRHDFT 
+   Boudicca  .........D SN....DWRP TDVYR..RLN AKTI...PDR YPLPHIHDLT 
+    Osvaldo  .......... .NG...KWRL CVDFR..QLN SRSI...KDA YPLPRVHHIL 
+       Woot  .......... .DG...TVRI CLDAR..MIN SKMI...ADC ESPPAADELL 
+    Ulysses  .......... ..G...KNRF CLDAR..KLN SVTV...KDA YPLPCIEGIL 
+      Circe  .......... .LGHLQLPCI SNQAR...CD FVSM...QEN MQSL.QTAKS 
+       Gmr1  .......... .DG...THRF CNDFR..RLN EVSD...FDS YPMPRVDELI 
+      rGmr1  .......... .DG...TLRF CNDFR..KLN EASS...FDG YPMPRVDELL 
+  RetroSor1  .......... .NG...KMRM CIDFT..DLN KACV...KDS FPLPRIDTSV 
+   Cinful-1  .......... .NG...KWRM CIDFT..DLN KACP...KDE FPLPRIDSLV 
+ B1147A04.5  .......... ..G...VPRE VIEHR...LA VRSG.....A RPV.R.QKVR 
+       Ogre  .......... .DG...KVRM CVDYR..DLN RASP...KDD FPLPHIDVLV 
+  Grande1-4  .......... .I....KWIG ACASTI.LIS TNTVR..RDP FGLPRIDQVV 
+     Tat4-1  .......... .NG...KLRV CIDFT..DLN KACP...KDS FPLPHIDRMV 
+       Tft2  .......... .NG...KRIV CIDFT..DLN KACP...KDS FPLPHIDNLV 
+      RIRE2  .......... .TG...QWRM CVDYT..DLN KSCP...KDP FGLPRIDQVV 
+        412  .......SSP NSDKK.KWRL VIDYR..QIN KKLL...ADK FPLPRIDDIL 
+       Mdg1  .......SLP NSEEK.RWRL VVDYR..QIN KKLL...ADK FPLPRIEDIL 
+  Blastopia  .......... .DG...TLRV CVDYR..KLN TMVL...MDC FPVPIMEEVL 
+   Micropia  .......... .NG...TDRL CVDFR..ELN SNTI...SDK YPLPLISDQI 
+       Mdg3  .......... .TG...DLRM CVDFR..KLN KMTM...KDN YPLPLIDDLL 
+
+             251                                                300 
+        Mag  SNLSG.NKFF TKLDLSQ..A YNQIVLSERS SEYTVINTH. RGLFKYSRLV 
+   Gulliver  TILNG.CVVF SKIDFSD..A YFQVEVAEES RLLLTVNTH. RGLFQYNRLP 
+        DRM  ATLSG.GTIF SKIDLAS..A YQQVLLEDES KELLTINTH. RGLFVYNRLP 
+       CFG1  ATLGG.GTDY SKLDLSQ..A YQQLELDDSS KPYTTINTH. KGLFVYNRLP 
+   Hydra2-1  ATLAG.GQKF TKLDLAF..A YQQLLLDKSS CELLTVNTH. RGLFEPTRLQ 
+        SPM  ANLAG.GKVF SKIDLSN..A YLQLELTDKS KELLTIHTH. KGLYQYERLP 
+       SURL  AHFAG.AKYF SKLDASS..G FWQIQLDDES SKLCTFITP. YGRYKFLRLP 
+       Cer4  GTLQG..CIF SKIDLKD..A YLQIALDSES QKLAVINTH. KGLFKYRRMT 
+       Cer5  SRLKG..TVY SQIDLKD..A YLQVELDEEA QKLAVINTH. RGIFKYLRMT 
+       Cer6  AKLKG..SVF SKIDFRD..A YLQIELDDES QELAVINTH. LGLFKYVRMA 
+ HMS-Beagle  AQLGD.NKIF SVLDLKS..G FHQILLKESD IEKTAFSIN. NGKYEFTRLP 
+       Yoyo  SHLGS.NTFF SVIDLKS..G FHQIPLKNSD IEKTAFSIN. NEKYEFTRLP 
+   Gypsyvir  ANLGK.AKYF TTLDLKS..G YHQIYLAEHD REKTSFSVS. SGKYEFCRLP 
+    Burdock  SNLGK.ARFF TTLDLKS..A FHQILLAEKD RAKTAFSVG. NGKYEFCRLP 
+      Nomad  ASLGN.AKYF TTLDLTS..G FHQIHMKESD IPKTAFSTL. NGKYEFLRLP 
+      Gypsy  ANLGK.AKFF TTLDLKS..G YHQIYLAEHD REKTSFSVN. GGKYEFCRLP 
+        297  GKLGK.CQYF TTIDLAK..G FHQIEMDEES ISKTAFSTK. SGHYEYLRMP 
+       17.6  GKLGR.CNYF TTIDLAK..G FHQIEMDPES VSKTAFSTK. HGHYEYLRMP 
+        Tv1  DKLGK.CQYF TTIDLAK..G FHQIQMDPGS IPKTAFSTK. HGHYEYTRMP 
+        Ted  DKLGK.CQYF TTLDLAS..G FYQVEMDPQD ISKTAFNVE. HGHFEFLRMP 
+        Zam  DSIGK.AKYF STLDLTS..G FHQIEMNPKD IAKTAFTVE. GGHYEFTRMP 
+     Idefix  DKLGR.CQYF TTIDLAK..G FHQIQMDENS IAKTAFSTK. HGHYEYTRMP 
+        Tom  GKLGK.CQYF TTIDLAR..G FHQIEMDSES IQKTAFSTK. RGHYEYVRMP 
+   Springer  GNLGK.AKYF TTLDLKS..G YHQITLAERD REKTAFAVN. GGKYEFRRLP 
+  Athila4-1  ERLAN.HPYY CFLDGYS..G FFQIPIHPND QEKTTFTCP. YGTFAYKRMP 
+   Diaspora  ECLAG.KSHY CFLDGFS..G YMQITIALED QEKTTFTCL. FGTFAYRRMS 
+  Cyclops-2  ERLSG.QQYY CFLDGYS..G YNQIAVDPAD H.KTAFTCP. FGVFAYRKMS 
+     Bagy-2  ERLSN..THF CFLDGYS..G FSQISAAQSD QEKTTFTCP. FGTFAYRRMA 
+    Calypso  ERLAR.QSYY CFLDGYS..S YN.IAIDIKD QEKTTFTFP. FGVFAYRCMP 
+      Gloin  DELHG.TTIF SKLDLCL..G YHQIRMREDD IEKTAFRTH. DGHFEFLVMP 
+       Ifg7  DELHG.SIYF TKLDLRS..G YHQIRMKTED IPKTTFRTH. EGHYEFFVMP 
+      Reina  DELCG.TKIF TKLDHRS..G YHQIRIKEGD EFKTAFQTH. NGHYEYRVMP 
+      Gimli  DELGG.AVIF SKFDLRA..G YHQVRMVEKD IPKTAFKTH. SGHFEYLVMP 
+     Monkey  DQLGK.AKYF SKLDLRS..G YWQVCIAEGD EAKITCVTR. YGAFEFLVMP 
+     Tntom1  DRLGG.AMVF TKIDLMT..G YWQVRIAEGD EHKMTCVTR. YGSYDFLVMP 
+  Galadriel  DRLSK.ACWF TKLDLRA..G YWQVRIAEGD EPKTTCVTR. YGSYEFLVMP 
+        Del  DQLNG.A.YF SKIDLRF..R YHQLRIR.AD IPKTAFRTR. YGHYEFLVMP 
+    Peabody  DQLVG.ASVF SKIDLRS..G YHQIRVKTED IQKTAFRTR. YGHYEYSVMP 
+ Retrosat-2  DQLKG.AKVF SKIDLRS..G YHQLRIREED IPKTAFTTR. YGLYECTVMS 
+     Bagy-1  DQLTG.SSFF SKMDLRL..G YHQIKIKNGD IPKKAFVTR. YGQYEYTVMS 
+        Tma  DQLRG.ATCF SKIDLTS..G YHLIPIAEAD VRKTAFRTR. YGHFEFVVMP 
+    Legolas  DQLGG.AQWF SKIDLAS..G YHQIPIEPTD VRKTAFRTR. YDHFEFVVMP 
+     Cereba  DELSG.YTIF SKVDLRS..G YNQICMKLGD EWKTAFKTK. FGLYEWLVMP 
+        CRM  DELSG.AIVF SKVDLRS..G YHQIRMKLGD EWKTAFKTK. FGLYEWLVMP 
+    Beetle1  DELHG.ATIF SKIDLRS..G YHQIRIKEGD EWKTAFKTK. SGLYEWRVMP 
+       REM1  DQLAG.AKVF SSLDLQQ..G YNQIRIHPDD VPKTGFIAPG MGQFEYKVLC 
+    G-Rhodo  DQLRG.ARYF SKIDLRS..G YWQVRIEEKD IHKTAFRTP. FGHHEWLVMP 
+ Sushi-ichi  EPLTH.ARVF TKLDLRN..A YHLVQIRKGD EWKTAFNTH. LGHFEYLVMP 
+   Amn-ichi  DRLRG.AKVY TKLDLRG..A YNLVRIREGD EWKTAFQTK. FGLFESRVMN 
+    Amn-san  DQLKG.AKIF SKLDLRG..A YNLIRIREGD EWKTAFNTR. DGHYEYLVMP 
+     Amn-ni  EILQE.ASIF TKLDLRN..A YHLVRIKQGD EWKTAFNTP. TGHYEYLVMP 
+     Dane-1  NNLKG.MRYF TKIDIIS..A FNNIRIKKGQ EYLTAFRTC. LGLYESLVMP 
+      Maggy  NNLAG.MKFF SKIDIVS..A FNNIRIKKGE EYLTAFRTR. FGLYESLVMP 
+      marY1  NQLHG.ARYF TKLDVRW..G YNNVRIKEGD EWKAAFRTN. RGLFELLVMF 
+      Cgret  RLLHG.ANWF TALDLKG..A YNLIRMKEGE EWKTAFRTR. KGHFEYLVMP 
+      Cft-1  DRLTG.SDWY TKIDLRD..A FYAIRMAEGE EWKTAFRTR. YGLYEFLVMP 
+      Pyret  NMLYQ.TQWF TTLNLKG..A YNLIRIKEGE KWKTAFRTK. RGYYEYLIMP 
+     Skippy  DRLFG.KKWF TALDLKS..A YNLIRIKEAD EWKTAFRTK. YGLFEYLVMP 
+       Real  NNLSK.AKWF TKLDVIA..A FHKIRVAEGD EWKTAFRTR. FGLFEWLVTP 
+      MGLR3  ARISK.ARFF TKIDIRQ..A FHRIRMNPEH RDYTTFRTR. YGTFRYNVLP 
+Grasshopper  RSLTG.ARWF TKVDVRA..A FHKLRIAEGD EHLTAFRTR. FGLFEWLVCP 
+      Pyggy  NNISK.AKWF TKLDVIA..A FYKIRVAEGD EWKTAFRTR. FSLYEWLVTP 
+       Tse3  DQLSG.ATIF SKLDLIS..G YHQVAIADED QYKTAFTTH. RGQYSWRVMP 
+      Ty3-1  SRIGN.AQIF TTLDLHS..G YHQIPMEPKD RYKTAFVTP. SGKYEYTVMP 
+    Skipper  NQCKD.SKLF SKFDMIM..G YFQVLINPEH AKYTAFITH. IGKFEYTRMP 
+        TF2  AKIQG.STIF TKLDLKS..A YHLIRVRKGD EHKLAFRCP. RGVFEYLVMP 
+        TF1  AKIQG.STIF TKLDLKS..A YHLIRVRKGD EHKLAFRCP. RGVFEYLVMP 
+      Tor4a  SYLEK.SRVY SMCDMIK..G FHQIDLDEDS KQKTAFSNE. FGQFQYTRMP 
+       Tor2  ANIEHGHRIF TSLDVSK..A YWNLLIDPRD RHKTNFTFD. NKCWMYVRLP 
+       Tor1  ESLAG.TAFF SCVDIRQ..A FFHMALTDES KHLTAFSAL. NCQYQFRRLP 
+       Cer1  QSLAG.KKLY TVFDMIA..G FWQIPLDEKS KEITAFAIG. SELFEWNVLP 
+       Cer2  EKVGG.SRYF SVLDMAN..G YLQLRLDAES SYKCGFITE. NKVYAYTHLP 
+       Cer3  EQIGG.SKYF TSLDMAN..G YLQLRLDAES SDKCGFITE. NKVYAYTHLP 
+     Cigr-1  NKVTQ.DKVY SSLDLRS..A YHQIPLKDSD RPFTAFEAE. GQLYQYKRLP 
+      CsRN1  STSCH.TNIF SKLDLVR..A YYHIPIAPDD IPKTAIATP. FGLFEFTRMP 
+     Kabuki  YILDD.KKIF SKLDINR..A FHCIDVAPED IEKTAIITP. FGLFEFPKMT 
+   Boudicca  ATLKG.TTVS SKIDLVK..A YDQIPMATNE IPKTAIITL. FGLYEFLQMP 
+    Osvaldo  DQLRE.ARYI TSLDLKD..G YWQIPMEKSS RPLTAFTVPG KGLFQWKVMP 
+       Woot  RRFHE.IRYM STIDLRS..S YWQIPLSPES RQYTAFLYNG RS.YTYQVLP 
+    Ulysses  SR.ST..RLI LSLASTLSSR SGNRDGGEEQ GVYGVYCTR. RPLYQFRHMP 
+      Circe  SNLTS.KMFR SRI....... ......P.CQ D..CFHRSK. APLS.VQKNP 
+       Gmr1  ERLGP.ARYL STLDLTK..G YWQVPLAPSS REKTAFATPG .GLFQYTVLP 
+      rGmr1  DRLGS.ARFI STLDLTK..G YWQVPLAPGA KEKTAFTTPS .GHWHYRVLP 
+  RetroSor1  DKAAG.CQRF SLLDCFS..G YHQIWLKKED EGKASFTTP. FGTYCYTRMP 
+   Cinful-1  DATAS.SELM SLLDCYS..G YHQIWMKRED EPKTSFITP. SGTYCYLRMP 
+ B1147A04.5  RQ.AP..ERQ AFIR..S..G YHQIRMARED EEKTAFITP. IGTYCYTTMP 
+       Ogre  DNTAQ.SSVF SFMDGFS..G YNQIKMAPED MEKTTFITP. WGTFCYKVMP 
+  Grande1-4  DSTAG.CSML SFLDCYS..W YHQISLAKED EEKTAFITP. FGAFCYTSMS 
+     Tat4-1  EATTG.NELL SFMDAFS..G YNQIPMHKDD QEKTSFITD. RGTYCYKVMP 
+       Tft2  ESTAG.NELL SFMDALS..G YNQIMMNPED QEKTSFITD. RGIYCYKVMP 
+      RIRE2  DSTAG.CELL SFLDCYS..G YHQIRLKESD CLKTSFITP. FGAYCYVTMP 
+        412  DQLGR.AKYF SCLDLMS..G FHQIELDEGS RDITSFSTS. NGSYRFTRLP 
+       Mdg1  DQLGR.AKYF SCLDLMS..G FHQIELDERS RNITSFSTS. TGAYRYTRLP 
+  Blastopia  EKLQS.AKWF TTMDLQN..G FFHVAVEEAS KPYTAFVTR. EGLFEFNKAP 
+   Micropia  ARLRG.ANYF TCLDMAS..G FHQIPIHPES VEYTAF.... ........VP 
+       Mdg3  DRMNE.KTVF TKLDLKN..G FFHVHVKKES IKYTSFVTP. LGQYEWLRMP 
+
+             301                                                350 
+        Mag  YGLASSPGIF QKLM.VNMFK NVP..N..VV VFYDDILIRN Q.DLDSHLKS 
+   Gulliver  FGVKCAPAIF QQIM.DTMLA DLP..F..SM AYMDDIIVTS K.NEKEHYAH 
+        DRM  FGVSSAPSIF QRIM.ENLMR DL...D..VI VYLDDLLVTG K.TEQEHLQR 
+       CFG1  YGVASAPGIF QRTM.ENLLQ GIP..Q..VI VRVDDILVTG K.NRRQHLEN 
+   Hydra2-1  FGVHSASGIF QREI.EKLIG NLP..F..TK VRVDDILVSG R.SDEEHLKN 
+        SPM  FGVSTAPAVF QSVM.DRILG GMK..G..VC CYLDDILISS E.NEEDHIKT 
+       SURL  FGICSAPEVY HKIV.HQMFA HIP..G..VN TMMDDVIVWG T.TQQEHDNR 
+       Cer4  FGLKPAPAKF QKII.DKMIA GLP..G..VA AYLDDVIVSA N.SLEEHEKV 
+       Cer5  FGLKPAPASF QKIM.DKMVS GLT..G..VA VYLDDIIISA S.SIEEHEKI 
+       Cer6  FGLKPAPAVF QKIV.DKLIS GIP..G..VS AYLDDLIIAA S.SYDEHEAI 
+ HMS-Beagle  FGLKNAPSIF QRAL.DDILH EHI..GKICF IYIDDIIIFS K.DDETHYQN 
+       Yoyo  FGLKNAPSIF QRTL.DDILR DYI..GQCCY VYIDDIIIFS R.NEKEHSTH 
+   Gypsyvir  FGLRNASSIF QRAI.DDILR EHI..GKICF VYVDDVIIFS K.NETEHLQH 
+    Burdock  FGLKNAPSIF QRAI.DDVVR DRI..GKSCY VYVDDVIIFS N.GIEDHVND 
+      Nomad  FGLKNAPAIF QRMI.DDILR EHI..GKVCY VYIDDIIVFS E.DYDTHWKN 
+      Gypsy  FGLRNASSIF QRAL.DDVLR EQI..GKICY VYVDDVIIFS E.NESDHVRH 
+        297  FGLRNAPATF QRCM.NNILR PLL..NKHCL VYLDDIIIFS T.SLTEHLNS 
+       17.6  FGLKNAPATF QRCM.NDILR PLL..NKHCL VYLDDIIVFS T.SLDEHLQS 
+        Tv1  FGLKNAPATF QRCM.NNLLE DLI..FKDCL VHLDDIIIFS T.SLEEHILS 
+        Ted  MGLKNSPSTF QRVM.DNVLR GLQ..NNICL VYLDDIIVYS T.SLQEHLEN 
+        Zam  FGLKNAPATF QRVM.DSVLG DLN..GTICL FYLDDIIIFS P.SLQKHLLD 
+     Idefix  FGLKNAPATF QRCM.NNLLE DLI..YKDCL VYLDDIIVYS T.PLEEHILS 
+        Tom  FGLRNAPATF QRCM.NNILR PLI..NKHCL VYLDDMIIFS T.SLDEHLNS 
+   Springer  FGLRNAASIF QRTI.DDILR EQI..GKFCY VYVDDVIIFS E.DENDHVKH 
+  Athila4-1  FGLCNAPATF QRCM.TSIFS DLI..EEMVE VFMDDFSVYG P.SFSSCLLN 
+   Diaspora  FGLCNAPGTF QRCM.ISIFS DFL..ENCIE EFMDDFTVYG S.SFDGCLDS 
+  Cyclops-2  FGLCNAPTTF QRCV.QAIFA DLN..EKTME VFMDDFSVFG V.SFSLCLAN 
+     Bagy-2  FGLCNAPATF QRCM.MAISS DFC..EKIIE VFMDDFSVYG S.SFDDYLSN 
+    Calypso  FGLCNALATF QRCM.MAIFS DMV..EKCIE VFMDDFSVFG P.SFDGCLSN 
+      Gloin  FGLTNAPASF QSLM.N.ELF GPFL.GKFVL VFFDDILIYS N.NLTNHVKH 
+       Ifg7  FGLTNTPSTF QGLM.N.SIF KPFL.RKFVL VFFDDILIYN K.SWKDHVEH 
+      Reina  FGLTGAPATF QDFM.N.KIL TPFL.RKCVV VFLDDVLIYS R.DMEEHVLQ 
+      Gimli  FGLTNALATF QGLM.N.SVF QKFL.RKFVL VFFDDILIYS K.SKKEHLQH 
+     Monkey  FGLTNAPATF CTLM.N.QLF KEYL.DKFVV VYLDDIVVYS Q.TLEEHVKH 
+     Tntom1  FGLTNAPAIF CTLM.N.EVF QEYI.DEFMV VYLDDIVVNI H.TLEEHLEH 
+  Galadriel  FGLTNAPATF CNLM.N.NVL FDYL.DDFVV VYLDDIVIYS R.TLEEHVNH 
+        Del  FGLTNVPTAF MNLM.N.RVF REYL.DKFIV VFVDYVLIYS R.TQKDHEHH 
+    Peabody  SGVTNAPGVF MEYM.N.RIF HPYL.DKFVV VFIDDILVYS K.SEEEHVEH 
+ Retrosat-2  FGLTNAPAFF MNLM.N.KVF MEFL.DKFVV VFIDDILIYS K.SEEEHEQH 
+     Bagy-1  FGLTNAPATF SRLM.N.SIF MEYL.DKFVV VYLDDILIYS M.NEREHAEH 
+        Tma  FGLTNAPAAF MRLM.N.SVF QEVL.DEFVI IFIDDILVYS K.SLEEHEVH 
+    Legolas  FGLTNAPAAF MKMM.N.GVF RDFL.DEFVI IFINDILVYS K.SWEAHQEH 
+     Cereba  FGLTNAPSTF MRLM.N.EVL RAFI.GRFVV LYFDDILIYS R.SLEEHLDH 
+        CRM  FGLTNAPSTF MRLM.N.EVL RAFI.GKFVV VYFDDILIYS K.SMDEHVDH 
+    Beetle1  FGLTNAPSTF MRLM.H.EVL RPFI.GSFVV VYFDDILVYS N.SEQDHLIH 
+       REM1  FGLTNAPATF QSVM.N.NMF GPHI.GKFVL VYLDDILVFS K.NAEEHKEH 
+    G-Rhodo  FGLQGAPSTF QRMM.N.HYL RQYL.GDFVI CYLDDVLIYS K.TKEDHLEH 
+ Sushi-ichi  FGLSNAPAVF QELV.NDVLR DMI..NVFVV VYLDDILIFS R.TMEEHHQH 
+   Amn-ichi  YGLCGAPATF QHFV.NDIFQ DYL..DRFLI IYLDDFLVFS R.SQSEHENH 
+    Amn-san  FGLCNAPAVF QEFV.NDIFR DLL..GKSVV VYLDDILIFS Q.DLETHRSQ 
+     Amn-ni  FGLTNAPAVF QALI.NDVLR DML..NKFVF VYLDDILIFS S.SLQEHIFH 
+     Dane-1  FGLTGAPATF QHYI.NDTLR DYL..DIFCT AYLDNILIYS Q.TRSEHIQH 
+      Maggy  FGLTGAPATF QRYI.NDSLR EYL..DVFCT AYLDDILIYS R.TRTEHEEH 
+      marY1  FGLTNSPATF QTMM.NDIFH DLIL.EGVVC IYLDDILIFT R.MVEEHRRI 
+      Cgret  FGLTNAPATF QNMI.NQVLR KFV..DIFVV VYLDDILIFS P.TLKQHKEH 
+      Cft-1  MGLTNAPASC QDLV.NETLR DLL..DVCVV AYMDDILVYT KGSLQEHTKQ 
+      Pyret  FGLTNAPATF QTII.NHVLR ECL..NIFVV IYLDDILVFS K.TLEKHKQH 
+     Skippy  FGLTNAPAVF QRMI.TNVLR EYL..DIFVV CYLDDILIFS D.TEEEHTEH 
+       Real  FGMANSPSTF QRYI.NWTLR EFL..DDFCS AYLDDVLIYT DGSLKQHQEH 
+      MGLR3  FGLTNGPATF QKFI.NEILM EYL..DDFCS AYMDDILIWS E.TEEEHQTH 
+Grasshopper  FGLAGAPATF QRYV.NGVLG DTL..GDYAS AYLDDILIYS SGSKSDHWSK 
+      Pyggy  FGMANSLSTF QRYI.NWTLR EYL..DEFCS AYLDDVLIYT DGSLEQHQDH 
+       Tse3  FGLTNAPATF QRLM.NYVLR DYI..NKICV VYLDDILIYS K.NEKEHSEH 
+      Ty3-1  FGLVNAPSTF ARYM.ADTFR DLR....FVN VYLDDILIFS E.SPEEHWKH 
+    Skipper  QGLVNSPSTF ARLM.VEIFG KIK....SLL QYFDDLLVHS KLDYMVHFIE 
+        TF2  YGISTAPAHF QYFI.NTILG EAK..ESHVV CYMDDILIHS K.SESEHVKH 
+        TF1  YGISTAPAHF QYFI.NTILG EAK..ESHVV CYMDDILIHS K.SESEHVKH 
+      Tor4a  MGCKNAPSFF MRIMDKALLG VKK...TEII AYMDDLLCHS .QTEVEHIKI 
+       Tor2  FGLKFSGDAF CRSI.SSMLD RVS.LKSNFC NYVDDVLAYS S.DCETHVKV 
+       Tor1  MGLKISPSVY QMAMKETLGN DLG...NKAV VYLDDVLVTG R.TEDEHLEA 
+       Cer1  FGLVISPALF QGTM.EEIIG DLL..GVCAF VYVDDLLIAS K.DMEQHLQD 
+       Cer2  FGLKSAASYF QRAL.RQVLD GLE..D..VM VYIDDVLIYS K.TFEDHIRT 
+       Cer3  FGLRSAASYF QRDL.KQVL. GLE..KE.VT VYIDDVLIFS K.TFEEHLNS 
+     Cigr-1  FGVTNGVSAF QRII.NRFIQ DNHL.NK.VY AYLDDITVTG E.TLEEHDRN 
+      CsRN1  FDLRNAAQTF QRFM.DEVLR GL....PFVY AYLDDVLIAS T.SPMEHAAH 
+     Kabuki  FGLRNAPQTF QRFMNNTVLH GL....EFLF SYLDDVIIAS E.SPTQHNEH 
+   Boudicca  FGLRNAAQTF QRFI.DDVFR GL....NFVH AYVDDCLIAS P.DRESHLKH 
+    Osvaldo  FGLHSAPATF QRAL.DQVIG PDM..MPHAF AYLDDIIVIG R.TRQEHMDN 
+       Woot  FGLKTAVGSF SRAM.DVVLG TEV..REFVV NYIDDLLVAS E.TLNEHLEH 
+    Ulysses  FGLCNAAQHF EAHM.DKVIP ANL..RSNVF VYLDDLLIIS A.DFPTHLKY 
+      Circe  FGL...SIHK PCAVCTSLYP .......... .INNRMYSTS KICWFCQTIS 
+       Gmr1  FGVHGAPATF QRMM.DQVLR PHS...SYAA AYIDDIIIHS A.SWDEHVKH 
+      rGmr1  FGLHGAPATF QRMM.DILLR PHQ...SYAA AYLDDVVVHS M.CWEEHLTR 
+  RetroSor1  EGLKNAGATF SRMM.GKVLG SQL..QRNII AYVDDVVVMS K.RKEDHIKD 
+   Cinful-1  EGLKNAGGSF SRMT.AKVLQ SQI..GRNVL TYVDDIIVKS T.KQENHIAD 
+ B1147A04.5  FGLKNAGPTF QRTT.RISLG SQI..GRNVE AYVDDLVVKT R.NQETLLSD 
+       Ogre  FGLKNAGATY QRAM.TTLFH DMM..HKEIE VYVDDMIAKS Q.TEEEHLVN 
+  Grande1-4  FGLKNGRATY QRAI.QTCLA NHW..GKRVE AYVDDVVIKI E.NSENFIED 
+     Tat4-1  FGLKNAGARY QRLV.NQMFA PQL..GKTME VYIDDMLVKS K.KSADHIEH 
+       Tft2  FGLKNAGATY QRLV.NKMFN EHL..GKTME VYIDYMLVKS L.KKEDHVKH 
+      RIRE2  FGLKNAGATY QRMI.QRCFS TQI..GRNVE AYVDDVVVKT K.QKDDLISD 
+        412  FGLKIAPNSF QRMM.TIAFS GIE..PSQAF LYMDDLIVIG C.SEKHMLKN 
+       Mdg1  FGLKIAPNSF QRMM.TLAFS GLT..PSQAF LYMDDLVVIG C.SEKHMLKN 
+  Blastopia  FGFKNSPAAF IRFV.QFIFQ ELIN.SNIMQ LYMDDIIVYA A.TPEECMEK 
+   Micropia  DGLKNAPSVF QRTV.INALG DLAN.S.FVI VYMDDIMVVS P.TKELALER 
+       Mdg3  FGLKNAPSVF QRFV.NKIFA DMIR.ENKVV VYMDDILLAT E.NINEHLET 
+
+             351                                                400 
+        Mag  IK.EVLDILE RYGLKIKRSK CEFMVTEVRY LGFIIDQ.NG VRVDPEKVKS 
+   Gulliver  SQ.KVFRRLS EYGFCMKLEK CSFFMSSIKY LGIIIDL.NG GRPNPEKVNA 
+        DRM  LQ.AVLKRLQ ENGLRVKKSK CEFGKSQIEY LGFVLNS.QG LHPSPDKVDA 
+       CFG1  LE.AVLNRLE KAGVKLKRSK CYFLRKEVEY QGHRINS.EG MQPIEGKVMA 
+   Hydra2-1  VE.TVLLILE KAGLKLKENK CVFMSPEVEY LGFKLTK.DG VVPLEDKLNA 
+        SPM  LN.EVLGRLQ EYGVKAKKEK CSFMVSRVIY LGHEIDG.KG VHPTKEKVEG 
+       SURL  LR.EVLSIAR RMNLKLNKDK CEFSVKKLTF IGDLISD.QG VQPDPKKVSA 
+       Cer4  LH.ELLKRIK DYGFRISPEK CNFAQSEITF LGFIIDK.RG RRPDPKKTSV 
+       Cer5  LR.ELFERIK EYGFRVSAEK CAFAQKQVTF LGFIVDE.HG RRPDPKKTEV 
+       Cer6  LR.QLFDRIR EYGFRVSPEK CMFAVSEISF LGFIVDE.KG RRPDPNKASK 
+ HMS-Beagle  LD.TIFRTLQ QANMKCQLDK CEFMKRKVEF LGFVVSD.KG IETSPTKVQA 
+       Yoyo  LK.NIFTTLE KANMKVQLDK CKFFEKEVEF LGFIVTP.EG IKTNPSKIEA 
+   Gypsyvir  IN.IVLKCLI DANMRVGPEK TRFFKESIEF LGFIVTK.DG ATSDPKKVKA 
+    Burdock  VA.WVLDRLS GANMRVSKEK SFFFKESVEY LGFMVSS.GG ITTSPSKVEA 
+      Nomad  LR.LVLASLS KANLQVNLEK SHFLDTQVEF LGYIVTA.DG IKADPKKVRA 
+      Gypsy  ID.TVLKCLI DANMRVSQEK TRFFKESVEY LGFIVSK.DG TKSDPEKVKA 
+        297  IQ.LVFTKLA DANLKLQLDK CEFLKKEANF LGHIVTP.DG IKPNPIKVKA 
+       17.6  LG.LVFEKLA KANLKLQLDK CEFLKQETTF LGHVLTP.DG IKPNPEKIEA 
+        Tv1  LQ.KVFKKLR EANLKLQLDK CEFMRKETEF LGHIITT.EG IKPNPNKIQA 
+        Ted  LE.RVFQRLR ESNFKIQMDK SEFLKLETAY LGHIISR.DG IKPNPDKISA 
+        Zam  IK.MVFEKLR AANFKLQPSK SEFLRKEIEF LGHIVTQ.DG VKPNPNKISA 
+     Idefix  LK.KVFEKLR DANLKLQLDK CEFMKKETEF LGHIVTT.NG IKPNPNKTKA 
+        Tom  LQ.LVFEKLS ESNLKLQLDK CEFLKKEATF LGHIVTP.DG IKPNPLKVEA 
+   Springer  VD.WVLKSLY DANMRISAEK SRFFKKSVSF LGFIVTN.NG AATDPEKVKA 
+  Athila4-1  LG.RVLTRCE ETNLVLNWEK CHFMVKEGIV LDHKISE.KG IEVDKGKVEV 
+   Diaspora  LE.KVLNRRI ETNLVLNFEK CHFMVEQGIV LGHIISN.KG IEVDPAKISV 
+  Cyclops-2  LK.TVLERCV KTNLVLNW.K CHFMVTEGIV LGHKVSS.RG LEVDRAKVEV 
+     Bagy-2  LD.RVLQRCK DTNLVLNWEK CHFMVNEGIV LGHKISA.KG IEVDKAKVDA 
+    Calypso  LE.RVFR.CE ESNLVLNWEK CHFMVQEGIV LGHKISV.RG IEVDKVKIDV 
+      Gloin  LT.LVMEVLA KHQLFANRKK CLLRQSQIDY LGHVISA.HG VATDPSKTEA 
+       Ifg7  VD.RVLQLLE EKKLYAKRSK CFFVVQEVEY LGHIVS..EG VKVYPNKIKA 
+      Reina  VK.QVFQKLK DHQLKLKLSK CRFAQTTLEF LGHIISA.EG IATDPEKVQV 
+      Gimli  LK.LVLEVMR EHKLFAKRSN CAFATSRVEY LGHFIDR.DG LSTDPSKVLA 
+     Monkey  LW.MIFKVLR ENTLFVKREK CYFAQTEILF LGHRIGD.GS IWMDKSKVQV 
+     Tntom1  LR.KVLARLR EH.LYAKLYK CSFAQKQIDF IGHVIEE.GR IKMDQQKIQA 
+  Galadriel  LS.LVLSQLR KYTLYVKMEK CEFAQQEIKF LGHLVSK.NQ VRMDPKKVQA 
+        Del  LR.ISLQLLR NNQLYAKLSK CEFWMEKVKF LGHVVSR.EG IVVDPVKVKA 
+    Peabody  LR.VVLGVLR EKKLFAKLSK CEFWLEEVSF LGHVISR.GG VAVDPSKIEA 
+ Retrosat-2  LR.LVLEKLK EHQLYAKFSK CDFWLTEVKF LGHVITA.QG VAVDPSNVES 
+     Bagy-1  LR.LVLMKLR EHRLYAKFSK CE.......F LGHVISG.KG IAVNPERVQA 
+        Tma  LR.RVMEKLR EQKLFAKLSK CSFWQREMGF LGHIVSA.EG VSVDPEKIEA 
+    Legolas  LR.AVLERLR EHELFAKLSK CSFWQRSVGF LGHVISD.QG VSVDPEKIRS 
+     Cereba  LR.VVFLALR DARLFGNLGK CTFCTDRVSF LGYVVTP.QG IEVDKAKIEA 
+        CRM  MR.AVFNALR DARLFGNLEK CTFCTDRVSF LGYVVTP.QG IEVDQAKVEA 
+    Beetle1  LK.KVFLKLR EKKLYAKMEK CEFFTSSVSF LGFIISS.QG ISMDESKVEA 
+       REM1  LR.TVLEILR KNQFKAKRSK CDFNRPELHF LGHIVSR.EG LKVDDRKIRV 
+    G-Rhodo  IR.KVLEILR KHKLYAKASK CDFGRTQVQY LGFIVRQ.GQ VDKDPKKIEA 
+ Sushi-ichi  VR.LVLQRLL ENRLFIKAEK CIFHSASVGY LGYIVEE.GR VRADPAKIQA 
+   Amn-ichi  VK.MVLQRLR DHGLYAKLEK CAFDLQEVDF LGYRISP.LG LSMDPAKVSA 
+    Amn-san  VK.EALSRLR ENFLFAKLEK CTFEVPKISF LGYIISS.RG FEMDPAKVSA 
+     Amn-ni  VR.KVLQRLL NNHLYVKPEK CQFHVTQVKF LGFIIKP.GQ IQMDPQKIQA 
+     Dane-1  VR.KVLQKLR EAGLFAKLVK YEFTVHETKF LGLIVAR.DR IKIDPEKVQT 
+      Maggy  LK.LVLEALR KAGLYANAAK CEFFVTETKF LGLLVGV.EG VKMDPEKITA 
+      marY1  TR.LVLERLR RYKLYLHQDK CEFERTKIEY LGLIISE.GQ VEMDPIKVNR 
+      Cgret  VH.LVLQALQ NAKLLVEPEK SKFHAQEVEY LGFTITP.GH IHMSKDKVRS 
+      Cft-1  VQ.DVFERLT KSGFKTAPEK CEFHKKEVKF LGFIIST.TG ITIDPAKTQS 
+      Pyret  VH.TILQKLQ NAKLLVEPEK YLFHSKQINF LGYIIAP.GE IRMEKSKIQA 
+     Skippy  VH.KVLKALQ DANMLVEPTK SHFHQSQVTY LGHEISH.NE IRMDRRKIAA 
+       Real  VR.KVLRKLQ DAGLQVDIKK CEFEVKSTKY LGFIIKAGKG ISMDPAKVAA 
+      MGLR3  VR.QVLERLK KAGLQADIKK CEFHVTETRF LGFIIGT.KG VAVDPDKVAA 
+Grasshopper  VT.RVLDKLA AAGLNLDLDK SAFAVKEVKY LGFIVKAGEG VQADPEKIKA 
+      Pyggy  VR.KVLRKLQ ESGLNVDIKK CEFGVKSTKY LGLIIDAEKG IRMDPEKVKA 
+       Tse3  VS.TIINVLR KHQLYAKKSK CEFYVPKIQF LGHELSA.KG ITPDKEKILA 
+      Ty3-1  LD.TVLERLK NENLIVKKKK CKFASEETEF LGYSIGI.QK IAPLQHKCAA 
+    Skipper  II.RMLLYCR KYLLFISREK SEMLKTEVDF LGFHIHK.DG ISPRAAKVRA 
+        TF2  VK.DVLQKLK NANLIINQAK CEFHQSQVKF IGYHISE.KG FTPCQENIDK 
+        TF1  VK.DVLQKLK NANLIINQAK CEFHQSQVKF IGYHISE.KG FTPCQENIDK 
+      Tor4a  LE.KLFQILA VNNLRINSKK AAFFTDSVNF CGYDISN.GK ICPSQDKIEA 
+       Tor2  LQ.QIFSACR HFGARLGAKK CTFGQASTAF MGRIISA.EG ISIPPENMET 
+       Tor1  LD.VVLDRLR KAGFLLNPDK CILGVKKTTF LGHEVTT.EG YYPKTDNLAA 
+       Cer1  VK.EALTRIR KSGMKLRASK CHIAKKEVEY LGHKVTL.DG VETQEVKTDK 
+       Cer2  LE.MVLERFR KFNLKASPNK CEFFKESIVF LGHEISR.DN YSPNRVNVET 
+       Cer3  LR.KVLERFR KFNLKVSPNK CEFFKQSITF LGHEINA.DN YKPNRINVDA 
+     Cigr-1  LK.KLLVAAK RHNLTINEEK SKLRMTSIDF LGYRISY.GD ARPDPERLRP 
+      CsRN1  LR.AVFERLS TYNIRLNIDK CLFGATNLDF LGHHIDS.TG ISPLPDRILA 
+     Kabuki  LR.IVFERFN SYGITINLDK CCFGQPKVEF LGHEVSV.NG ITPLKNKVEA 
+   Boudicca  LD.IVFDRLQ RHGITVNIQK CQIGTNSLDF LGHTIDA.QG IRPLRSKMVA 
+    Osvaldo  LR.EVFRRLR AANLRINIDK CDFFKKELKY LGHKVTE.NG IRTDPEKVAA 
+       Woot  LR.QVFEKLK QARMTINLEK SNFIQKEVKF LGHILTI.NG IKADPEKISA 
+    Ulysses  LELVAECL.R NANLTIGMAK SKFLFRNLNY LGFIQLRRRT WRMDPGRVEA 
+      Circe  KTIFCICPKR KAGLTINVQK SQFCLKTVDY LGYLVGE.GT LQVNPNKIAA 
+       Gmr1  VR.AVLNGLR AAGLTANPAK CRLGREETAY LGYRVGR.GN VRPQEDKVAA 
+      rGmr1  LR.RVLLELR RAGLTANPKK CHLGLAEAKY LGYHIGR.GL IQPQQAKVEA 
+  RetroSor1  LQ.ETFVNLR SAGLKLNPEK CVFGVSKGKM LGYIISS.EG IRANPDKTKA 
+   Cinful-1  LQ.ETFASFR QAGLKLNPEK CVFGVKKGKF LGCLVST.KG IEANPSKIEA 
+ B1147A04.5  LA.ETFESLR SARIKLNPDK CVFGVPAGKL LGFLVSA.RG IEANPEKIRA 
+       Ogre  LQ.KLFDRLR KFKLRLNPNK CTFGVRSGKL LGFIVSE.KG IEVDPAKVKA 
+  Grande1-4  LQ.LVFNSLR RYRWKLNPEK CVFGVPAGKL LGFIVSH.RG IEANPDKIEA 
+     Tat4-1  LT.ACFETLN KYNMKLNPAK CSFGVTSGEF LGYIVTK.RG IEANPKQIQA 
+       Tft2  LE.ECFAILN QYQMKLNPAK CTFGVPSGEF LSYIVRK.RG IEANPNQINA 
+      RIRE2  LE.ETFASIR AFRMKLNPEK CTFGVPSGKL LGFMVSH.RG IQANPEKVTA 
+        412  LT.EVFGKCR EYNLKLHPEK CSFFMHEVTF LGHKCTD.KG ILPDDKKYDV 
+       Mdg1  LT.DVFKLCR QHNLKLHPEK CTFFMKEVTY LGHKCTD.KG ILPDDSKYEV 
+  Blastopia  TE.MVLKRAA EFGLKIKWKK CNFMQRRIHF LGHIIEG.GQ ICPGKEKTSA 
+   Micropia  LK.TVLNVLT KAGFTFNLAK CSFLKTTVQY LGYEVRA.GE IRPNVRKIAS 
+       Mdg3  LK.EIFKRLV ENKLELRIDK CEFMQSSIKY LGFIINK.DG IMPNDKGIEA 
+
+             401                                                450 
+        Mag  IATMPHPNNV TELKSFIG.. MVNFYSKFIQ DLAVLTVDAS ARG..LGAVL 
+   Gulliver  VVHMSIPSNV QKP.SILG.. MINYYNSLCL TCTAVAADTS TFG..IGAVI 
+        DRM  VKNAPVPTCV KELKAFLG.. LVNYYGRFLP NQSTLACDSS AYG..IGAVL 
+       CFG1  IKDAPAPTNV KELQAFLG.. MLNYYSCYLP RLSVLSCDAS PYG..LGALL 
+   Hydra2-1  IRNAPEPKDT TQVKSFLG.. MINYYHRHLP NLAILSCDAS PYG..IGAVL 
+        SPM  ICDAKRPENK DELRTFIG.. IVVYYAKFVP NLAVLACDAS PYG..LGVVL 
+       SURL  ILNMERPKCR KDVQRFLG.. MINYQGKFIP DLAKLSADAS KNG..IGAVL 
+       Cer4  IRSMKAPTDQ KQLMSFLG.. AICFYGRFVP KMSIVAADAS KYG..IGGVI 
+       Cer5  IRSMKAPTDQ KQLASFLG.. AVSFYSRFVP KMSIIAADAS QYG..IGGVL 
+       Cer6  IRSMKAPGDQ KQLSSFLG.. AVCFYSRFVP KMSIVAADAS NYG..IGGVL 
+ HMS-Beagle  ISDFPIPRTL KELRSFLG.. LSGYYRRFIP NYAHLTTDAS NFA..VGAVL 
+       Yoyo  IQNFPIPRNL KELRSFLG.. LSGYYRRFVK DYAELTTDAS NYA..IGAVL 
+   Gypsyvir  IQEFPEPKNV YSVRSFLG.. LANYYRVFIK DGADLTTDAS ASG..IGAVL 
+    Burdock  IQKYNQPTNL FSVRSFLG.. LASYYRCFIK DFADLTTDAS AFG..LGAVL 
+      Nomad  ISEMPPPTSV KELKRFLG.. MTSYYRKFIQ DYAHLTTDAS NWA..IGAVL 
+      Gypsy  IQEYPEPDCV YKVRSFLG.. LASYYRVFIK DFADLTTDAS ASG..IGAVL 
+        297  IVSYPIPTKD KEIRAFLG.. LTGYYRKFIP NYAVLTTDAS NLA..LGAVL 
+       17.6  IQKYPIPTKP KEIKAFLG.. LTGYYRKFIP NFATLTTDAS DVA..LGAVL 
+        Tv1  IVKFPIPKTP KEIKSFLG.. LCGFYRKFIP NFASLTTDAS NMA..IGAVL 
+        Ted  IQKYLIPKTP KEIKQFLG.. LLGYYRKFIP DFANLTTDAS NFA..IGAVL 
+        Zam  IKKFPCPTNR RAIKSFLG.. LLGYYRKFIR DFAILTTDAS NFA..LGAVL 
+     Idefix  ITNFPLPKTP KQIKSFLG.. LCGFYRKFIP NFASLTTDAS NVA..IGAVL 
+        Tom  IASYPIPTKV KEIRAFLG.. MTGYYRKFIP SYAVLTTDAS NLA..LGAVL 
+   Springer  IKEFPEPKNV FEVRSFLG.. LASYYRCFIK DFADLTTDAS AYG..IGAVL 
+  Athila4-1  MMQLQPPKTV KDIRSFLG.H AGFY.RRFIK DFAEIMCDAS DYA..VGAVL 
+   Diaspora  ISQLPYPSCV E.VRSFLG.H AGFY.RCFIR DFSELMCDAS NYA..LGAVL 
+  Cyclops-2  IEKLPPPVNV KGIRSFLG.H VGFY.RHFIK EFSELMCDAS NYA..IGAVL 
+     Bagy-2  IEKMPCPIDI RGIRSFLG.H AGFY.RRFIK DFSEIMCGAS DYA..VGAVL 
+    Calypso  IEKLPPPMNV KRMRSFLG.H DGFY..RLIK DFSELMCDAS DYA..IGAVL 
+      Gloin  MIHWPTPKSV KELFGFLG.. ...YYRHFVK GYGVVEYDAS GFG..LGAVL 
+       Ifg7  IKEWKIPTSI KHLRGFLG.. LTGCYRKFAK NYGIVECDAS GNG..IGAVL 
+      Reina  IRDWPIPNNV KEVRSFLG.. MAGYYRRFVA HYAVVETDAS GSG..IGAVL 
+      Gimli  VKEWPAPTNL KQLRGFLG.. LANYYRRFVK NFGVVETDVC GQG..ISAFL 
+     Monkey  VAEWRTPKKV PELRSFLG.. FVNYYRRFIA GYSEVHIDAS DFA..IGGVL 
+     Tntom1  ITNWPPPKDI HALRSFLV.. .LNFYWLFVK NYSEVQTDAS DSILSLGGVL 
+  Galadriel  IVDWQAPRHV KDLRSFLG.. LANYYRKFIA GYSEVHTDAS DKA..IGGVL 
+        Del  VMNWELPKNI FEIRSFLG.. LAGYYRRFIK GFAVVYTDAS LAG..LEGVL 
+    Peabody  VSKWEAPKSV AEIRSFLG.. LAGYYRKFIE GFSEVYCDAS LLG..LGGVL 
+ Retrosat-2  VTKWTPPKTV SQIRSFLG.. LAGYYRRFIE NFSQVYCDAS RHG..LGCVL 
+     Bagy-1  VLDWTQPESV KQVRSFLG.. LASYCRRFVE NFSVIYCDTS RQG..LGCIL 
+        Tma  IRDWHTPTNA TEIRSFLG.. LAGYYRRFVK GFAMVYTDAS GVG..LGCVL 
+    Legolas  IKEWPRPRNA TEIRSFLG.. LAGYYRRFVM SFATVYTDAS IVG..LGCVL 
+     Cereba  IESWPQPKTV TQVRSFLG.. LAGFYRHFVR DFSELECDAS RIG..LRGVL 
+        CRM  IHGWPMPKTI TQVRSFLG.. LAGFYRRFVK DFSELECDAS GIG..LGGVL 
+    Beetle1  IKSWPIPKSI TEVRSFHG.. LASFYRRFIR GFSEVECDAS GVG..IGAVL 
+       REM1  IREWEVPQDL HKLRAFLG.. LANYFRRFIQ GYSTVWSDAS VHG..TGAVL 
+    G-Rhodo  IRDWPLPSTV REVRSFLG.. LAGFYRKFVE GFAEVWADAS SDNTAIGAVL 
+ Sushi-ichi  VVEWPRPTDR TQLRRFLG.. FAGFIRRFIK GFAIVEVDAS DAG..IGAVL 
+   Amn-ichi  VLER.APTNK KEVQRFLG.. FANYYRKFIP DFAVVQADAS DVA..IGAVL 
+    Amn-san  IQKWPLPQST KAIQRFIG.. FANYYRQFIK DFSFIEVDAS DVG..AGAIL 
+     Amn-ni  MVDWPSPSSV KEVQRFLG.. FANFYRKFIL NFSMVEVDAS DVG..IGAVL 
+     Dane-1  IAAWATPTCI TDIQAFIR.. FANFYRRFIK DFSILETDAS DFV..SAGVL 
+      Maggy  VLDWQTPKKL TDVQAFLG.. FGNFYRRFIR DFAILETDAS DYV..SAGIL 
+      marY1  VTAWPTPTNK KEVQSFLG.. FINFYRRFIK DFSRVEADSS DFA..MGAVL 
+      Cgret  IQEWPTPTNL KEVQSFLG.. LVNFYRKFIK YYGEVEADAS DFA..LGAQL 
+      Cft-1  IREWPEPKTV KDVQSFLG.. LANYNRKFIK DYSHIETDAS DMA..IGACL 
+      Pyret  VKEWPQPQNW TE.QTQQA.. FEQ.LRDAIT RE.EVETDAS DYT..IGGQL 
+     Skippy  VAEWKVPTSV KETQSFLG.. FANYYRRFIK DFAELETDAS DFA..LGGQI 
+       Real  IREWEAPQTV KGVRSFLG.. FANFYRKFIK NFSVLETDSS GFA..VGGVL 
+      MGLR3  VKQWAPPTTV KGVQSFLG.. FCNFYRKFVP EYSRVETDAS GGV..VAGAL 
+Grasshopper  IRDWEAPTRL RGLRGFLG.. FANFYRDFID GYARMETDCS GAA..LGGCL 
+      Pyggy  IMEWE.PLRL RAYVHFWD.. SQTSTGDLSR DFSILECDSS GYA..TGGVL 
+       Tse3  IKDWPTPKTY KDAQSFIGL. .AGYYRRFIK DFS.LTTDAS STA..IGAVL 
+      Ty3-1  IRDFPTPKTV KQAQRFLG.. MINYYRRFIP NCS.LTTDAS KDG..IGAVL 
+    Skipper  ISELPEPRNA KEAEAALG.. LFGFFRRHIE NYAHLYCDVS DKA..LSGVL 
+        TF2  VLQWKQPKNR KELRQFLG.. SVNYLRKFIP KTALLETDAS DVA..VGAVL 
+        TF1  VLQWKQPKNR KELRQFLG.. SVNYLRKFIP KTSLLETDAS DVA..VGAVL 
+      Tor4a  IQKLKIPRTK DAAQSLFG.. ALNYHRRFIR NFAVLETDAS DKG..YGGVL 
+       Tor2  ILALKPPTTR KQVQSLIG.. NFCWLKSWVS ANLILLSDAS ELA..AGSVL 
+       Tor1  IREFPKPTNK KALRRFIG.. MTAFYSTLVP KLQIVTTDAS DTG..YGGML 
+       Cer1  MKQFSRPTNV KELQSFLG.. LVGYYRKFIL NFAMIYTDAS RKG..IGAVL 
+       Cer2  IRSMPTPTNV NEVRRFVG.. MSGFFRKFIP NFSHIFTDAS AVA..QGAAL 
+       Cer3  IVNLPTPRNV GDVRRFIG.. MSGFFRKFLP NFSHIFTDAS AVA..QGAVL 
+     Cigr-1  LLNLPPPDTP RELKRIQG.. MFAYYAKWIS RFSQVETDAS DYA..IAAVL 
+      CsRN1  LESFPIPTTL TQLRRFIG.. IINYYRRFIP HCAILTTDAS NAA..VGAVL 
+     Kabuki  IINFPKPETV SDLRRFLG.. MVNFYRPHLP NSAALMTDAS DTC..MGAVL 
+   Boudicca  ILDYPEPTTI KQLRTFNG.. LVSFYRRFIP KCAKPLTDAS DSA..IGGVL 
+    Osvaldo  IAQLKPPTNV KELRQYVG.. VASWYRRFVP DFACLQTDAS NYG..LGAIL 
+       Woot  IRNFPVPQKT KHVRAFLG.. LCNFYRKFCA RYAYVQTDSS GYG..LGAEL 
+    Ulysses  IRNIPNPRTV KELRSFLG.. TAGWYRRFIK NFAFIQCDAS HYG..VGAVL 
+      Circe  VGDFPVPKT. KQLRRFLG.. MTGWYQRLIS NYSLLIISKT SYA..LLLVS 
+       Gmr1  IREWPQPQTK KQVRSFLG.. LVGYYQRFIP GYATLQTDAS EVG..LGGVL 
+      rGmr1  LQKTPRPTNK SQVRAFLG.. LAGYYRCFIP NFSILQTDAS DSG..LGAVL 
+  RetroSor1  IMSMAEPSNK KEVQRLTG.R IAAL.NRFIS RSALLYVAAS EHA..VSGVL 
+   Cinful-1  ILRMEPPTTK KGAQRLTG.R LASL.NRFIS RSALLYVAAS HSA..VSAAL 
+ B1147A04.5  IERMRPPSKL RDMQCVTG.C MAAL.SRFIS RLGVVGTEDE CTP..RGRLD 
+       Ogre  IQEMPEPKTE KQVRGFLG.R LNYI.ARFIS HLTIMYLSVT ENS..MGCVL 
+  Grande1-4  IMKMEAPRSQ KKVQRLTG.C MAAL.SRFIS RLGLL..HDS .RG.KHHVGS 
+     Tat4-1  ILDLKSPRNK KEVQRLTG.R IAAL.NIFIA RSTYLYIAVS SSA..VSGVI 
+       Tft2  FLNMSSPKNF KEVQRLTG.R IAAL.NRFIS RSTYLYVSVS DHA..VSGVL 
+      RIRE2  ILNMKPPSTQ KDVQKLTG.C MAAL.SRFVS RLGLLYVSAT SQV..VSTVL 
+        412  IQNYPVPHDA DSARRFVA.. FCNYYRRFIK NFACITTDAS KQA..CGAVL 
+       Mdg1  IKNYPKPVNA DEARRFVA.. FCNYYRRFIK NFACITTDAS KQA..CGAVL 
+  Blastopia  VNSFGTPQNV KAVQGFLG.. LTGFFRKFIP GYAELHTDAS KDG..LGAVL 
+   Micropia  LSSLPPPQTV SGVRQFIG.. LASYFRKFVS GFAELHTDAS ACG..YGAIL 
+       Mdg3  IKNFPIPNNV HTVQSFLG.. LCSYFRRFIK DFSELHCDAS SSG..FGAVL 
+
+             451                                                500 
+        Mag  AQRG.PGC.. ........QE RVVAYAS.RA LT.THELHYS QIHKEALAIV 
+   Gulliver  LHRFSNE... ........SQ KAIAHAS.RT LF.VA..KYS QIKKEALALV 
+        DRM  QHTMPTG... ........EE RPIAYAS.RT LS.PAEKKYS QIEKEGLSLI 
+       CFG1  SHVMLDG... ........RE RPIAYAS.RT LA.PAKKHYS QLDKEGAALI 
+   Hydra2-1  AHVTSEG... ........SE RPITYIS.RT LS.AAERNYS QIEKEALSIV 
+        SPM  SHLMEDG... ........EE RPVAYAS.RT LT.KSEQNYS QIEKESLAII 
+       SURL  LQQH.DE... ........NW VPIAYAS.RS MT.DAETRYA QIEKELLAIT 
+       Cer4  LHVNPDG... ........VE VPIAHFA.RS LT.ETEKRYS QIEKEALALI 
+       Cer5  LHQTPEG... ........HE VPVAHFA.RA LT.DTEKRYS QIEKEAVALV 
+       Cer6  CHVNPDG... ........VE VPIAHYA.RS LT.ATEQKYS QIEKEGLALI 
+ HMS-Beagle  SQ...EN... .......... RPISFLS.RT LS.KAEENYA TNEKEMLAII 
+       Yoyo  SQE..DR... .......... .PITFIS.RT LT.KTEENYA ANEKEMLAII 
+   Gypsyvir  SQ....G... .........N RPITMIS.RA LK.QAEQNYA TNERELLAIV 
+    Burdock  SQ...DG... .......... KPVTMIS.RT LQ.DRELNFA TNERELLAIV 
+      Nomad  SQDD.QG... ........RD RPIAYIS.RS LN.KTEENYA TIEKEMLAII 
+      Gypsy  SQ...EG... .......... RPITMIS.RT LK.QPEQNYA TNERELLAIV 
+        297  SQ...NG... .......... HPISFIS.RT LN.DHELNYS AIEKELLAIV 
+       17.6  SQ...DG... .......... HPLSYIS.RT LN.EHEINYS TIEKELLAIV 
+        Tv1  SQ...EHK.. .......... .PICYAS.RT LN.EHELNYS TIEKELLAIV 
+        Ted  SQ.GPIG... ........SD KPVCYAS.RT LN.ESELNYS TIEKELLAIV 
+        Zam  SQ.GSLQ... ........ND RPVCFAS.RT LS.DTEVNYS TIEKEMLAII 
+     Idefix  SQ...NH... .......... KPVCYAS.RT LN.EHEINYA TIEKELLAIV 
+        Tom  SQ..DNH... .......... .PISFIS.RT LN.DHELNYS TIEKELLAIV 
+   Springer  SQ...EGR.. .......... .PITMIS.RT LS.DREVNYA TNERELLAIV 
+  Athila4-1  GQ.KIDK... ........KL HVIYYAS.RT LD.DAQGRYA TTEKELLAVV 
+   Diaspora  AQ.KIDK... ........LP RVIYYAS.RT LD.AAQANYT TTEKELLAIV 
+  Cyclops-2  GQ.RKEK... ........KF HAIHYAS.KV LM.RL.INYA TTEKELLAIV 
+     Bagy-2  GQ.RVDK... ........KL NVIHYAS.KS LD.RAQRNYA TTEKEFLAVV 
+    Calypso  GQ.RKGK... ........IF HAIYYAS.KV LN.DAQVNYA TTEKEMLAIV 
+      Gloin  KQ...DH... .......... QPIAYFS.YG LT.AREQLKP IYERELMTIV 
+       Ifg7  MQ...DE... .......... IPIAFEG.HP IR.GKFLHKA LYEKEMLAIL 
+      Reina  QQ...KG... .......... HPIAYIS.KA LG.PKNLGLS TYEKEYLAIL 
+      Gimli  MQ...NG... .......... HPLAYIS.RH LQ.GKQLHLS IYEKELLAVV 
+     Monkey  MQ...EG... .......... HPVAYES.RK LN.ETERRYP VHEKEMTAVI 
+     Tntom1  LQ...DE... .......... HPVAYQD.RI LK.NAR.HYA AHENELFVVV 
+  Galadriel  VQ...EG... .......... HPVAFESRK. LN.DAEQRYS THEKEMVAVV 
+        Del  MQ...DG... .......... RVVAYAS.RQ LK.VHENNYP THDLELAVVI 
+    Peabody  MQ...DK... .......... QVIAYAS.RQ LK.VHERNYP THDLELAAVV 
+ Retrosat-2  MQ...EG... .......... RVVAYAS.RQ LR.PHEGNYP THDLELAAVV 
+     Bagy-1  MQ...DR... .......... HVIAYAS.RQ LH.PHEDNYP AHDLELAAVV 
+        Tma  MQ...RG... .......... KVIAYAS.RQ LR.KHEGNYP THDLEMAAVI 
+    Legolas  MQ...KG... .......... SVIAYAS.RQ LR.KHEKNYP THDLEMAAVV 
+     Cereba  LQ...DG... .......... KPVAYFSQK. LN......YS TYDKELYALV 
+        CRM  LQ...EG... .......... KPVAYFSEK. LS.GSVLNYS TYDKELYALV 
+    Beetle1  QQ...GG... .......... RPIAYFSEK. LN.HAKLNYS TYDKEFYAIV 
+       REM1  LQ...EE... .......... RPVAYTS.AK FS.PAEYNYT TTDQECLGTV 
+    G-Rhodo  MQDHGKG... .........L QPVAYLSWV. LN.RQQSHYP TFEQELLALF 
+ Sushi-ichi  SQRSEADQ.. ........KI HPCAYFS.RR FD.PAERNYD VGNRELLAVY 
+   Amn-ichi  LQPVGD.... ........HL HPCAFYS.RQ LT.APERNYT IWEKELLAIK 
+    Amn-san  SQRHSADG.. ........KL HPCAYFS.KK FS.SAEQNYD IGNRELLAVK 
+     Amn-ni  SQRGEDN... ........KL HPCAFLS.HR LT.PTERNYH VGDRELLAVK 
+     Dane-1  SQYDDNG... ........VL HPVAFFS.KK HS.ATECNYE IYDKELLAII 
+      Maggy  SQYGDDG... ........IL RPVAFFS.KK HT.ATECNYE IYDKELLAII 
+      marY1  SQQSPEDQ.. ........KW HPVAFYS.KS LS.AVERNYE IHDKEMLAIM 
+      Cgret  SQRDSEG... ........RL HPCAFFS.RK LH.GPELNYQ IHDKELMAII 
+      Cft-1  TQT.HDG... ........KR HPVAYYS.RK MT.TAEQNYD IHDKELLAIV 
+      Pyret  NQRDEKG... ........RL HPCAFFS.QK LH.GPEFNYQ IYDKKFIAII 
+     Skippy  GQRDDNG... ........VL HPIAFYS.HK MH.GAELNYP IYDKEFLAIV 
+       Real  SQYGDDG... ........VL RPCAYFS.RK NN.AHECNYE IHDKELLAVV 
+      MGLR3  LQQNPNTQ.. ........EW HPIAFFS.ET MQ.QAELNYP IHDKELLAVV 
+Grasshopper  SQKGTDG... ........LW RPVAFHS.AK LT.DAQRNYT IHDKELLAVI 
+      Pyggy  SQYDDEG... ........VL RPCAYFS.KK NN.VHECNYE IHDKELLAVV 
+       Tse3  ELY.GKGTLK SE......LV GVVAYLS.HL LR.DNELNWP IRDKELYAVI 
+      Ty3-1  EEVDNKNK.. ........LV GVVGYFS.KS LE.SAQKNYP AGELELLGII 
+    Skipper  YQI.QGN... ........KF KVIWFHC.RK LT.DTQKRYS IGDREFLSII 
+        TF2  SQKHDDD... ........KY YPVGYYS.AK MS.KAQLNYS VSDKEMLAII 
+        TF1  SQKHDDD... ........KY YPVGYYS.AK MS.KAQLNYS VSDKEMLAII 
+      Tor4a  YICESDLSND SHCHNS.NCL IPVCYNS.GN FS.PVQQNYT IVEKELLSGK 
+       Tor2  MQ...NIDKR .........Q RLIAVSS.KT FS.ETERKWS ATERECYSLL 
+       Tor1  SQKIGDD... ........PE QPLGFTS.GF FR.GPSTRWA INEKELFAFI 
+       Cer1  AQEGPDG... ........QQ HPIAFAS.KA LS.PAETRYH ITDLEALAMM 
+       Cer2  MQTVGEDEK. ........DF AAIAFIS.RT LA.DTETRWP AVHTELGAII 
+       Cer3  MQQMEDSTK. ........DY AAIAYTS.RT LS.DTESRWP AIQTELGAII 
+     Cigr-1  SQ...SG... .......... RPVAYMS.RT LN.TCERNYP AIEKEATAVV 
+      CsRN1  HQVVNNA... .........S QPLAFSRRRC RLHKRVTVLL VVNYSQFALL 
+     Kabuki  QQKV.NG... ........VW QPLGYFSRKL S..PAEQKYC TYDRELLAIY 
+   Boudicca  QQWVNNS... .........W QPLGFFSRRL L..DAESRYS TFGRELLAMY 
+    Osvaldo  TQTSEEG... .........E RVISYAS.RT LN.SAERNYS ATEKECLAII 
+       Woot  YQIQEDG... ........SR GVIAFAS.RS LR.GPELNYT TTEKELLGVI 
+    Ulysses  FQLDDEQ... ........QE RPIAFFSAK. LN.KHQINYS VTEKECLAAK 
+      Circe  FTPVNSG... ........CE RPIAFMS.K. .N.KAQRNYT VTELECMAVV 
+       Gmr1  SQARNER... ........EE HPVTYLS.RK LL.PHERNYS TVEKEALAIK 
+      rGmr1  SQ.LHEG... ........EE HPVVYVS.RK LT.TAESKYA AVEKEALAIK 
+  RetroSor1  VHETSDTKG. .......TVQ RPVYYVS.EA LS.GAKLNYT EIEKIAYAVL 
+   Cinful-1  VQEKLDGQTR ........KQ VPVYFVS.EV LS.ISKKNYT ELEKVLYVVL 
+ B1147A04.5  KEHPRDVAPS EEDRPHRKVQ RPVYIVS.EA LR.DAKTRYP QAQKMLYAIL 
+       Ogre  GRHDESG... .......RKE HAIYYLS.KK FT.DCETRYS LLEKTCCALA 
+  Grande1-4  RAS.RRRTCL P......SAT SCLLHQS.PG PS...KKKYP QVQKLLYAVL 
+     Tat4-1  VRE.DRG... ........EQ KPIFYVS.KT LE.GAELKYP TLEKIAYAVL 
+       Tft2  IRE.DRG... ........EQ KPIYYIS.KS MT.DPEIRYT MMENLALAIV 
+      RIRE2  VVEREEEGHV Q......KVQ RPIYFVS.EV LA.DSKTRYP QVQKLLYGIL 
+        412  TQNH.NG... ........HQ LPVAYAS.RA FT.KGESNKS TTEQELAAIH 
+       Mdg1  SQDH.NG... ........QQ LPVAYAS.RS FT.KGESNKS TTEQELAAIH 
+  Blastopia  LQ.KFEG... ........SF HPVCFWS.RK TT.KAESNRH SYYLEVKAAY 
+   Micropia  LH.RIES... ........KP HVIEYFS.KT TT.SVESRYH SYELETLAVV 
+       Mdg3  MQ.KKED... .......QKW HPVSFFS.KR TT.DIESKYH SFELETLAIV 
+
+             501                                                550 
+        Mag  FAVEKFHQYL YG..RKFILR TDHKPLVSIF GPN...IGIP SAAASRLQ.. 
+   Gulliver  FAVKMFHKML HG..RKFTTQ TDHKPLLAIF GSG...SAIP VHSAICLQ.. 
+        DRM  FGIKKFHQYL WG..RKFKMV TDHKPLLTLF GEH...KSLP TMAAARIQ.. 
+       CFG1  FGVRKFHQYL FG..QKFVVY TDHKPLLGLF KAD...RAIP SMASARIQ.. 
+   Hydra2-1  FAVKKLHQYL YG..RYFTLV TDHKPLLGLL AEG...KPIP AMTAARIQ.. 
+        SPM  YGVTKFHKYL YG..RKFTLL TDHQALTIIF GSK...KGIP SLAAARLQ.. 
+       SURL  YACERFHQYI YG..QQVEVE TDHKPLIPLF V.....K.SL GDCPLRIQ.. 
+       Cer4  YTVKKSHKFV FG..RRFKLQ TDHRPLLALF GDN...RDLP VHSQNRIV.. 
+       Cer5  YTVKKAHKFI FG..RKFLLQ TDHKPLLAIF GPK...KDLP VHSQNRLV.. 
+       Cer6  FTIKKAHKFI FG..RKFKLQ TDHQPLLAIF GSK...KDLP VHSQNRLV.. 
+ HMS-Beagle  WALKKLKIYL YG.KAKVKIF TDHQPLTHSL SS....WNGN A....RIK.. 
+       Yoyo  WALKSLRNYL YG.SAKVKIF TDHQPLTYAL SN....KNNN S....KMK.. 
+   Gypsyvir  WALGRLQNFL YG.SREINIF TDHQPLTFAV SD....KNTN S....KIK.. 
+    Burdock  WALKSLRNYL YG.VKNLNIF TDHQPLTYAV SD....RNPN A....KIK.. 
+      Nomad  WSLDNLRAYL YG.AGTIKVY TDHQPLTFAL GN....RNFN A....KLK.. 
+      Gypsy  WALGKLQNFL YG.SREINIF TDHQPLTFAV AD....RNTN A....KIK.. 
+        297  WATKTFRHYL LG..RQFLIA SDHQPLRWLH NL....KEPG A....KLE.. 
+       17.6  WATKTFRHYL LG..RHFEIS SDHQPLSWLY RM....KDPN S....KLT.. 
+        Tv1  WATKYFRSYL FG..RQFQIL SDHRPLVWLN NM....KEPN M....KLQ.. 
+        Ted  WATKYFRPYL FG..RKFKIL TDHKPLQWMM NL....KDPN S....RMT.. 
+        Zam  WAVKYFRPYI YG..VKFTIV TDHKPLIWLM NF....KEPN S....KII.. 
+     Idefix  WATKYFRSYL FG..RPFEVL SDHKPLVWLN NI....KEPN M....KLQ.. 
+        Tom  WATKTFRHYL LG..RHFQIA SDHQPLRWLH NL....KEPN A....KLQ.. 
+   Springer  WALAKLRHYL YA.VKEINIF TDHQPLTFAV SE....SNPN A....KIK.. 
+  Athila4-1  FAFEKFRSYL VG..SKVTVY TDHA.LRHLY A.....KKDT KP...RLL.. 
+   Diaspora  FALEKFRSYL LG..THIIVY TDHAALKYLL K.....KVDS KP...RLI.. 
+  Cyclops-2  YALEKFRSYL IG..SKVVVY TNHSAIKYLL T.....KPDS KQ...RLI.. 
+     Bagy-2  FACEKFRSYI VD..SKVIIH SDHAAIKYLM E.....KKDA KP...RLI.. 
+    Calypso  YALEKFKSYL VG..SKVIIY IDHATIKYFL N.....KANS KT...LLI.. 
+      Gloin  MAVQKWRHYL LG.RR.FVVH TDQKSLKFLL EQ....REVS LE...YQ... 
+       Ifg7  HALKKWRPYL MG.RH.FNVK TDHDSLKYFL EQ.....RLS SE...EQ... 
+      Reina  FAVDHWRPYL QH.GE.FFIK TDQQSLTHLE DQ.....KLS TIW..QQ... 
+      Gimli  FAIQKWRHYL LH.DH.FVII TDQRSLKYLL EQ.....RLN TP...IQQ.. 
+     Monkey  HCLRVWRHYL LG.SR.FVLR TDNIALSYFQ TQ....KKLS P....KQA.. 
+     Tntom1  HYLRLWRHYL VG.AP.FIVK TDNTVVSHLM TP.....KLN G....RQA.. 
+  Galadriel  HCLQVWRVYL LG.TR.FVVR TDNVANTFFK TQ....KKLS P....KQA.. 
+        Del  FILKLWRHYL YG.ED.FELY CDHKSLKYIS TQ....KDLN L....RQ... 
+    Peabody  FVLKLWRHYL YG.SR.FEVF SDHKSLKYFF DQ....KELN M....RQR.. 
+ Retrosat-2  HALKIWRHYL IG.NR.CEVY TDHKSLKYIF TQ....PDLN L....RQR.. 
+     Bagy-1  HALKT..HYL LG.NR.CEIF TDHQSLKYIF TQ....PDLN L....RQR.. 
+        Tma  FALKIWRSYL YG.GN.VQVF TDHKSLKYIF TQ....PELN L....RQR.. 
+    Legolas  FFLKIWRSYL YG.AK.VQIY TDHKSLKYIF TQ....PELN L....RQR.. 
+     Cereba  R.TETWQHYL WP.KE.FVIH YDHESLKHIK SQ....AKLN R....RHA.. 
+        CRM  RTLETWQHYL WP.KE.FVIH SDHESLKHIR SQ....GKLN R....RHA.. 
+    Beetle1  RALTYWTHYL RP.AQ.FVLH SDHQALKYIN GQ....HKLS S....RHA.. 
+       REM1  RALE.MEMYP RG.GR.KRDT SHRPSATCIS TRA..TARTS FPDA.KHG.. 
+    G-Rhodo  KAFEEWQHYL LP.LH.FTAR TDHNGLKFLK TQ....PRLN E....RQF.. 
+ Sushi-ichi  GALVEWKHWL EGAKHPFLVW SDHKNLTYVR TA....KRLN P....RQG.. 
+   Amn-ichi  AAFETWRHWL EGAKFPIEVH TDHRNLEHLR TA....RKLN Q....RQQ.. 
+    Amn-san  LALEEWRHLL EGASHPVTIY TDHKNLEFLQ SL....KRQN P....RQA.. 
+     Amn-ni  LALEEWRHWL EGAKHPFQVL TDHKNLEYVQ QA....KRLN P....RQA.. 
+     Dane-1  RCFEEWRPEL EGTPNPIKVI TDHRNLEYFM ST....KLLN R....QQA.. 
+      Maggy  RCFEEWRPEL EGTSSPVQII TDHRNLEYFT TT....KMLN R....RQA.. 
+      marY1  RALEEWRHFL EGAQHKVEIW TDHKNLEYFM TA....KKLN R....RQA.. 
+      Cgret  EAFKEWRPEL SGTIHEVLVY TDHKNLAHFT TS....KVLN K....RQI.. 
+      Cft-1  AAMQHWRVYV EG.PPKLTIL SDHKNLTYFT TT....KELT R....RQA.. 
+      Pyret  RTFEKWKPQL SGTKHEMLIY TDHKNLTHFT IS....KILN K....RQI.. 
+     Skippy  NCFKEFRHYL RGSKHPVKVF TDHKNIAYFA TT....QELN R....RQL.. 
+       Real  RCLEEWDSEL RSVER.FKVI TDHKNLEYFM KP....RMLN E....RQI.. 
+      MGLR3  RALKTWRPEL MGTKKKFVAI TDHKALEYFS TK....RLLN S....RQA.. 
+Grasshopper  ACLKAWDAEL RSVRRPFLIL TDHKALEYFS KP....REVS E....RQM.. 
+      Pyggy  RCLEEWDAEL RS.VKSFKVI TDHKNLDVLY EA....KMLT N......V.. 
+       Tse3  FAFKKWRHYL AG.TH.IIIK TDHHSLQYFK TS...VLDSN L....RLA.. 
+      Ty3-1  KALHHFRYML HG..KHFTLR TDHISLLSLQ NK....NEPA R....RVQ.. 
+    Skipper  DSLKKFQHLL IG..KKVSIY TDHQNLTYII NKSN.DKPFT K....RQD.. 
+        TF2  KSLKHWRHYL ESTIEPFKIL TDHRNLIGRI TNE..SEPEN K....RLA.. 
+        TF1  KSLKHWRHYL ESTIEPFKIL TDHRNLIGRI TNE..SEPEN K....RLA.. 
+      Tor4a  LCMEKWAIYL AF..KKFQWI TDNSNIKYVR TL....RTNN Q....KIA.. 
+       Tor2  IGCEKFEYYL KG.PVGFIAL VDHKAL.LAL DKR...YLAN S....KLK.. 
+       Tor1  KTLEVFHHHT YG..RAFTWR TDSRCLAFIC AETN.GKQTK RPSAKKL... 
+       Cer1  FALRRFKTII YG..TAITVF TDHKPLISLL K.....GSPL ...ADRLW.. 
+       Cer2  FALRQFRPYV CM..SKIILH SDHKPLRYIL A.....KSKI ...NDQIG.. 
+       Cer3  FALRQFRPYI GQ..SRTTIH SDHRPPMYLL G.....KSKV ...NDNLA.. 
+     Cigr-1  EAVRKWSHFL KG..KSFTLV TDQRSVSFMF DQ....RNRG KIKNSKIL.. 
+      CsRN1  FAIS.G..TC EG..RSFTIQ TDHKPLTYAF NAKP.DRYSP .....REI.. 
+     Kabuki  KAMIYFRKLF EG..RPLTVY TDTSP.CVMH SVKY.VKTIK .....KRLDA 
+   Boudicca  CAVRHFQHSI EG..REFTLF TDHKPLTFSL SSS.SDKYSP .....RES.. 
+    Osvaldo  WGIRKLRPYL EG..YHFIVI TDHMALKWLN SI....ESPS G....RIA.. 
+       Woot  FALHKFRIYI QV..TKIIIR TDHQALKFLS RC....RLLS E....RLT.. 
+    Ulysses  LAIHRFRPYV EM..MPFTVI TDHASLQWLM SL....KDLS G....RLA.. 
+      Circe  LAIKKFRMYI DG..HSFKVV TDHSSLRWLM NQ....SDLS G....RLA.. 
+       Gmr1  WAVNKLTYYL LG..HQFVLV TDHAPLKWMA TA....KDTN A....RIT.. 
+      rGmr1  WAVLELKYYL LG..RSFTLV TDHAPLQWMA SA....KNTN A....RVT.. 
+  RetroSor1  CASRKLKHYF QS..HEIKVP TSQPLGDILR N.....KEAS G....RIG.. 
+   Cinful-1  MASRKLRHYF QA..YNIIVP SSQPLKDIMR N.....REAT G....RIG.. 
+ B1147A04.5  MASRKLRHYF QA..HRVTVV TSYPLGQILH N.....REGT G....RVV.. 
+       Ogre  WAARRLRQYM LN.HTTLLIS KMDPVKYIFE K.....PALT G....RVA.. 
+  Grande1-4  LTARKLRHIF DD..HKVIVV TGFPIGDILH N.....KEAM G....PIA.. 
+     Tat4-1  ISARKLRPYF QF..HSIIVQ TNQPLRQILH S.....PGQS G....RMA.. 
+       Tft2  TSARKLRPYF QS..HPIEVL SNQPHRTILH S.....PNQS G....RLA.. 
+      RIRE2  ITTRKLSHYF QG..HSVTVV TSFPLGDILH N.....REAN G....RIA.. 
+        412  WAIIHFRPYI YG..KHFTVK TDHRPLTYLF SM....VNPS S....KLT.. 
+       Mdg1  WAINHFRPYV YG..RHFLVQ SDHRPLSYLF SM....RNPS S....KLT.. 
+  Blastopia  LALKKFRHYL LG..VPFKLV TDCVAFKQTT KK....ADVP R....EVG.. 
+   Micropia  KAVKHFRHYL IG..REFVVY TDCNSLKASR TK....IDLT P....RVH.. 
+       Mdg3  YSLRRFRVYL HW..RTFKIV TDCNSLILTL SK....KELN P....RIA.. 
+
+             551                                                600 
+        Mag  .RWAIKLSAY DFEIEY.VR. .TDKNV.ADA LSRHD..... PHMGIVKTKS 
+   Gulliver  .RWATMLLG. DFVLQYNTV. .SASMGHADI LSWHFH...L GHPGVTRMKA 
+        DRM  .RWAIILSAY DYHIEY.CP. .SEKNSNADG LSRHV..... GHQGMVKMKA 
+       CFG1  .RWALLLATY EFDLRY.RP. .GTKNSNADG LSRHE..... GHPGIVRMKA 
+   Hydra2-1  .RWALTLSAY NYCLKY.RS. .GATHGNADC MSRHS..... AHPGVVRMKA 
+        SPM  .RWALILMAH QYEIKY.RK. .STEHANADV LSRHQ..... EHTGIVRMKA 
+       SURL  .RLLIRVQRY DLKVMY.TP. .GKYMYTADT LSR....... GHLGIEKCKK 
+       Cer4  .RWATTLMSY DFELSY.VA. .TEKFAKADW LSRHE..... GHPGVVRMKQ 
+       Cer5  .RWATTLMTY NFELSY.VS. .TSKIFKADW LSRHE..... GHPGIVQMKQ 
+       Cer6  .RWATTLMSY DFDLSL.ST. .SK.FAKADW LSRHD..... GHPGVVHMKQ 
+ HMS-Beagle  .RWKAYLEEY DYEIFY.KP. .GRENTVADA LSRHNR.... AHRNAVENKA 
+       Yoyo  .RWKAILEEY NYELKY.KP. .GKTNVVADG LSRHK....R AHRSATENKA 
+   Gypsyvir  .RWKSYIDQH NAKMFY.KP. .GKENLVADA LSRHN....R AHRAAQENIK 
+    Burdock  .RWKAFIDEH NAKIFY.KP. .GKETYVADA LSRHN....R AHRAAQENVK 
+      Nomad  .RWKARIEEY NCELIY.KP. .GKSNVVADA LSRHR....R AHRGPTEIRL 
+      Gypsy  .RWKSYIDQH NAKVFY.KP. .GKENFVADA LSRHN....R AHRAAQENIK 
+        297  .RWRVRLSEY QFKIDY.IK. .GKENSVADA LSRHEK...L LHPGIQKMTK 
+       17.6  .RWRVKLSEF DFDIKY.IK. .GKENCVADA LSRHEK...L LHPGIQKTTK 
+        Tv1  .RWKIKLNEF DFQIKY.VP. .GKENYVADA LSRHKE...L LHPGIEKTIN 
+        Ted  .RWRLRLSEY DFSVVY.KK. .GKSNTNADA LSRHDG..KT NHRGINECYL 
+        Zam  .RWRLQLMEY NFEIIH.KK. .GSQNVIADA LSRHT...NS NHRGIDETFL 
+     Idefix  .RWKIKLNEF DYKIKY.LP. .GKENHVADA LSRHKE...L LHPGIEKTIN 
+        Tom  .RWRIRLAEF DFHIEY.IK. .GKQNSIADA LSRHEK...L LHPGIQKMTK 
+   Springer  .RWKARIDES GARIFY.KP. .GRNNLVADA LSRHNR.... AHRSAQENVK 
+  Athila4-1  .RWILLLQEF DMEIVD.KK. .GIENGAADH LSRHGSA.YG GHFATFKTVS 
+   Diaspora  .RWMLWLQEF DLEIRD.RS. .GAQNLVADH LSRHSSA.PG GHLGVQRTAR 
+  Cyclops-2  .RWILLLQEF DVEIKD.KK. .GSENLVADH LSRHNS..YG GHYNGVRTAT 
+     Bagy-2  .RWVLLLQEF DLHVVD.RK. .GADNPVADN LSRHSEA.YR GHHARDRTAH 
+    Calypso  .RWILLLQEF DLVIRD.KK. .GSENVVANQ FV.HNSP.CG GHYGGDKTTT 
+      Gloin  .NWLSKLLNY TFDIIY.KP. .GIDNKAADG LSRHEGK.LG GHYGVFMTMK 
+       Ifg7  .KWVTKMLGY DFEIIY.KK. .GKKNVVANA LSRHTSP.LG GHSGFSKTYH 
+      Reina  .KAITKLLGL QFRIIY.KK. .GVENRVADA LSRHDSP.IG GHSGFPVTYH 
+      Gimli  .QWLPKLLEF DYEIQY.KE. .GKENLVADA LSRHCSG.VG GHSGRDATHQ 
+     Monkey  .RWDFLV.EF DMAMEY.KP. .GKANVVADA LSRHDSL.WA GHPGIHRTLA 
+     Tntom1  .RWELLAEF. HFNLEY.RS. .GKTNHVANA LSRHDTL.RV GHPGEECTMA 
+  Galadriel  .RWQEFLAEY DFMWEH.KP. .GKHNQVADA LSRYDSA.WA GHPGVERMLA 
+        Del  .RWIEVLKDF DFSIFY.HP. .GKANVVADA LSRHRSK.FT IHPGSTKMYR 
+    Peabody  .RWLEFLKDY DFGLNY.HP. .GKANVVADA LSRHRSG.LS IHPGATKMYH 
+ Retrosat-2  .RWLELIKDY DMSIHY.HP. .GKANVVADA LSRHQTQ.YS IHPGSTKMYQ 
+     Bagy-1  .RWVELISDY DLGITY.TP. .GAENVMGDA LSRHDST.LT IHPRSTKMYQ 
+        Tma  .QWMELVADY DLEIAY.HP. .GKANVVADA LSHHASM.FS IHPGATNMYR 
+    Legolas  .RWMELVADY NLDIAY.HP. .GKANQVADA LSRHQSK.FS IHPGSNKMYR 
+     Cereba  .KWVEFIETF PYVIKH.KK. .GKENVIVDA FSHHRGM.GL GHFGV.KKTE 
+        CRM  .KWVEFIESF PYVIKH.KK. .GKENIIADA LSRHGGG.LM GHFGA.KKTE 
+    Beetle1  .KWVEFLQSF DFVLKY.KT. .GVSNVVADA LSRHGGG.LA GHFGI.NKTV 
+       REM1  .GW...KSCL DTTVAGRLPN ALRCHTLV.R GSRHDRR..H FHGPKLVAAT 
+    G-Rhodo  .RWMARFAEF HFDLHY.RP. .GRHMAVPDA LSRHNAP.LG GHFGMDKTLH 
+ Sushi-ichi  .RWALF.SRF DFTLTF.RP. .GSKNIRADA LSRHSSC.FA CHPGV.RRTA 
+   Amn-ichi  .RWALFFERF NFQIHYVTP. AQTKQ..ADA LSRHDCK.PA GHFGL.FKTM 
+    Amn-san  .RWSLFFSRF NFVLTY.RP. .GTKNRKADA LSRHSSK.QA GHPGS.EKTL 
+     Amn-ni  .RWSLFFNRF HFTLTY.RP. .GSKNLKPDA LSRHSSQ.LT CHPGS.VRTL 
+     Dane-1  .RWSEFLSCF NFRIVY.RP. .GKQGAKPDT LTRHDKP.TS GHPGR.ACTY 
+      Maggy  .RWAEFLSRF NFRITY.RP. .GKQGAKPDA LTRHDSP.VA GHPGK.AKTY 
+      marY1  .RWSLYLSRF DFSLHH.RP. .GRSMGKTDA LSRHDSQ.IA GHPGR.WKTL 
+      Cgret  .RWSEFLSEF NFRIIY.RK. .GSENGRADA LSRHSLP.AH GHQGV.TKTW 
+      Cft-1  .RWSELLGQY KFEIKY.TP. .GTENGPADA LSRHDEP.TY GHPGT.SKTV 
+      Pyret  .KWSEFLSKF HFRIIY.RK. .RTENGRADA LNRHGNK.AH GHQGI.SKTW 
+     Skippy  .RYAEYLCEF DFTIAH.CK. .GTDNGRADA ISRHAHP.LH GHQGV.TKTM 
+       Real  .RWSLLLGRY NMELLY.RP. .GKQNVRADA LSRHDSL.AT GHPGR.EVTY 
+      MGLR3  .AWADFFSQY NFEITY.RP. .GSENVLADA LTRHGTI.AT AHPGR.NKTR 
+Grasshopper  .RWAETLSKF NYNLRF.RP. .GRLAGVPDA LSRHESP.MV GHSGR.DGTF 
+      Pyggy  .K.S..VGQA AESIQYGDPV AGKQNVRADA LSRHESL.SS GHTRGERLPI 
+       Tse3  .RWRDILEEF DYEIQYIKG. .STN..HADA LSRHDAA.AA SHPGQHVHFK 
+      Ty3-1  .RWLDDLATY DFTLEY.LA. .GPKNVVADA ISRHT.L.FG GHFGVT.VTL 
+    Skipper  .NYMKYIKEF DYELRH.IS. .GKKNGIADF LSRHDTK.YS GHHALD.ITY 
+        TF2  .RWQLFLQDF NFEINY.RP. .GSANHIADA LSRHEEG.KL IHPGI.ELLT 
+        TF1  .RWQLFLQDF NFEINY.RP. .GSANHIADA LSRHEEG.KL IHPGI.ELLT 
+      Tor4a  .RWLTDLQSF SFTISQ.RP. .SSKMKISDF LSR......Y CHTGIDQTFS 
+       Tor2  .RWQTRLAEF KFTVQY.VE. .GRSHVFADM LSRHYCK.SA .HDLKGHLGV 
+       Tor1  .RWLEKLGEY DFSISH.VSG TSPEMAVPDG LSRHLP.... GHARTTNMLG 
+       Cer1  .RWSIEILEF DVKIVY.LA. .GKANAVADA LSRHEGM.LA GHFGIKKMWR 
+       Cer2  .RWLVELQQY DISIVH.ID. .GKKNMVAGC LSRHSSL.QG GHHNWKKTFR 
+       Cer3  .RWLIELAQY DTRIVH.ID. .GKKNTVADC LSRHESL.GG GHFGYRKTLH 
+     Cigr-1  .MWRLELSQF TYDIVH.RP. .GRDNFVPDA LSRHNN...L GHPGFSRLYH 
+      CsRN1  RHLDY.ISQF TTDIRY.TP. .GSDNVVADA LSRHSH..GF SHPGI.RATR 
+     Kabuki  RGICFSLGEF TTVLQ..SP. .GNPRPRASA KTIHN....L SHPGI.RTTR 
+   Boudicca  RQLDY.ISQI TSDIQHISG. .GRDRPIVPK HYRNVH..NF SHPGV.RASI 
+    Osvaldo  .RWALELQQY DFEVRY.RK. .GKQNVVADA LSRHDAV.TA GHLGSRKTIA 
+       Woot  .RWTLILGQY DYEIEL.VK. .GKGNVVADI LSRHQ...LL GHFGATKVYN 
+    Ulysses  .RWSLELQAF PFSMQY.RK. .G.....ADN VCRH.....G GRKTLHA... 
+      Circe  .RWAIKLQGY SFEIEH.CK. .GTENVVADA LSRHDQP.TS AHCGMAKCLE 
+       Gmr1  .RWFLSLQPF SFTVEH.RP. .GREHTNADA LSRRDAL.LG AHLGMDKTRE 
+      rGmr1  .RWFLALQDF HFKVQH.RA. .GAAHGNADG LSRHTHP.MA GHLGAANTIQ 
+  RetroSor1  .KWAAELSQF DITYVP.RTS .IKSQALADF MADHSGM.CG SHIGPRALSA 
+   Cinful-1  .KWAAELNEF CIEYVH.RSS .IQSQALADF IADHAGL.CG SHIGSRPLLG 
+ B1147A04.5  .KWAIELSEF DLHFEP.RHA .IKSQALADF VAEHEGE.CG SHSASRTLVG 
+       Ogre  .RWQMILTEY DIQYTS.QKA .IKGSILSDY LAEHEGS.FG THAGGHAMAK 
+  Grande1-4  .KWACELGSH DIEFRP.RTV .IKTQAHG.F RIRHAGQ.CG IHAASRTRGR 
+     Tat4-1  .KWAVELSEY DIEYQN.RTS .MKSQVLADF IVEHEGA.GG NHSGGRSLAA 
+       Tft2  .KWAVELSEY DIEYKS.RVA .MKAQVLADF LTEHLGS.RS NRTVGRHTSA 
+      RIRE2  .KWALELMSL DISFKP.RIS .IKSQALADF VAEHSGI.CG NHAAARTIVG 
+        412  .RIRLELEEY NFTVEY.LK. .GKDNHVADA LSRHDDPIQG GHTGITKTLA 
+       Mdg1  .RMRLDLEEF EFTVEY.LK. .GKDNHVADA LFRHDDPSEG GHSGISRTLR 
+  Blastopia  .PWILYMQDF NFQPEH.RA. .GERMRHVDF LSRHE....V GHLSLQKTMH 
+   Micropia  .RWWAYLQSF NFEIQY.RE. .GKRMAHVDF LSRHES...I MHLGWQKTLD 
+       Mdg3  .RWALEFQGY DFEIVH.RA. .GSRMQHVDA LSRHN...EL GHVGRDKMIE 
+
+             601                                                650 
+        Mag  L..ARS..YV WWPGID.EAE TECRACTVCA AVADAP.... S.THAPRSWP 
+   Gulliver  L..MRC..YV YWPFMDRSIE EYVAKREQCI EFSRQP.... P.KADSQPWP 
+        DRM  L..ARK..YV WWPKMDAELE QVCRTCEPCQ MEQKAP.... R.QVPLHPWE 
+       CFG1  L..ARS..HV WWPGIDSDIQ DKVQACTECQ LQIPVP.... P.VAPLHSWD 
+   Hydra2-1  L..ARS..YV WWPNMDKSIE ETVRRCRLCE LHQRSP.... E.SAPIHHWE 
+        SPM  V..ARS..YF WYPKLDADIE KLSQSCEACL RMRNDP.... P.KVPFVPWS 
+       SURL  R..ARE..VI YWPRINADIA EMVQSCTSCL MY.K.P...K QQAESLHPHA 
+       Cer4  K..ACS..FV FWTGIDKDVE KLVRGCENCQ ESAKMP.... R.VAPLRPWP 
+       Cer5  K..ARA..FV FWRGLDSDIE KMVRHCNNCQ ENSKMP.... R.VVPLNPWP 
+       Cer6  K..ARS..FV FWRGLDSEIE KLVRQCNNCQ ENAKMP.... R.VVPLKLWP 
+ HMS-Beagle  Q..LSE..RV YFPKMRKKVS AIVNQCLVCK TA.KYDR.HP T.HPEIRQTP 
+       Yoyo  Q..ILE..NF YFPQMNSKIN KIIKQCKICL EN.KYER.HP S.KLVLKATP 
+   Gypsyvir  Q..VLR..DY YFPNMASLAK EVVANSRVCT KA.KYDR.HP K.KQELGETP 
+    Burdock  Q..ILQ..YY FFPKMSQIAA TFVSNCLVCQ KA.KYDR.HP Q.KQILGRTP 
+      Nomad  Q..LLE..KY YFPRMSSTIR LQTSSMSVLQ TL.QVTRDTP N.KPNLQPTP 
+      Gypsy  Q..VLR..DY YFPKMGSLAK EVVANCRVCT QA.KYDR.HP K.KQELGETP 
+        297  L..FKE..NH FFPNSQLLIQ NIINECNICN LA.KTEH.RN T.KMPLKITP 
+       17.6  L..FGE..TY YFPNSQLLIQ NIINECSICN LA.KTEH.RN T.DMPTKTTP 
+        Tv1  W..FKE..TH YFPDYQNLIN E....CETCN IA.KTEH.RD T.KLTFEITP 
+        Ted  A..LSK..RY YWPRMKDQIT KFINECTICG QA.KYDR.NP I.RPQFNIVP 
+        Zam  H..LKR..ET YFPNMKNKIS ELIRNCETCL KL.KYDR.QP Q.NIVFETPE 
+     Idefix  L..FKE..EY YYPDSQKLIQ TIINECQICY LA.KTEH.Q. T.QMTYETTP 
+        Tom  L..FKE..NH YFPNSQLLIQ NIINECRVCN LA.KTEH.RN T.KMPFKVTP 
+   Springer  Q..VLS..EY YFPKMTKLAS EIAANCKTCA KA.KYDR.HP K.KQELGETP 
+  Athila4-1  K..ILQA.GF WWPTMFKDAQ EFVSKCDSCQ RK.GNIN..R RNEM.PQNPI 
+   Diaspora  K..VLDC.GF YWPTIFKDAW KICSTCEQCQ RA.GNTLTWR Q.QM.PQQPM 
+  Cyclops-2  K..ILQS.GF YWPTIFKDAH THAQSCDSCQ RS.GGIG..K RDEM.SLQNI 
+     Bagy-2  K..VLQS.GF YWPTLFKDSR KFVLSCDECQ RI.GNIS..K HHEM.PMNHS 
+    Calypso  K..VLQS.GF FWPTLFKDAH QNMLHCDQCQ RM.GGIS..K RNEM.PLQNI 
+      Gloin  R..IQQ..SF HWTGLVKDVQ RFLVECQVCQ TH.KTST.RS P.AGLLQPLP 
+       Ifg7  K..VKK..EF FWDGLKSDIQ KFVVECLVCQ N..KVAT.IK T.PGLLQPLS 
+      Reina  R..IKK..LF YWAGMKGQIK EFVQSCEICT KA.KADR.NR Y.PGLLLPLP 
+      Gimli  R..VKS..LF YWKGMSKDIQ AYIRSCSVCQ QC.KYDT.TA S.PGLLQPLP 
+     Monkey  L..VER..AF YWPKMGINVE EYVRTCLTCQ .D.KVEQ.RK P.VGLLEPLP 
+     Tntom1  L..LCR..AY YWPQVADDVT QYVKTCLVCQ KD.KSDR.LT Q.AP.VEYLN 
+  Galadriel  L..LSR..VY FWPKMEDDIE AYVKTCHVCQ VD.KTER.KK E.AGLLQPLP 
+        Del  N..LKI..NF WWSGIKREVV EYVSRCLICQ QV.KADH.HH H.SGLLQPLP 
+    Peabody  D..LKK..LF WWPGMKREIA SFVYSCLTCQ KS.KIEH.QK P.SGLIQPLA 
+ Retrosat-2  D..LKE..KF WWVSMRREIA EFVALCDVCQ RV.KAEH.QR P.AGLLQPLQ 
+     Bagy-1  D..LRQ..RF WWTRMKREIA EFVANCDVCR RV.KAEH.QR P.AGTLQPLA 
+        Tma  D..LKR...Y YWVGMKRDVA NWVAECDVCQ LV.KAEH.QV P.GGMLQSLP 
+    Legolas  D..LKR..YY HWVGMKKDVA RWVAKCPTCQ LV.KAEH.QV P.SGLLQNLP 
+     Cereba  DV.LAT..HF FWPKMRRDVE RFVARCTTC. KA.KSRL.N. P.HGLYMPLP 
+        CRM  DI.LAG..HF FWPKMRRDVV RLVARCTTCQ KA.KSRL.N. P.HGLYLPLP 
+    Beetle1  DV.LQE..HF YWPKLAGDVH SVLARCSTCQ KA.KSSF... H.QGLYTPLP 
+       REM1  C..AL....P AGNARHGLVC WIVAN.PLCE STD....... .......... 
+    G-Rhodo  A..LRQ..TY IWPSMRHHVE HYVKSCDACQ KN.KARH.HK N.FGTPQIPD 
+ Sushi-ichi  EF.VQR..RF WWPNLQEDVR EFVGACTVCA RS.KASH.RS P.AGLLHPLP 
+   Amn-ichi  HL.ILR..DF WWPKIRKDVE KYVNTCPVCQ RS.KTRR.EK P.SGLLHPLP 
+    Amn-san  EL.LRR..LV WWPTIRKDVR DFVAACTVCA TT.KASH.SR P.CGLLHPLP 
+     Amn-ni  EF.LQR..RF WWPTIKRDVT MYVKACPTCN QN.KSSH.CA P.QGLLHPLS 
+     Dane-1  EL.LAR..EY YWPNMY.YVS QWIKNCHTCQ RI.TPSY.KA R.QGILRPLP 
+      Maggy  DL.LSR..EY YWPGMLHYVS LWVKKCQTCR RI.NPSR.EG H.QGLLRPLP 
+      marY1  EL.TSR..NY WWPQMSRLIG QYCRTCDLCL CT.KVPR.RK P.IGELHPLP 
+      Cgret  KR.LRQ..QY GERVTRERVA IAIKDCEVCL KS.KPAR.HQ P.YGLLQPLP 
+      Cft-1  DL.IQR..SF SFPQMRLKVL RYIKKCVHCQ QN.KAAR.HA K.YGHLQFRT 
+      Pyret  KR.LKQ..HY NFKRTRQKIR KTIKDCELCT KS.KSAK.HK F.YGLLQPLP 
+     Skippy  KR.LQE..LG YRHFKKGQVE KVIKQCDLCA KT.KAQR.HK P.YGQLQPLP 
+       Real  KI.LAR..DY FWPGMTQTIR RYVRNCSTCG RS.KSWR.EG K.QGLLKPLP 
+      MGLR3  RL.VAQ..QF WWPGMSGMVD RYVANCS.CR SA.KVPR.DK T.PGLLQPLP 
+Grasshopper  AI.LAR..DY HWDGMAEHVR RFVRNCDICR RT.KPSR.RA R.QGLLQPLP 
+      Pyggy  KDNLPR..RF FWAEHDRSIR RYVRNCDVCE KT.NYRE.K. ..VLRTITNT 
+       Tse3  A..LLE..NY YWPGMENDIK RYVSTCRACQ QN.KHPV.LL S.PGTFHPLP 
+      Ty3-1  AK.ISP..IY YWPKLQHSII QYIRTCVQCQ LI.KSHR.PR L.HGLLQPLP 
+    Skipper  NN.IRQ..DY YFKEMFSIIK RYIKSCATCQ L..NIN..RK D.NGILQSLE 
+        TF2  NI.ILR..RF TWKGIRKQIQ EYVQNCHTCQ IN.KSRN.HK P.YGPLQPIP 
+        TF1  NT.ILR..RF TWKGLRKQIQ EYVQNCHTCQ IN.KSRN.HK P.YGPLHPIP 
+      Tor4a  K..IAK..KY VWPRMNMAIR EFIRTCDFCQ KD.KPNF.HP N.RAPVLSFR 
+       Tor2  DRTAQFLSWC WWPHKMDDIR TYVASCANCL KQKGYDM.QP S.RPDRKHLY 
+       Tor1  S..MRDT.GV IFPKMAKKIK QKIMTCPTCL AT.GSTE.RP .RFTPITPP. 
+       Cer1  M..VHR..KF YWPQMRVCVE NCVRTCAKCL CANDHSK.LT S.SLTPYRMT 
+       Cer2  KA.SVR...Y FWPDMKSDIL RWCMECIPCQ QRSK.P..HP S.TREPQQIV 
+       Cer3  K..IKR..NY YWPNMRSDVL KWTLQCKICQ QK.RNP..HP S.TRELQKIV 
+     Cigr-1  F..IKT...R NLPFSSEEAK IICRQCKTCA EV.K.PR... FYKPASRNLI 
+      CsRN1  K..LISA.RF VWPFMNKDLT SWAKQCIACQ RS.KVTR... HTNSPIGSFA 
+     Kabuki  K..MITN.TF FWPNMNKDIG MWAKPCIRCQ ES.KIYR... HTISDLGNFV 
+   Boudicca  KLIGER...L CWPGMNKDVK EWARSCVSCQ KS.KVIR... HNKCPLGSFK 
+    Osvaldo  RVAAR....Y YWPGMYRNVR NYVQRCEVCQ RY.K.PSQL. QAAGQMLTQV 
+       Woot  S.MKR...EY YWPNMYRTIK KRLRSCDLCQ KT.K.SSNR. PHQ.GPLTPI 
+    Ulysses  ..LAR...QY YWPNMAIQVR DYVRKCDTCK ET.K.AQNY. RMQVGIGEEV 
+      Circe  R.IRR...RF YWPNMVINVR DYIRNCETCQ TT.K.YLNR. SKKPPMAAQV 
+       Gmr1  RVVAR....F YWPGVRRDVA RYCQECPDCQ RV.R.PRA.. VERSPLIPMP 
+      rGmr1  RIRDR....F HWPGLNGEVK RYCQACPTCQ KT.A.PQR.. PPPSPLIPLP 
+  RetroSor1  K..ALRQ.GF YWPTHIRDAE EIVKTCKACQ TF.SPI...Q SGPSALTQLI 
+   Cinful-1  K..IFRQ.GF YWPKAASDAA ELVQKCEGCQ KC.ARD...Q KQPSSLTQLI 
+ B1147A04.5  K..AFRQ.GF YWPTALNDAV DLVRRCRACQ FH.AKQ...I HQPAQALQII 
+       Ogre  K..LLRA.GY YWMTMESDCF KYARKCHKCQ IY.ADR...V HVPPSPLNVM 
+  Grande1-4  K..VFRS.GF YWPTAKNDAA ELVQRCEAQY LS.KQQ.... HMPAQQLQTI 
+     Tat4-1  K..IKKH.DQ YWPTMITDCI RFVAKCEPCQ RH.ASI...I HSPTEALTTS 
+       Tft2  K..ASR.... ...TRSSDIS R..NRPNSDR LG.ADW.... REPIK.HYIV 
+      RIRE2  K..AYRQ.GF FWPTAVSDAD KIVRTCEGCQ FF.ARQ...I HLPAQELQTI 
+        412  K..VKR..HY YWKNMSKYIK EYVRKCQKCQ KA.KTTK.HT K.TP.MTITE 
+       Mdg1  K..MKN..CC CWPRMTKAIS EYVETCLKCQ QA.KTTK.HT K.TP.LTITE 
+  Blastopia  S..IQQQ.FF YFLIWEYKVK KLISNCIKCI .I.HSKKLGK Q.EGYLNCID 
+   Micropia  K..VYQ..YY WFAKMNKYVR KFVSNCITCR SV.KSSS.GK V.QAELHSIP 
+       Mdg3  A..IMK..NY WFPNLKQKCS THISNCLKCI SF.SPKT.GK T.EGFLHNIP 
+
+             651                                                700 
+        Mag  WPSRPWSRLH LD.FLGPI.. .......G.G VTY.....LV VVDSCSKWIE 
+   Gulliver  EVSKPWIRLH VD.YAEPV.. .......N.G R.Y....FLV VVDAYSKWPE 
+        DRM  FPGQSWKRLH ID.FAGPF.. .......L.G H.T....FMI IVDAYSKWLE 
+       CFG1  WPDRPWSRIH VD.YAGPF.. .......L.G Q.M....FLV VVDSYSKWLE 
+   Hydra2-1  YPSKPWSRIH LD.YAGPF.. .......L.G H.M....FLI VCDAYSKWIE 
+        SPM  NARKPWERVH VD.FFELE.. .........G K.D....YLV LVDTYSKWVN 
+       SURL  VPSRPWEKVA VD.LFTLN.. .........K R.E....YMV IVDYYSQFIE 
+       Cer4  EPQKAWSRVH ID.FAGPV.. .......N.G H.W....FLV IVDAKSKYAE 
+       Cer5  VPETPWKRIH ID.FAGPL.. .......N.G Y.Y....LLV VVDAKTKYAE 
+       Cer6  EPEKPWTRIH VD.FCGPL.. .......N.G Q.W....LLV VVDAKSKYAE 
+ HMS-Beagle  LPEYPGQIIH ID.IYST... .......E.R H.L....VLT AIDKFSKLAM 
+       Yoyo  VPNYPGHIVH ID.IYHT... .......N.N RVI.....LT AVDKFSKYAQ 
+   Gypsyvir  IPSYTGEMLH ID.IFST... .......D.K KQF.....LT SIDKFSKFAV 
+    Burdock  IPSHVGETLH ID.IFST... .......G.R NYF.....LT CIDKFSKFAI 
+      Nomad  IPNYHVQILH ID.IFAL... .......E.K RLY.....LS CIDKFSKFAK 
+      Gypsy  IPSYTGEMVH ID.IFST... .......D.R KLF.....LT CIDKFSKYAI 
+        297  NPEHCREKFV VD.IYSS... .......E.G KHY.....IS CIDIYSKFAT 
+       17.6  KPEHCREKFM ID.IYSS... .......E.G KHY.....VS CIDIYSKFAT 
+        Tv1  EIANIREKYV MD.FYIVG.. .......D.K Q.F.....LS CIDIYSKFAS 
+        Ted  PATKPLETVH MD.LFTV... .......Q.N EKY.....IT FIDVFTKYGQ 
+        Zam  TPSKPLDIIH ID.IYTI... .........N NNF....NLT IIDKFSKFAA 
+     Idefix  EIFNTREKYM ID.FYLT... .......G.N QIF.....LS CIDIYSKFAS 
+        Tom  SPGHCRDKFV ID.IYSS... .......E.G KHY.....LS CIDIYSKFAT 
+   Springer  VPTHVGEILH ID.IFST... .......D.K K.Y....FLT CVDKFSKFAM 
+  Athila4-1  LEVEIFDVWG ID.FMGPFP. .....SSY.G NKY....ILV AVDYVSKWVE 
+   Diaspora  LFCEVFDVWG ID.FMGPFP. .....VSF.G YVY....ILL AVDYVSKWVE 
+  Cyclops-2  QEVEVFDCWG ID.FVGPFP. .....PSY.G NEY....MLV AV.......E 
+     Bagy-2  LVIEPFDVWG FD.YMGPFP. .....SSN.G YTH....ILV AVDYVTKWVE 
+    Calypso  MEVEVFDCWG ID.FVGPFP. .....LSF.G NEY....ILV VVDYVSKWVE 
+      Gloin  IPEKVWEDLT MD.FIEGLP. .....FSN.G INV....ILV VVDRLSKYAN 
+       Ifg7  IPSQCWEDVS MD.FITGLP. .....KSE.G KSV....IMV VVDRLTKYAH 
+      Reina  IPDQAWQVIS LD.FISGLP. .....TSR.R FNC....ILV VVDKFSKYAH 
+      Gimli  IPNAIWSDIS MD.FIDGLP. .....ISF.G KSV....ILV VVDRLTKAAH 
+     Monkey  VPERPWERIS LD.FISSLP. .....PVG.G LGS....ILV VVDRFSKYAT 
+     Tntom1  VPKRPWESVS LD.FITGLP. .....KVG.D LTT....ILI VVDRFSKYAT 
+  Galadriel  IPERPWLSVS MD.FISGFP. .....KVD.G KAS....IMV VVDRFSKYSV 
+        Del  VSE.KWEHIL MD.FIIGFP. .....LSKRC HDS....IWV IVDRFTKSAH 
+    Peabody  IPEWKWDSIS MD.FVSGLP. .....MTIKN FEA....IWV IVDRLTKSAH 
+ Retrosat-2  IPEWKWEEIG MD.FITGLP. .....RTSSG HDS....IWV VVDRLTKVAH 
+     Bagy-1  IPEWKWDKVS MD.FITGFP. .....KTKKG NNA....IFV VIDRLSKVAH 
+        Tma  IPEWKWDFIT ID.FVVGLP. .....VSR.T KDA....IWV IVDRLTKSAH 
+    Legolas  IPEWKWDHIT MD.FVTGLPT .....GIKSK HNA....VWV VVDRLTKSAH 
+     Cereba  VPSVPWEDIS MD.FVLGLP. .....RTKKG RDS....IFV VVDRFKMAHF 
+        CRM  VPSAPWEDIS MD.FVLGLP. .....RTRKG RDS....VFV VVDRFSKMAH 
+    Beetle1  VPNQPWEDVS MD.FIVALP. .....RTQRQ RDA....IMV VVDRFSKMAH 
+       REM1  .......... .......... .......... .......... .......... 
+    G-Rhodo  IPSKPWEWMS VD.FCGTFP. .....KTK.E GNDY...IAG FICNLVREAI 
+ Sushi-ichi  VPSRPWSHVA LD.FVTGLPV S......Q.G NDT....ILT IVDRFSKGVH 
+   Amn-ichi  TPSRPWEIIS AD.FITDLPP S......C.G FTT....ILV VVDLFTKLAH 
+    Amn-san  IPSRPWTHLG MD.FIVELPP S......C.G NTV....IWV VIDRFSKMAH 
+     Amn-ni  IPHRPWSHIS MD.FITGLPS S......Q.G NTT....ILV IVDRFSKAAR 
+     Dane-1  VPEHAWQDIS MD.FITHLPT S......Q.G FDS....ILV VVDRLTKMRH 
+      Maggy  TPERSWQHLS MD.FITHLPQ S......N.G HDA....ILV VVDRLTKMRH 
+      marY1  VPESRWDVVS VD.FVVELPE S......N.G FDA....VMC TVDSVGKRAH 
+      Cgret  VPQTAWHSIS LD.FIVKLPK SREPLTGV.H FDS....VLV IVDRLTKYAY 
+      Cft-1  PPTKPWDEVT MD.FITKLPR SKDRVTGQ.A YDM....ILV MVDRLTKYAH 
+      Pyret  APSKVWQTIT MD.FIVKLPL SEKPFTKT.K YDS....ILV IMDKFTKYAY 
+     Skippy  VAQRPWDSIT MD.FITKLPL SEEPSTGI.F YDS....IMV IVDRLTKFSY 
+       Real  IPAQIWKEIS MD.FVEGLP. .....ESE.G MTN....LMV ITDRLSKGTI 
+      MGLR3  VPDRQWSTIV VD.FKS.MPK S....KS..G NDN....LFV MIDALTKRSW 
+Grasshopper  IPDRFWKQIS ID.FMTDLPG .....NGE.V TPRY...LMV ITDRLSKYVQ 
+      Pyggy  RPEDIEKEIS ID.FIKGLP. .....TSE.G ITY....LIV VTNRLSKGSI 
+       Tse3  SGTHRWSHIN ID.FLGGLVL ......SQ.G HDC....IMV VIDRATKMAH 
+      Ty3-1  IAEGRWLDIS MD.FVTGLP. ....PTSN.N LNM....ILV VVDRFSKRAH 
+    Skipper  IPFEVWRDIS ID.FLS.LPK TM..YAIN.G FTVEVDQVCV IVCRLSKMVH 
+        TF2  PSERPWESLS MD.FITALP. .....ESS.G YNA....LFV VVDRFSKMAI 
+        TF1  PPERPWESLS MD.FITALP. .....ESS.G YNA....LLV VVDRFSKMAI 
+      Tor4a  TPNGPYEIYG FDLITLPP.. .....TDF.G NKY....VMV MIDFFSKFAY 
+       Tor2  RATRPHEIIY CDFITLPTS. .....SRS.G KRH....ALT VMCGFSRWLQ 
+       Tor1  KESHPYMTVT VD.LLGPLP. ....STPT.R KKY....ILA AIDNLTRWIE 
+       Cer1  FPLEIVACDL MD.VG..... ....LSVQ.G NRY....ILT IIDLFTKYGT 
+       Cer2  VTSKLFEKVG VDLCGPLR.. ....STAG.G HKY....YMN LICWFSKFVV 
+       Cer3  ITTKVFEKVG VDLTGPLR.. ....MTAS.G NKY.....M. .VCWFTKFVI 
+     Cigr-1  KAMRPWERLS MD.FKGPV.. .......K.G RNSY...LLI IVDEYSRFPF 
+      CsRN1  VPDARFTHVH LD.IVGPLSP ......SN.G FTH....ILT MIDRFTRWPV 
+     Kabuki  DA.GRFEHIH VD.IVGPLP. ....TSPQ.G FRY....CIT IIDRCTRWPE 
+   Boudicca  TPDARFDHVH LD.LVGPLP. .....DSN.G YSY....LLT CVDSFTRWPE 
+    Osvaldo  .PEEPWATVC AD.FVGPLP. ....RSKH.G NTM....LLV FIDRFSKWTE 
+       Woot  LYDHIGDLVC VD.FYGPLP. ....TGRL.G ASY....VFV VIDVFSKFLK 
+    Ulysses  RTDRPFQKLY ID.FLGKYP. ....RSKR.G HAW....IFV VVDHFSKFTF 
+      Circe  QSDTIFQRLY L.VFFGPFP. ....RSKS.G NIG....ILI ILDNFSKFTF 
+       Gmr1  IIETPFERIA LD.IVGPLP. ....RTSR.G HRY....LLV ILDYATRYPE 
+      rGmr1  IIEVPFDRIG LD.LIGPLP. ....KSAR.G HEH....ILV ILDYATRYPE 
+  RetroSor1  PASWPLQRWG MD.LVGPMP. ....TAQG.G NKF....AVV AIEYFTRWIE 
+   Cinful-1  QPIWPLQRWG LD.LLGPLP. ....PAQG.N LRY....VVV AVEYFSKWIE 
+ B1147A04.5  PLSWPFAVWG LD.ILGPFR. ....RAPG.G FEY....LYV AIDKFTKWPE 
+       Ogre  NSPWPFAMWG ID.MIGKIEP ....TASN.G HRF....ILV AIDYFTKWVE 
+  Grande1-4  PVTWPFACWG LD.MIGPFK. ....KAQG.G YTH....VLV AIDKFTKWIE 
+     Tat4-1  TAPYPFMRWA MD.IVGPLP. .....SSN.G KRF....MLI MTDYFTKWVE 
+       Tft2  TGELPKNRWQ A.......R. ....KNEN.. RRK....ILS IEEFFSKWFE 
+      RIRE2  PLSWPFAVWG LD.MVGPFK. ....KAVG.G YTH....LFV AIDKFSKWIE 
+        412  TPEHAFDRVV VDTIGPLPK. .....SEN.G NEY..AVTLI C.D.LTKYLV 
+       Mdg1  TPATAFDKVL IDTIGPLPR. .....SEN.G NEY..AVTII C.D.LTKYLV 
+  Blastopia  KGDAPLHTLH ID.HLGPMD. ....SSAK.Q YKY....ILA TVDAFSKFVW 
+   Micropia  KTSIPWHTIH ID.ITGKLS. ....GKSD.L KEY....VIV QIDAYTKFVY 
+       Mdg3  KGNKPFEIIH ID.HYGPVD. .....LAR.P KKH....ILV IVDAFTKFVR 
+
+             701                                                750 
+        Mag  AIKMQR.TTA Q..AVISVLR DLWS.KFGLP KQTVSDNGPP FSSSDFQKFL 
+   Gulliver  IFAVKTSKTS E...TKFHLR QLFG.RFGAP NILVSDNGSQ FISAKFADFC 
+        DRM  VFRMPNLTSQ S...TISRLR RLFA.AYGLP EHIVTDNGTQ FTSEEFKNFM 
+       CFG1  VVPTNSSTST V...TIAKLR QIFA.EHGLP DKLVSDNGPC FISEEFEIFL 
+   Hydra2-1  AIVMKNVKSE N...LIEQLR SVFA.IHGVP EVIVSDNGTS FSSAAFAEFV 
+        SPM  VELMTSTTSA K...TIETLR SWFA.IFGLP ETLVSDNGPQ FTSEEMEVFL 
+       SURL  VCTMTSTSSK ...AVINHMK AIFA.RHGTP CELMSDNGPQ FASQEFKSFA 
+       Cer4  .VKMTKTISA S..ATVSLLE EVFA.THGYP ELLVSDNGTQ FTSNQFKLMC 
+       Cer5  .VKLTRSISA V..TTIDLLE EIFS.IHGYP ETIISDNGTQ LTSHLFAQMC 
+       Cer6  .VKLTRSISA M..STVDLME EIFS.IHGYP EVLVSDNGTQ FTSHFFKKMC 
+ HMS-Beagle  GRVIKSKAVE D...IRKALR DIVF.YYGVP KLIVMDNEKS LNSASIKFML 
+       Yoyo  ARIVKSRATE D...IKLPLQ DLLT.SFGIP EKIVIDNEKS LNSSSIVFML 
+   Gypsyvir  VQPILSRTII D...VTSPLL QIVN.LFPAT KTIYCDNEAA FNSETITSML 
+    Burdock  VQPIGSRTIT D...LEPAIM QLMN.FFPHS KTIFCDNEPS INSESIKSLL 
+      Nomad  LFHLQSKASV H...LRETLV EALH.YFTAP KVLVSDNERG LLCPTVLNYL 
+      Gypsy  VQPVVSRTIV D...ITAPLL QIIN.LFPNI KTVYCDNEPA FNSETVTSML 
+        297  LEQIKTKDWI E...CRNALM RIFN.QLGKP KLLKADRDGA FSSLALKRWL 
+       17.6  LEEIKTKDWI E...CKNALM RIFN.QLGKP KLLKADRDGA FSSLALKRWL 
+        Tv1  LIEIKSRDWL E...TKRAIL QVFN.QMGKP IEIKADKDSA FMCTALQLWL 
+        Ted  AYHLRDGTAI S...ILQALL RFCT.HHGLP ITIVTDNGTE FSNQLFSEFV 
+        Zam  VYPIPNRNGI N...CIKAIK NFFS.QFGLP KKLIHDQGVE FCNDIFRKFC 
+     Idefix  LVELKSRDWL E...AKRAIT KIFN.DMGKP QEIKADKDSA FMCLALQNWL 
+        Tom  LEQIKTKDWI E...CKNALM RIFN.QLGKP TLLKADRDGA FSSLALKQWL 
+   Springer  VQPILSRTIE D...LKAPLL QLMN.VFPKA KTIYCDNEPS LKSQTIVAML 
+  Athila4-1  AIASPTNDAK V..VLKLFKT IIFP.RFGVP RVVISDGGKH FINKVFENLL 
+   Diaspora  AKPTRTNDAK V..VADFVRS NLFC.RFGVP KAIVSDQGTH FCNKTMHALL 
+  Cyclops-2  AIASPRADAK T..VIIFLKK NIFS.RFGTP RVLISDGGSH FCNAPLESIL 
+     Bagy-2  SIPTRNADHH T..SIKMLKE VIFP.RFGVP RYLMTDGGSH FIHGVFCKML 
+    Calypso  AVATLHNDAK I..VVKFLKT NIFS.RFGVP RVLISDGSTH FCNNKIQKVL 
+      Gloin  FIGLRHPFTA A.DVASSFIQ EIVRL.HGY. ...IVDRDMI FLSNFWREYF 
+       Ifg7  FCTLSHPFKA S.KVSTAFMT .IQKL.HGNP KIIVCDRNLI FTGNFW.TLF 
+      Reina  FLAMSHPFTA L.SVAKLFLS QVYKL.HGLP LSIISDRDPI FTSNLWQELF 
+      Gimli  FIALSHPYSA L.TVAQAFMD NIFKL.HGLP NSIVSDRDSV FLSEFWRELF 
+     Monkey  FIAAPLHCSA E.EAARLMMK DVVKY.WGVP HNIISDQDAR FLGRFWTELF 
+     Tntom1  FIASPQYILA E.ELARLFFS HVVKY.WGQP KDIVSDRGSC FTSNFWTQLF 
+  Galadriel  FIAAPELCSS E.VAAELFYK HVIKY.FGVP ADIVSDRDTR FTGRFWTALF 
+        Del  FIPIHTTISG K.DLA.LYIK EIIRL.HGIP TTIVTDRDTK FTSRFWGSL. 
+    Peabody  FIPIRMDYPL E.RLAELYIE KIVSL.HGIP SSIVSDRDPR FTSKFWEGLH 
+ Retrosat-2  FIPVQTTYTG K.RLAELYLA RIMCL.HGVP RKIVSDRGSQ FTSKFWQKLQ 
+     Bagy-1  FLLVRESIIA S.QLAELYVS RIVFL.HGVP LGINSDRGSI FTSRFWESFQ 
+        Tma  FLAIRKTDGA A.VLAKKYVS EIVKL.HGVP VSIVSDRDSK FTSAFWRAFQ 
+    Legolas  FMAISDKDGA E.IIAEKYID EIVRL.HGIP VSIVSDRDTR FTSKFWKAFQ 
+     Cereba  FIPCHKSDDA A.DVDDLFFH EIIRL.HGVP NTIVSYRDAK FLSHFWRHLW 
+        CRM  FIPCHKTDDA T.HIADLFFR EIVRL.HGVP NTIVSDRDAK FLSHFWRTLW 
+    Beetle1  FIACNKTDDA I.HVADLYFK EIIRL.HGVP KTIVSDKDVK FLSFFWKTLW 
+       REM1  .......... .......... .......... .......... .......... 
+    G-Rhodo  LVPCTKNVTA K.QTVKLFVK YVMPR.TGIP ERINSDRGPQ FISNFWKNLW 
+ Sushi-ichi  FVALPKLPSA A.ETAELLVS HVVRL.HGIP LDVVSDRGPQ FTSRVWQAFC 
+   Amn-ichi  FIPCEGLPTA K.ETADLFLQ HVFRL.HGLP KSLVTDRGSQ FTSRFWKALQ 
+    Amn-san  FIPLRKLPSA V.ELAHLFIQ HIFRL.HGFP VEIVSDRGSQ FVSRFWRSLC 
+     Amn-ni  FIPLSKLPTA K.ETAELVIN HVFRV.FGIP LDVVSDRGPQ FSSRFWQAFC 
+     Dane-1  LIACQATINA E.LVAHLYTQ HVWRL.HGLP RTITSDRGPQ FVAEFWKHLN 
+      Maggy  FVPCKGTCNA E.DTANLYLH HVWKL.HGLP LTIVSDRGTQ FVSKFWKHLT 
+      marY1  FIPTHTTVSA L.GAARLYLH HVWKL.HGLP GAFLSDRGPQ FMAEFTRELY 
+      Cgret  FIPYKESSNA E.EFAYTFLK YIIAN.HGTP KEIVSDRDKI FTSNFWKSIT 
+      Cft-1  FIPASEIYTA EQLGYLVLDR .LIRY.HGFP EVFITDRDKL FTSNYWKTLM 
+      Pyret  FLPYKKSSNA EEIAYYTFLQ IIVSN.YGLP KNIITNRDKL FISRFWKSLM 
+     Skippy  YLPYREATDA EELSY.VFYR HIVSI.HGLP TEILSDRGPT FAATFWQSLM 
+       Real  FVPLPN.IKT .DTVVQKFIE RVVAY.HWLP DAITSDRGRQ FVSVLWTKLC 
+      MGLR3  AVPCTRTATA KDAAMMYYEG .PYRI.YGLP TKVVSDRGPQ FVSDLIDEMS 
+Grasshopper  LEAMHS.MKA EDCAARFLSS .WWRF.RGFP SQIISDRGSD WVGGFWTELC 
+      Pyggy  FILLPN.IKT .ETVVRAF.L RVVAY.YL.L EAITSDRGS. FVSVL.ERLC 
+       Tse3  FIPVTKGADS E.TVIDLFID SVLKL.HGFP VEILSDQDKL FTSKLWQRSM 
+      Ty3-1  FIATRKTLDA T.QLIDLLFR YIFSY.HGFP RTITSDRDVR MTADKYQELT 
+    Skipper  IVPCHKTIDA Q.HTAQLLLN HVFRL.HGYP RTIVSDRDPR FLSEIWERWA 
+        TF2  LVPCTKSITA E.QTARMFDQ RVIAY.FGNP KEIIADNDHI FTSQTWKDFA 
+        TF1  LLPCTKSITA E.QTARMFDQ RVIAY.FGNP KEIIADNDHI FTSQTWKDFA 
+      Tor4a  CEPLKSRNSS Y.LLSK.FRN VIFK.NPFFP KMVVLDNARE HSELAK..FM 
+       Tor2  VYAVHRCRSI D..AARGLMN YFLQ..FDFP RTLSSDRGRH FENELLADLC 
+       Tor1  LRCI.PDKTA A.HVAKALMD IFFL..RGPP RAVSCDNGRE FSNTLLRELL 
+       Cer1  AVPIPDKKAE T..VLKAFVE RWAIGEGRIP LKLLTDQGKE FVNGLFAQFT 
+       Cer2  SVPLTDASTD T..VVRAILT EVVL.KFGTP SELVSDRAST FTSEAFRQFC 
+       Cer3  SVPLPNASTE T..VADAMMK ELLL.KFGTP SQLVSDRAST FTSEAFRAFC 
+     Cigr-1  VFPCKRMTSA V...VIQCLT NLFC.LFGFP AYVHSDRGLS FISHEVKVFL 
+      CsRN1  PVPISD.TSA E.TVAFSFLH HWVS.NFGIP STVTTDRGSQ FQCNIFREFS 
+     Kabuki  AFPVHD.ITA D.KVAKTIYD GWIT.RFGCP VRITSDQGRQ FESNLFLKLT 
+   Boudicca  AVPIKD.ITA E.TVARAFVE RWVA.NFGCP STITTDRGRQ FESGLFRCLT 
+    Osvaldo  MVPLRSANTA A..LQKAFRE RILA.RFGAP KVLITDNGTQ FTSRAFKNFL 
+       Woot  LYPLRKA.TA K.IAAKRLIE DFSG..YIKP KCVLSDHGTQ FISNTWQNSL 
+    Ulysses  LKAMREA.TA A.DVVNFLVH EVFF.KFGVP EVIHSDNGRQ FVSKSFDAMV 
+      Circe  LKFN....TK V..IISILRD EIFC.AFGVP ETVVSDNGTQ FKSRDFSDFL 
+       Gmr1  ALPLRAATSK A..YARI..S ATL.SRVGLP KEILTDQGSC FMSRVVKELL 
+      rGmr1  AIPLRKATSN V..IAKE..L FLLCSRVGIP SEILTDQGTP FMSRLMADLC 
+  RetroSor1  AKPLTTITSE T..IRKFFWQ NIVC.RFGVP RLLTVDNGKQ FDSDNFKEFC 
+   Cinful-1  AKPLATITSA T..VQKFFWQ NIVC.RFGVP KAITVDNGTQ FDSEAFRDFC 
+ B1147A04.5  AYPVVKIDKH S..ALKFI.K GITA.RFGVP R.IITDNGTQ FTSELFGDYC 
+       Ogre  AASYANITKQ V..VTRFIKK EIIC.RYGVP ERIITDNGSN LNNKMMKELC 
+  Grande1-4  FKPIASLTSA K......... .......... .VVEFDKNED IRREV..... 
+     Tat4-1  AEAYNKIQAG E..VQRFVWK NIIC.RHGLP YEIITDNGSQ FISRQFEDFC 
+       Tft2  VEAYVNIKDS A..VKTFIWQ NIIC.RFGVP YEIVTDNGPQ FISHEFEAFC 
+      RIRE2  AKPVVTITAD N..ARDFFI. NIVH.RFGVP NRIITDNGTQ FTGGVFKDFC 
+        412  AIPIANKSAK T..VAK.AIF ESFILKYGPM KTFITDMGTE YKNSIITDLC 
+       Mdg1  TVPIPNKSAK S..VAK.AIF ENFILKYGPM KTITTDMGTE YKNQIIDDLC 
+  Blastopia  LFPTKSTGQE E...VVKRLT DWSN.IFGFP KRIVSDKGTA FTSGAFEQFM 
+   Micropia  LLXTLKIDAE S...CVNAMK SSIS.LFGVP DRIIADQGRC FTSSKFSEFC 
+       Mdg3  LYATKTTNTK E...VIQSLN DYFR.AYSRP KCIISDRGAC FTSGDFDSFL 
+
+             751                                                800 
+        Mag  I.HNGIKHIY SAPYHPASNG AA..ENAVKI CKRAIKKALK QNLN...... 
+   Gulliver  Q..RGIEHIR IPPYHPQSNV QA..ERFVHI FKRALFKGGR .EAV...... 
+        DRM  Q.QNGILHST SAPGHPATNG LA..ERYVQT FKGGIKKLAH VTM....... 
+       CFG1  R.ENGIQHVK ISPHHPATNG LA..ERSVRI FKEGMKKMGT SGG....... 
+   Hydra2-1  K.RNSIRHIF TAPYHPSSNG QA..ERMVQT FKEAMKKLTA QQGN...... 
+        SPM  S.KNGVKHVL VPPYHPASNG AA..ERTVQI VKRTLQKYFL SDKLGRNPHV 
+       SURL  K.EWDFHHTT SSPHYPQSNG LA..ENAVKI VKNLLLKSQH .CG....... 
+       Cer4  Q.EYGMEHKT SAVYYPRSNG AA..ERFVDS LKRGLAKITR .SGV...... 
+       Cer5  Q.SHGIEHKT SAVYYPRSNG AA..ERFVDT LKRGIAKIKG .EGS...... 
+       Cer6  E.SHGIIHKT SATYYPRSNG AA..ERFVDT LKRGIAKIKG .EGS...... 
+ HMS-Beagle  TDQLGIELYK APPYKSTVNG QI..ERFHST LSEIMRCLKG DGTH.....R 
+       Yoyo  ENQYSIEIFK TPPYTSSVNG QV..ERFHST LTEIMRCTKA ENKH.....N 
+   Gypsyvir  RNVYGICIVN AAPLHSTSNG QV..ERFHST LTEIARCLKL DKKI.....S 
+    Burdock  KNRFNVDIAN APPLHSTSNG QV..ERFHST LLEIARCLKL DSGM.....N 
+      Nomad  R.SLDIDLYY APTQKSEVNG QV..ERFHST FLEIYRCLKD ELPT.....F 
+      Gypsy  KNSFGIDIVN APPLHSSSNG QV..ERFHST LAEIARCLKL DKKT.....N 
+        297  E.EEEVEL.. ..QLNTAKNG VADVERLHKT INEKIRIINS SDDE.....E 
+       17.6  E.SEEVEL.. ..QLNTTKTG VADIERLHKT INEKIRIIKT SDDE.....E 
+        Tv1  K.SEAVNI.. ..NITTSKNG ISDVERFHKT VNEKLRIINS DSDV.....E 
+        Ted  R.IHKIIHHK TLPHSPSDNG NI..ERFHST ILEHIRILKL QHKD.....E 
+        Zam  S.QYNILLHV TSFQQSSSNS PV..ERLHSS LTEIYRILLD TRKK.HKLPT 
+     Idefix  R.SEGVQI.. ..SISTSKNG ISDIERFHKT VNEKLRIIGS QQNV.....E 
+        Tom  E.SEGVEL.. ..QLNTAKTG VADVERLHKT INEKIRIINS SKND.....E 
+   Springer  ENHFGVSISN APPLHSVSNG QV..ERFHST LIELARCLKI DKGI.....S 
+  Athila4-1  K.KHGVK... .......... QV..EISNRE IKTILEKTVG ITRK...... 
+   Diaspora  K.NYGVVHRV STPYHPQTNG QA..EISNRE IKRILEKIVQ PSRK...... 
+  Cyclops-2  K.HYGVSHRV ATPYHPQANG QA..EVSNRE IKRILEKTVS NSKK...... 
+     Bagy-2  V.KYDVNHRV ASPYHPQSSG QV..ELSNRE IKLILQKTVN RSRK...... 
+    Calypso  K.QYNVTHKV ASAYHPQTNG QA..EVSNKE LKKILEKTMA STRK...... 
+      Gloin  K.QAGTKLKH STSFHFETDG QI..ELTNRS LEAYLRCLAS SHPQ...... 
+       Ifg7  S.CLGTLLAH SSSYHPQSDG KN..EIVNKC FEGYLRCFVS DKT....... 
+      Reina  K.LVGTKLCL SSAYHPQSDG QT..EWVNQC VEAYLRCFVH GCPK...... 
+      Gimli  T.LQGVALNY SSAYHPQSDG QT..EVVNRC LETYLRCMTS DRPG...... 
+     Monkey  ..LLGSKLYF STSLHPQMDG .T..ERINSL LEQYLRHYVS ANQR...... 
+     Tntom1  K.CLGSKLSH SSSFHPQSDV QT..ERFNGM LEEYICHFVT GSQK...... 
+  Galadriel  N.MMGTELKF STANHPQTDG QT..ERINHL LEEYLRHYVT ASQR...... 
+        Del  K.SLGTELFF STAFHPQTDG .S..ERTIQI LEDMLRSCSL DFKG...... 
+    Peabody  K.ALGTKLRL SSAYHPQTDG QT..ERTIQS LEDLLRACVL EKGG...... 
+ Retrosat-2  E.EMGTRLNF STAYHPQTDG QT..ERVNQI LEDMLRACAL DFGG...... 
+     Bagy-1  N.AMGTHLSF STAFHAQSSG QV..ERVNQI LEDML.ACVI SFGM...... 
+        Tma  A.EMGTKVQM STAYHPQTYG QS..ERTIQT LEDMLRMCVL DWGG...... 
+    Legolas  K.ALGTRVNL STAYHPQTDG QS..ERTIQT LEDMLRACVL DWGG...... 
+     Cereba  A.KLGTKLLF STTCHPQTNG QT..EVVNRS LSTMLRAVLK NNIK...... 
+        CRM  A.KLGTKLLF STTCHPQTDG QT..EVVNRT LSTMLRAVLK KNIK...... 
+    Beetle1  K.LLGTKLLF STTAHPQTDG QT..EVTNRT LTTLLRTLVN KKSQK..... 
+       REM1  .......... .......... .......... .......... .LVG...... 
+    G-Rhodo  K.LLGTELAF SAPYHANSNA LI..ERQNKT FIENLKSYIN ARQD...... 
+ Sushi-ichi  K.GIGATVSL SSGYHPQSNG QA..ERANQA MEAALRCVTT SNPA...... 
+   Amn-ichi  K.LLGIDSRL SSAHHPQTDG QT..ERTNAT LEQYLRCYVN YQQD...... 
+    Amn-san  K.SLGVSLQF SSAYHPQTNG AA..ERVNQA LEQFLRNHVS LCQD...... 
+     Amn-ni  Q.SIGATASL SSGFHPESNG QT..ERLNQD LETTLRCMAA NNPT...... 
+     Dane-1  K.HLDIQSLL STAFHPETNG QT..EWVNAM LEQYLQAYIT YLQD...... 
+      Maggy  T.RLKIDSLL STAHHPETDG QT..ERFNAS LEQYLRAYVA YLQD...... 
+      marY1  R.LLGIKLLA STAYHPQTDG QT..ERVNQE LEQYIRLFVN ERQD...... 
+      Cgret  A.QLGIKQAM STAFHPQTDG QT..ERTNQI LETYLRAYVN YDQD...... 
+      Cft-1  G.TIGIKHKL STAYHPETDG QT..ERTNQT LEQYLRHYIN YAQD...... 
+      Pyret  E.QLGTNHKL STAFHPQTDG TK...RTNQT LEQYLKYYVN HKDN...... 
+     Skippy  A.RLGLNHRL TTAFRPQVDG QT..ERMNQV LEQYLRCYIN YEQN...... 
+       Real  E.LLKINRRL STAYHPQTDG AT..ERMNSV WETYIRSFTN WAQN...... 
+      MGLR3  K.ILQIKWKL STAGHSQTAG QA..EIMNAY IDQRLRPHIN HFQD...... 
+Grasshopper  R.QTGVEQLL STSYHPETDG GT..ERANQE VQQYLRAYIA FDQG...... 
+      Pyggy  E.ILKIRRRL LISF.YLTNG ST..ERINS. VEAYTRAFIS .AQI...... 
+       Tse3  Q.RFKIATKF TSTYNPSTDG QV..ERMNRT IMEMLRHYLT DNPS...... 
+      Ty3-1  K.RLGIKSTM SSANHPQTDG QS..ERTIQT LNRLLRAYAS TNIQ...... 
+    Skipper  K.TMDSKLKM TVAHRAQADG QT..ERMNRE IIRILTKAST EYGE...... 
+        TF2  H.KYNFVMKF SLPYRPQTDG QT..ERTNQT VEKLLRCVCS THPN...... 
+        TF1  H.KYNFVMKF SLPYRPQTDG QT..ERTNQT VEKLLRCVCS THPN...... 
+      Tor4a  T.NNNIEPHF TPPRHPSSNG QV..ENFNRT LKSRLRAKCK YE........ 
+       Tor2  K.LLQIRQNL HCAYRPESSG VI..ERCHKT LKSSLWAMVR DNPR.....L 
+       Tor1  A.SFGTCINY GTPYRPQGQG LI..ERANRE I.VKHLKGLN IEEH...... 
+       Cer1  H.MLKIEHIT TKGYNSRANG AV..ERFNKT IMHIMKKKT. AVPM...... 
+       Cer2  KLVSIQQH.L AIPYHSKGNG AT..ERTFRT FHNMTSKYVN AAHS...... 
+       Cer3  RKLEIQQH.L AIPYHSKGNG AT..ERTFRT FHNMVSKHVN KTHT...... 
+     Cigr-1  T.ERGIATSK STPYHPQGNS QC..ERVNQT IWRTVKLLLH GKLM...AEE 
+      CsRN1  T.LFGFHHIS TAAYHPCSNG LV..ERFHRY LKAALTAHMN .PSS...... 
+     Kabuki  K.LLGINKIC TTPYHPQSNG AV..ERWHRS LKVALMTRLN .DTS...... 
+   Boudicca  S.LLGITRFR TTAYHPQANG LV..ERFHRQ LNASLSA.AN .VSQ...... 
+    Osvaldo  D.ELGVRHQL TAPYTPQENP .T..ERANRT VKTMIAQFAG SDQR...... 
+       Woot  R.AADIQPTL SSIRHPESNP .S..ERVMRE LGRIFRAYCR ENHA...... 
+    Ulysses  Q.AFGITHLR TPVYSPQSNA .A..ERVNRT VLSAIRTYLG QDHR...... 
+      Circe  S.KYGVLHIF TGAYAPQSNG .A..ERVNRS INAALRAYIR SDHR...... 
+       Gmr1  K.LLQVSQLR TSVYHPQTDG LV..ERFNQT IKRMLKKSIE ADGK...... 
+      rGmr1  H.LLKVKQLR TSVYHPQTDG LV..ERFNQT LKRMLRRVVA EDGR...... 
+  RetroSor1  H.LIGTKIAF ASVYHPESNG AV..ERANRT IFSAISKTLL NLRK.....G 
+   Cinful-1  D.QIGTKIHF ASVRHPESNG LV..ERANGI IMTGIMKSIF NQPR.....G 
+ B1147A04.5  E.DMGIKLCF ASPAHPRSNG QV..ERANAE ILRGLKTKTF DILK..KHGD 
+       Ogre  K.DFKIEHHN SSPYRPKMNG AV..EAANKN IKKIVRKMVV TY.K.....D 
+  Grande1-4  ..DKGITCCL EPMNTYPSFA WR......HS FLHGLWVGGS GTMADLKLGA 
+     Tat4-1  A.KWRIRLNK STPRYPQGNG QA..EATNKI ILDGLKKR.L EAKK.....G 
+       Tft2  S.DLGIKVSY STPRYPQGNG QA..EAANKT ILSNLKKRLS HL.K.....G 
+      RIRE2  E.DFGIKICY ASVAHPMSNG QV..ERANGM ILQGIKARVF DRLK..PYAG 
+        412  K.YLKIKNIT STAHHHQTVG VV..ERSHRT LNEYIRSYIS TDKT...... 
+       Mdg1  K.YMKIKNIT STAHHHQTLG TV..ERSHRT FNEYVRSYIS VDKT...... 
+  Blastopia  S.SHNVEHVC TTTGVARGNG QI..ERVNRL ILAIISKLSS DEPS...... 
+   Micropia  V.SQKVELHL IATGMSRANG QV..ERVMET LKNLLSVVES SQR....... 
+       Mdg3  K.ECNVKHIK IATGSPQANG QV..ERINRS LGPMISKLIE PDQG.....L 
+
+             801                                                850 
+        Mag  .VDTALCRFL LAYRN.TEH. ATT.GDSP.. ANILQGRS.. ...LRM.R.. 
+   Gulliver  NDEEALQKFL ILYRA.TPNL IRKDGKSL.. AEIMFGRS.. ...MRI.F.. 
+        DRM  DLEDKISLFL MQYRT.TPN. CTT.GQSP.. ADLFLNRH.. ...VRT.R.. 
+       CFG1  DTAAKLSRFL LSYRS.TPQ. TTT.GLSP.. AELLFNRK.. ...LRT.K.. 
+   Hydra2-1  SIETTVNRFL FSYRI.TPH. STT.GISP.. AELLMKRK.. ...LRS.A.. 
+        SPM  SIRHRLDNFL FSYRT.TPQ. TVT.GVSP.. YELVFKFA.. ...PRT.R.. 
+       SURL  ..QD.IHRAL QVYRS.SPL. A.C.GKSP.. AELLYNRR.. ...LRS.N.. 
+       Cer4  VTQQALNKFL ICYRN.TPHS ALA.GATP.. AECHFGRK.. ...IRT.K.. 
+       Cer5  VNQQILNKFL ISYRN.TPHS ALN.GSTP.. AECHFGRK.. ...IRT.T.. 
+       Cer6  VNQQILNKFL ISYRN.TPHS ALS.GATP.. AECHFGRS.. ...IRT.T.. 
+ HMS-Beagle  GFEELLDRAI YEY.N.YTVH SVT.KKRP.. LEVFFGRIA. ...TVA.P.. 
+       Yoyo  SFEELLNRSI CKY.N.HSIH STT.KKKP.. IEIFFGRSV. ...YSD.P.. 
+   Gypsyvir  DTTELILKAT IEY.N.KVLH SVT.LEKP.. IEVVHA.... .....A.A.. 
+    Burdock  DTVNLILQAT IEY.N.KTVH SVT.NRRP.. IDIIHS.... .....T.P.. 
+      Nomad  KPVELVHIAV DRY.N.TSVH SVT.NRKP.. ADVFFDRSSR VKLSGF.D.. 
+      Gypsy  DTVELILRAT IEY.N.KTVH SVT.RERP.. IEVVHP.... .....G.A.. 
+        297  VKLSKIETIL YTY.NQKIKH DTT.GQRP.. AQIFLY.... ...AGH.P.. 
+       17.6  TKLSKMETVL NIY.NHKTKH DTT.GQTP.. AHIFLY.... ...AGQ.P.. 
+        Tv1  NKLTKFETIL YTY.NHKTKH KTT.NRTP.. ADIFIY.... ...AGT.P.. 
+        Ted  PIVNLMPYAI IGY.N.SSIH SFT.KCRP.. FDLLNGHFD. ...PRD.P.. 
+        Zam  DHEEIMSETV ITY.N.NAIH STT.KHTP.. FELFNGRTHL FEKTII.P.. 
+     Idefix  DRCTKFERIL YIY.NHKTKH NST.KRFP.. ADIFLY.... ...AGS.P.. 
+        Tom  IKLGKMENIL YIY.NHKTRH DTT.GQTP.. AHIFLY.... ...AGQ.P.. 
+   Springer  DTVELVLLAT ARY.N.MSIH SVI.NKKP.. AEVMRA.... .....D.P.. 
+  Athila4-1  DWSAKLDDAL WAY.R.TAFK TPI.GTTP.. FNLLYGKL.. ...CHL.P.. 
+   Diaspora  DWSTRLDDAL WAH.R.TAYK API.GMSP.. YRVVFGKA.. ...CHL.P.. 
+  Cyclops-2  EWSQKLDEAL WAY.R.TAFK API.GLTP.. FQLVFGKT.. ...CHL.P.. 
+     Bagy-2  NWSRKLDDAL WAY.R.TAYK NPM.GMSP.. YKMVYGKA.. ...CHL.P.. 
+    Calypso  DWSIKLDDAL WAY.R.TAFK TPI.GLSP.. FQMVYGKS.. ...CHL.P.. 
+      Gloin  TW.KFLAWAE LWY.N.TSFH TSL.KTTP.. FQVVYGRP.. ...PPT.L.. 
+       Ifg7  QWVKWLPLAE WWY.N.TSFH IET.KMTP.. FMTLYGYQ.. ...QPS.I.. 
+      Reina  QWSNWLSLAE FWY.N.TCFH TAL.GQSP.. FEVLYGHT.. ...PSQ.L.. 
+      Gimli  LWSRWLPLAE FWY.N.TSFH SSA.NMSP.. YEAVYGQP.. ...PPQ.H.. 
+     Monkey  NWVKLLDIAQ FSY.N.LQRS STS.NKSP.. FEIITGQQ.. ...PST.P.. 
+     Tntom1  DWLKLLDAAQ LCF.N.SQTI SST.NKSA.. FEIITGQQ.. ...LLL.P.. 
+  Galadriel  NWVELLDTAQ FCY.N.LHKS SAT.EMSP.. FEIVLGKQ.. ...PMT.P.. 
+        Del  NWEEHLPLVE FAY.N.NSYQ SSI.GMAP.. FEALYGRP.. ...CRS.P.. 
+    Peabody  AWDCYLPLIE FTY.N.NSFH SSI.GMAP.. FEALYGRR.. ...CRT.P.. 
+ Retrosat-2  AWDKSLPYAE FSY.N.NSYQ ASL.QMAP.. FKALYGRK.. ...CRT.P.. 
+     Bagy-1  NWEKCLPFAE FAY.N.NSYQ SSL.GKAP.. FEVLYGRR.. ...CRT.P.. 
+        Tma  HWADHLSLVE FAY.N.NSYP ASI.GMAP.. FEALYERP.. ...CRT.P.. 
+    Legolas  NWEKYLRLVE FAY.N.NSFQ ASI.GMSP.. YEALYGRA.. ...CRT.P.. 
+     Cereba  LREECLPHID FAY.N.RSLH STT.KMCP.. FEVVYGFL.. ...PRA.P.. 
+        CRM  MWEDCLPHIE FAY.N.RSLH STT.KMCP.. FQIVYGLL.. ...PRA.P.. 
+    Beetle1  DWDLKLAHAE FAY.N.RSPT YAT.KCSP.. FEVNYGVN.. ...PLS.P.. 
+       REM1  .IHH...LVE FAI.N.NSKN RST.GFSP.. FALNCAKQ.. ...PRV.P.. 
+    G-Rhodo  DWEDHIGPYE FAY.N.NSYN KSI.GDTP.. FFLSHGRQ.. ...PAM.P.. 
+ Sushi-ichi  SWSKFLPWVE YSL.N.AMES SAT.GMSP.. FQCFLGYQ.. ...PPL.F.. 
+   Amn-ichi  NWASLLPLSE FAY.N.NGVQ AST.KETP.. FFANYGFH.. ...PRF.F.. 
+    Amn-san  DWSDLLPWAE FAH.N.NASH SST.GRSP.. FLSVYGQH.. ...PLA.F.. 
+     Amn-ni  AWSRFIIWAE YAH.N.TLRS SAT.GMSP.. FECQFGFP.. ...PPL.F.. 
+     Dane-1  NWSTWLPLAE FAL.N.ATYS EAI.RTSL.. FFANYRFH.. ...PRM.G.. 
+      Maggy  DWESWLPLAE FTA.N.SHKS ETT.GTSP.. FYATYGFH.. ...PRM.G.. 
+      marY1  DWDDLLPLAE FGY.N.NHVH AST.QQTP.. FLLDTGRH.. ...PRM.G.. 
+      Cgret  NWVVLLPIAQ FAY.N.SAVG EST.KESP.. FYLNYGFE.. ...PTA.Y.. 
+      Cft-1  NWVSLLPMAQ IAL.N.NHKS ETT.STTP.. FMRTLART.. ...LTY.P.. 
+      Pyret  .WVRLLPTAQ FVY.N.SLKN ENT.KTTP.. FYANYGFN.. ...PTA.Y.. 
+     Skippy  DWVEKLPIAQ LAY.N.TAYN EST.KLTP.. AYANFGFT.. ...PNA.Y.. 
+       Real  DWALLCPMAQ IAI.N.GRTA TST.SMSP.. EVNPLQIE.. ...PEV.G.. 
+      MGLR3  DWDKRMPAID LVQ.ATLPHD SLG.GFSP.. FEIGNGYP.. ...AHM.H.. 
+Grasshopper  DWPDHLGAAQ LAL.N.NRNS SVT.GTSPNK LLLGFDIE.. ...AVP.N.. 
+      Pyggy  D.ASLCSIAQ IAI.N.SRDA TLT.GVAL.. FFLQHRYN.. .......... 
+       Tse3  AWVMLLPVVE FAY.N.NTYQ VSI.QTTP.. FFANYGYH.. ...PRL.P.. 
+      Ty3-1  NWHVYLPQIE FVY.N.STPT RTL.GKSP.. FEIDLGYL.. ...PNT.P.. 
+    Skipper  NWSDIIPLIE FAM.N.SSMS KST.KMSP.. FQIVYGFN.. ...PPT.P.. 
+        TF2  TWVDHISLVQ QSY.N.NAIH SAT.QMTP.. FEIVHRYS.. ...P.A.L.. 
+        TF1  TWVDHISLVQ QSY.N.NAIH SAT.QMTP.. FEIVHRYS.. ...P.A.L.. 
+      Tor4a  NWDLVLQEIL HDI.NASEHS .VT.KKSP.. FFIQSG.... .....A.E.. 
+       Tor2  DWELALPSVV SAM.NRSTNA .AT.KVSP.. YKCIFGRD.. ...PSFNGIA 
+       Tor1  KWDTFIPSIQ LSM.NLTYHS .AL.GSSP.. FQAMHGWT.. ...LAE.P.. 
+       Cer1  EWDDQVVYAV YAY.N.NCVH ENT.GETP.. MFLMHGRD.. ...VMG.PLE 
+       Cer2  DWDILLPYLT FSY.N.TVVH STT.GETP.. FFLVFGRD.. ...PVF...A 
+       Cer3  DWDQILPYMT FVY.N.TTVH DTT.GETP.. FFLIFGRD.. ...PVF...A 
+     Cigr-1  QWEEVLPQAL HAI.R.SLVC LAT.NETP.. HERFFNFS.. ...RRS.M.. 
+      CsRN1  .WSFSLPLIL LAI.R.STIK EDL.HCSP.. AELAYGTT.. ...LRL.P.. 
+     Kabuki  .WVDELSTAM FGL.R.ASVR TDS.GVSA.. AQLTYGKN.. ...IRL.P.. 
+   Boudicca  .WTDALTLVL LGI.R.NAVK ADI.G.TA.. SQLVYGTT.. ...LRL.P.. 
+    Osvaldo  CWD.EAPELT LAV.NSSVS. AST.GYTA.. AFITQGRE.. ...PRL.P.. 
+       Woot  SWVNHLSNIE DCL.NYVPH. IST.GFSP.. YEILYGRT.. ...PPN.P.. 
+    Ulysses  EWDAYLPEVE VAI.RNAVHS AAT.GVTP.. FFAVFG.... .......... 
+      Circe  ELDVFLSSIN CSL.RNSIHQ SI..GISP.. YQVVFG.... .......... 
+       Gmr1  NWDQLLPHVL FAI.REVP.Q AST.GFSP.. FELLYGRR.. ...PRG.ILD 
+      rGmr1  DWDLMIPYVL FGI.REVP.Q AST.GFTP.. FELLFGRQ.. ...PRG.LLD 
+  RetroSor1  KWVEELPRVV WSH.N.TTVS RAT.GFTP.. FKLLYGEE.. ...AML.P.. 
+   Cinful-1  KWPDQLTKVV WSH.N.TTTS RST.GFTP.. FKLLFGDE.. ...AIT.P.. 
+ B1147A04.5  SWIEELPAVL WAN.R.TTPS RAT.GETP.. FFLVYGAE.. ...AVL.P.. 
+       Ogre  .WHEMLPFAL HGY.R.TSVR TST.GATP.. YSLVYGME.. ...AVL.P.. 
+  Grande1-4  PR.LIFESIA ISG.H.QAGH RCT.R..... .......... .......... 
+     Tat4-1  AWADEL.DGV LSH.R.TTPR RST.GATP.. FSLTYGIE.. ...AMA.P.. 
+       Tft2  GWYDELQPFL WAY.R.TTPR RST.GETP.. FSLVYRME.. ...AVV.P.. 
+      RIRE2  KWVQQLPSVL WSL.R.TTPS RAT.GQSP.. FFLVYGAE.. ...AML.P.. 
+        412  DWDVWLQYFV YCF.N.TTQS MVH.NYCP.. YELVFGRT.. ...SNL.P.. 
+       Mdg1  DWDIWIQYFT YCF.N.TTPS VVH.EYCP.. YELVFGRL.. ...PRQ.F.. 
+  Blastopia  KWYKYVPEVQ KAI.NCHVHS SLK.L.SP.. FEVMFGTK.. ...MYTRV.. 
+   Micropia  SWQDALGEVQ LAL.NCTISR ATD.A.SP.. LEMLIGKQ.. ...AR..P.. 
+       Mdg3  HWDLVLEKVE YTL.NNTLHR SIK.Q.YP.. SIMLFGLQ.. ...QK..G.. 
+
+             851                                                900 
+        Mag  .....LDN.. .........L KPERQ.S... .......RV. .......... 
+   Gulliver  .....SDI.. .........V HP.RD..... .......KV. .......... 
+        DRM  .....LDF.. .........V HPDVT.V... .......AV. .......... 
+       CFG1  .....LDL.. .........V KPDVR.E... .......RV. .......... 
+   Hydra2-1  .....FQG.. .........L KPDLN.N... .......SV. .......... 
+        SPM  .....FSL.. .........L KPDLN.T... .......RV. .......... 
+       SURL  .....LPM.. .........L DTLLDNQ... .......QID TKSVRGRK.. 
+       Cer4  .....MSL.. .........L VPSREIV... .......EGP .LS....... 
+       Cer5  .....MSL.. .........L MPTDRVL... .......KVP KLT....... 
+       Cer6  .....MSL.. .........L MPKPDAN... .......HQA DLS....... 
+ HMS-Beagle  .......... .......... ...EKYE... Q......ARL D.NIDR.... 
+       Yoyo  .......... .......... ...SLLE... K......DRL D.NIKK.... 
+   Gypsyvir  .......... .......... ......S... D......RRG N.VKNR.... 
+    Burdock  .......... .......... ......P... E......LAN E.IVEM.... 
+      Nomad  .......... .......... ....FRR... Q.......TL E.DI.K.... 
+      Gypsy  .......... .......... ......H... E......RCL E.IKAR.... 
+        297  .......... .......... .....IL... D......TQK I.KEKK.... 
+       17.6  .......... .......... .....IL... D......TQQ N.KENK.... 
+        Tv1  .......... .......... .....EY... D......TQA N.KEKL.... 
+        Ted  .......... .......... ....LDI... D....LTEHI L.QQYA.... 
+        Zam  .......... .......... .......... N......NEH D.YLNK.... 
+     Idefix  .......... .......... .....DF... N......VQQ N.KIDR.... 
+        Tom  .......... .......... .....TL... D......AQK I.KEQK.... 
+   Springer  .......... .......... ......D... D......PHT D.VQEK.... 
+  Athila4-1  .....VELEY KAMWAVKLLN FDIKTAE... E..KRLIQLS D.LDEIRLEA 
+   Diaspora  .....VEIEH KAYWAVKTCN FSMDQAG... E..ERKLQLS E.LDEIRLEA 
+  Cyclops-2  .....VELEH KALWALKINN FEKDLAG... E..KRKVQLL E.LEEIHNAA 
+     Bagy-2  .....LELEH KAYWAIKELN FDFKLAG... E..KRLFDIS S.LDEWRAQA 
+    Calypso  .....VEMKY KTYWALKLLN FDEAESR... E..QRRLQLL E.LEEIKLTA 
+      Gloin  .....LKY.E EHS..TTNVD .LERLLKD.. S..DMMLGRI K.DQLT.... 
+       Ifg7  .....TSY.L RIS..KVQA. .VEHHIEH.. Q..QQVLQLL K.DNLV.... 
+      Reina  .....GLS.T IEQ..CQSAD .LQTYLAT.. R..QLMLQRA K.LHLQ.... 
+      Gimli  .....LPY.V PGE..SKVAV VAQNLQE... R..EKMLLIL K.FHLL.... 
+     Monkey  .....HTMAI GYT..GSSPS AYHFAKE... W..HRNADIA R.AYLE.... 
+     Tntom1  .....RTVNA PNM..SKSPA AS.FSKE... W..KRNLEIV Q.SYL..... 
+  Galadriel  .....LDVAK SKN.QGKCPA AYRVARD... R..LEMLSEA Q.DSLR.... 
+        Del  .....TCW.A EIG..EHHLI RPELIQQ... T..TNAIEVI K.RRLK.... 
+    Peabody  .....LCW.Y ESG..ESAVV GPEIVQQ... T..TEKIKMI Q.EKMR.... 
+ Retrosat-2  .....LFW.D QTG..ERQLF GTEVLAE... A..EEKVRII R.ERLR.... 
+     Bagy-1  .....LNW.S ETG..ERQLF GPDMIQD... A..EE.VRII R.EKLK.... 
+        Tma  .....LCLTQ V.G..ERSIY GADYVQE... T..TERIRVL K.LNMK.... 
+    Legolas  .....LCWTP V.G..ERRLF GPTIVDE... T..TERMKFL K.IKLK.... 
+     Cereba  .....IHLLP LPSSEKVNFD AKECADL... I..LNMHELT K.ENIE.... 
+        CRM  .....IDLMP LPSSEKLNFD ATRRAEL... M..LKLHETT K.ENIE.... 
+    Beetle1  .....IDLLP IPVEVRQSKD AEEKAKE... M..KKLHQQI R.ARIE.... 
+       REM1  ...ADLSYKS R.C...PSAD A..YAKE... M..QSRLQRA R.EALK.... 
+    G-Rhodo  ....VASLHK T.....PSPA AEDFIMN... L..QNRIAMA R.DHI..... 
+ Sushi-ichi  .....PQQEL EIAVPSTRAH LRRCRRI... W..KT.ARKA I.LRAT.... 
+   Amn-ichi  ....PPVIET .SEVPAAEDW LQELTAV... Q..QL.LLQQ L.DQAK.... 
+    Amn-san  .....PQDLL LSEVPAADDL AAHMSVI... W..AA.TKSN L.EKSS.... 
+     Amn-ni  .....PEQEV EVAVPSALQF VRRCRQT... W..RK.ARLK L.LKVS.... 
+     Dane-1  .....FEPVP .VPDCPASQD AENFAQK... M..QAISDYV R.SQMT.... 
+      Maggy  .....FEPVP LNQPLPAQRD AEKLAAR... M..EAILEQA R.AEMT.... 
+      marY1  .....FEPRQ TPSHIETVNE FTERMRD... S..LEEARAA L.AKAK.... 
+      Cgret  .....GEP.. .RAGPEAVK. AVASVKQ... I..KDIQANA R.RELE.... 
+      Cft-1  ..EH.LDPTH R..PREQSVT TETLKEV... H..KEA.RKA I.EDAQ.... 
+      Pyret  .....GEP.. .RTTITAPR. ADKQASE... L..RQLYKKL Q.QELK.... 
+     Skippy  .....HNARP EKSINPA... AIIKSED... M..QDLHEYL K.TELE.... 
+       Real  .....SRASN QTEGLSDVQK AQVIASK... L..QQAIELA Q.ASMA.... 
+      MGLR3  .....FDWTQ RTELKGLPTR ERLTRTE... A..QAITKKL E.SYVEAART 
+Grasshopper  .....AAPPS KAPASSPKAR ATRFLEH... L..REGSELA Q.AAIA.... 
+      Pyggy  .....VDPLQ LEIPQEAD.. .......... .......... .......... 
+       Tse3  .....GFYHL ITSGGQSEKE ARGTELG.DL D..DRIIQQN N.IFLIIQER 
+      Ty3-1  ....AIKSDD .EVNARSFTA VELAKHL... K..ALTIQTK E.QLEH.... 
+    Skipper  ....VNHFNS LTKTRIPMSN IKKIVRD... N..ILD.... .......... 
+        TF2  ......SPLE L..PSFSDKT DENSQET... I...QVFQTV K.EHLN.... 
+        TF1  ......SPLE L..PSFSDKT DENSQET... I...QVFQTV K.EHLN.... 
+      Tor4a  ......CPHN I...FDNNYR NYNLD.R... K...TKFEDI ..QKL..... 
+       Tor2  I..DNVAAAN PASY..AQNT AE.LL..... D.RAHKF.VK L..SQE.... 
+       Tor1  ......LFSK KVDGSE.IQS DVRLWVQ... ESGARMCAAL A..LLT.... 
+       Cer1  MSGEDAVG.I NYA..DMDEY KHLLTQE... .L.LKVQKIA K.EHAM.... 
+       Cer2  V..DRILDPS PPKE..AGKS DVKIWK.... E.HLVEI.LR E.AWKN.... 
+       Cer3  I..DKIMHPS PPKE..GEEV DIPAWK.... E.HLITT.LR L.ARKE.... 
+     Cigr-1  .....TGT.. .........T LPTWLLT... .......KG. .......... 
+      CsRN1  .....GEL.V STS.GAQPES .PVTFVTRL. K..Q.HMSEL R.ATPT.... 
+     Kabuki  .....GDF.Y DVS.KEENLC EPLSLVNKI. ...QKIIKSF R.PVRE.... 
+   Boudicca  .....GEF.V DPS.ASSLNM DLNSYTSRL. T..NAMRSVK P.AHTR.... 
+    Osvaldo  ..KTMFDAQT LGT..GQEAQ SPIERAAK.. M..REVLEIV RRNLER.... 
+       Woot  .....LDAVT SGL...LPVR PPLT...... R..EEIHEKA RENLKH.... 
+    Ulysses  .......... .......... .......... ...QQMYLNG SSYK...... 
+      Circe  .......... .......... KHMISHG... ...NDYKLLR K.LN...... 
+       Gmr1  LA..KEAWES HPSPHRTTIE HVELVRD... RM.AKVWPIV R.DHLT.... 
+      rGmr1  VA..RQAWEQ EPAPQRSLIE HVQDMRQ... RI.ERVMPLV R.QHLT.... 
+  RetroSor1  .....EEIKH QSLRS...MK QQLAEDE... E..Y...CKE T.LESIRLEA 
+   Cinful-1  .....EEAKT GSIRV...VA SAASGSE... A..DYSVEKD A.LEGIRLQA 
+ B1147A04.5  .....SELTL RSPRA...TM YCEADQD... Q..FRRDDLD Y.LEEQRRRA 
+       Ogre  .....VEVEI PSLRVLLDVK LDEAEWI... R..TRFNELS L.IEERRLAV 
+  Grande1-4  .......... .......... .......... .......... .......... 
+     Tat4-1  .....AEVSV GSLRR..TML VNNPLNN... R..MLLSNID D.AEEFRDSA 
+       Tft2  .....AELNV PGLRR..TAP LNEEENS... A..MLHDSLD T.INERRDQA 
+      RIRE2  .....SEVEF ESLRF...RN FREERYE... E..DRVDDLH R.LEEVREAA 
+        412  .....KHFNK LHSIEPIYNI DDYAKES... K..YRLEV.. .........A 
+       Mdg1  .....IDFNR IDRIDPIYNM DDYSKEV... K..LRLEI.. .........A 
+  Blastopia  ......EDRL LELLQEEVVC Q.FN.E.... ...DRYEMRQ .........L 
+   Micropia  .......... LGLVPPCETE CEIDLA.... T..VR..... .........A 
+       Mdg3  .....QIMD. .ELKEKIEEI GETIEE.... ...RDLES.. .........I 
+
+             901                                                950 
+        Mag  ......IAQQ ERSEQNA... ...GGVQRQ. ....LEPG.. ..TKVWYR.. 
+   Gulliver  .......KV. ..TSNNDGND ...YKRARD. ....FNVG.. ..DYAHAS.. 
+        DRM  .....RRKQY L...QKFHHD ....KRSVER S...FSEK.. ..DAVYLR.. 
+       CFG1  .....VKRQQ T...QKNYHD ....SRAKER V...FAEG.. ..DKVFVK.. 
+   Hydra2-1  .....KEKQE R...AEKLSN ....RKAHLR K...FDCG.. ..DQVMAK.. 
+        SPM  .....TQKQE K...TRQYHD ...TPGMKLR Q...FESG.. ..EQVMVK.. 
+       SURL  .......EEQ K.VKQKERFD ....KHAHDL SN..LKPG.. ..DHVILQ.. 
+       Cer4  ......DCQN RMKFQYDSRN ...AARAKT. ....FELG.. ..QYVYVR.. 
+       Cer5  ......QYQQ NMKHHYDLRN ...GARAKA. ....FQVN.. ..QKVYVQ.. 
+       Cer6  ......EYQK KMKQQYDSRN ...GTRAKH. ....FQVG.. ..QQVYVK.. 
+ HMS-Beagle  ...LRQKQET ...DIEYHNR ....TRK.PI K..TYIKG.. ..QEIFVR.. 
+       Yoyo  ...IVNKQEK ...DLTFHNK ....KRT.EV K..AYSSN.. ..DIIYVK.. 
+   Gypsyvir  ...LIKAQQD ...NIKRCNA ....SRQ..N R..VFEVG.. ..EKVFQK.. 
+    Burdock  ...VNEAQEK ...QLRRENV ....TRR..D R..TFEVG.. ..ETVMVK.. 
+      Nomad  ...LIEYKQI ...RGNMRNK ....NRD.EP K..SYGPG.. ..DEVFV... 
+      Gypsy  ...LVKAQQD ...SIGRNNP ....SRQ..N R..VFEVG.. ..ERVFVK.. 
+        297  ...IEKINED ...RREFNID ....TNY..R KG.PLQKG.. KLENPF.K.. 
+       17.6  ...INKINND ...RVEYEVD ....TRY..R KG.PLQKG.. KLENPF.K.. 
+        Tv1  ...INNLNKK ...RTNYEID ....TRY..K HS.PLVKS.. KTTTPFKK.. 
+        Ted  ...QNHRQQM ...KQVYEII ....NET.SL AV.EYIPQ.. ..QQVFIK.. 
+        Zam  ...LNTFQDK ...L..YS.E ....IKEKLS TN.TQQRI.. EKLNTSRV.. 
+     Idefix  ...IEYLNKN ...RHDFEVD ....IKY..R QA.PLVKS.. KITNPFKK.. 
+        Tom  ...INKLNDD ...RQEYDID ....TKF..R KG.PLQKG.. KLENPF.K.. 
+   Springer  ...IKNAQIL ...TRKRENA ....SRQ..N R..VFQVG.. ..DKVLVK.. 
+  Athila4-1  YESSKIYKE. ...RTKLFHD ....KKIITK D...FQVG.. ..DQVLLF.. 
+   Diaspora  YENAKFYKE. ...KTKKFHD ....SMIVKK D...FMVG.. ..QKVLLY.. 
+  Cyclops-2  YHSSCLYKE. ...KVKKYHD ....KKLRKK E...FVPG.. ..QLVLLF.. 
+     Bagy-2  YENAKLFKE. ...KVKRWHD ....KRIQKR E...FNVG.. ..DYVLLY.. 
+    Calypso  YESSQLYKE. ...KIKKYHD ....KKLLKR D...FQQG.. ..QQVLLF.. 
+      Gloin  ......LTQQ ...LMKNNAN ...KHRGDVE ....FKVG.. ..DFVYLK.L 
+       Ifg7  ......LAHN ...RMKQQAD ...QHRIKRS ....FDVG.. ..DWVFLR.L 
+      Reina  ......RAQD ...RMKKQAD ...KGRSERV ....FQVG.. ..QRVFLK.L 
+      Gimli  ......RAQH ...RMLQSAN ...KKRSDRS ....FQIG.. ..DFVFVK.L 
+     Monkey  ......KATK ...RMKK.AN ...LGRRPQE ....FKVG.. ..DLVLVK.L 
+     Tntom1  ......VAQK ...RMKRHAD ...QNRRFVE ....YQVG.. ..NKVMVK.I 
+  Galadriel  ......KAQQ ...RMKKYAD ...QHRRSVE ....FSVG.. ..DKVLLK.L 
+        Del  ......AAQD ...RQKSYTD ...IRRHPLE ....FSVG.. ..NHIFLE.V 
+    Peabody  ......IAQS ...RQKSYHD ...KRRKSLE ....FQEG.. ..DHVFLR.V 
+ Retrosat-2  ......IAQS ...RQKSYAD ...NRRRELT ....FEAG.. ..DYVYLR.V 
+     Bagy-1  ......TAQS ...LQKSQYD ...RHHKAVT ....SEVD.. ..EKAYLR.V 
+        Tma  ......EAQD ...RQRSYAD ...KRRRELE ....FEVG.. ..DRVYLK.M 
+    Legolas  ......EAQD ...RQKSYAN ...KRRKELE ....FQVG.. ..DLVYLK.A 
+     Cereba  ......CMNS ...KYKLAGA ....HKKWSS .......... .......... 
+        CRM  ......RMNA ...RYKFASD ...KGRKEIN ....FEPG.. ..DLVWLH.L 
+    Beetle1  ......KVNE ...AYKVQAN ...KHRKEVI ....YKPG.. ..DLVWLH.L 
+       REM1  ......RAQD ...RQKADAD ...KRRRPVS ....YEVG.. ..QDVLLS.T 
+    G-Rhodo  ......RQRQ ...GERADRN V..DSTQPAN ....YKVG.. ..DKVLLS.T 
+ Sushi-ichi  .......EQS ...RR..SAN ...RRRRPAP A...YRPG.. ..QKVWLL.A 
+   Amn-ichi  .......EDY ...KR..HAD ...KHRQPGP E...IKVG.. ..DRVFLS.T 
+    Amn-san  .......LVH ...KT..FAD ...RRRKPSP P...YKVG.. ..EKVWLS.S 
+     Amn-ni  .......QQY ...KH..QAN ...RRRRPAP T...LRPG.. ..QRVWLS.T 
+     Dane-1  ......SAQA ...RYEEQSN ...KTRQPAR Q...YKAV.. ..SVCGWM.P 
+      Maggy  ......AAQA ...RYEEQAN ...RHRTPAR R...LTVG.. ..QYVWLD.A 
+      marY1  .......DD. ...MARFY.N ...QRHSPTP Q...YKVG.. ..DRVYLD.S 
+      Cgret  ......FVRK ...RMTHFSN ...QRRIEGP T...LREG.. ..DSAYLI.R 
+      Cft-1  ........QR ...LSQRRQD ...ERK.MAP L...LKEG.. ..DKVYLL.T 
+      Pyret  ......FVRK ...RIMKYAN ...HR.IKGP S...FKKG.. ..NSVYLI.R 
+     Skippy  ......FVRK ...RMKNYYD ...PKRLKGP T...FSEG.. ..DMVYLA.T 
+       Real  ......ESQQ ...EQERQAN ...KTRREAQ N...FRVG.. ..DKVWLK.L 
+      MGLR3  HLQ...MAQ. ...QRMCDQA ...NKHRREP D...FGVG.. ..SAVYII.K 
+Grasshopper  ......YNQQ ...RQEAGAN ...ESRRPAE R...FRVG.. ..DEVFLN.L 
+      Pyggy  .......... .......... .......... .......... .......... 
+       Tse3  IAA....AQQ ...KQALQYN ...KKHR.HA E...FEVG.. ..DKVLVHQQ 
+      Ty3-1  .......AQI ...EM.ETNN ...NQRRKPL L...LNIG.. ..DHVLVH.R 
+    Skipper  .......AQI ...NAPKYYN ...RGRGDVI ....FVVG.. ..EKVMVKRK 
+        TF2  ......TNNI ...KMKKYFD ...MKIQEIE E...FQPG.. ..DLVMVK.R 
+        TF1  ......TNNI ...KMKKYFD ...MKIQETE E...FQPG.. ..DLVMVK.R 
+      Tor4a  ......IEEE ...KNKRMAK ...FSNPKFN A...YNLG.. ..DLVLIK.. 
+       Tor2  ......AAD. .....RDA.. ...LER.... ....GKSKIQ ..PEEITA.G 
+       Tor1  ......AKQ. ...AVPLTPI ...PVESDDN A...LEPGT. ..H.VLL... 
+       Cer1  ......REQE S.YK.SLFDQ KYASKKHRF. ....PQPG.. ..SRVLLE.I 
+       Cer2  ......TAE. ...IALKAQL .A.YQKQANQ ....GAKGSE ..IRPGDR.. 
+       Cer3  ......AAE. ...RSLKEQE .A.RQKVANV ....GAKGSK ..IVVGDR.. 
+     Cigr-1  .....PVLLR R..FVRTKGD .......... .....PLC.. ..DQVELL.. 
+      CsRN1  .......RRS TR.KEHISTD ....LSSTP. .......... ...FVFVR.. 
+     Kabuki  .......NQT SR.SIFVHPD ....LHKCS. .......... ...FVFVR.. 
+   Boudicca  .......SQS T..DVFVQPE ...LRHST.. .......... ...HVFVR.. 
+    Osvaldo  ......AAQD ...QARITI. .......... ......CG.. ..GGSGSR.L 
+       Woot  ......HANL ...RQKNQ.. ...KGE.VTV ....LEIE.. ..DWVLLK.N 
+    Ulysses  ......LAR. ...KLS.LAD .......... .......... .......... 
+      Circe  .......... .......... .......... ..L.LTEG.. ..D.VKLS.. 
+       Gmr1  ......RAQQ ...AQARVYN ...RGARVRN ....FRPGD. ..R.VLV..L 
+      rGmr1  ......EAQH ...AQRRLYD ...RPAQARE ....FQPGD. ..Q.VLV..L 
+  RetroSor1  VENITRYQQ. ...ETKNWRD ....RKVVRK D...IQNG.. ..D.LVLR.. 
+   Cinful-1  VENINKYQA. ...ETIKWRD ....RKVRLK N...IEPD.. ..TWCFRR.. 
+ B1147A04.5  ALRAARYQQ. ...SLRRYHQ ....RHVRAR S...LCVD.. ..D.LVLR.. 
+       Ogre  VCHGQLYQR. ...RMKRAFD ....QKVRPR S...YQIG.. ..D.LVLK.. 
+  Grande1-4  .......... .......... ........TH L...FSVG.. ..L.VLLR.. 
+     Tat4-1  LLRIQNYQQ. ...AAARHYN ....TKVKPR S...FTVG.. ..D.LVLR.. 
+       Tft2  LIRIQNYQH. ...AEARYYN ....SKVKSR P...FFVG.. ..D.YVLK.. 
+      RIRE2  LIRSARYLQ. ...GLRRYHN ....RNVRSR A...FLVG.. ..D.LVLR.. 
+        412  YARARKLLEA HKEKNKENYD .L..KVKDIE ....LEVG.. ..DKVLLR.. 
+       Mdg1  YRRAKNMLDK AKADRKIKYD .R..NISNFE ....LKIG.. ..DKILLK.. 
+  Blastopia  VKRNIEQAQ. .KDYKRNY.D .K..KRRAEY K...YKAG.. ..DLVAIK.. 
+   Micropia  .HATENMNSL ASYD.KSRFD .S..SRAAVD K...HHVG.. ..DYVLLR.. 
+       Mdg3  RNKGEASQKI AQAYNKEYVD .K..KRKRSG V...FTKG.. ..TTSWLK.. 
+
+             951                                               1000 
+        Mag  .......... ...DYR.GL. .DKWV..PGT .ILKQLG... SRDY..CVRS 
+   Gulliver  .......... ...DYR.PGR .PKWI..NGT .IVARRG... KMLY..EVRV 
+        DRM  .......... ...NTT.GKG .NKWV..PGV .IVKQTG... PVSY..NVQG 
+       CFG1  .......... ...NF..YSG .PKWK..SGE .IVSKNS... PASY..TVEG 
+   Hydra2-1  .......... ...NF..GNG .PKWI..PGR .IIKQKG... PVNF..E.IL 
+        SPM  .......... ...NH..RGG KERYV..LGV .IVKRLG... FYSY..LVRI 
+       SURL  .......... ...DMK..T. .NTWS..KRG .IIKSVL.NR NRSY..QVET 
+       Cer4  .......... ...VQK.GNV .WSWE..HGE .VIKRLG... EVLY..EVQV 
+       Cer5  .......... ...VHH.GNK .SQWK..HGV .IRRKFG... GVLY..EVQV 
+       Cer6  .......... ...VQH.GNK .SEWD..YGV .VSRKIG... SVLY..EVQV 
+ HMS-Beagle  .......... ....VN.TR. ..LGS..KLS SRFRKELV.. KEDR..STTI 
+       Yoyo  .......... ....IN.KR. ..IGN..KLT PRYKKEIV.. LEDN..GNTV 
+   Gypsyvir  .......... ....NN.KR. ..LGN..KLT PLCSEQKV.. EADL..GTSV 
+    Burdock  .......... ....QN.NR. ..LGN..KLT PRYREELI.. EADL..GTTV 
+      Nomad  .......... ....AN.KQ. IKTKE..KAR FRCEKVQE.. .DNK..VTVK 
+      Gypsy  .......... ....NN.KR. ..LGN..KLT PLCTEQKV.. QADL..GTSV 
+        297  .......... ...PTKNVEQ TDPDH.YKIT .NRNRV.... THYY..KTQF 
+       17.6  .......... ...PTKNVEQ TDSDH.YKIT .NRNRI.... THYY..KTQF 
+        Tv1  .......... ...TGE.LRQ IDDKH.FEET .NRGRKI... TH.Y..KTKF 
+        Ted  .......... ..NPLA.SRQ KVAPRYTQDT .VLADLP... IH.I..YTSK 
+        Zam  .......... ..EPTT.VQP NSTIF.RKEN .RRNKL.... TPRF..SLHR 
+     Idefix  .......... ...TGR.IGQ VDDKH.FEET .NRGRKI... VH.Y..KSKF 
+        Tom  .......... ..ENKN.VEQ TDPDH.YKIT .NRNRT.... TNYY..KTQF 
+   Springer  .......... ....SN.RR. ..LGN..KLT PLCEEKTI.. EADL..GTTV 
+  Athila4-1  ...NSRLK.. ...LFP.GKL KSRWS..GPF CITEVRP... YGAV..TLAG 
+   Diaspora  ...NSRLG.. ...LMS.GKL RSKWI..GPF VVTNVFP... YGTV..EIKS 
+  Cyclops-2  ...NSRLK.. ...LFP.GKL KSKWS..GPF RVKEVNE... YGAI..VIED 
+     Bagy-2  ...NSCLR.. ...FFA.GKL LSKWE..GLY VVEEVYR... SGAI..KINN 
+    Calypso  ...TSRLK.. ...LFP.GKL KSKWS..RPF TIKKVRT... YGAV..ELCD 
+      Gloin  RPYRQHSV.T R..RVC.QKL ATKYY..GLF EVLERIG... KAAY..RLKL 
+       Ifg7  QPYKHMSL.K KA.KKD.NKL SPKYY..GPY KVLQKIG... TMAY..KLEL 
+      Reina  QPICQSSM.G S..RLN.TKL SFRYF..GSF LITKQVN... PVAY..KLAL 
+      Gimli  QPHRQGSV.V M..RSN.QKL APKYY..GPY KILDTCG... KVAY..KLAL 
+     Monkey  S..ASLQF.F R.NRVH.KGL VRKYE..GPF PIISRVG... NVSY..KLQL 
+     Tntom1  .P.MWYLF.A G..VHD.PRL LQKNI..GPL SIERHIG... KVAY..RVDN 
+  Galadriel  TPQIWKQI.V S.KTRH.RGL IPKYD..GPF EVVKRVG... EVAY..RLKL 
+        Del  SPRKGTSY.F V...FK.GKL SPRYT..GPF EILEIIW... PVAY..RLAL 
+    Peabody  TPITGVGR.A L...KS.KKL TPRFI..GPY QILERIG... EVAY..RIAL 
+ Retrosat-2  TPLRGVHR.F Q...TK.GKL APRFV..GPY KILERRG... EVAY..QLEL 
+     Bagy-1  TPLKGTHR.F G...IK.GKL APRYI..GPF RILAKRG... VVAY..QLEH 
+        Tma  AMLRGPNR.S I...SE.TKL SPRYM..GPF RIVERVG... PVAY..RLEL 
+    Legolas  MTYKGAGR.F T...SR.KKL SPRYV..GPY KVIERVG... AVAY..KLDL 
+     Cereba  .......... .......... .......... .......... .......... 
+        CRM  ...RKERF.P EL..RK.SKL LPRAD..GPF KVLEKIN... DNAY..RLDL 
+    Beetle1  ...RKERF.P SR..RK.NKL MPRSD..GPF RVLEKIN... NNAY..KIEL 
+       REM1  ANIK..FK.G V...GT.KKL APKWV..GPY KIVELIG... PAAV..RLAL 
+    G-Rhodo  E.HYNLQL.. ....PS.EKL APRWL..GPL EILEVRG... PNTV..RIEV 
+ Sushi-ichi  RD.LPLQ..T S.QTSS.RKL NPRDI..GPY TICSIIN... PSAV..HLDL 
+   Amn-ichi  RF.LPSHR.. ....PC.RKL DARFI..GPY PVVAQLN... PVTF..KLQL 
+    Amn-san  RN.IRLKV.. ....PS.PKL GPKFL..GPF SISEVIN... PVAV..RLQL 
+     Amn-ni  RN.IPLRV.. ....DS.RKL SQKFI..GPF KIARKVN... PVTY..KLYL 
+     Dane-1  AT.SVP.R.. ....PS.KKL IGS.L..GPF TIKGIIN... AHTY..ELDL 
+      Maggy  RN.IQTAR.. ....PQ.KKL DWKNL..GPF RISEVIS... PYAY..RLDL 
+      marY1  SD.ISTTR.. ....PS.KKL AHRFL..GPF PIVKCVG... THAY..RLRL 
+      Cgret  RN.IKTKR.. ....PS.DKL DYKKL..GPF KILKQIS... PVNF..KLDL 
+      Cft-1  KN.LKTRR.. ....QT.KKL DHVKV..GPF FIDKVVG... PVNY..RLRL 
+      Pyret  RN.IKTQR.. ....PN.NKF DFKKL..GPF KISKKIS... DTNY..RLSL 
+     Skippy  KN.IKTDR.. ....PS.HKL DYKFI..GPY KVLQKIS... ENNY..KLDL 
+       Real  DQQYSTGR.. ....SS.KKL DWK.N..AKY TVIRVVD... SHSV..ELDT 
+      MGLR3  KHWV.TDR.. ....PS.DKL DYPLT..RCS YVIKEKR... GHSY..RLEL 
+Grasshopper  RN.IRTNR.. ....PC.RKL DYI.Y..GKY RVVAVPT... PLTV..TLDV 
+      Pyggy  .......... .......... .......... .......... .......... 
+       Tse3  AYWPGYHK.. .....G.LKL HHIWY..GPF PV.TAA.... DGANL.TLDL 
+      Ty3-1  DAYFKKGA.. .....Y.MKV QQIYV..GPF RVVKKIN... DNAY..ELDL 
+    Skipper  FFQTNLSK.. ..DLIS.HKL ESKNC..GPF II.TAVH... GNNV..TLDL 
+        TF2  TKTGFLHK.. .....S.NKL APSFA..GPF YVLQKSG... PNNY..ELDL 
+        TF1  TKTGFLHK.. .....S.NKL APSFA..GPF YVLQKSG... PNNY..ELDL 
+      Tor4a  ..NFESKK.. .......... .PAFL..GPF KITSKST... AGTW.YTVES 
+       Tor2  HSIMLKREVS AEAKE...GR N.KWV..GPY KVLASD.... GLIL..QIDV 
+       Tor1  ...KTMTP.. ..PGVS.AKL YSPWK..GGY VVRKRCD... HFTY...LIT 
+       Cer1  .PSEKLG... ...AQC.PKL VNKWS..GPY RVISCSE... NSAE.ITPVL 
+       Cer2  VMFKNFKSKI NLSRK...LV KP.WI..GDY RVLEVNH... PKAL..ILDL 
+       Cer3  VFFQNHKSKA NLSRK...MV LP.WI..GEF EVISIDH... PKAV..IKDL 
+     Cigr-1  .......... ...D...AN. .PTYA..N.. .IRHPDG... .......... 
+      CsRN1  ..HDATRK.. ........PL QPCYD..GPF KVIERH.... SKYF.VLERS 
+     Kabuki  ..DDAVHK.. ........SL KPPYD..GPF RVIERG.... PKVF.LVQLF 
+   Boudicca  ..RD.SHR.. ........PL ESAYE..GPF KVLQRE.... PKYY.VVDKN 
+    Osvaldo  LGTKCGRR.N A...TC...P MPRTDLQRSW .HRDTEG... HIRW..SSLY 
+       Woot  KVTSDTRT.H Q...FA..KF MPLYS..GPY KIIAKPH... PNTY..QIAD 
+    Ulysses  ..HSISDL.D A....K.DRL AVIR....SQ ..VKDHL... HTAY..ERSR 
+      Circe  .......... R...TD...E FQRI...RSN ..IARHL... NKAY..ETNQ 
+       Gmr1  VPTSE..... .......CKF LAKWQ..GPY EVVEAVG... PVNY..KVRQ 
+      rGmr1  VPTAT..... .......SKF LASWK..GPY VVVEKVG... PANY..RVRQ 
+  RetroSor1  ...KKGDH.. ...PNA.GKL QPKWE..GPY TAIQAGR... SGSF..YLKD 
+   Cinful-1  ...VA.NP.. ...ETV.GKL QLKWD..GPF LVASSSR... PGSY..RLKD 
+ B1147A04.5  ...RVQTR.. ...ARL.SKL SPMWE..GPY RVIGVPR... PGSV..RLAT 
+       Ogre  ...RILPP.. .GTDNR.GKW TPNYE..GPY VVKKVFS... GGAL..MLTT 
+  Grande1-4  ...RILTG.. ...EGR.HKL SPLWE..GPF MVAEVTR... PGSY..RLTQ 
+     Tat4-1  ...KVYENT. .AELNA.GKL GAKWE..GPY LVSKVVR... SGVY..ELLT 
+       Tft2  ...RVFDNK. .KEEGA.GKL GINWE..GPY IVIEVVW... NGVY..KLKD 
+      RIRE2  ...KIQTT.. ...RDR.HKL SPLWE..GPF IISEVTR... PGSY..RLKR 
+        412  ....NE.... ....VG.HKL DFKYT..GPY KIESIGD... NNNI..TLLT 
+       Mdg1  ....NE.... ....TG.HKL DNNYL..GPY LVSEIGD... NDNI..TIIG 
+  Blastopia  ..RTQF.... ...VAG.RKM ASGYL..GPY EVTGVKD... NGRY..DVKK 
+   Micropia  ....NE.... ..ERHQ.TKL DPKFR..GPF LVTEVLE... GDRY..TLKS 
+       Mdg3  .ILTQQ.... ...QAA.KKL IPKHK..GPY VISKVLK... NDRF...LLE 
+
+             1001   1001 
+        Mag  S     
+   Gulliver  G     
+        DRM  Q     
+       CFG1  Q     
+   Hydra2-1  T     
+        SPM  G     
+       SURL  E     
+       Cer4  G     
+       Cer5  G     
+       Cer6  G     
+ HMS-Beagle  L     
+       Yoyo  T     
+   Gypsyvir  L     
+    Burdock  L     
+      Nomad  T     
+      Gypsy  L     
+        297  K     
+       17.6  K     
+        Tv1  K     
+        Ted  K     
+        Zam  T     
+     Idefix  K     
+        Tom  K     
+   Springer  L     
+  Athila4-1  K     
+   Diaspora  D     
+  Cyclops-2  M     
+     Bagy-2  T     
+    Calypso  P     
+      Gloin  Q     
+       Ifg7  P     
+      Reina  P     
+      Gimli  P     
+     Monkey  P     
+     Tntom1  P     
+  Galadriel  P     
+        Del  P     
+    Peabody  P     
+ Retrosat-2  P     
+     Bagy-1  P     
+        Tma  P     
+    Legolas  P     
+     Cereba  .     
+        CRM  P     
+    Beetle1  P     
+       REM1  P     
+    G-Rhodo  P     
+ Sushi-ichi  P     
+   Amn-ichi  P     
+    Amn-san  P     
+     Amn-ni  P     
+     Dane-1  P     
+      Maggy  P     
+      marY1  P     
+      Cgret  P     
+      Cft-1  P     
+      Pyret  P     
+     Skippy  P     
+       Real  P     
+      MGLR3  P     
+Grasshopper  P     
+      Pyggy  .     
+       Tse3  P     
+      Ty3-1  N     
+    Skipper  V     
+        TF2  P     
+        TF1  P     
+      Tor4a  D     
+       Tor2  D     
+       Tor1  P     
+       Cer1  G     
+       Cer2  D     
+       Cer3  E     
+     Cigr-1  .     
+      CsRN1  G     
+     Kabuki  D     
+   Boudicca  G     
+    Osvaldo  R     
+       Woot  P     
+    Ulysses  Q     
+      Circe  K     
+       Gmr1  P     
+      rGmr1  P     
+  RetroSor1  L     
+   Cinful-1  M     
+ B1147A04.5  G     
+       Ogre  M     
+  Grande1-4  M     
+     Tat4-1  M     
+       Tft2  L     
+      RIRE2  E     
+        412  N     
+       Mdg1  N     
+  Blastopia  A     
+   Micropia  L     
+       Mdg3  D     
+
+

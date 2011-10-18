@@ -1,0 +1,672 @@
+   167    188
+Real         IE-------- --------PE V-G------- SRASNQTEGL SDVQKAQVIA 
+Grasshoppe   IE-------- --------AV P-N------- AAPPSKAPAS SPKARATRFL 
+Pyggy        YN-------- ---------- ---------- VDPLQLEIPQ EAD------- 
+Cer7         EM--RMTIPL QVTKDMMDEY IPP------- --EEINLTKQ ETIEALQS-- 
+Mabel        N-----AHLI MPAKNKNEMD DFI------- --PHKLDSRE KLIQYWSN-- 
+Tas          HG--NSSPGV FRSLENDARE PTY------- --RDPSDIHQ KLLKYWEE-- 
+Cer10-1      G--------- -VMIETPRTP ADS------- --PTTSTTET RTRAHLEK-- 
+Spirobel     T-------HY TDIPEVTKDE DEW------- --VPKAQSTS HLMKNWNL-- 
+Hydra3-1     HK-------- ------LKLE SSL------- --SACNDIEQ DVHIRNSM-- 
+Ninja        VA--N----- ----LPDTPG LDA------- --ECPRRVLR ESSGGLLA-- 
+Tamy         R--------- ------SCGS AIL------- --GTFNEYNL IGKADWKT-- 
+Cubel        S--------- ------SSGS KPL------- --VAFDNGHT ALRNNWKA-- 
+Gloin        RP-------- --------PP T-L------- LKY-EEHS-- TTNVD-LERL 
+Ifg7         YQ-------- --------QP S-I------- TSY-LRIS-- KVQA--VEHH 
+Reina        HT-------- --------PS Q-L------- GLS-TIEQ-- CQSAD-LQTY 
+Gimli        QP-------- --------PP Q-H------- LPY-VPGE-- SKVAVVAQNL 
+Monkey       QQ-------- --------PS T-P------- HTMAIGYT-- GSSPSAYHFA 
+Tntom1       QQ-------- --------LL L-P------- RTVNAPNM-- SKSPAAS-FS 
+Galadriel    KQ-------- --------PM T-P------- LDVAKSKN-Q GKCPAAYRVA 
+Del          RP-------- --------CR S-P------- TCW-AEIG-- EHHLIRPELI 
+Peabody      RR-------- --------CR T-P------- LCW-YESG-- ESAVVGPEIV 
+Retrosat-2   RK-------- --------CR T-P------- LFW-DQTG-- ERQLFGTEVL 
+Bagy-1       RR-------- --------CR T-P------- LNW-SETG-- ERQLFGPDMI 
+Tma          RP-------- --------CR T-P------- LCLTQV-G-- ERSIYGADYV 
+Legolas      RA-------- --------CR T-P------- LCWTPV-G-- ERRLFGPTIV 
+Cereba       FL-------- --------PR A-P------- IHLLPLPSSE KVNFDAKECA 
+CRM          LL-------- --------PR A-P------- IDLMPLPSSE KLNFDATRRA 
+Beetle1      VN-------- --------PL S-P------- IDLLPIPVEV RQSKDAEEKA 
+G-Rhodo      RQ-------- --------PA M-P------V ASLHKT---- -PSPAAEDFI 
+Zebel        R--------- ------RDAS LPQ------- --VLYDSNNL LGRRRWRH-- 
+Sinbad       R--------- ------ERYR ---------- ---------- ----TYRS-- 
+Saci-6       R--------- ------ENVT ELT------- --NVLS-NDR YS-KRWKQ-- 
+Kobel        R--------- ------ARAL SSP------- --GVFEKSDM YARKRWRQ-- 
+Purbel       R--------- -------SSS KVP------- --HGPFRETR NPRHRVEF-- 
+Suzu         R--------- -------ASN SGD------- --FNSFDFES YSYKRLQV-- 
+Gabel        Q--------- -------ASS SGD------- --WKTFVFTS YPYKRLQE-- 
+Moose        N--------- ------NLKV ILE------- --PDLKEVPM NRLGRYQL-- 
+Max          G--------- ------PLLS TAE------- --PEIKGEAK SIINRWQH-- 
+Tribel       R--------- ------PLTT IPS------- --DNHLDTPM KRLNRFEY-- 
+Nabel        D--------- ------SLKS LPE------- --QNYTKIPD NRLSAWEI-- 
+Roo          R--------- ------PPLE IVE------- --P-MEDEKI GNLDRWRL-- 
+Bel          S--------- ------PYTA LPE------- --PCRLDMQV NRLERWNQ-- 
+Mag          RS-------- --------LR M-R------- LDN------- ----LKPERQ 
+Gulliver     RS-------- --------MR I-F------- SDI------- ----VHP-RD 
+DRM          RH-------- --------VR T-R------- LDF------- ----VHPDVT 
+CFG1         RK-------- --------LR T-K------- LDL------- ----VKPDVR 
+Hydra2-1     RK-------- --------LR S-A------- FQG------- ----LKPDLN 
+SPM          FA-------- --------PR T-R------- FSL------- ----LKPDLN 
+SURL         RR-------- --------LR S-N------- LPM------- ----LDTLLD 
+Cer4         RK-------- --------IR T-K------- MSL------- ----LVPSRE 
+Cer5         RK-------- --------IR T-T------- MSL------- ----LMPTDR 
+Cer6         RS-------- --------IR T-T------- MSL------- ----LMPKPD 
+HMS-Beagle   RIA------- --------TV A-P------- ---------- --------EK 
+Yoyo         RSV------- --------YS D-P------- ---------- --------SL 
+Gypsyvir     ---------- ---------- A-A------- ---------- ---------- 
+Burdock      ---------- ---------- T-P------- ---------- ---------- 
+Nomad        RSSR------ -----VKLSG F-D------- ---------- ---------F 
+Gypsy        ---------- ---------- G-A------- ---------- ---------- 
+297          ---------- --------AG H-P------- ---------- ---------- 
+17.6         ---------- --------AG Q-P------- ---------- ---------- 
+Tv1          ---------- --------AG T-P------- ---------- ---------- 
+Ted          HFD------- --------PR D-P------- ---------- ---------L 
+Zam          RTHL------ -----FEKTI I-P------- ---------- ---------- 
+Idefix       ---------- --------AG S-P------- ---------- ---------- 
+Tom          ---------- --------AG Q-P------- ---------- ---------- 
+Springer     ---------- ---------- D-P------- ---------- ---------- 
+Athila4-1    KL-------- --------CH L-P------- VELEYKAMWA VKLLNFDIKT 
+Diaspora     KA-------- --------CH L-P------- VEIEHKAYWA VKTCNFSMDQ 
+Cyclops-2    KT-------- --------CH L-P------- VELEHKALWA LKINNFEKDL 
+Bagy-2       KA-------- --------CH L-P------- LELEHKAYWA IKELNFDFKL 
+Calypso      KS-------- --------CH L-P------- VEMKYKTYWA LKLLNFDEAE 
+Sushi-ichi   YQ-------- --------PP L-F------- PQQELEIAVP STRAHLRRCR 
+Amn-ichi     FH-------- --------PR F-F------P PVIET-SEVP AAEDWLQELT 
+Amn-san      QH-------- --------PL A-F------- PQDLLLSEVP AADDLAAHMS 
+Amn-ni       FP-------- --------PP L-F------- PEQEVEVAVP SALQFVRRCR 
+Dane-1       FH-------- --------PR M-G------- FEPVP-VPDC PASQDAENFA 
+Maggy        FH-------- --------PR M-G------- FEPVPLNQPL PAQRDAEKLA 
+marY1        RH-------- --------PR M-G------- FEPRQTPSHI ETVNEFTERM 
+Cgret        FE-------- --------PT A-Y------- GEP---RAGP EAVK-AVASV 
+Cft-1        RT-------- --------LT Y-P----EH- LDPTHR--PR EQSVTTETLK 
+Pyret        FN-------- --------PT A-Y------- GEP---RTTI TAPR-ADKQA 
+Skippy       FT-------- --------PN A-Y------- HNARPEKSIN PA---AIIKS 
+MGLR3        YP-------- --------AH M-H------- FDWTQRTELK GLPTRERLTR 
+Tse3         YH-------- --------PR L-P------- GFYHLITSGG QSEKEARGTE 
+Ty3-1        YL-------- --------PN T-P------A IKSDD-EVNA RSFTAVELAK 
+Skipper      FN-------- --------PP T-P------V NHFNSLTKTR IPMSNIKKIV 
+TF2          YS-------- --------P- A-L------- -SPLEL--PS FSDKTDENSQ 
+TF1          YS-------- --------P- A-L------- -SPLEL--PS FSDKTDENSQ 
+Tor4a        ---------- ---------- A-E------- -CPHNI---F DNNYRNYNLD 
+Tor2         RD-------- --------PS FNGIAI--DN VAAANPASY- -AQNTAE-LL 
+Tor1         WT-------- --------LA E-P------- -LFSKKVDGS E-IQSDVRLW 
+Cer1         RD-------- --------VM G-PLEMSGED AVG-INYA-- DMDEYKHLLT 
+Cer2         RD-------- --------PV F---AV--DR ILDPSPPKE- -AGKSDVKIW 
+Cer3         RD-------- --------PV F---AI--DK IMHPSPPKE- -GEEVDIPAW 
+Cigr-1       FS-------- --------RR S-M------- TGT------- ----TLPTWL 
+CsRN1        TT-------- --------LR L-P------- GEL-VSTS-G AQPES-PVTF 
+Kabuki       KN-------- --------IR L-P------- GDF-YDVS-K EENLCEPLSL 
+Boudicca     TT-------- --------LR L-P------- GEF-VDPS-A SSLNMDLNSY 
+Osvaldo      RE-------- --------PR L-P----KTM FDAQTLGT-- GQEAQSPIER 
+Woot         RT-------- --------PP N-P------- LDAVTSGL-- -LPVRPPLT- 
+Ulysses      ---------- ---------- ---------- ---------- ---------- 
+Circe        ---------- ---------- ---------- ---------- -----KHMIS 
+Gmr1         RR-------- --------PR G-ILDLA--K EAWESHPSPH RTTIEHVELV 
+rGmr1        RQ-------- --------PR G-LLDVA--R QAWEQEPAPQ RSLIEHVQDM 
+RetroSor1    EE-------- --------AM L-P------- EEIKHQSLRS ---MKQQLAE 
+Cinful-1     DE-------- --------AI T-P------- EEAKTGSIRV ---VASAASG 
+B1147A04.5   AE-------- --------AV L-P------- SELTLRSPRA ---TMYCEAD 
+Ogre         ME-------- --------AV L-P------- VEVEIPSLRV LLDVKLDEAE 
+Grande1-4    ---------- ---------- ---------- ---------- ---------- 
+Tat4-1       IE-------- --------AM A-P------- AEVSVGSLRR --TMLVNNPL 
+Tft2         ME-------- --------AV V-P------- AELNVPGLRR --TAPLNEEE 
+RIRE2        AE-------- --------AM L-P------- SEVEFESLRF ---RNFREER 
+412          RT-------- --------SN L-P------- KHFNKLHSIE PIYNIDDYAK 
+Mdg1         RL-------- --------PR Q-F------- IDFNRIDRID PIYNMDDYSK 
+Blastopia    TK-------- --------MY TRV------- -EDRLLELLQ EEVVCQ-FN- 
+Micropia     KQ-------- --------AR --P------- -----LGLVP PCETECEIDL 
+Mdg3         LQ-------- --------QK --G------- QIMD--ELKE KIEEIGETIE 
+HFV          ID-------- --------SN T-P------- ---------- --------FA 
+SFV-1        VD-------- --------SN T-P------- ---------- --------FA 
+EFV          VD-------- --------CN L-P------- ---------- --------FQ 
+BFV          AD-------- --------CN L-P------- ---------- --------FE 
+FFV          ID-------- --------CN L-P------- ---------- --------FA 
+DrFV-1       KV-------- --------GD I-V------- ---------- -------YIQ 
+HERV-K10     KKNS------ --------PH E--------- ---------- ---------- 
+MPMV         -NN------- --------PK K--------- ---------- ---------- 
+MMTV         ---------- --------PI S-AD------ ---------- ---------- 
+SERV         ---------- --------PE S-QK------ ---------- ---------- 
+SRV-1        SN-------- --------PR K--------- ---------- ---------- 
+JSRV         ERS------- --------SC K--------- ---------- ---------- 
+SMRV-H       ---------- --------PQ T-SQ------ ---------- ---------- 
+K-HERV       -KNS------ --------PH ---------- ---------- ---------- 
+PyERV        SQ-------- --------PA A-DH------ ---------- ---------- 
+LPDV         ---------- ---------- ---------- ---------- ---------- 
+RSV          ---------- ---------- ---------- ---------- ---------- 
+STcLV2PP16   PR-------- ---------- ---------- ---------- ---------- 
+HTLV-2       PP-------- ---------- ---------- ---------- ---------- 
+HTLV-1       PR-------- ---------- ---------- ---------- ---------- 
+BLV          PP-------- ---------- ---------- ---------- ---------- 
+HIV-2        MI-------- ---------- ---------- ---------- ---T---T-- 
+HIV-1        II-------- ---------- ---------- ---------- ---A---T-- 
+EIAV         TN-------- --------Q- ---------- ---------- ---A---Q-- 
+SIVMAC       MI-------- ---------- ---------- ---------- ---T---T-- 
+SIVAGM       MI-------- ---------- ---------- ---------- ---T---T-- 
+SIVMND       MI-------- ---------- ---------- ---------- ---N---T-- 
+VMV          FN-------- ---------- ---------- ---------- ---K---E-- 
+SA-OMVV      FN-------- ---------- ---------- ---------- ---K---E-- 
+CAEV         YN-------- ---------- ---------- ---------- ---K---E-- 
+FIV          Q--------- ---------- ---------- ---------- -QES---L-- 
+BIV          ES-------- --------E- ---------- ---------- --HT---K-- 
+KoRV         GP-------- --------PP V-L------- ASGEVVGSN- -GDFFPVLFT 
+REV          LK-------- --------PP V-V------- PRVGCDKLA- -SITNQTLLK 
+HERV-E       RP-------- --------PP I-L------- RGLPGTPREL GEIELQRLQA 
+RTVL-Ia      LP-------- ---------- ---------- --YLYSTAN- ----IP--TF 
+MdEV         GP-------- --------PP L-I------- KDGGTLVPDS GSVLPSSLLI 
+PERV-MSL     GP-------- --------PP L-V------- EIASVHSAD- VLLSQP-LFS 
+FeLV         AP-------- --------PP M-A------- HFFDTDISS- -FATSPTMQA 
+RCHO-K1      VP-------- --------TP I-I------- NFLDQDVSD- -FANSPSLQA 
+BAEVM        GP-------- --------PP L-S------T LLNSFSPSN- ---SKTDLQA 
+MuLV         AP-------- --------PP L-V------- -NFHDPEMS- KLTNSPSLQA 
+GALV         GP-------- --------PP I-L------- ESGETLGPD- -DRFLPVLFT 
+WdSV         RP-------- --------MK TTY-----LS DMSPLWATD- -TLVT--YMN 
+XEN1         CA-------- --------PR L-G------C YFPQTLQLQF DVLNEYVCQL 
+ZFERV        RQ-------- --------FP G-P------- -VAPLHAGD- --TDSP-QMY 
+ASSBSV       RV-------- --------MP G-P-----PR EGGHMPALDV HQIGMTDYVR 
+ZFERV-2      CP-------- --------MP V-P----FCR GPYKEPPLEQ LQMELRSYMK 
+SnRV         RV-------- --------PH L-G------- -GYHPHPLET AKEEEVRIFL 
+MuERV-L      RN----QGVE KGIVPLTITH SDPLGKFLLP VPITLGSAGL EVLA---P-- 
+
+             SK---L--QQ AIELAQ-ASM A--------- -ESQQ---EQ ERQAN---KT 
+             EH---L--RE GSELAQ-AAI A--------- -YNQQ---RQ EAGAN---ES 
+             ---------- ---------- ---------- ---------- ---------- 
+             SV---A---- IIED---IWK IWNKTYLS-- ELRE----TH K-LRM-D-NK 
+             TL---K---- ALDA---FWE IWKEEYLN-- TLKE----AQ R-EHS-S-PR 
+             TR---A---- KLDN---FWT IWREEYLT-- M--------- ---------- 
+             FE---S---- ALER---LWT IWTFGVML-- ILRE----VS H-KHK-R-CC 
+             RQ---R---- LIAQ---WWK RWKTEYVT-- NLNV----RQ K-WYN-S-G- 
+             LS---N---- TLNH---FRS RFKSEYLT-- ELRE----YH K-SKR-S-NG 
+             CS---E---- TVSG---GGG SWSTCLRL-- CAAR----SG A-AER-S-PS 
+             TQ---H---- LADH---FWK RWLREYVP-- TLMP----RK I-EGK-E-V- 
+             SQ---I---- YANL---FWK KWVKEYLP-- TICR----RT K-WHQ-P-V- 
+             LKD--S--DM MLGRIK-DQL T--------- -LTQQ---LM KNNAN---KH 
+             IEH--Q--QQ VLQLLK-DNL V--------- -LAHN---RM KQQAD---QH 
+             LAT--R--QL MLQRAK-LHL Q--------- -RAQD---RM KKQAD---KG 
+             QE---R--EK MLLILK-FHL L--------- -RAQH---RM LQSAN---KK 
+             KE---W--HR NADIAR-AYL E--------- -KATK---RM KK-AN---LG 
+             KE---W--KR NLEIVQ-SYL ---------- -VAQK---RM KRHAD---QN 
+             RD---R--LE MLSEAQ-DSL R--------- -KAQQ---RM KKYAD---QH 
+             QQ---T--TN AIEVIK-RRL K--------- -AAQD---RQ KSYTD---IR 
+             QQ---T--TE KIKMIQ-EKM R--------- -IAQS---RQ KSYHD---KR 
+             AE---A--EE KVRIIR-ERL R--------- -IAQS---RQ KSYAD---NR 
+             QD---A--EE -VRIIR-EKL K--------- -TAQS---LQ KSQYD---RH 
+             QE---T--TE RIRVLK-LNM K--------- -EAQD---RQ RSYAD---KR 
+             DE---T--TE RMKFLK-IKL K--------- -EAQD---RQ KSYAN---KR 
+             DL---I--LN MHELTK-ENI E--------- -CMNS---KY KLAGA----H 
+             EL---M--LK LHETTK-ENI E--------- -RMNA---RY KFASD---KG 
+             KE---M--KK LHQQIR-ARI E--------- -KVNE---AY KVQAN---KH 
+             MN---L--QN RIAMAR-DHI ---------- -RQRQ---GE RADRNV--DS 
+             SQ---V---- LADN---FWT AFIRHHLP-- SLQD----RQ R-WRK-D-G- 
+             ---------- -IQV---FQE MEASELLS-- TS-------- ---------- 
+             AN---Y---- LAQV---FWR RWSKEYVS-- LLQR----RY K-WTQ-L-E- 
+             SQ---Y---- LIDV---FWC RWRKEYLV-- TLQQ----RP K-WQR-K-R- 
+             VQ---Q---- IVNS---FWK SWNRDVFP-- LLVP----RR K-WNT-E-R- 
+             IQ---C---- EVNN---FWK SWSQLVGP-- NLFI----RN K-WHT-L-H- 
+             MQ---H---- QVNK---FWR SWSQLAGP-- NLFV----RS K-WHT-T-Q- 
+             LH---G---- YTQN---FWI HWKQDYLK-- NLTV----LH R-SAK-Q-S- 
+             LK---A---- QHQQ---FSA RWKEEYLK-- ELHK----RS K-WQF-P-T- 
+             QE---K---- ICQD---FWQ RWHQEYLS-- YLQQ----RK K-WTQ-S-T- 
+             MS---K---- LKQQ---FWE RWNKEYLN-- ELNI----RH N-KSA-A-E- 
+             IQ---K---- IKKD---FWV KWKSEYLH-- TLQQ----RN K-WKK-E-I- 
+             LQ---A---- MVQG---FWK RWHMEYLT-- SLHE----RT K-WHL-E-T- 
+             -S-------- --RV------ ---------- -IAQQERSEQ NA------GG 
+             ---------- --KV------ ---------- --KV---TSN NDGND---YK 
+             -V-------- --AV------ ---------- RRKQYL---Q KFHHD----K 
+             -E-------- --RV------ ---------- VKRQQT---Q KNYHD----S 
+             -N-------- --SV------ ---------- KEKQER---A EKLSN----R 
+             -T-------- --RV------ ---------- TQKQEK---T RQYHD---TP 
+             NQ-------- --QIDTKSVR GRK------- --EEQK-VKQ KERFD----K 
+             IV-------- --EGP-LS-- ---------- -DCQNRMKFQ YDSRN---AA 
+             VL-------- --KVPKLT-- ---------- -QYQQNMKHH YDLRN---GA 
+             AN-------- --HQADLS-- ---------- -EYQKKMKQQ YDSRN---GT 
+             YE---Q---- --ARLD-NID R-------LR QKQET---DI EYHNR----T 
+             LE---K---- --DRLD-NIK K-------IV NKQEK---DL TFHNK----K 
+             -S---D---- --RRGN-VKN R-------LI KAQQD---NI KRCNA----S 
+             -P---E---- --LANE-IVE M-------VN EAQEK---QL RRENV----T 
+             RR---Q---- ---TLE-DI- K-------LI EYKQI---RG NMRNK----N 
+             -H---E---- --RCLE-IKA R-------LV KAQQD---SI GRNNP----S 
+             IL---D---- --TQKI-KEK K-------IE KINED---RR EFNID----T 
+             IL---D---- --TQQN-KEN K-------IN KINND---RV EYEVD----T 
+             EY---D---- --TQAN-KEK L-------IN NLNKK---RT NYEID----T 
+             DI---D---- LTEHIL-QQY A-------QN HRQQM---KQ VYEII----N 
+             -----N---- --NEHD-YLN K-------LN TFQDK---L- -YS-E----I 
+             DF---N---- --VQQN-KID R-------IE YLNKN---RH DFEVD----I 
+             TL---D---- --AQKI-KEQ K-------IN KLNDD---RQ EYDID----T 
+             -D---D---- --PHTD-VQE K-------IK NAQIL---TR KRENA----S 
+             AE---E--KR LIQLSD-LDE IRLEAYESSK IYKE----RT KLFHD----K 
+             AG---E--ER KLQLSE-LDE IRLEAYENAK FYKE----KT KKFHD----S 
+             AG---E--KR KVQLLE-LEE IHNAAYHSSC LYKE----KV KKYHD----K 
+             AG---E--KR LFDISS-LDE WRAQAYENAK LFKE----KV KRWHD----K 
+             SR---E--QR RLQLLE-LEE IKLTAYESSQ LYKE----KI KKYHD----K 
+             RI---W--KT -ARKAI-LRA T--------- --EQS---RR --SAN---RR 
+             AV---Q--QL -LLQQL-DQA K--------- --EDY---KR --HAD---KH 
+             VI---W--AA -TKSNL-EKS S--------- --LVH---KT --FAD---RR 
+             QT---W--RK -ARLKL-LKV S--------- --QQY---KH --QAN---RR 
+             QK---M--QA ISDYVR-SQM T--------- -SAQA---RY EEQSN---KT 
+             AR---M--EA ILEQAR-AEM T--------- -AAQA---RY EEQAN---RH 
+             RD---S--LE EARAAL-AKA K--------- --DD----MA RFY-N---QR 
+             KQ---I--KD IQANAR-REL E--------- -FVRK---RM THFSN---QR 
+             EV---H--KE A-RKAI-EDA Q--------- ---QR---LS QRRQD---ER 
+             SE---L--RQ LYKKLQ-QEL K--------- -FVRK---RI MKYAN---HR 
+             ED---M--QD LHEYLK-TEL E--------- -FVRK---RM KNYYD---PK 
+             TE---A--QA ITKKLE-SYV EAARTHLQ-- -MAQ----QR MCDQA---NK 
+             LG-DLD--DR IIQQNN-IFL IIQERIAA-- --AQQ---KQ ALQYN---KK 
+             HL---K--AL TIQTKE-QLE H--------- --AQI---EM -ETNN---NQ 
+             RD---N--IL D--------- ---------- --AQI---NA PKYYN---RG 
+             ET---I---Q VFQTVK-EHL N--------- -TNNI---KM KKYFD---MK 
+             ET---I---Q VFQTVK-EHL N--------- -TNNI---KM KKYFD---MK 
+             -R---K---T KFEDI--QKL ---------- -IEEE---KN KRMAK---FS 
+             -----D-RAH KF-VKL--SQ E--------- -AAD------ RDA-----LE 
+             VQ---ESGAR MCAALA--LL T--------- -AKQ----AV PLTPI---PV 
+             QE----L-LK VQKIAK-EHA M--------- -REQES-YK- SLFDQKYASK 
+             K----E-HLV EI-LRE-AWK N--------- -TAE----IA LKAQL-A-YQ 
+             K----E-HLI TT-LRL-ARK E--------- -AAE----RS LKEQE-A-RQ 
+             LT-------- --KG------ ---------- PVLLRR--FV RTKGD----- 
+             VTRL-K--Q- HMSELR-ATP T--------- --RRSTR-KE HISTD----L 
+             VNKI----QK IIKSFR-PVR E--------- --NQTSR-SI FVHPD----L 
+             TSRL-T--NA MRSVKP-AHT R--------- --SQST--DV FVQPE---LR 
+             AAK--M--RE VLEIVRRNLE R--------- -AAQD---QA RITI------ 
+             -----R--EE IHEKARENLK H--------- -HANL---RQ KNQ-----KG 
+             --------QQ MYLNGSSYK- ---------- -LAR----KL S-LAD----- 
+             HG------ND YKLLRK-LN- ---------- ---------- ---------- 
+             RD---RM-AK VWPIVR-DHL T--------- -RAQQ---AQ ARVYN---RG 
+             RQ---RI-ER VMPLVR-QHL T--------- -EAQH---AQ RRLYD---RP 
+             DE---E--Y- --CKET-LES IRLEAVENIT RYQQ----ET KNWRD----R 
+             SE---A--DY SVEKDA-LEG IRLQAVENIN KYQA----ET IKWRD----R 
+             QD---Q--FR RDDLDY-LEE QRRRAALRAA RYQQ----SL RRYHQ----R 
+             WI---R--TR FNELSL-IEE RRLAVVCHGQ LYQR----RM KRAFD----Q 
+             ---------- ---------- ---------- ---------- ---------- 
+             NN---R--ML LSNIDD-AEE FRDSALLRIQ NYQQ----AA ARHYN----T 
+             NS---A--ML HDSLDT-INE RRDQALIRIQ NYQH----AE ARYYN----S 
+             YE---E--DR VDDLHR-LEE VREAALIRSA RYLQ----GL RRYHN----R 
+             ES---K--YR LEV------- ----AYARAR KLLEAHKEKN KENYD-L--K 
+             EV---K--LR LEI------- ----AYRRAK NMLDKAKADR KIKYD-R--N 
+             E-------DR YEMRQ----- ----LVKRNI EQAQ--KDYK RNY-D-K--K 
+             A----T--VR ---------- ----A-HATE NMNSLASYD- KSRFD-S--S 
+             E-------RD LES------- ----IRNKGE ASQKIAQAYN KEYVD-K--K 
+             NQ---D---- TLDLTR-EEE L------SL- -LQEI----- RTSLY----H 
+             NS---D---- TLDLSR-EEE L------SL- -LQEI----- RSSLH----Q 
+             DL---S---- TLDLTR-EEQ L------AV- -LQEI----- RTALE----Q 
+             NL---D---- TLDLTR-EEQ L------AV- -LKEV---RD GLLDL----Y 
+             NK---D---- TLDWTR-EEE L------AL- -LQEI----- RESLQ----H 
+             KR---V---- RGHRFK-ENL G------T-- -EDKV----- K-SI------ 
+             -G-------- KL-------- ---------- ---------- ---------- 
+             QF-------- AM-------- ---------- ---------- ---------- 
+             PK-------- PM-------- ---------- ---------- ---------- 
+             QF-------- AM-------- ---------- ---------- ---------- 
+             QF-------- AM-------- ---------- ---------- ---------- 
+             -K-------- PL-------- ---------- ---------- ---------- 
+             QH-------- AT-------- ---------- ---------- ---------- 
+             EG-------- KL-------- ---------- ---------- ---------- 
+             QR-------- PL-------- ---------- ---------- ---------- 
+             HQ--R----- -LP-----IG P---A----- ---------- ---------- 
+             PT--V----- -LT-----EG P---P----- ---------- ---------- 
+             LR--P----- -IP-----ET P---RP---- SRA---PTNW ---------- 
+             LP--P----- -IS-----EA S---TP---- PKP---PPKW ---------- 
+             LQ--P----- -IP-----ET H---SL---- SNK---QTHW ---------- 
+             LA--V----- -IS-----EG G---ET---- PKG---SDKL ---------- 
+             EQ--E----- -IQ-----FL Q---AK---- NSK---LKDF ---------- 
+             DI--Q----- -TK-----EL Q---KQ---- ITK---IQNF ---------- 
+             VI--H----- -EK-----LL L---QQ---- AQS---SKKF ---------- 
+             EQ--E----- -IQ-----FQ Q---SK---- NSK---FKNF ---------- 
+             QL--E----- -IQ-----HI Q---TQ---- QQK---ISNF ---------- 
+             EL--E----- -YQ-----YQ Q---NQ---- ISK---NLNF ---------- 
+             QQ--R----- -IQ-----QQ S---KS---- KQE---KIRF ---------- 
+             QQ--R----- -IQ-----QQ S---TR---- NQS---KFRF ---------- 
+             QK--R----- -IN-----NK Y---NK---- NSQ---KIQF ---------- 
+             RI--Q----- -DY-----FS A---IP---- QKL---QAQW ---------- 
+             YQ--D----- -QL-----EQ Q---FS---- KQK---IEKW ---------- 
+             HL---K---- ALEV---VRT Q---IWDQ-- -IKE----AY RPGT------ 
+             SL---Q---- ALQA---TRS L---ARAA-- -LRD---QLP QKEAQ----- 
+             SG---K---- ITQT---I-- S---AW---- -VNE-----R CPVNL----- 
+             KI---K---- -DQF---LK- N----Y---- -ILG----PY ST-------- 
+             HL---K---- ALKV---IRT Q---IWDQ-- -LKT----AY TPGT------ 
+             RL---K---- ALEW---VRQ R---AWRQ-- -LRE----AY SGGGD----- 
+             HL---R---- ALQL---VQE E---IQRP-- -LAA----AY REKLE-T--- 
+             HL---Q---- ALQL---VQR E---IWKP-- -LAQ----AY KDQRDH---- 
+             RL---K---- GLQA---VQA Q---IWAP-- -LAE----LY RPGHS----- 
+             HL---Q---- ALQA---VQR E---VWKP-- -LAA----AY QDQLD-Q--- 
+             HL---K---- ALEI---VRT Q---IWDQ-- -IKE----VY KPGT------ 
+             KL-TRQL--S AYHQ---QVV D---Q----- -W-------P ST-------- 
+             SN---E---- -LSK---VHG Q---V----- -FSS----IP DPTS------ 
+             HD-KVC---A VINM---FSP Q---KS---- -W-------P TESE------ 
+             KL-TELS--A ALSI---Q-I Q--------- RVAEG---EL TDD------- 
+             NL---T---A IHKA---IYV Q---ET---- -RKG-----V REE------- 
+             RATHDC---M QNKK---WEE Q---LEKV-- TKAE----AH SHW---T--- 
+             EA--G----- -VL-----LP G---AT---- TNI---PLNW ---------- 
+
+             RREAQN---- ------FRVG ----DKVWLK -LDQQYSTGR ------SS-K 
+             RRPAER---- ------FRVG ----DEVFLN -LRN-IRTNR ------PC-R 
+             ---------- ---------- ---------- ---------- ---------- 
+             REINDS---- ------PFVG ----QVVLIC ---------- -----DP--N 
+             DVVKRT---- ------PHEG ----EIVLLN ---------- -----EP--E 
+             ---------- ---------- ---------- ---------- ---------- 
+             D---LK---- ------PEVG ----DVVIIN ---------- -----PN--N 
+             ----NA---- ------PNIG ----DIVLVS ---------- -----EN--N 
+             ---CNG---- ------IRVN ----DIVLIE ---------- -----ND--N 
+             TR--VI---- ------WSSS ----AILPWP ---------- -----DE--S 
+             ----RQ---- ------PQPG ----DIVIIA ---------- -----DA--S 
+             ----KP---- ------IQVG ----DVVVIA ---------- -----DP--D 
+             RGDVE----- ------FKVG ----DFVYLK -LRPYRQHSV -TR--RVC-Q 
+             RIKRS----- ------FDVG ----DWVFLR -LQPYKHMSL -KKA-KKD-N 
+             RSERV----- ------FQVG ----QRVFLK -LQPICQSSM -GS--RLN-T 
+             RSDRS----- ------FQIG ----DFVFVK -LQPHRQGSV -VM--RSN-Q 
+             RRPQE----- ------FKVG ----DLVLVK -LS--ASLQF -FR-NRVH-K 
+             RRFVE----- ------YQVG ----NKVMVK -I-P-MWYLF -AG--VHD-P 
+             RRSVE----- ------FSVG ----DKVLLK -LTPQIWKQI -VS-KTRH-R 
+             RHPLE----- ------FSVG ----NHIFLE -VSPRKGTSY -FV---FK-G 
+             RKSLE----- ------FQEG ----DHVFLR -VTPITGVGR -AL---KS-K 
+             RRELT----- ------FEAG ----DYVYLR -VTPLRGVHR -FQ---TK-G 
+             HKAVT----- ------SEVD ----EKAYLR -VTPLKGTHR -FG---IK-G 
+             RRELE----- ------FEVG ----DRVYLK -MAMLRGPNR -SI---SE-T 
+             RKELE----- ------FQVG ----DLVYLK -AMTYKGAGR -FT---SR-K 
+             KKWSS----- ---------- ---------- ---------- ---------- 
+             RKEIN----- ------FEPG ----DLVWLH -L---RKERF -PEL--RK-S 
+             RKEVI----- ------YKPG ----DLVWLH -L---RKERF -PSR--RK-N 
+             TQPAN----- ------YKVG ----DKVLLS -TE-HYNLQL ------PS-E 
+             ----KE---- ------LTMG ----QVVLIV ---------- -----DP--Q 
+             ---------- ------FLET ----LVGICF ---------- -----AF--A 
+             ----RN---- ------IREG ----DLVMIC ---------- -----SE--F 
+             ----RN---- ------VQVG ----DIVLVV ---------- -----DK--S 
+             ----RN---- ------VRVG ----DIAMLA ---------- -----DA--N 
+             ----RN---- ------VSEG ----DIVWVC ---------- -----DQ--N 
+             ----RN---- ------VADG ----DIVWLC ---------- -----DQ--N 
+             ----KQ---- ------LSVG ----DIVILK ---------- -----DE--Q 
+             ----RN---- ------LQAD ----DMVVVK ---------- -----ED--N 
+             ----RQ---- ------IRPD ----DLVVIR ---------- -----DQ--N 
+             ----PK---- ------LTKD ----LVVLIK ---------- -----ED--N 
+             ----PN---- ------IEEG ----QIVLLK ---------- -----DE--N 
+             ----EN---- ------LKID ----TLVVLK ---------- -----EP--N 
+             VQRQ------ ------LEPG ----TKVWYR ---------- -----DYR-G 
+             RARD------ ------FNVG ----DYAHAS ---------- -----DYR-P 
+             RSVERS---- ------FSEK ----DAVYLR ---------- -----NTT-G 
+             RAKERV---- ------FAEG ----DKVFVK ---------- -----NF--Y 
+             KAHLRK---- ------FDCG ----DQVMAK ---------- -----NF--G 
+             GMKLRQ---- ------FESG ----EQVMVK ---------- -----NH--R 
+             HAHDLSN--- ------LKPG ----DHVILQ ---------- -----DMK-- 
+             RAKT------ ------FELG ----QYVYVR ---------- -----VQK-G 
+             RAKA------ ------FQVN ----QKVYVQ ---------- -----VHH-G 
+             RAKH------ ------FQVG ----QQVYVK ---------- -----VQH-G 
+             RK-PIK---- ---T--YIKG ----QEIFVR ---------- ------VN-T 
+             RT-EVK---- ---A--YSSN ----DIIYVK ---------- ------IN-K 
+             RQ--NR---- ---V--FEVG ----EKVFQK ---------- ------NN-K 
+             RR--DR---- ---T--FEVG ----ETVMVK ---------- ------QN-N 
+             RD-EPK---- ---S--YGPG ----DEVFV- ---------- ------AN-K 
+             RQ--NR---- ---V--FEVG ----ERVFVK ---------- ------NN-K 
+             NY--RKG--- ---P--LQKG --KLENPF-K ---------- -----PTKNV 
+             RY--RKG--- ---P--LQKG --KLENPF-K ---------- -----PTKNV 
+             RY--KHS--- ---P--LVKS --KTTTPFKK ---------- -----TGE-L 
+             ET-SLAV--- ---E--YIPQ ----QQVFIK ---------- ----NPLA-S 
+             KEKLSTN--- ---T--QQRI --EKLNTSRV ---------- ----EPTT-V 
+             KY--RQA--- ---P--LVKS --KITNPFKK ---------- -----TGR-I 
+             KF--RKG--- ---P--LQKG --KLENPF-K ---------- ----ENKN-V 
+             RQ--NR---- ---V--FQVG ----DKVLVK ---------- ------SN-R 
+             KIITKD---- ------FQVG ----DQVLLF -----NSRLK -----LFP-G 
+             MIVKKD---- ------FMVG ----QKVLLY -----NSRLG -----LMS-G 
+             KLRKKE---- ------FVPG ----QLVLLF -----NSRLK -----LFP-G 
+             RIQKRE---- ------FNVG ----DYVLLY -----NSCLR -----FFA-G 
+             KLLKRD---- ------FQQG ----QQVLLF -----TSRLK -----LFP-G 
+             RRPAPA---- ------YRPG ----QKVWLL -ARD-LPLQ- -TS-QTSS-R 
+             RQPGPE---- ------IKVG ----DRVFLS -TRF-LPSHR ------PC-R 
+             RKPSPP---- ------YKVG ----EKVWLS -SRN-IRLKV ------PS-P 
+             RRPAPT---- ------LRPG ----QRVWLS -TRN-IPLRV ------DS-R 
+             RQPARQ---- ------YKAV ----SVCGWM -PAT-SVP-R ------PS-K 
+             RTPARR---- ------LTVG ----QYVWLD -ARN-IQTAR ------PQ-K 
+             HSPTPQ---- ------YKVG ----DRVYLD -SSD-ISTTR ------PS-K 
+             RIEGPT---- ------LREG ----DSAYLI -RRN-IKTKR ------PS-D 
+             K-MAPL---- ------LKEG ----DKVYLL -TKN-LKTRR ------QT-K 
+             -IKGPS---- ------FKKG ----NSVYLI -RRN-IKTQR ------PN-N 
+             RLKGPT---- ------FSEG ----DMVYLA -TKN-IKTDR ------PS-H 
+             HRREPD---- ------FGVG ----SAVYII -KKHWV-TDR ------PS-D 
+             HR-HAE---- ------FEVG ----DKVLVH QQAYWPGYHK -------G-L 
+             RRKPLL---- ------LNIG ----DHVLVH -RDAYFKKGA -------Y-M 
+             RGDVI----- ------FVVG ----EKVMVK RKFFQTNLSK ----DLIS-H 
+             IQEIEE---- ------FQPG ----DLVMVK -RTKTGFLHK -------S-N 
+             IQETEE---- ------FQPG ----DLVMVK -RTKTGFLHK -------S-N 
+             NPKFNA---- ------YNLG ----DLVLIK ----NFESKK ---------- 
+             R--------- ------GKSK IQ--PEEITA -GHSIMLKRE VSAEAKE--- 
+             ESDDNA---- ------LEPG T---H-VLL- -----KTMTP ----PGVS-A 
+             KHRF------ ------PQPG ----SRVLLE -I-PSEKLG- -----AQC-P 
+             KQANQ----- ------GAKG SE--IRPGDR --VMFKNFKS KINLSRK--- 
+             KVANV----- ------GAKG SK--IVVGDR --VFFQNHKS KANLSRK--- 
+             ---------- -------PLC ----DQVELL ---------- -----D---A 
+             SSTP------ ---------- -----FVFVR ----HDATRK ---------- 
+             HKCS------ ---------- -----FVFVR ----DDAVHK ---------- 
+             HST------- ---------- -----HVFVR ----RD-SHR ---------- 
+             ---------- --------CG ----GGSGSR -LLGTKCGRR -NA---TC-- 
+             E-VTV----- ------LEIE ----DWVLLK -NKVTSDTRT -HQ---FA-- 
+             ---------- ---------- ---------- ----HSISDL -DA----K-D 
+             -------L-- ------LTEG ----D-VKLS ---------- --R---TD-- 
+             ARVRN----- ------FRPG D---R-VLV- -LVPTSE--- ---------C 
+             AQARE----- ------FQPG D---Q-VLV- -LVPTAT--- ---------S 
+             KVVRKD---- ------IQNG ----D-LVLR -----KKGDH -----PNA-G 
+             KVRLKN---- ------IEPD ----TWCFRR -----VA-NP -----ETV-G 
+             HVRARS---- ------LCVD ----D-LVLR -----RVQTR -----ARL-S 
+             KVRPRS---- ------YQIG ----D-LVLK -----RILPP ---GTDNR-G 
+             ---THL---- ------FSVG ----L-VLLR -----RILTG -----EGR-H 
+             KVKPRS---- ------FTVG ----D-LVLR -----KVYEN T--AELNA-G 
+             KVKSRP---- ------FFVG ----D-YVLK -----RVFDN K--KEEGA-G 
+             NVRSRA---- ------FLVG ----D-LVLR -----KIQTT -----RDR-H 
+             VKDIE----- ------LEVG ----DKVLLR ------NE-- ------VG-H 
+             ISNFE----- ------LKIG ----DKILLK ------NE-- ------TG-H 
+             RRAEYK---- ------YKAG ----DLVAIK ----RTQF-- -----VAG-R 
+             RAAVDK---- ------HHVG ----DYVLLR ------NE-- ----ERHQ-T 
+             RKRSGV---- ------FTKG ----TTSWLK ---ILTQQ-- -----QAA-K 
+             PST-PPASSR SWSPVVGQLV ----QERVAR ---------- -----PAS-L 
+             PTS-PPASSR SWSPSVGQLV ----QERVAR ---------- -----PAS-L 
+             PA--QHPTLP KWTPCPGLLV ----QERVNR ---------- -----PAQ-L 
+             PSP-SQTTAR SWTPSPGLLV ----QERVAR ---------- -----PAQ-L 
+             PV--QPPTCS GWSPYVGQLV ----QERVYR ---------- -----PSQ-L 
+             PS---NTTVE --LEANG--- ---------- ---------- -----IWS-L 
+             ---------- ---------- ------IWWK ---------- ------DN-K 
+             ---------- ---------- ------VKWK ---------- ------DP-L 
+             ---------- ---------- ------VMWK ---------- ------DL-L 
+             ---------- ---------- ------VKWK ---------- ------DP-L 
+             ---------- ---------- ------VKWK ---------- ------DP-L 
+             ---------- ---------- ------VRWK ---------- ------DP-L 
+             ---------- ---------- ------VMWR ---------- ------DP-L 
+             ---------- ---------- ------IWWK ---------- ------DN-K 
+             ---------- ---------- ------VYYR ---------- ------CL-P 
+             ---------- ---------- ------VLVR ---------- ------DH-L 
+             ---------- ---------- ------VKIR ---------- ------IE-T 
+             ---------- ---------- ------YYYK --------LP ------GL-T 
+             ---------- ---------- ------FYYK --------LP ------GL-T 
+             ---------- ---------- ------YYFK --------LP ------GL-N 
+             ---------- ---------- ------FLYK --------LP ------GQ-N 
+             ---------- ---------- -----RVYFR ---------- ------EG-R 
+             ---------- ---------- -----RVYYR ---------- ------DS-R 
+             ---------- ---------- ------CFYK -----I---- ------PG-E 
+             ---------- ---------- -----RVYYR ---------- ------EG-R 
+             ---------- ---------- -----KVYYR ---------- ------EG-R 
+             ---------- ---------- -----KVYFR ---------- ------EG-R 
+             ---------- ---------- ------CYYR -----T--RK ------RG-H 
+             ---------- ---------- ------CYYR -----V--RK ------RG-H 
+             ---------- ---------- ------CYYR -----I--RK ------RG-H 
+             ---------- ---------- ------IYYK ---------- ------DQ-K 
+             ---------- ---------- ------CYVR ---------- -------N-R 
+             ---------- VAIPHPFQVG ----DRVLVR -----R--HR -S----GS-L 
+             ---------- QDRTPLFQPG ----DLVFVK -----K--HD -F----QQ-L 
+             ---------- FSPVHPFSPG ----DLVWIK -----D--N- -V----AC-L 
+             ---------- FSSLKT--KG ---------- ---------- ---------L 
+             ---------- TAVPHEFQVG ----DQVLVR -----R--HR -T----GS-L 
+             ---------- LQIPHRFQVG ----DSVYVR -----R--HR -A----GN-L 
+             ---------- PVVPHPFKPG ----DSVWVR -----R--HQ T-----KN-L 
+             ---------- PTIPHSYQIG ----DTVWVR -----R-SPR -P----RT-L 
+             ---------- -QTSHPFQVG ----DSVYVR -----R--HR -S----QG-L 
+             ---------- PVIPHPFRVG ----DAVWVR -----R--HQ -T----KN-L 
+             ---------- VTIPHPFQVG ----DQVLVR -----R--HR -P----SS-L 
+             ---------- SLPP-GPEPG ----SWCMLR -----N-PKK -------S-S 
+             ---------- VEGSHSLVPG ----DWVLVK -----KFLRK ------SS-L 
+             ---------- ASRP-AENTT ----LWVRLK -----Q-HKR ------KW-S 
+             ---------- QDQP-RVKVG ----DWVRIK -----V-HKR ------KW-A 
+             ---------- VETPGPVVPG ----DQVYLK -----V-FRR ------KW-N 
+             ---------- QRSP-NLEPG ----CIVLVR -----K-FTG ------DA-F 
+             ---------- ---------- KL--RLPPGH ----FGLLMP LN--QQAK-K 
+
+             KLDWK-N--A KYTVIRVVD- ----SHSV-- ---ELDTP 
+             KLDYI-Y--G KYRVVAVPT- ----PLTV-- ---TLDVP 
+             ---------- ---------- ---------- -------- 
+             LPRNNWK-MG KITETKPST- ----DGIL-- ---REAHL 
+             IPRGMWK-IA RIREIKTGK- ----DGEV-- ---RSVSI 
+             ---------- ---------- ---------- -------- 
+             VSRHRWP-LA LVVQVNQSK- ---RDGE--- -IRTAVVR 
+             VPRRNWK-LG KIVQLYPGQ- ----DGIV-- ---RTVKV 
+             CKRQLWK-LA RVEELLYSD- ----DGVV-- ---RVAKV 
+             GARASWR-RS TA-ELMES-- ----SDAL-- ---RCA-- 
+             LPRNTWP-RG EVIACHPGP- ----DGRT-- ---RVVDV 
+             HPRNSWP-MG RVVSTNTSK- ----DGQV-- ---RSAVV 
+             KLATKYY--G LFEVLERIG- ----KAAY-- ---RLKLQ 
+             KLSPKYY--G PYKVLQKIG- ----TMAY-- ---KLELP 
+             KLSFRYF--G SFLITKQVN- ----PVAY-- ---KLALP 
+             KLAPKYY--G PYKILDTCG- ----KVAY-- ---KLALP 
+             GLVRKYE--G PFPIISRVG- ----NVSY-- ---KLQLP 
+             RLLQKNI--G PLSIERHIG- ----KVAY-- ---RVDNP 
+             GLIPKYD--G PFEVVKRVG- ----EVAY-- ---RLKLP 
+             KLSPRYT--G PFEILEIIW- ----PVAY-- ---RLALP 
+             KLTPRFI--G PYQILERIG- ----EVAY-- ---RIALP 
+             KLAPRFV--G PYKILERRG- ----EVAY-- ---QLELP 
+             KLAPRYI--G PFRILAKRG- ----VVAY-- ---QLEHP 
+             KLSPRYM--G PFRIVERVG- ----PVAY-- ---RLELP 
+             KLSPRYV--G PYKVIERVG- ----AVAY-- ---KLDLP 
+             ---------- ---------- ---------- -------- 
+             KLLPRAD--G PFKVLEKIN- ----DNAY-- ---RLDLP 
+             KLMPRSD--G PFRVLEKIN- ----NNAY-- ---KIELP 
+             KLAPRWL--G PLEILEVRG- ----PNTV-- ---RIEVP 
+             LPRALWP-VG TVSETLPGA- ----DGKI-- ---RTVRV 
+             AXIQMDP-TR -----EEHK- ----GGXL-- ---NDMFV 
+             SEKNKWP-LG LVQRVLPSK- ----NGLV-- ---RQVEL 
+             VPRNSWL-MG VVETTFKDK- ----KGDV-- ---RSCRV 
+             AVRGKWT-IA RVVQVYPGV- ----DGTV-- ---RNVKV 
+             SLRGQYK-VV K---ANPDA- ----RGIV-- ---RDVDV 
+             ALRGNFK-AW EGYKCQPRL- QRHSTGCESQ SCDKLLYP 
+             LPAVQWP-LA RVVEIHPGA- ----DGIS-- ---RVATL 
+             LPPNEWR-LG RIVSAFPGA- ----DERI-- ---RVVEI 
+             LPPMRWK-MG RVEEVYPSP- ---NDGVV-- ---RVASV 
+             TPPMQWN-MG IITDVHPGA- ----DKII-- ---RVVTV 
+             CHPARWP-LG KVEKVHKGN- ----DDKV-- ---RVAKV 
+             LPPSKWI-LG RITAVHAGI- ----DNKV-- ---RVVTV 
+             L--DKWV--P GT-ILKQLG- ----SRDY-- ---CVRSS 
+             GR-PKWI--N GT-IVARRG- ----KMLY-- ---EVRVG 
+             KG-NKWV--P GV-IVKQTG- ----PVSY-- ---NVQGQ 
+             SG-PKWK--S GE-IVSKNS- ----PASY-- ---TVEGQ 
+             NG-PKWI--P GR-IIKQKG- ----PVNF-- ---E-ILT 
+             GGKERYV--L GV-IVKRLG- ----FYSY-- ---LVRIG 
+             T--NTWS--K RG-IIKSVL- --NRNRSY-- ---QVETE 
+             NV-WSWE--H GE-VIKRLG- ----EVLY-- ---EVQVG 
+             NK-SQWK--H GV-IRRKFG- ----GVLY-- ---EVQVG 
+             NK-SEWD--Y GV-VSRKIG- ----SVLY-- ---EVQVG 
+             R---LGS--K LSSRFRKELV ----KEDR-- ---STTIL 
+             R---IGN--K LTPRYKKEIV ----LEDN-- ---GNTVT 
+             R---LGN--K LTPLCSEQKV ----EADL-- ---GTSVL 
+             R---LGN--K LTPRYREELI ----EADL-- ---GTTVL 
+             Q-IKTKE--K ARFRCEKVQE -----DNK-- ---VTVKT 
+             R---LGN--K LTPLCTEQKV ----QADL-- ---GTSVL 
+             EQTDPDH-YK IT-NRNRV-- ----THYY-- ---KTQFK 
+             EQTDSDH-YK IT-NRNRI-- ----THYY-- ---KTQFK 
+             RQIDDKH-FE ET-NRGRKI- ----TH-Y-- ---KTKFK 
+             RQKVAPRYTQ DT-VLADLP- ----IH-I-- ---YTSKK 
+             QPNSTIF-RK EN-RRNKL-- ----TPRF-- ---SLHRT 
+             GQVDDKH-FE ET-NRGRKI- ----VH-Y-- ---KSKFK 
+             EQTDPDH-YK IT-NRNRT-- ----TNYY-- ---KTQFK 
+             R---LGN--K LTPLCEEKTI ----EADL-- ---GTTVL 
+             KLKSRWS--G PFCITEVRP- ----YGAV-- ---TLAGK 
+             KLRSKWI--G PFVVTNVFP- ----YGTV-- ---EIKSD 
+             KLKSKWS--G PFRVKEVNE- ----YGAI-- ---VIEDM 
+             KLLSKWE--G LYVVEEVYR- ----SGAI-- ---KINNT 
+             KLKSKWS--R PFTIKKVRT- ----YGAV-- ---ELCDP 
+             KLNPRDI--G PYTICSIIN- ----PSAV-- ---HLDLP 
+             KLDARFI--G PYPVVAQLN- ----PVTF-- ---KLQLP 
+             KLGPKFL--G PFSISEVIN- ----PVAV-- ---RLQLP 
+             KLSQKFI--G PFKIARKVN- ----PVTY-- ---KLYLP 
+             KLIGS-L--G PFTIKGIIN- ----AHTY-- ---ELDLP 
+             KLDWKNL--G PFRISEVIS- ----PYAY-- ---RLDLP 
+             KLAHRFL--G PFPIVKCVG- ----THAY-- ---RLRLP 
+             KLDYKKL--G PFKILKQIS- ----PVNF-- ---KLDLP 
+             KLDHVKV--G PFFIDKVVG- ----PVNY-- ---RLRLP 
+             KFDFKKL--G PFKISKKIS- ----DTNY-- ---RLSLP 
+             KLDYKFI--G PYKVLQKIS- ----ENNY-- ---KLDLP 
+             KLDYPLT--R CSYVIKEKR- ----GHSY-- ---RLELP 
+             KLHHIWY--G PFPV-TAA-- ----DGAN-- L--TLDLP 
+             KVQQIYV--G PFRVVKKIN- ----DNAY-- ---ELDLN 
+             KLESKNC--G PFII-TAVH- ----GNNV-- ---TLDLV 
+             KLAPSFA--G PFYVLQKSG- ----PNNY-- ---ELDLP 
+             KLAPSFA--G PFYVLQKSG- ----PNNY-- ---ELDLP 
+             ---PAFL--G PFKITSKST- ----AGTW-- --YTVESD 
+             GRN-KWV--G PYKVLASD-- ----GLIL-- ---QIDVD 
+             KLYSPWK--G GYVVRKRCD- ----HFTY-- ----LITP 
+             KLVNKWS--G PYRVISCSE- ----NSAE-- --ITPVLG 
+             LVKP-WI--G DYRVLEVNH- ----PKAL-- ---ILDLD 
+             MVLP-WI--G EFEVISIDH- ----PKAV-- ---IKDLE 
+             N--PTYA--N ---IRHPDG- ---------- -------- 
+             PLQPCYD--G PFKVIERH-- ----SKYF-- --VLERSG 
+             SLKPPYD--G PFRVIERG-- ----PKVF-- --LVQLFD 
+             PLESAYE--G PFKVLQRE-- ----PKYY-- --VVDKNG 
+             -PMPRTDLQR SW-HRDTEG- ----HIRW-- ---SSLYR 
+             KFMPLYS--G PYKIIAKPH- ----PNTY-- ---QIADP 
+             RLAVIR---- SQ--VKDHL- ----HTAY-- ---ERSRQ 
+             -EFQRI---R SN--IARHL- ----NKAY-- ---ETNQK 
+             KFLAKWQ--G PYEVVEAVG- ----PVNY-- ---KVRQP 
+             KFLASWK--G PYVVVEKVG- ----PANY-- ---RVRQP 
+             KLQPKWE--G PYTAIQAGR- ----SGSF-- ---YLKDL 
+             KLQLKWD--G PFLVASSSR- ----PGSY-- ---RLKDM 
+             KLSPMWE--G PYRVIGVPR- ----PGSV-- ---RLATG 
+             KWTPNYE--G PYVVKKVFS- ----GGAL-- ---MLTTM 
+             KLSPLWE--G PFMVAEVTR- ----PGSY-- ---RLTQM 
+             KLGAKWE--G PYLVSKVVR- ----SGVY-- ---ELLTM 
+             KLGINWE--G PYIVIEVVW- ----NGVY-- ---KLKDL 
+             KLSPLWE--G PFIISEVTR- ----PGSY-- ---RLKRE 
+             KLDFKYT--G PYKIESIGD- ----NNNI-- ---TLLTN 
+             KLDNNYL--G PYLVSEIGD- ----NDNI-- ---TIIGN 
+             KMASGYL--G PYEVTGVKD- ----NGRY-- ---DVKKA 
+             KLDPKFR--G PFLVTEVLE- ----GDRY-- ---TLKSL 
+             KLIPKHK--G PYVISKVLK- ----NDRF-- ----LLED 
+             R--PRWH--K PS-TVLK--- ----VLNP-- ---RTVVI 
+             R--PRWH--K PT-AILE--- ----VVNP-- ---RTVII 
+             R--PKWK--K PT-PILK--- ----VLNP-- ---KTVVI 
+             R--PKWR--K PT-PIKK--- ----VLNE-- ---RTVII 
+             R--PKWR--K PT-KVLE--- ----ILNP-- ---RTVII 
+             R--DIIK--K PE-------- ---------- -------- 
+             N--KTWE--I G-KVI-TWG- ----RGFA-- ---CVSP- 
+             D--NTWH--G PDPVL-IWG- ----RGSV-- ---CVYS- 
+             T--GSWK--G PDVLI-TAG- ----RGYA-- ---CVFP- 
+             D--NSWH--G PDPVL-IWG- ----RGSV-- ---CIFS- 
+             D--NTWP--W PDPVI-IWG- ----RGSV-- ---CVYS- 
+             T--NLWY--G PDPVL-IWG- ----RGHV-- ---CVFP- 
+             T--SVWK--G PDPVL-IWG- ----RGSA-- ---CIYD- 
+             N--KTWE--I G-KVI-TWG- ----RGFA-- ---CVSP- 
+             D--PAWR--G PAQLI-TWG- ----RGYA-- ---AIQL- 
+             G---AWQ--G GWHLM-TVG- ----RGYA-- ---VG--- 
+             G---EWE--K GWNVL-VWG- ----RGYA-- ---AVKN- 
+             N--QRWK--G PLQSL-QEA- ----AGAA-- ---LLSI- 
+             N--QRWK--G PLQSL-QEA- ----AGAA-- ---LLSI- 
+             S--RQWK--G PQEAL-QEA- ----AGAA-- ---LIPV- 
+             N--RRWL--G PLPAL-VEA- ----SGGA-- ---LLAT- 
+             D--QLWK--G PGELL-WKG- ----EGAV-- ---LVKV- 
+             D--PIWK--G PAKLL-WKG- ----EGAV-- ---VIQD- 
+             H--D-WK--G PTRVL-WKG- ----DGAV-- ---VVND- 
+             D--QLWK--G PGELL-WKG- ----EGAV-- ---ILKV- 
+             E--PVWK--G PATLL-WKG- ----EGAV-- ---VIKE- 
+             D--QLWK--G PGILL-WKG- ----EGAV-- ---VLKY- 
+             P--GEWQ--G PTQVL-WGG- ----DGAI-- ---VVKD- 
+             P--GEWL--G PTQVL-WEG- ----EGAI-- ---VIKD- 
+             Q--ESGK--D QPRYC-GKG- ----KEPI-- ---VVKD- 
+             D--KKWK--G PMRVE-YWG- ----QGSV-- ---LLKD- 
+             R--KEWK--G PYKVL-WDG- ----DGAA-- ---VIEE- 
+             E--PRWK--G PYLVL-LTT- ----PTAV-- ---KVDG- 
+             G--PRWD--G PYTVV-LST- ----PTAV-- ---KVAG- 
+             C--PRWK--G PQTVI-LST- ----PTAV-- ---KVEG- 
+             ---LAQA--P PLEFP-AHR- ----QPGD-- ---HVLI- 
+             E--PRWK--G PYLVL-LTT- ----PTAV-- ---KVDG- 
+             E--TRWK--G PYLVL-LTT- ----PTAV-- ---KVEG- 
+             E--PRWK--G PHIVL-LTT- ----PTAL-- ---KVDG- 
+             N--PTGR--D PTSFC-LPL- ----PPHS-- ---K-DG- 
+             E--PRWK--G PYIVL-LTT- ----PTAI-- ---KVDG- 
+             E--PRWK--G PYTVL-LTT- ----PTAL-- ---KVDG- 
+             E--PRWK--G PYLVL-LTT- ----PTAV-- ---KVDG- 
+             N----WE--G PFLIL-LST- ----PTAV-- ---KVEG- 
+             E--PRFD--G PFQVL-LTT- ---ATSV--- ---KLDG- 
+             S--PRWS--E PLRVTARTS- ----HCV--- ---QLAG- 
+             D--PRWT--G PYEVKEVTS- ----HSV--- ---QVKG- 
+             E--ARRE--G PYRVIRATP- ----TAV--- ---QVEG- 
+             S--PKWE--G PYVIT-ETT- ----KYAA-- ---KVQA- 
+             G--ITVL--G GVIDPDYHG- ----EIGL-- ---SLHN- 

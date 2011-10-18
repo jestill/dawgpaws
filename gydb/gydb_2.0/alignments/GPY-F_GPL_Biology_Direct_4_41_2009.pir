@@ -1,0 +1,15 @@
+>P1;STcLV2PP1664
+WKGPL
+*
+>P1;HTLV-2
+WKGPL
+*
+>P1;BLV
+WLGPL
+*
+>P1;G-Rhodo
+WLGPL
+*
+>P1;Tntom1
+NIGPL
+*

@@ -1,0 +1,15 @@
+>P1;CoDi3.1
+IPVV
+*
+>P1;CoDi2.4
+LDIV
+*
+>P1;CoDi4.1
+IPIG
+*
+>P1;CoDi4.3
+VPIV
+*
+>P1;CoDi7.1
+LPLV
+*

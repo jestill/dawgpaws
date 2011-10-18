@@ -1,0 +1,12 @@
+>P1;Tse1
+NAAG
+*
+>P1;Ty1B
+NAIG
+*
+>P1;pCal
+DCIG
+*
+>P1;Ty2
+NAIG
+*

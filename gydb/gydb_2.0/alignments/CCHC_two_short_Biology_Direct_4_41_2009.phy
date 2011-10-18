@@ -1,0 +1,102 @@
+   50    60
+HIV-2        CWNCGKEGHS ARQCRA---- ---------- -----PRRQ- G----CWKCG 
+HIV-1        CFNCGREGHL ARNCRA---- ---------- -----PRKK- G----CWKCG 
+EIAV         CYNCGKPGHL SSQC------ ---------- ------RA-- P--KVCFKCK 
+SIVMAC       CWNCGKEGHS ARQCRA---- ---------- -----PRRQ- G----CWKCG 
+SIVAGM       CFKCGQIGHI QKDC------ ---------- ------PRA- G-PNKCLKCG 
+SIVMND       CFNCNKEGHV ARFFKA---- ---------- -----PRRK- G----CWNCG 
+VMV          CYNCGKPGHL ARQC------ ---------- ------RQ-- G--IICHHCG 
+SA-OMVV      CYYCGKPGHL ARQC------ ---------- ------RQ-- G--IICHHCG 
+CAEV         CYNCGKPGHQ ARQC------ ---------- ------RQ-- G--IICHNCG 
+FIV          CFNCKKPGHL ARQC------ ---------- ------RD-- V--KKCNKCG 
+BIV          CYGCGKTGHL KRNC------ ---------- ------KQQ- ----KCYHCG 
+HERV-K10     CYNCGQIGHL KKNCPVLNKQ ------NI-T IQATTTGRE- PP-DLCPRCK 
+MPMV         CFKCGKKGHF AKNCHEHAH- ---------- -NNAEPKVP- G---LCPRCK 
+MMTV         CFSCGKTGHI RKDCKD---- ---------- -EKGSKRAP- PG--LCPRCK 
+SERV         CFRCGKRGHF AKDCHENQN- ---------- -KNPEAKIP- G---LCPRCK 
+SRV-1        CFKCGRKGHF AKNCHEHIH- ---------- -NNSETKAP- G---LCPRCK 
+JSRV         CFVCGQPGHR AAVCPQK--- ---------- --HQTSVNT- P--NLCPRCK 
+LPDV         CFKCGAVGHM RRDCPSL--- ---------- -----NKRD- GG-ARCWSCG 
+RSV          CYTCGSPGHY QAQCPKKR-- ---------- -KSGNSRER- -----CQLCD 
+STcLV2PP16   CFRCGKTGHW SRDC------ ---------- ---TLPRPP- PG--PCPLCK 
+HTLV-2       CFRCGKIGHW SRDC------ ---------- ---TQPRPP- PG--PCPLCQ 
+HTLV-1       CFRCGKAGHW SRDC------ ---------- ---TQPRPP- PG--PCPLCQ 
+BLV          CYRCLKEGHW ARDCP----- ---------- --TKTTGPP- PG--PCPIC- 
+Mag          CSRCGDRRHQ AKDC------ ---------- -----IYKD- ---YVCSSCH 
+SURL         CSRCGN-RHS KDKC------ ---------- -----PAQG- ---KTCKKCG 
+Gulliver     CRRCGD-YHI YRVC------ ---------- -----RFKK- ---NDYFKCN 
+Cigr-1       CIFCGGFAHS RTNC------ ---------- -----PARN- ---EDCFKCG 
+Micropia     CHFCSKPGRR IAECRSKMRQ ------D--- -RRAKPQREK SNVT-CYRCG 
+Blastopia    CFNCGSREHK RKDC------ ---------- ------TL-- PTK--CFSCN 
+Mdg3         CANCNSRGHK ADICKK---- ---------- -----PKRE- PGS--CYACG 
+Circe        CWNCDESGHG YQNC------ ---------- --------LK TRRIICYGCG 
+Osvaldo      CRVCGQEGHR AVRC------ ---------- --------RN RALDFCWQCG 
+Peabody      CFPCGKLVHA IADC------ ---------- ---------K HKEMICFNCG 
+CFG1         CFRCGG-KHK PQNC------ ---------- ---------K FKDSECFYCR 
+DRM          CYRCHGKNHS AQVC------ ---------- ---------H FKDARCHNCG 
+Gmr1         CYHCGQRGHL VRDC------ ---------- ----PDRQDV PMPSACTAPR 
+Hydra2-1     CFRCG-GKHN PETC------ ---------- ---------F FKDQECFFCH 
+SPM          CYRCL-GFHQ PATC------ ---------- ---------P HRQTTCYSCG 
+Tor4a        CINCGTQGHY KAIC------ ---------- ---------- PKIQ-CYECK 
+PyERV        CFNCGKPGHF KSQCR--APG ------GG-P HRSSSQQAVK PKTV-CPKCK 
+K-HERV       KYNCGQIGHL KKNCPVLNKQ ------NI-T IQATTTTGRE PADL-CPRCK 
+XEN1         CHYCKKPGHV IKDC------ ---------- -------KTR PKK--CFNCD 
+Poco         YQHCKKTNHL QKYCWWRP-- ---------- ---------D IK---CRKCN 
+CoDi6.3      CSNCGEYGHK SGDCSERDKP SSGTGNKT-E ------NRFN GE---CHYCH 
+Hydra1-1     CYTCGTIGHK SSECQAKT-- ---------- ------KPKI W----CNYCR 
+Hydra1-2     CYNCQQKGHK MRTCPALN-- ---------- ------CKRQ W----CNYCK 
+CoDi6.5      CNYCGKPGHK AIDCFKRKKE QGENGGNG-N GSAKN-NGKN KSEVTCFRCK 
+CoDi6.2      CNKCGTYGHK AATCPSVKND GGDPGTSA-L DDAKPKASTY LRGKKCFLCG 
+CoDi6.4      CGHCGKAGHS QDKCWSKPEN KHLRP----- --NGKQGGKN KKDIQCFNCG 
+Oryco1-1     CDICQKSSHT TDMCWKK--- ---------- ---------- MT---CNKCK 
+
+             K-PGHIMTNC 
+             K-EGHQMKDC 
+             Q-PGHFSKQC 
+             K-MDHVMAKC 
+             K-PGHLAKDC 
+             A-MDHQKAQC 
+             K-RGHMQKDC 
+             K-RGHMQKDC 
+             K-RGHMQKEC 
+             K-PGHLAAKC 
+             K-PGHQARNC 
+             K-GKHWASQC 
+             R-GKHWANEC 
+             K-GYHWKSEC 
+             R-GRHWANEC 
+             R-GKHWANEC 
+             K-GKHWARDC 
+             G-AGHLARDC 
+             G-MGHNAKQC 
+             D-PSHWKRDC 
+             E-PSHWKRDC 
+             D-PTHWKRDC 
+             ------KRSF 
+             E-TGHLRRMC 
+             K-QNHFAKCC 
+             E-KGHIQK-C 
+             R-RGHFSRAC 
+             Q-PGHFSNQC 
+             Q-EGHISSKC 
+             Q-LGHLVAQC 
+             T-PEVYKPNC 
+             RIGVRTVACC 
+             E-EGHIGSQC 
+             K-KGHIIEKC 
+             K-IGHIKRAC 
+             DRPTCMLATC 
+             N-KGHTTKKC 
+             K-VGHLKRAC 
+             N-FGHIGRNC 
+             K-GFHWANQC 
+             K-GKHWSQCC 
+             R-TGHVSKDC 
+             Q-LGHMEKIC 
+             K-KGHKKEDC 
+             S-NTHKDSSC 
+             S-STHKDENC 
+             K-KGHKSYEC 
+             K-YGHLKSDC 
+             K-KGHYKSDC 
+             R-KGHIAKYC 

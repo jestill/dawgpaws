@@ -1,0 +1,1806 @@
+GDC ******** GeneDoc Multiple Sequence Alignment Editor ********
+GDC 04000022e90190000cffffffffffff000000000000000000808080c0c0c0
+GDC ffffff000000000000f43f000000000000f43f000000000000f03f000000
+GDC 000000f03f00A000300000190000cA54696d6573204e657720526f6d616e
+GDC 00A00320002000000000000000000000401444e45510002535400034b524
+GDC 800044c49564d46595747504100284273435642562c0d0a536342494d562
+GDC c0d0a436f6d594d562c0d0a4442562c0d0a43594d562c0d0a42534f4c562
+GDC c0d0a546142562c0d0a435353562c0d0a4353564d562c0d0a4b5453562c0
+GDC d0a525442562c0d0a42534746562c0d0a42535641562c0d0a42534d79562
+GDC c0d0a434c4e562c0d0a44724d562c0d0a43614d562c0d0a455643562c0d0
+GDC a4c4c4441562c0d0a434552562c0d0a464d562c0d0a4d694d562c0d0a535
+GDC 642562c0d0a52754644562c0d0a5362434d562c0d0a504353562c0d0a425
+GDC 252562c0d0a436d594c43562c0d0a505643562c0d0a545643562c0d0a4f5
+GDC 24637504353562c0d0a4f5246375362434d562c0d0a437465724d4f56435
+GDC 3564d562c0d0a4f524637425252562c0d0a484d532d426561676c652c0d0
+GDC a596f796f2c0d0a47797073797669722c0d0a427572646f636b2c0d0a4e6
+GDC f6d61642c0d0a47797073792c0d0a3239372c0d0a31372e362c0d0a54763
+GDC 12c0d0a5465642c0d0a5a616d2c0d0a4964656669782c0d0a546f6d2c0d0
+GDC a537072696e6765722c0d0a3431322c0d0a4d6467312c0d0a426c6173746
+GDC f7069612c0d0a4d6963726f7069612c0d0a4d6467332c0d0a4d61672c0d0
+GDC a47756c6c697665722c0d0a44524d2c0d0a434647312c0d0a48796472613
+GDC 22d312c0d0a53504d2c0d0a5355524c2c0d0a436572342c0d0a436572352
+GDC c0d0a436572362c0d0a417468696c61342d312c0d0a44696173706f72612
+GDC c0d0a4379636c6f70732d322c0d0a426167792d322c0d0a43616c7970736
+GDC f2c0d0a476c6f696e2c0d0a496667372c0d0a5265696e612c0d0a47696d6
+GDC c692c0d0a4d6f6e6b65792c0d0a546e746f6d312c0d0a47616c616472696
+GDC 56c2c0d0a44656c2c0d0a506561626f64792c0d0a526574726f7361742d3
+GDC 22c0d0a426167792d312c0d0a546d612c0d0a4c65676f6c61732c0d0a436
+GDC 5726562612c0d0a43524d2c0d0a426565746c65312c0d0a52454d312c0d0
+GDC a472d52686f646f2c0d0a53757368692d696368692c0d0a416d6e2d69636
+GDC 8692c0d0a416d6e2d73616e2c0d0a416d6e2d6e692c0d0a44616e652d312
+GDC c0d0a4d616767792c0d0a6d617259312c0d0a43677265742c0d0a4366742
+GDC d312c0d0a50797265742c0d0a536b697070792c0d0a5265616c2c0d0a4d4
+GDC 74c52332c0d0a4772617373686f707065722c0d0a50796767792c0d0a547
+GDC 365332c0d0a5479332d312c0d0a536b69707065722c0d0a5446322c0d0a5
+GDC 446312c0d0a546f7234612c0d0a546f72322c0d0a546f72312c0d0a43657
+GDC 2312c0d0a436572322c0d0a436572332c0d0a436967722d312c0d0a43735
+GDC 24e312c0d0a4b6162756b692c0d0a426f7564696363612c0d0a4f7376616
+GDC c646f2c0d0a576f6f742c0d0a556c79737365732c0d0a43697263652c0d0
+GDC a476d72312c0d0a72476d72312c0d0a526574726f536f72312c0d0a43696
+GDC e66756c2d312c0d0a42313134374130342e352c0d0a4f6772652c0d0a477
+GDC 2616e6465312d342c0d0a546174342d312c0d0a546674322c0d0a5249524
+GDC 5322c0d0a4846562c0d0a5346562d312c0d0a4546562c0d0a4246562c0d0
+GDC a4646562c0d0a447246562d312c0d0a484552562d4b31302c0d0a4d504d5
+GDC 62c0d0a4d4d54562c0d0a534552562c0d0a5352562d312c0d0a4a5352562
+GDC c0d0a534d52562d482c0d0a4b2d484552562c0d0a50794552562c0d0a4c5
+GDC 044562c0d0a5253562c0d0a5354634c56325050313636342c0d0a48544c5
+GDC 62d322c0d0a48544c562d312c0d0a424c562c0d0a4849562d322c0d0a484
+GDC 9562d312c0d0a454941562c0d0a5349564d41432c0d0a53495641474d2c0
+GDC d0a5349564d4e442c0d0a564d562c0d0a53412d4f4d56562c0d0a4341455
+GDC 62c0d0a4649562c0d0a4249562c0d0a4b6f52562c0d0a5245562c0d0a484
+GDC 552562d452c0d0a5254564c2d49612c0d0a4d6445562c0d0a504552562d4
+GDC d534c2c0d0a46654c562c0d0a5243484f2d4b312c0d0a424145564d2c0d0
+GDC a4d754c562c0d0a47414c562c0d0a576453562c0d0a58454e312c0d0a5a4
+GDC 64552562c0d0a4153534253562c0d0a5a464552562d322c0d0a536e52562
+GDC c0d0a4d754552562d4c2c0d0a526574726f6669742c0d0a4b6f616c612c0
+GDC d0a486f7073636f7463682c0d0a4d656c6d6f74682c0d0a56697469636f3
+GDC 12d322c0d0a4f7279636f312d312c0d0a506f636f2c0d0a56697469636f3
+GDC 12d312c0d0a417261636f2c0d0a4f7279636f312d322c0d0a456e646f766
+GDC 972312d312c0d0a53495245312d342c0d0a4f7069652d322c0d0a5453492
+GDC d392c0d0a546f52544c312c0d0a466f7572662c0d0a4261746174612c0d0
+GDC a53746f2d342c0d0a546f726b342c0d0a54746f312c0d0a52547672322c0
+GDC d0a546e742d312c0d0a5631322c0d0a48756d6e756d2c0d0a4d74616e676
+GDC 12c0d0a436f7069612c0d0a4b6f636f2c0d0a596f6b6f7a756e612c0d0a5
+GDC 47269636f7069612c0d0a4879647261312d322c0d0a4879647261312d312
+GDC c0d0a313733312c0d0a58616e74686961732c0d0a70437265746f362c0d0
+GDC a70437265746f332c0d0a507952453147312c0d0a4f737365722c0d0a547
+GDC 365312c0d0a547931422c0d0a546b6d312c0d0a7043616c2c0d0a5479322
+GDC c0d0a546468322c0d0a5479342c0d0a5a65636f312c0d0a47616c4561312
+GDC c0d0a4369636f312c0d0a5a65636f322c0d0a4f6c636f312c0d0a436f446
+GDC 9342e342c0d0a436f4469332e312c0d0a436f4469322e342c0d0a436f446
+GDC 9342e312c0d0a436f4469342e352c0d0a436f4469342e332c0d0a436f446
+GDC 9372e312c0d0a436f4469352e322c0d0a436f4469352e332c0d0a436f446
+GDC 9352e312c0d0a436f4469352e342c0d0a436f4469352e352c0d0a436f446
+GDC 9352e362c0d0a436f4469362e312c0d0a436f4469362e372c0d0a436f446
+GDC 9362e362c0d0a436f4469362e342c0d0a436f4469362e332c0d0a436f446
+GDC 9362e322c0d0a436f4469362e352c0d0a436572372c0d0a4d6162656c2c0
+GDC d0a5461732c0d0a43657231302d312c0d0a537069726f62656c2c0d0a487
+GDC 9647261332d312c0d0a50616f2c0d0a4e696e6a612c0d0a54616d792c0d0
+GDC a437562656c2c0d0a5a6562656c2c0d0a53696e6261642c0d0a536163692
+GDC d362c0d0a4b6f62656c2c0d0a50757262656c2c0d0a53757a752c0d0a476
+GDC 162656c2c0d0a4d6f6f73652c0d0a4d61782c0d0a54726962656c2c0d0a4
+GDC e6162656c2c0d0a526f6f2c0d0a42656c293b0d0a00BBAABAAA0000002a0
+GDC 00a00020001B20AAA000a203a2000203a200000000000000059400000000
+GDC 000000000000c5058000000ffff000047580000ff00ff000041475358000
+GDC 000ffffff0056434147444e535450580000ff00ffff00484b525800ff000
+GDC 00000ff4544580000ff000000ff484b5245445800ffffff0000ff4852455
+GDC 1444e425a5800ff000000ff005957484b524551444e5354425a580000000
+GDC 000ff00494c56415800ff00008080804659574858000000ff808080494c5
+GDC 64341474d4659574854505800ffffff0000000c505800000000000000475
+GDC 800000000000000414347535800000000000000564147444e53545058000
+GDC 00000000000484b52580000000000000045445800000000000000484b524
+GDC 544580000000000000048524551444e425a5800000000000000435957484
+GDC b524551444e5354425a5800000000000000494c564158000000000000004
+GDC 65957485800000000000000494c564341474d46595748545058000000000
+GDC 000000300ffffff00000000ffffff80808000000000c0c0c00000ABBBBBB
+GDC BBBBBBBB00ff00A011000010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001000100010001000100010001000100010
+GDC 001000100010001000100010001A0018AA000000000000000000000003A0
+GDC 0ff00A000000000080564000000000008051400000000000004940000002
+GDC 0000000000001440A0000000098b20c41000000001025064100000000189
+GDC 806410000000078b10b4100AAABB00005374616e646172640046464c4c53
+GDC 53535359592a2a43432a574c4c4c4c505050504848515152525252494949
+GDC 4d545454544e4e4b4b535352525656565641414141444445454747474700
+GDC 2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d2d4d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d
+GDC 2d2d2d2d00BBBBB000000000000011000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 0000000000000000000000000000000000000000003000000000000BBAB0
+GDC 110000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000000000000000000000000000000000000000000000000000000000
+GDC 000000005000001b7B000000000000594000000000000054400000000000
+GDC 004e4000DAAB000000ffffff0302014445484b524e5153540000ff00ff00
+GDC 00024c49564d4659574147435000ff000000ff0004014445484b520000ff
+GDC 00ff0000024e5153540000ff00ff8000034c49564d46595700ff000000ff
+GDC 0004414700ff0000008000080144450000ff00ff000002484b5200ffffff
+GDC ff0000034e510000ff00ff800004535400ffffffff8000054c495600ff00
+GDC 0000ff000646595700ffffff00ff0007414700ff0000008000084d4300ff
+GDC ffff0080000000000000Affffff80808000A
+ AP_retroelements_2a.msf  MSF: 227  Type: P  June 10, 2010  12:48  Check: 3947 ..
+
+ Name: BsCVBV           Len:   227  Check: 1767  Weight:   1.00
+ Name: ScBIMV           Len:   227  Check: 6009  Weight:   1.00
+ Name: ComYMV           Len:   227  Check: 5510  Weight:   1.00
+ Name: DBV              Len:   227  Check: 9075  Weight:   1.00
+ Name: CYMV             Len:   227  Check: 8847  Weight:   1.00
+ Name: BSOLV            Len:   227  Check: 1093  Weight:   1.00
+ Name: TaBV             Len:   227  Check: 9207  Weight:   1.00
+ Name: CSSV             Len:   227  Check: 5452  Weight:   1.00
+ Name: CSVMV            Len:   227  Check: 5710  Weight:   1.00
+ Name: KTSV             Len:   227  Check: 4105  Weight:   1.00
+ Name: RTBV             Len:   227  Check: 4234  Weight:   1.00
+ Name: BSGFV            Len:   227  Check: 4582  Weight:   1.00
+ Name: BSVAV            Len:   227  Check: 3624  Weight:   1.00
+ Name: BSMyV            Len:   227  Check: 5207  Weight:   1.00
+ Name: CLNV             Len:   227  Check: 3919  Weight:   1.00
+ Name: DrMV             Len:   227  Check: 8156  Weight:   1.00
+ Name: CaMV             Len:   227  Check: 5831  Weight:   1.00
+ Name: EVCV             Len:   227  Check: 9818  Weight:   1.00
+ Name: LLDAV            Len:   227  Check: 5934  Weight:   1.00
+ Name: CERV             Len:   227  Check: 8766  Weight:   1.00
+ Name: FMV              Len:   227  Check: 8702  Weight:   1.00
+ Name: MiMV             Len:   227  Check: 7495  Weight:   1.00
+ Name: SVBV             Len:   227  Check: 8587  Weight:   1.00
+ Name: RuFDV            Len:   227  Check: 3190  Weight:   1.00
+ Name: SbCMV            Len:   227  Check: 4212  Weight:   1.00
+ Name: PCSV             Len:   227  Check: 8645  Weight:   1.00
+ Name: BRRV             Len:   227  Check: 9564  Weight:   1.00
+ Name: CmYLCV           Len:   227  Check: 6446  Weight:   1.00
+ Name: PVCV             Len:   227  Check: 5901  Weight:   1.00
+ Name: TVCV             Len:   227  Check: 268   Weight:   1.00
+ Name: ORF7PCSV         Len:   227  Check: 7550  Weight:   1.00
+ Name: ORF7SbCMV        Len:   227  Check: 3257  Weight:   1.00
+ Name: CterMOVCSVMV     Len:   227  Check: 2456  Weight:   1.00
+ Name: ORF7BRRV         Len:   227  Check: 2084  Weight:   1.00
+ Name: Cer7             Len:   227  Check: 9291  Weight:   1.00
+ Name: Mabel            Len:   227  Check: 6555  Weight:   1.00
+ Name: Tas              Len:   227  Check: 9042  Weight:   1.00
+ Name: Cer10-1          Len:   227  Check: 1888  Weight:   1.00
+ Name: Spirobel         Len:   227  Check: 9207  Weight:   1.00
+ Name: Hydra3-1         Len:   227  Check: 8782  Weight:   1.00
+ Name: Pao              Len:   227  Check: 6349  Weight:   1.00
+ Name: Ninja            Len:   227  Check: 9776  Weight:   1.00
+ Name: Tamy             Len:   227  Check: 5946  Weight:   1.00
+ Name: Cubel            Len:   227  Check: 6769  Weight:   1.00
+ Name: Zebel            Len:   227  Check: 6054  Weight:   1.00
+ Name: Sinbad           Len:   227  Check: 5025  Weight:   1.00
+ Name: Saci-6           Len:   227  Check: 4862  Weight:   1.00
+ Name: Kobel            Len:   227  Check: 2799  Weight:   1.00
+ Name: Purbel           Len:   227  Check: 9793  Weight:   1.00
+ Name: Suzu             Len:   227  Check: 6683  Weight:   1.00
+ Name: Gabel            Len:   227  Check: 9130  Weight:   1.00
+ Name: Moose            Len:   227  Check: 8012  Weight:   1.00
+ Name: Max              Len:   227  Check: 3129  Weight:   1.00
+ Name: Tribel           Len:   227  Check: 6419  Weight:   1.00
+ Name: Nabel            Len:   227  Check: 7882  Weight:   1.00
+ Name: Roo              Len:   227  Check: 1441  Weight:   1.00
+ Name: Bel              Len:   227  Check: 4822  Weight:   1.00
+ Name: HMS-Beagle       Len:   227  Check: 7994  Weight:   1.00
+ Name: Yoyo             Len:   227  Check: 7847  Weight:   1.00
+ Name: Gypsyvir         Len:   227  Check: 3180  Weight:   1.00
+ Name: Burdock          Len:   227  Check: 9998  Weight:   1.00
+ Name: Nomad            Len:   227  Check: 9810  Weight:   1.00
+ Name: Gypsy            Len:   227  Check: 7781  Weight:   1.00
+ Name: 297              Len:   227  Check: 2853  Weight:   1.00
+ Name: 17.6             Len:   227  Check: 2744  Weight:   1.00
+ Name: Tv1              Len:   227  Check: 9959  Weight:   1.00
+ Name: Ted              Len:   227  Check: 8606  Weight:   1.00
+ Name: Zam              Len:   227  Check: 3922  Weight:   1.00
+ Name: Idefix           Len:   227  Check: 9033  Weight:   1.00
+ Name: Tom              Len:   227  Check: 771   Weight:   1.00
+ Name: Springer         Len:   227  Check: 8465  Weight:   1.00
+ Name: 412              Len:   227  Check: 5315  Weight:   1.00
+ Name: Mdg1             Len:   227  Check: 5036  Weight:   1.00
+ Name: Blastopia        Len:   227  Check: 7065  Weight:   1.00
+ Name: Micropia         Len:   227  Check: 7657  Weight:   1.00
+ Name: Mdg3             Len:   227  Check: 7991  Weight:   1.00
+ Name: Mag              Len:   227  Check: 8289  Weight:   1.00
+ Name: Gulliver         Len:   227  Check: 6636  Weight:   1.00
+ Name: DRM              Len:   227  Check: 7550  Weight:   1.00
+ Name: CFG1             Len:   227  Check: 2395  Weight:   1.00
+ Name: Hydra2-1         Len:   227  Check: 844   Weight:   1.00
+ Name: SPM              Len:   227  Check: 1863  Weight:   1.00
+ Name: SURL             Len:   227  Check: 2899  Weight:   1.00
+ Name: Cer4             Len:   227  Check: 7689  Weight:   1.00
+ Name: Cer5             Len:   227  Check: 7067  Weight:   1.00
+ Name: Cer6             Len:   227  Check: 4544  Weight:   1.00
+ Name: Athila4-1        Len:   227  Check: 845   Weight:   1.00
+ Name: Diaspora         Len:   227  Check: 8405  Weight:   1.00
+ Name: Cyclops-2        Len:   227  Check: 9695  Weight:   1.00
+ Name: Bagy-2           Len:   227  Check: 9717  Weight:   1.00
+ Name: Calypso          Len:   227  Check: 3793  Weight:   1.00
+ Name: Gloin            Len:   227  Check: 8831  Weight:   1.00
+ Name: Ifg7             Len:   227  Check: 9960  Weight:   1.00
+ Name: Reina            Len:   227  Check: 8599  Weight:   1.00
+ Name: Gimli            Len:   227  Check: 7589  Weight:   1.00
+ Name: Monkey           Len:   227  Check: 3515  Weight:   1.00
+ Name: Tntom1           Len:   227  Check: 7590  Weight:   1.00
+ Name: Galadriel        Len:   227  Check: 6769  Weight:   1.00
+ Name: Del              Len:   227  Check: 191   Weight:   1.00
+ Name: Peabody          Len:   227  Check: 2508  Weight:   1.00
+ Name: Retrosat-2       Len:   227  Check: 8899  Weight:   1.00
+ Name: Bagy-1           Len:   227  Check: 7851  Weight:   1.00
+ Name: Tma              Len:   227  Check: 9817  Weight:   1.00
+ Name: Legolas          Len:   227  Check: 1068  Weight:   1.00
+ Name: Cereba           Len:   227  Check: 8816  Weight:   1.00
+ Name: CRM              Len:   227  Check: 4452  Weight:   1.00
+ Name: Beetle1          Len:   227  Check: 6539  Weight:   1.00
+ Name: REM1             Len:   227  Check: 9289  Weight:   1.00
+ Name: G-Rhodo          Len:   227  Check: 8104  Weight:   1.00
+ Name: Sushi-ichi       Len:   227  Check: 5280  Weight:   1.00
+ Name: Amn-ichi         Len:   227  Check: 8762  Weight:   1.00
+ Name: Amn-san          Len:   227  Check: 8006  Weight:   1.00
+ Name: Amn-ni           Len:   227  Check: 3482  Weight:   1.00
+ Name: Dane-1           Len:   227  Check: 9493  Weight:   1.00
+ Name: Maggy            Len:   227  Check: 3203  Weight:   1.00
+ Name: marY1            Len:   227  Check: 2488  Weight:   1.00
+ Name: Cgret            Len:   227  Check: 4957  Weight:   1.00
+ Name: Cft-1            Len:   227  Check: 240   Weight:   1.00
+ Name: Pyret            Len:   227  Check: 7106  Weight:   1.00
+ Name: Skippy           Len:   227  Check: 6811  Weight:   1.00
+ Name: Real             Len:   227  Check: 2537  Weight:   1.00
+ Name: MGLR3            Len:   227  Check: 3061  Weight:   1.00
+ Name: Grasshopper      Len:   227  Check: 9460  Weight:   1.00
+ Name: Pyggy            Len:   227  Check: 2964  Weight:   1.00
+ Name: Tse3             Len:   227  Check: 765   Weight:   1.00
+ Name: Ty3-1            Len:   227  Check: 5629  Weight:   1.00
+ Name: Skipper          Len:   227  Check: 7389  Weight:   1.00
+ Name: TF2              Len:   227  Check: 2396  Weight:   1.00
+ Name: TF1              Len:   227  Check: 2850  Weight:   1.00
+ Name: Tor4a            Len:   227  Check: 2824  Weight:   1.00
+ Name: Tor2             Len:   227  Check: 8115  Weight:   1.00
+ Name: Tor1             Len:   227  Check: 2881  Weight:   1.00
+ Name: Cer1             Len:   227  Check: 7955  Weight:   1.00
+ Name: Cer2             Len:   227  Check: 9546  Weight:   1.00
+ Name: Cer3             Len:   227  Check: 2691  Weight:   1.00
+ Name: Cigr-1           Len:   227  Check: 9842  Weight:   1.00
+ Name: CsRN1            Len:   227  Check: 695   Weight:   1.00
+ Name: Kabuki           Len:   227  Check: 541   Weight:   1.00
+ Name: Boudicca         Len:   227  Check: 2596  Weight:   1.00
+ Name: Osvaldo          Len:   227  Check: 398   Weight:   1.00
+ Name: Woot             Len:   227  Check: 8539  Weight:   1.00
+ Name: Ulysses          Len:   227  Check: 3358  Weight:   1.00
+ Name: Circe            Len:   227  Check: 9454  Weight:   1.00
+ Name: Gmr1             Len:   227  Check: 1136  Weight:   1.00
+ Name: rGmr1            Len:   227  Check: 1848  Weight:   1.00
+ Name: RetroSor1        Len:   227  Check: 8476  Weight:   1.00
+ Name: Cinful-1         Len:   227  Check: 5204  Weight:   1.00
+ Name: B1147A04.5       Len:   227  Check: 5195  Weight:   1.00
+ Name: Ogre             Len:   227  Check: 5469  Weight:   1.00
+ Name: Grande1-4        Len:   227  Check: 6859  Weight:   1.00
+ Name: Tat4-1           Len:   227  Check: 7897  Weight:   1.00
+ Name: Tft2             Len:   227  Check: 7984  Weight:   1.00
+ Name: RIRE2            Len:   227  Check: 7084  Weight:   1.00
+ Name: HFV              Len:   227  Check: 7970  Weight:   1.00
+ Name: SFV-1            Len:   227  Check: 7267  Weight:   1.00
+ Name: EFV              Len:   227  Check: 2527  Weight:   1.00
+ Name: BFV              Len:   227  Check: 5011  Weight:   1.00
+ Name: FFV              Len:   227  Check: 5517  Weight:   1.00
+ Name: DrFV-1           Len:   227  Check: 3030  Weight:   1.00
+ Name: HERV-K10         Len:   227  Check: 2497  Weight:   1.00
+ Name: MPMV             Len:   227  Check: 8322  Weight:   1.00
+ Name: MMTV             Len:   227  Check: 7762  Weight:   1.00
+ Name: SERV             Len:   227  Check: 687   Weight:   1.00
+ Name: SRV-1            Len:   227  Check: 8597  Weight:   1.00
+ Name: JSRV             Len:   227  Check: 1980  Weight:   1.00
+ Name: SMRV-H           Len:   227  Check: 1964  Weight:   1.00
+ Name: K-HERV           Len:   227  Check: 6276  Weight:   1.00
+ Name: PyERV            Len:   227  Check: 5918  Weight:   1.00
+ Name: LPDV             Len:   227  Check: 2115  Weight:   1.00
+ Name: RSV              Len:   227  Check: 4437  Weight:   1.00
+ Name: STcLV2PP1664     Len:   227  Check: 5667  Weight:   1.00
+ Name: HTLV-2           Len:   227  Check: 998   Weight:   1.00
+ Name: HTLV-1           Len:   227  Check: 3637  Weight:   1.00
+ Name: BLV              Len:   227  Check: 3738  Weight:   1.00
+ Name: HIV-2            Len:   227  Check: 4943  Weight:   1.00
+ Name: HIV-1            Len:   227  Check: 4537  Weight:   1.00
+ Name: EIAV             Len:   227  Check: 2648  Weight:   1.00
+ Name: SIVMAC           Len:   227  Check: 3837  Weight:   1.00
+ Name: SIVAGM           Len:   227  Check: 130   Weight:   1.00
+ Name: SIVMND           Len:   227  Check: 381   Weight:   1.00
+ Name: VMV              Len:   227  Check: 506   Weight:   1.00
+ Name: SA-OMVV          Len:   227  Check: 1431  Weight:   1.00
+ Name: CAEV             Len:   227  Check: 155   Weight:   1.00
+ Name: FIV              Len:   227  Check: 7157  Weight:   1.00
+ Name: BIV              Len:   227  Check: 9901  Weight:   1.00
+ Name: KoRV             Len:   227  Check: 6015  Weight:   1.00
+ Name: REV              Len:   227  Check: 6885  Weight:   1.00
+ Name: HERV-E           Len:   227  Check: 3872  Weight:   1.00
+ Name: RTVL-Ia          Len:   227  Check: 9346  Weight:   1.00
+ Name: MdEV             Len:   227  Check: 6301  Weight:   1.00
+ Name: PERV-MSL         Len:   227  Check: 6152  Weight:   1.00
+ Name: FeLV             Len:   227  Check: 8848  Weight:   1.00
+ Name: RCHO-K1          Len:   227  Check: 6469  Weight:   1.00
+ Name: BAEVM            Len:   227  Check: 8855  Weight:   1.00
+ Name: MuLV             Len:   227  Check: 7136  Weight:   1.00
+ Name: GALV             Len:   227  Check: 9668  Weight:   1.00
+ Name: WdSV             Len:   227  Check: 4915  Weight:   1.00
+ Name: XEN1             Len:   227  Check: 4332  Weight:   1.00
+ Name: ZFERV            Len:   227  Check: 2324  Weight:   1.00
+ Name: ASSBSV           Len:   227  Check: 4406  Weight:   1.00
+ Name: ZFERV-2          Len:   227  Check: 8242  Weight:   1.00
+ Name: SnRV             Len:   227  Check: 3433  Weight:   1.00
+ Name: MuERV-L          Len:   227  Check: 2410  Weight:   1.00
+ Name: Retrofit         Len:   227  Check: 899   Weight:   1.00
+ Name: Koala            Len:   227  Check: 4088  Weight:   1.00
+ Name: Hopscotch        Len:   227  Check: 3292  Weight:   1.00
+ Name: Melmoth          Len:   227  Check: 3647  Weight:   1.00
+ Name: Vitico1-2        Len:   227  Check: 7503  Weight:   1.00
+ Name: Oryco1-1         Len:   227  Check: 1987  Weight:   1.00
+ Name: Poco             Len:   227  Check: 4689  Weight:   1.00
+ Name: Vitico1-1        Len:   227  Check: 5483  Weight:   1.00
+ Name: Araco            Len:   227  Check: 3084  Weight:   1.00
+ Name: Oryco1-2         Len:   227  Check: 4634  Weight:   1.00
+ Name: Endovir1-1       Len:   227  Check: 59    Weight:   1.00
+ Name: SIRE1-4          Len:   227  Check: 8732  Weight:   1.00
+ Name: Opie-2           Len:   227  Check: 7828  Weight:   1.00
+ Name: TSI-9            Len:   227  Check: 463   Weight:   1.00
+ Name: ToRTL1           Len:   227  Check: 8933  Weight:   1.00
+ Name: Fourf            Len:   227  Check: 5216  Weight:   1.00
+ Name: Batata           Len:   227  Check: 147   Weight:   1.00
+ Name: Sto-4            Len:   227  Check: 6583  Weight:   1.00
+ Name: Tork4            Len:   227  Check: 6004  Weight:   1.00
+ Name: Tto1             Len:   227  Check: 4335  Weight:   1.00
+ Name: RTvr2            Len:   227  Check: 39    Weight:   1.00
+ Name: Tnt-1            Len:   227  Check: 8635  Weight:   1.00
+ Name: V12              Len:   227  Check: 905   Weight:   1.00
+ Name: Humnum           Len:   227  Check: 4224  Weight:   1.00
+ Name: Mtanga           Len:   227  Check: 3880  Weight:   1.00
+ Name: Copia            Len:   227  Check: 3052  Weight:   1.00
+ Name: Koco             Len:   227  Check: 3854  Weight:   1.00
+ Name: Yokozuna         Len:   227  Check: 6661  Weight:   1.00
+ Name: Tricopia         Len:   227  Check: 7396  Weight:   1.00
+ Name: Hydra1-2         Len:   227  Check: 9241  Weight:   1.00
+ Name: Hydra1-1         Len:   227  Check: 6454  Weight:   1.00
+ Name: 1731             Len:   227  Check: 9657  Weight:   1.00
+ Name: Xanthias         Len:   227  Check: 2884  Weight:   1.00
+ Name: pCretro6         Len:   227  Check: 5164  Weight:   1.00
+ Name: pCretro3         Len:   227  Check: 8432  Weight:   1.00
+ Name: PyRE1G1          Len:   227  Check: 3641  Weight:   1.00
+ Name: Osser            Len:   227  Check: 9810  Weight:   1.00
+ Name: Tse1             Len:   227  Check: 1830  Weight:   1.00
+ Name: Ty1B             Len:   227  Check: 4617  Weight:   1.00
+ Name: Tkm1             Len:   227  Check: 5453  Weight:   1.00
+ Name: pCal             Len:   227  Check: 5630  Weight:   1.00
+ Name: Ty2              Len:   227  Check: 4592  Weight:   1.00
+ Name: Tdh2             Len:   227  Check: 80    Weight:   1.00
+ Name: Ty4              Len:   227  Check: 1333  Weight:   1.00
+ Name: Zeco1            Len:   227  Check: 2241  Weight:   1.00
+ Name: GalEa1           Len:   227  Check: 1387  Weight:   1.00
+ Name: Cico1            Len:   227  Check: 2318  Weight:   1.00
+ Name: Zeco2            Len:   227  Check: 1272  Weight:   1.00
+ Name: Olco1            Len:   227  Check: 9658  Weight:   1.00
+ Name: CoDi4.4          Len:   227  Check: 4259  Weight:   1.00
+ Name: CoDi3.1          Len:   227  Check: 2744  Weight:   1.00
+ Name: CoDi2.4          Len:   227  Check: 7731  Weight:   1.00
+ Name: CoDi4.1          Len:   227  Check: 6831  Weight:   1.00
+ Name: CoDi4.5          Len:   227  Check: 3815  Weight:   1.00
+ Name: CoDi4.3          Len:   227  Check: 4882  Weight:   1.00
+ Name: CoDi7.1          Len:   227  Check: 5841  Weight:   1.00
+ Name: CoDi5.2          Len:   227  Check: 4280  Weight:   1.00
+ Name: CoDi5.3          Len:   227  Check: 5148  Weight:   1.00
+ Name: CoDi5.1          Len:   227  Check: 5008  Weight:   1.00
+ Name: CoDi5.4          Len:   227  Check: 2447  Weight:   1.00
+ Name: CoDi5.5          Len:   227  Check: 9398  Weight:   1.00
+ Name: CoDi5.6          Len:   227  Check: 6178  Weight:   1.00
+ Name: CoDi6.1          Len:   227  Check: 2796  Weight:   1.00
+ Name: CoDi6.7          Len:   227  Check: 4883  Weight:   1.00
+ Name: CoDi6.6          Len:   227  Check: 3061  Weight:   1.00
+ Name: CoDi6.4          Len:   227  Check: 9556  Weight:   1.00
+ Name: CoDi6.3          Len:   227  Check: 845   Weight:   1.00
+ Name: CoDi6.2          Len:   227  Check: 3151  Weight:   1.00
+ Name: CoDi6.5          Len:   227  Check: 1025  Weight:   1.00
+
+//
+
+              1                                                   50 
+      BsCVBV  LDTGASIC.C IC........ .........T S....I.TP. ..RNCL..V. 
+      ScBIMV  LDTGATRS.C I......... .........N K....P.FI. ..EDKM..L. 
+      ComYMV  VDTGATA..C LI........ .........Q I...SA.IP. ...ENY..Y. 
+         DBV  LDTGATTC.C IN........ .........E E....G.LP. ...KAI..L. 
+        CYMV  LDTGATTC.C ID........ .........S R....S.VP. ...KDA..L. 
+       BSOLV  LDTGATV..C VA........ ........DE R....M.IP. ...SGM..K. 
+        TaBV  IDTGATVC.C IS........ .........E K....I.VP. ...EAA..K. 
+        CSSV  LDTGATTC.C I......... .........N I...NS.VP. ...QTA..I. 
+       CSVMV  FDTGAN.I.C IC........ .........K K...KV.LP. ..DELW.... 
+        KTSV  LDTGAT.V.C VC........ .........S E...EM.IP. ...KEI..R. 
+        RTBV  IDSGSTHN.I IC........ .......... P...TL.IP. ...ASW..I. 
+       BSGFV  LDTGAA.I.C VC........ .........N G...E..VI. ..PQEY..R. 
+       BSVAV  LDTGAA.I.C VC........ .........D G...Q..MV. ..NEYF..R. 
+       BSMyV  LDTGAA.T.C VV........ ........SQ A...K...V. ..SERF..L. 
+        CLNV  LDTGATTS.C IR........ .........T G...K..AP. ..RETV.... 
+        DrMV  FDTGAT.S.C VL........ .........D S...KI.VP. ...EKA..L. 
+        CaMV  VDTGAS.L.C IA........ .........S K...FV.IP. ..EEHW.... 
+        EVCV  VDTGAS.M.C IA........ .........S R...YI.IP. ..PELW.... 
+       LLDAV  VDTGAS.I.C LC........ .........S K...YV.IP. ..EEHW.... 
+        CERV  VDTGSS.L.C MA........ .........S K...YV.IP. ..EEYW.... 
+         FMV  VDTGAS.L.C IA........ .........S R...YI.IP. ..EELW.... 
+        MiMV  VDTGAS.L.C LA........ .........S K...HV.IP. ..DDFW.... 
+        SVBV  VDTGAS.M.C TA........ .........N K...HV.IP. ..EEFW.... 
+       RuFDV  VDTGAT.S.C TA........ .........S P...HI.IP. ..TELW.... 
+       SbCMV  IDTGAT.L.C FG........ .........K R...K...I. ..SNNW.... 
+        PCSV  IDTGAT.I.C LA........ .........Q A...KI.LP. ..IKYW.... 
+        BRRV  IDTGAS.L.C LL........ .........P E...YN.LP. ..KQLW.... 
+      CmYLCV  VDTGAT.I.C LA........ .........D P...K...I. ..KLKW.... 
+        PVCV  YDTGAAYS.I MD........ .......... P...AI.LP. ..SEYW.... 
+        TVCV  IDTGAE.A.N IC........ .........K Y...NC.LP. ..TDKW..E. 
+    ORF7PCSV  IDTGAC.S.S HI........ .........S K...D...LT ..YEIY..D. 
+   ORF7SbCMV  IDTGAS.W.S HI........ .........S A...SF..LK ..THQI..K. 
+CterMOVCSVMV  IDTGAA.H.S YI........ .........S S...KI..LE ..DEKL..V. 
+    ORF7BRRV  VDTGAA.M.S FI........ .........K Q...SF..VH ..QESL..T. 
+        Cer7  LDTGAD.Q.S YIK..AN.IA KDWK....LP K.......V. ...D.EKT.. 
+       Mabel  FDIGSQ.L.S FIS..KD.LA YRL.....N. ........LQ E.TN.EME.. 
+         Tas  FDSGSQ.K.S YIT..TR.LA NRL....... R.......LN ..TT.PQK.. 
+     Cer10-1  ADLPT..A.T LCKIVQS.PP NNT.....QS ........I. ..SQ.FVRVT 
+    Spirobel  FDSGSQ.R.S FVK..KS.VA EAL.....SL K.......G. ...P.FET.. 
+    Hydra3-1  FDSCSQ.L.S YIS..PS.LR KKL.....FL PT......LG ...R.KQ... 
+         Pao  LDDGST.V.T LID..EI.IC KKT.....GT T.......G. ...P.IDP.. 
+       Ninja  LDEGSS.V.T MID..DE.LR RDL.....GV Q.......G. ...E.RRQ.. 
+        Tamy  LDEGST.V.S LLD..EE.VA HRI.....GA K.......G. ...K.PDL.. 
+       Cubel  LDSGST.C.S LME..HS.LW EEL.....GL D.......G. ...E.KQP.. 
+       Zebel  LDDGSE.R.T IVL..QP.AV RQL.....KL T.......G. ...T.TEL.. 
+      Sinbad  LDSGSD.T.S LVC..EE.LI NQL.....GI K.......G. ...K.ETS.. 
+      Saci-6  LDSGSD.T.S LVC..EE.LI NQL.....GI E.......G. ...K.ETS.. 
+       Kobel  LDPGSN.V.S FCT..DG.LA EKL.....QA T.......G. ...T.GMK.. 
+      Purbel  LDSGAQ.I.S LIR..DE.FA AEL.....GL E.......G. ...I.SAT.. 
+        Suzu  IDLASD.T.N YIT..HS.AA SRL.....N. ........LR ..SE.EIT.. 
+       Gabel  IDLASD.T.N YIT..HE.AA GRL.....N. ........LR ..SE.DIT.. 
+       Moose  LDNGAQ.P.N AIS...E.AI ESA.....FV L.......AR ...M.RTH.. 
+         Max  IDSGSE.A.T FIS..ER.LF N.L......I K.......L. ...PFRNT.. 
+      Tribel  LDSRSQ.S.N FIT..ES.MC KKL.....GI K......... .....RDP.. 
+       Nabel  LDTCST.A.N FIT..EN.LC NKL....KLT K......... ......SP.. 
+         Roo  IDSGSQ.S.T IIS..EE.SA QIL....KL. KK......F. .....RSH.. 
+         Bel  LDTGST.I.T LAS..ES.FV QRI.....GV R......... .....RTH.. 
+  HMS-Beagle  IDTGSN.K.N YI...QP.N. ..L......V TNA..IP... .....NN... 
+        Yoyo  IDTGSN.K.N YI...QP.N. ..L......V KNS..IP.N. .....ND... 
+    Gypsyvir  IDTGAA.K.N YV...KP... ..LTE....L KTI..TP.V. .....AK... 
+     Burdock  IDTGAS.K.N YI...QP... ..LPE....L KNI..MP.V. .....QN... 
+       Nomad  IDTGAN.K.N FI...SR.R. ..L......A AGC..TT.V. .....RK... 
+       Gypsy  IDTDAA.K.N YI...RP... ..VKE....L KNV..MP.V. .....AS... 
+         297  LDTGST.I.N MI...NE.N. ..I......F C....LP.I. ....QNS... 
+        17.6  IDTGST.V.N MT...SK.N. ..I......F D....LP.I. ....QNT... 
+         Tv1  IDTGST.I.N LM...KT.N. ..R......L NF...PV.Y. .....NE... 
+         Ted  IDTGAN.Q.S FI...SP.Q. ..AVQ....K YF...SN.Y. ...SVNY... 
+         Zam  IDTGSN.N.S FI...DP.ES ..A......N Q....LE.C. .....TI... 
+      Idefix  IDTGSS.I.N II...RE.N. ..F......E N....LE.E. ....KEE... 
+         Tom  IDTGST.I.S MM...RK.N. ..F......F S....LP.I. ....HNT... 
+    Springer  IDTGAA.K.N FI...RP.FK ..G......L KGV..RP.V. .....QS... 
+         412  LDTGAD.I.S IL.....KEN .SDK.....F SNI..Q..I. ....TNK... 
+        Mdg1  IDTGAE.I.S LL.....KCR ..NNN....L NDL..N..P. ....KNT... 
+   Blastopia  VDTGSD.V.T II.....KEA .IFKK....M KD...VD.L. ....NRTA.. 
+    Micropia  FDSGAE.C.S LI.....KD. .DIS.....S K....LS.G. ..KRINNT.. 
+        Mdg3  IDSGSP.I.S IIK....KSL ..INET...M K....LA.L. .....VN... 
+         Mag  VDTGSA.L.S CI...SK.NV ..Y......D K....YF.S. ..KEKLQA.C 
+    Gulliver  VDTGSD.I.T MT...SE.AT ..W....... L....MI.G. ..RPVLL... 
+         DRM  IDTGAA.V.S II...SE.KE ..F....... KA...VF.P. .TEP.LEV.. 
+        CFG1  IDTGAS.K.T VV...GE.PA ..F......E R....LT.K. ..CDKVTL.K 
+    Hydra2-1  LDTGAS.V.S VMS..LE.TF TSL......K K.....K.G. ..LTRKEI.I 
+         SPM  VDTAAA.V.S VI...SE.KE ..Y......N N....SL.G. .HIP.LQR.. 
+        SURL  IDTGAQ.A.N LL...PE.TV ..Y......H K....LK.T. ..KPKLQK.. 
+        Cer4  LDTVSD.I.T LL...SK.GS ..W......V K....L..G. ..SPKLEP.V 
+        Cer5  LDTGSM.I.T LI...SF.KC ..W......E K....V..G. ..SPPLEK.V 
+        Cer6  LDTGSQ.I.T LI...NV.DS ..W....... KE...I..G. ...C.LQK.V 
+   Athila4-1  CDLGAS.V.S LM...PL.SV ..A......K R....L..G. ..FTQYK... 
+    Diaspora  LDLGAS.V.S VM...PL.SI ..F......N SLS..L..G. ....PLQ... 
+   Cyclops-2  IDLGSS.I.N LI...PF.SI ..V......K R....L..G. ..NIEIK... 
+      Bagy-2  CDMGAS.V.S AI...PR.SL ..YDE....I KDE..I.AP. ...AELE... 
+     Calypso  IDLGAS.I.N LM...TL.S. ..M.....CQ Q....L..G. ..ELEIM... 
+       Gloin  LDSGAT.H.N FIT..PK... ..V.....TE KT...KS.G. .....TQ... 
+        Ifg7  IDSGST.H.N FIH..CM.V. ..A....... K....E..L. ..NCFLY... 
+       Reina  VDSGSS.T.S FMS..DH.L. ..M......G K....VT.G. ...VQSILE. 
+       Gimli  VDSGST.H.N FMD..PQ.M. ..A......K K....L..G. ....CSLL.. 
+      Monkey  VDTGAT.H.N FIA..DR.E. ..A......Q R....L..G. ....LTLEKS 
+      Tntom1  IDTGAT.H.N YLA..LT.H. ..V......E C....L..G. ....LVVGK. 
+   Galadriel  VDTGAT.H.T FVD..VK.I. ..A......T K....L..G. ....LKLSKS 
+         Del  IDTGST.H.S FIT..PR.I. ..I....... K....M..L. ...EIPVQ.. 
+     Peabody  IDTGAT.H.S FIS..LD.CA ..V....... K....LK.L. ...EISLE.. 
+  Retrosat-2  FDSGAT.H.S FIS..KK.FV ..G....... M....Y..G. ...LRKEE.. 
+      Bagy-1  FDTGSS.H.S FIS..ES.YA ..L......L HN...MS.FC ...DMPI... 
+         Tma  FDSGAS.H.C FIT..PE.S. ..A......S R.......G. ...NIRGD.. 
+     Legolas  FDSGAT.H.C FVS..PE.L. ..V......E T.......G. ...GFRKE.. 
+      Cereba  IDGGSC.N.N LAS..ME.M. ..V......E K....LS.L. ...TTRPH.. 
+         CRM  IDGGSC.N.N LAS..SD.M. ..V......E K....LA.L. ...TTKPH.. 
+     Beetle1  IDGGSC.T.N VAS..SS.M. ..V......E K....LN.Y. ...PTFSH.. 
+        REM1  ADTGAK.C.A EVA..DGYIS ..L......A KAQQ.A..G. ...LRLEA.. 
+     G-Rhodo  VDSGAT.D.N FIH..SN... ..L......V K....E..F. ..KLETTA.. 
+  Sushi-ichi  IDSGAD.E.S LMD....... ..F....SLA RQ...A..GI ..PLV.PLD. 
+    Amn-ichi  IDSGAT.N.N FID....... ..R....EYA DS...L..GL QYHDF.KN.. 
+     Amn-san  LDSGAA.G.N FMD....... ..L....AFA KK...V..G. .ISLF.PVT. 
+      Amn-ni  IDSGAA.G.N FMD....... ..I....TLA KD...LNIP. IDSL..PE.. 
+      Dane-1  LDTGAD.GKR FID..QE.W. ..V....EDN H....LE.L. ...LPLKN.. 
+       Maggy  TDCGAE.GKC FLD..QG.W. ..A....EE. RQ...LQ.M. ...YPLRN.. 
+       marY1  LDSGAT.G.L FID..SH.L. ..V....QQH R....LN.T. ...RSLSR.. 
+       Cgret  IDSGSE.G.D FVS..PR.A. ..V....NKL R....I..P. ..WHEKRQ.. 
+       Cft-1  IDSGAS.G.N FAS..ES.F. ..V....TRN R....I..A. ..TCKKKE.. 
+       Pyret  LDNGAQ.G.N YIS..PR.V. ..V....AKR R....I..P. ..WQQKKE.. 
+      Skippy  VDSGAD.M.N FIS..PT.T. ..V....NEL R....L..P. ..WKDKND.. 
+        Real  VDSGCL.C.Y SL........ ..V....NK. K....FA.Y. RHRLERFQI. 
+       MGLR3  IDTGAN.G.Y VFI..SK.Q. ..L....AR. R....L..YT TLKAPKIVGF 
+ Grasshopper  VDSGCE.C.Y AAM..SD.KC ..A....TRL R....I.... .ERIPLPQ.. 
+       Pyggy  VDCGCL.C.Y AL........ ..V....NK. K....F..AY RHHLERFQI. 
+        Tse3  ADTGAS.H.N FIE..QR.F. ..I......Q G....M..G. ....LVKQRL 
+       Ty3-1  FDSGSP.T.S FIR..RD.I. VEL......L K....YE.I. ......YET. 
+     Skipper  LDTGSN.V.S LIN..KR.LI SKD......M K....NH.VH .KTKAKINF. 
+         TF2  IDTGAQ.A.N IIT..EE.T. VRA......H K....L..P. ....TR.... 
+         TF1  IDTGAQ.V.N VIT..EE.T. VRA......H K....L..P. ....TR.... 
+       Tor4a  VDTGSQ.L.N II........ ..R......K KN...V.... ...PKNKK.I 
+        Tor2  CDSGAD.K.N IL........ ..P....... LNL..L..P. ...PAVHR.L 
+        Tor1  LDTGAS.I.T VA...SL.A. ..F......S QNLE.RE.G. ...FKLNKQT 
+        Cer1  LDSGAS.I.S LM...SK.NT ..W......E KIVE.VN.G. ..KSWEQDQI 
+        Cer2  VDTGAN.I.T VA...SR.N. ..I......L K....GL.G. ..IVRLQA.A 
+        Cer3  VDTGAN.I.T VT...SK.D. ..L......L K....GL.G. ..ISRTLP.M 
+      Cigr-1  LDSGAS.D.N FL...NK.KV ..A......H R....L..N. ...LRVEKSS 
+       CsRN1  VDTGAE.V.S VL........ ..P......H K.T..PL.H. ......D..S 
+      Kabuki  VDTGAN.I.S VL....P.V. ..P....... KIS..KF.I. .....KN... 
+    Boudicca  VDTDAE.V.S VL........ ..P......A NPD..DK.L. .....RE... 
+     Osvaldo  IDTGAS.S.S FI...SE.RL ..A......K R.LH.GG.G. ....VVR... 
+        Woot  LDTGSE.V.S CI...SE.EV ..W......S K.LIE.T.G. ....NKPPTL 
+     Ulysses  LDTGAS.V.S LL....G.Q. ..G......C RELVEKL.G. ...WEAR... 
+       Circe  VDSGAN.K.S VI...GG.EL ..A......Q QLIS.SK.P. ....FNK... 
+        Gmr1  LDTGSA.V.T LV.......R ..A......D ..L..AG.G. ...RPGT... 
+       rGmr1  LDTGSS.V.T LV...QP.GL ..I....... KP...RV.G. ..SKATI... 
+   RetroSor1  VDSGSS.A.D II...FA.GT ..F......D Q....MK.L. .SRSQLQ... 
+    Cinful-1  VDTGSA.A.D II...FA.KA ..F......R Q....M..QE LEDKIHD... 
+  B1147A04.5  IDGGAA.L.N IL...SP.AA ..F......D A....I..K. APGMVLR... 
+        Ogre  VDTGSS.L.N VL...PK.QI ..L......K K....I..D. VEGFVLT... 
+   Grande1-4  VDGGSS.I.N VT...FP.RT ..L......Q G....L..G. VHLKELH... 
+      Tat4-1  IDTGSS.V.N VI...FK.DV ..L......Q K....M..E. VHERHIK... 
+        Tft2  IDTGSS.V.D LI...FL.ST ..L......E R....M..G. ISRADVV... 
+       RIRE2  IDGGSA.L.N IL...FA.KT ..L......D D....MQ.I. .PRSELK... 
+         HFV  WDSGAT.I.T CI....P.E. ..S......F LED.EQP.I. .....KK... 
+       SFV-1  WDSGAT.I.T CV....P.E. ..A......F LED.ERP.I. .....QT... 
+         EFV  YDTGAE.I.T CV....P.A. ..I......F LIE.EEP.I. .....GE... 
+         BFV  WDSGAE.I.T CV....P.A. ..I......Y IIE.EQP.V. .....GK... 
+         FFV  WDSQAD.I.T CV....P.K. ..D......L LQG.EEP.V. .....RQ... 
+      DrFV-1  LDTGAD.V.T VV...SQ.L. ..P......K EAK..ET.E. .....TA... 
+    HERV-K10  VDTGAD.V.S II.....AL. ..NQ.....W PKN..W..P. .......... 
+        MPMV  IDTGAD.V.T II.....KL. ..ED.....W PPN..W..P. .......... 
+        MMTV  LDTGAD.K.T CI.....AG. ..RD.....W PAN..W..P. .......... 
+        SERV  IDTGAD.V.T II.....KQ. ..ED.....W PSH..W..P. .......... 
+       SRV-1  IDTGAD.V.T II.....KL. ..ED.....W PPN..W..P. .......... 
+        JSRV  LDTGAD.I.S VI......S. ..DKY....W PTT..W..P. .......... 
+      SMRV-H  LDTGAD.A.T VI.....SY. ..TH.....W PRN..W..P. .......... 
+      K-HERV  VDTEAD.V.S II.....AL. ..NQ.....W PKN..W..P. .......... 
+       PyERV  LDTGAD.V.S VI.....CS. ..AE.....W PAD..W..P. .......... 
+        LPDV  LDTGAD.V.T VI......N. ..EPS....W PCT..W..P. .......... 
+         RSV  LDSGAD.I.T II.....SE. ..ED.....W PTD..W..P. .......... 
+STcLV2PP1664  LDTGAD.L.T VL.....P.. ..QAL....A PESV.S..V. .......... 
+      HTLV-2  LDTGAD.L.T VI.....P.. ..QTL....V P....G..P. .......... 
+      HTLV-1  LDTGAD.M.T VL.....P.. ..IAL....F SSN..T..P. .......... 
+         BLV  VDTGAE.N.T VL.....P.. ..QN.....W LVRD.Y..P. .......... 
+       HIV-2  LDTGAD.D.S IV.....AG. ..I......E LGSN.YT.P. .......... 
+       HIV-1  LDTGAD.D.T VL....EDI. ..N......L PGK..WK.P. .......... 
+        EIAV  LDTGAD.T.S VL..TTAHY. ..NRLK...Y RGKK.YQ.G. .......... 
+      SIVMAC  LDTGAD.D.S IV....TGI. ..E......L GPH..YT.P. .......... 
+      SIVAGM  LDTGAD.D.T II....KEE. ..DIH....L EGR..WR.P. .......... 
+      SIVMND  LDTGAD.D.T IF....NER. ..NIK....L KGN..WQ.P. .......... 
+         VMV  VDTGAD.K.T IV....TSH. ..D......M S....GI.P. .......... 
+     SA-OMVV  VDTGAD.R.T IV....RYH. ..D......N S....GI.P. .......... 
+        CAEV  FDTGAD.R.T IV....RWH. ..E......G S....GN.P. .......... 
+         FIV  LDTGAD.I.T IL....NRR. ..D......F QVKNSIE... .......... 
+         BIV  VDTGAD.E.V VL..KNIHW. ..DR.....I K....GY.P. .......... 
+        KoRV  VDTGAE.H.S VL......T. ...K.....P M....GK.M. .......... 
+         REV  VDTGAT.H.S VV........ ..QK.....P V....G..P. .......... 
+      HERV-E  VDTSAE.H.S VV......T. ..ASV....A P.......L. .......... 
+     RTVL-Ia  VDSGAA.C.S SV........ ..C......F PSSN.VA.C. .......... 
+        MdEV  IDTGAE.H.S VL......T. ..S......P L....GK.L. .......... 
+    PERV-MSL  VDTGAK.H.S VL......L. ..Q......P L....GK.L. .......... 
+        FeLV  VDTGAQ.H.S VL......T. .........R PD...G..P. .......... 
+     RCHO-K1  VDTGAQ.H.S VL......N. .........R SP...G..P. .......... 
+       BAEVM  VDTGAQ.H.S VL......T. .........K AN...G..P. .......... 
+        MuLV  VDTGAQ.H.S VL......T. .........Q NP...G..P. .......... 
+        GALV  VDTGAE.H.S VL......T. .........Q .P...M..G. ....KV.... 
+        WdSV  VDTGAC.L.T AI.....GG. ........AA TV...V..P. ..DLK..... 
+        XEN1  IDTGAA.R.S VI........ .........R TQD..L..P. ..KQAM.... 
+       ZFERV  VDTGAT.F.S TI.....QR. .........Q .....M..M. E.KDS..... 
+      ASSBSV  VDTGCT.Y.S AI........ .........K TM...Q..P. .......... 
+     ZFERV-2  LDTGAV.Y.T SI..NANYA. ........AH .....L..P. .......... 
+        SnRV  VDTGAE.V.S LT........ .........S ........L. ...Q...... 
+     MuERV-L  LDTGSE.L.T LI.....PG. .......DPK KHC..G..P. .......... 
+    Retrofit  IDTGAT.D.H IT..GEL... EKL....... TT.KE..... ..K.....Y. 
+       Koala  IDTGAT.D.H VT..SEI... GKL....... ST.RE..... ..K.....Y. 
+   Hopscotch  VDTEAT.D.H IT..GQL... DKL....... TT.RE..... ..K.....Y. 
+     Melmoth  IDSGAT.H.H VS..HDR... SLF....... SSLDT..... ..S.....V. 
+   Vitico1-2  EDK.AK...S SQ..GDK... EKL....... ...QDLS... ..E.....Y. 
+    Oryco1-1  IDSGCT.N.H MA..ADP... NLF....... RE.MD..... ..S.....S. 
+        Poco  IDSGCT.N.H MT..NDE... NLF....... KQ.LD..... ..K.....S. 
+   Vitico1-1  LDSGCS.N.H MT..GIK... SLF....... KE.LD..... ..E.....S. 
+       Araco  LDSGAS.N.H MC..GRK... SMF....... AE.LD..... ..E.....S. 
+    Oryco1-2  LDTGAT.N.Y MT..GSR... SAF....... AE.LD..... ..T.....A. 
+  Endovir1-1  FDSGAS.R.H MT..GSQ... ANL....... NN.YS..... ..S.....V. 
+     SIRE1-4  LDSGCS.R.H MT..GVK... EFL....... LN.IE..... ..P.....C. 
+      Opie-2  LDSGCT.Q.H MT..GDR... AMF....... TT.FE..... ........V. 
+       TSI-9  MDSGCS.R.H MT..GDD... KWF....... SS.LT..... ........P. 
+      ToRTL1  MDSGCS.K.H MI..GDV... KNF....... LS.LK..... ..T.....L. 
+       Fourf  MDSGAN.I.H VC..ADA... SMF....... TS.YQ..... ..V.....G. 
+      Batata  VDSGAA.Y.H VT..PRK... EFF....... TS........ ........Y. 
+       Sto-4  IDSSAT.V.H VA..NSL... QGL....... RT.SQ..... ..R.....L. 
+       Tork4  LDSGAS.Y.H IC..PRR... EWF....... TT.YE..... ..Q.....V. 
+        Tto1  IDSGAT.I.H AT..PRR... ELF....... SS.YT..... ..L.....G. 
+       RTvr2  IDSGAT.L.Q VT..SRK... ESF....... TS.YT..... ..L.....G. 
+       Tnt-1  VDTAAS.H.H AT..PVR... DLF....... CR.YV..... ..A.....G. 
+         V12  VDTAAS.F.H IT..ARR... DFF....... SS.YT..... ..S.....G. 
+      Humnum  IDSGAS.V.H LT..ANE... EWL....... LN.MS..... .......R.. 
+      Mtanga  IDSGAT.S.H MC..CDR... AFF....... DEL....... .......KQ. 
+       Copia  LDSGAS.D.H LI..NDE... SLY....... TDSVE..... ........L. 
+        Koco  LDSGAT.D.H LI..NDE... SLY....... SDSVE..... ........L. 
+    Yokozuna  IDSGAS.Q.N LV..IDSY.. EKY......M SN.IE..... .......YL. 
+    Tricopia  LDSGAT.T.H MC..NKS... GQF....... QE.IS..... ..C.....V. 
+    Hydra1-2  VDTGAT.S.H II..TDL... KKF....... KQ.FD..... ..D.....K. 
+    Hydra1-1  KDK.A....K A......... .YF....... TY.ID..... ..E.....Y. 
+        1731  LDSGAT.S.H MC..CDR... SVF....... ...TE..... ........F. 
+    Xanthias  VDSGAT.S.H MC..CDK... GLF....... TSFIN..... .......... 
+    pCretro6  ADSGAT.T.H VA..NAR... ELF....... HK.YQ..... ........P. 
+    pCretro3  GDSASE.R.H IV..RDR... AAF....... KN.LT..... ........P. 
+     PyRE1G1  VDSGAT.H.H LA..TGK... GVF....... V.A....... ..K.G...A. 
+       Osser  LDSGAI.Y.H VT..PDAR.. SLR..DYKPC DPIPL..... ..K.C...G. 
+        Tse1  VDSGAE.I.S VI..RDI... SFL......T GINHN.PTD. ..R.L...L. 
+        Ty1B  LDSGAS.R.T LI..RSA... HHI......H SASSN.P.DI ..N.V...V. 
+        Tkm1  LDGGAT.V.S VI..YDK... KLI....HNF TSESN.QILV ..D.V...Q. 
+        pCal  YDTGAT.I.S VV..NNK... DIL......L NVK.D.ATI. ..E.V...S. 
+         Ty2  IDSGAS.Q.T LV..RSA... HYL......H HATPN.SEI. ..N.I...V. 
+        Tdh2  FDSGAS.V.T VV..NDI... KQL......I NIKED.LEDS ..ERLF..Y. 
+         Ty4  IDTG.S.G.V NI..TNDK.. TLL......H NYE.D.SNRS ..TRFF..G. 
+       Zeco1  IDTACT.R.T VC..GEK... .WL......E NYIDD.LTQD ..Q.VNQ.L. 
+      GalEa1  LDSGCS.T.T VC..GAD... .WY......G NFIQD.LSDV ..ER.DN.I. 
+       Cico1  LDTACT.K.T VC..GEN... .WF......R PYFEN.LDQK ..LK.SK.V. 
+       Zeco2  IDTACT.R.T VC..GEK... .WL......E NYIDD.LTQD ..Q.VNQ.L. 
+       Olco1  IDTACT.R.S VC..GQE... .WL......D NFTNQ.LNQN ..G.VKH.L. 
+     CoDi4.4  LDSHAD.T.C IM..GKV... FHI....... YSSTG.QKC. ..T.VM..P. 
+     CoDi3.1  IDTGAD.T.V CV..GAG... YSV....... LSYTG.RSV. ..S.LR..G. 
+     CoDi2.4  VDRGAN.G.G LA..GSD... VMV....... LHKTG.RSA. ..T.IT..G. 
+     CoDi4.1  LDSHAD.T.C VA..GAN... TIL....... ISDSQ.KSV. ..T.VR..P. 
+     CoDi4.5  LDSHAD.T.C VV..GKH... ALV....... VHEHN.RMV. ..N.V..... 
+     CoDi4.3  LDSHAD.T.C CV..GRH... AYI....... FQETS.RTV. ..D.VS..A. 
+     CoDi7.1  LDPGTE...C DI.VGGD... ..V....... WTVLE.KVI. ..G.VE..A. 
+     CoDi5.2  ADTGCT.G.H YL...ST... ..N....... IAHIN.STPA ..N.....P. 
+     CoDi5.3  ADTGCT.G.H FL...ST... ..N....... IAHIH.CQP. ..T.V...P. 
+     CoDi5.1  ADTGCT.G.H YI...TV... ..N....... CPHTH.RHPA ..N.....P. 
+     CoDi5.4  LDTAAN.I.S LL...AN... ..G....... APSE..R.AN S.Q.LT..P. 
+     CoDi5.5  LDSGAT.S.T FI...RE... ..E....... DCNNN.ICVK .....T.... 
+     CoDi5.6  GDAGAT.G.T FL...LP... ..G....... APVIN.MQPA ....AH..P. 
+     CoDi6.1  IDNHAS.R.T LS...PS... .KD....... .HFED.LIL. ........H. 
+     CoDi6.7  VDNCAT.R.S IT...NS... EAD....... .CI....GPM .......KP. 
+     CoDi6.6  LDTGCS.F.S CT...FD... KRD....... .FV....GPI I......RG. 
+     CoDi6.4  ADSGAT.C.H VW...NS... .AK....... .ELRD.Q... .......EK. 
+     CoDi6.3  GDSGAS.C.H IV...NS... ..D....... NSMYE...V. .......EH. 
+     CoDi6.2  GDTGSS.C.H IV...ND... ..D....... TGLYD.ITP. .......... 
+     CoDi6.5  VDSGAS.G.H TF...KN... .AQ....... .GMYNIKSP. .......... 
+
+              51                                                 100 
+      BsCVBV  ETKE....AS F.N.G...IT S.....SSK. .....C.NQR .........L 
+      ScBIMV  QDTA..FKVK I.S.G...VN S......VT. .....Y.LDK ........QV 
+      ComYMV  EDAK..VTVN F.R.S...VL G......IG. .....T.STQ ........MI 
+         DBV  EANT..FEVK F.T.G...AN S......EM. .....V.ARK ........KL 
+        CYMV  EENS..FVVN F.S.G...IN S......KQ. .....Q.VKQ ........KI 
+       BSOLV  EQAK..NKII I.R.G...VN G......VT. .....E.VNE ........VT 
+        TaBV  EQLN....YK V.N.I..SGI S.....SQQ. .....Q.IQH ........RL 
+        CSSV  EQNT..FLVQ F.R.G...IN S......TQ. .....S.VDK ........KL 
+       CSVMV  H.KT..ENLV L.R.G...FN DE...KHVA. .....E.Y.R ........AD 
+        KTSV  EPSK..TNTV I.R.G...VN G......AN. .....K.VTE ........VL 
+        RTBV  NNTH..REII M.F.A...VD NS...KYNL. .....N.QEL ........ID 
+       BSGFV  RSSL..TDSL I.Q.G...VN G......AT. .....R.VNE ........IL 
+       BSVAV  RPSM..MNAF I.K.G...VN G......IT. .....N.VKE ........IL 
+       BSMyV  EPSA..MKVE L.R.G...VN G......TS. .....K.VNK ........VL 
+        CLNV  EDSK..TQAV L.K.G...VN S......VS. .....I.GTK ........SL 
+        DrMV  TALT..YNVQ F.S.G...VN S......LD. .....T..SR .......QRL 
+        CaMV  VNAE..RPIM V.K.I...AD G.....SSI. .....T.ISK ........VC 
+        EVCV  KPTK..KVHK V.K.T...AN G.....Q.V. .....T.IDK ........VC 
+       LLDAV  KDAE..RSIK V.K.I...AD D.....SVI. .....E.INK ........VC 
+        CERV  QTAE..KPLN I.K.I...AN G.....KII. .....Q.LTK ........VC 
+         FMV  ENSP..KDIQ V.K.I...AN Q.....ELI. .....K.ITK ........VC 
+        MiMV  ENAP..RSIP V.K.I...AN Q.....SSI. .....T.LNK ........VC 
+        SVBV  VNAK..NPIR A.R.I...AN D.....SIM. .....T.FNK ........VA 
+       RuFDV  EELP..KPIL V.N.I...AN D.....TNI. .....E.IRY ........VT 
+       SbCMV  EILK..QPKE I.I.I...AD K....SKHY. .......IRE ........AI 
+        PCSV  KKMI..KPIK V.R.I...AN N.....KVI. .....H.IWY ........KA 
+        BRRV  KELK..KPIT I.R.V...AD K.....REL. .....Q.INK ........VA 
+      CmYLCV  VKME..KPIK I.S.I...AD K.....SVQ. .....E.IWH ........RA 
+        PVCV  ...I..PHFR H.F.G...AD DG...ILTT. .....T.V.K ........T. 
+        TVCV  KLKT..PM.V V.T.GF.NNE G......SM. .....I.NYK ........AR 
+    ORF7PCSV  GGN......P I.S.YI.TYD G....EEVT. .....N.E.K ........LA 
+   ORF7SbCMV  NCEE...... K.S.VR.RFD G....TTKK. .....L.N.K .......... 
+CterMOVCSVMV  SNKL..SKV. VTS.YN..AD N....EKHI. .....Y.D.R ........NT 
+    ORF7BRRV  PIQP..YTVK G.Y.LDHHTI G......DK. .....Y.L.V ........EH 
+        Cer7  ........LR L.Q.T...F. GSGKA.QPE. ....K.IFE. .......... 
+       Mabel  ........IK I.A.S...F. G.DK..TPKT ....C.ITT. .......... 
+         Tas  ........LS I.S.T...F. G.DC..APQ. ....I.IQS. .........N 
+     Cer10-1  ........NH I.A.T..... G.N...SI.. ....L.IIS. ........II 
+    Spirobel  ........VN I.E.S...F. G.NIN.SE.. ....C.LRV. .......... 
+    Hydra3-1  ........LN I.K.T...F. G.NQ..SQTQ N...L.EMV. ........KL 
+         Pao  ........LH IQA.IN..N. IK....STET .......RS. .......... 
+       Ninja  ........LN I.K.WF..G. GKA...TRE. .......PT. .......... 
+        Tamy  ........L. VLE.TV..G. GKL...IEKQ .......DS. .......... 
+       Cubel  ........LC IGW.TA..GQ GR....YEA. .......NS. .........V 
+       Zebel  ........LP L.Q.T...IQ Q.CH..TELE ......GRS. .......... 
+      Sinbad  ........IR V.A.T...VN GT....TNCE C.....LEV. .........D 
+      Saci-6  ........IR V.A.T...VN GT....TNCE C.....LEV. .........N 
+       Kobel  ........LT M.K.T...M. G.....ASCS M......PT. .......... 
+      Purbel  ........IT V...TK..I. GR....DEE. T.....LTT. .......... 
+        Suzu  ........LV V.H.GV..G. G.....MEV. C.....VET. .......... 
+       Gabel  ........LV V.H.GV..G. G.....MKV. F.....VKT. .......... 
+       Moose  ........VS I...TG..VD GT....TTQ. .......AS. .........C 
+         Max  .......... ..R.TQ..VS GLNH..SVS. ......AKS. .........S 
+      Tribel  ........VD I...S...IS GLNEVKST.. ......VTS. .......... 
+       Nabel  ........CS L...T...IT AMNNLNTT.. .......AS. .........Y 
+         Roo  .......... ....TE..IS GVS...STGT ......CIS. .......... 
+         Bel  ........AR I...S...IL GLAAN.SA.. ......GVT. .......... 
+  HMS-Beagle  .K......PY I.ADT...PG G.....DVK. ......ISHY .......... 
+        Yoyo  .I......FY A.T.S...VG G.....KIK. .......IT. .......... 
+    Gypsyvir  .S......FS V.N.S...IH G......... ......STEI .......... 
+     Burdock  .K......FT V.K.S...LH G.....C... .......NTV .......... 
+       Nomad  .P......FS V.L.S...AA G....NIM.. .......IT. .......... 
+       Gypsy  .P......FS V.S.S...IH G....ST... ........EI .........K 
+         297  .R......CE V.L.T...SN G.....P... .......ITL .......... 
+        17.6  .ST.....F. I.H.T...SN G.....P... .......LIV .......... 
+         Tv1  .T......LK V.H.T...IN G.....V... .......IEL .......... 
+         Ted  .DP.....FE I.T.N...IH G.....V... ......SRNE .......... 
+         Zam  .LPTS...TS I.T.TA..LN S.....FK.. .......IEE .......... 
+      Idefix  .N......LI V.Y.T...IK G.....P... .......ITL .......... 
+         Tom  .E......CE V.F.T...SN G.....P... .......MTL .......... 
+    Springer  .P......FT I.H.S...IH G.....V... .......TTI .........T 
+         412  ........IN I.Q.G...I. G.....Q... .QKI....QS .......... 
+        Mdg1  ........TN I.S.G...I. G.....Q... .GTI....QS .......... 
+   Blastopia  ........TV L.R.G...L. G.....N... .AST....QP .......... 
+    Micropia  ........VM I.K.G...IG G.....G... ..SV....CS .......... 
+        Mdg3  ........TC Y.F.G...LN N.....C... ..IL....KT .......... 
+         Mag  .L...L..N. L.K.F...YD G.....SII. ......RPLG .........F 
+    Gulliver  .PTS....HK T.K.S...AT E.....EDI. ......VFLG .........E 
+         DRM  .ARV....K. L.K.T...YT G.....ELM. ......PVLG .........Q 
+        CFG1  .PSNT...K. L.K.T...YT G.....EMV. ......PVLG .........R 
+    Hydra2-1  .PT.....KS FLR.T...FT G.....EVV. ......LPVG .........E 
+         SPM  .SSM....K. L...T...CY G.....RIQI ......PVLG .........R 
+        SURL  .AKV....K. L.T.G...YY E.....ADI. ......PVMG .........R 
+        Cer4  .P......HK I.V.C...AN G.....SAL. ......DVLG .........R 
+        Cer5  .P......HR F.S.C...AN G.....TPM. ......AVKG .........R 
+        Cer6  .T......HS I.C.C...AN G.....TPM. ......TVKG .........R 
+   Athila4-1  .SCN....IS L.I.L...AD R......SV. .R....IPHG ........LL 
+    Diaspora  .STD....VV I.H.L...AN R......SV. .A....YPVG ........FI 
+   Cyclops-2  .SIR....MT L.Q.L...AD K.....STL. .T....KTSW .........A 
+      Bagy-2  .PID....VT I.T.L...AN R.....DTI. ......CPVI .........V 
+     Calypso  .PTR....MT L.Q.L...AD R......SI. .A....RPYG ........VI 
+       Gloin  .RA.....KG F.N.IK..L. G.....TSI. ......MVQG ........S. 
+        Ifg7  .PTAE...CQ V.M.V...AN G.....GTI. .......... ........NC 
+       Reina  .P......VQ V.K.V...AD G.....RCL. .......WSK Y.......FV 
+       Gimli  .PSDN...AR V.R.V...AD G.....YN.. .......LK. ........VI 
+      Monkey  .P......SR MKA.V...NS E.....ARR. .......ISG ........LA 
+      Tntom1  .GR.....GH VKG.I...NS P.....PQP. .......VGG ........IA 
+   Galadriel  .P......SY VKT.V...NA K.....AQA. .......IVG ........MA 
+         Del  .PLGYI..LS VIS.P...I. G.....TSTF .......VNQ ........VC 
+     Peabody  .MFGSM..V. IDT.P...AK G.....SVTT .......TS. ........VC 
+  Retrosat-2  .LRT.P..MR VHT.P...GN S.....S.TS .......VS. ........FS 
+      Bagy-1  .PLI...... VQT.P...GS K.....WETS ......RIT. ........YD 
+         Tma  .PGEQL..G. AVK.V...AG G.....QFV. ......AVLG ........RT 
+     Legolas  .PNTDY..G. MVR.A...AG G.....QAM. ......YPTG ........LV 
+      Cereba  .PH..P..YY IQW.FN..NS G.....K... .......VKV ........TR 
+         CRM  .PH..P..YH IQW.LN..NS G.....K... .......VKV ........TK 
+     Beetle1  .PK..P..YK LHW.L...ND G.....TV.. .......WRY .........K 
+        REM1  .PPL....LQ VQV.A...NS G.....RSQ. .......VVG .......CVT 
+     G-Rhodo  .LED.E..II LGS.AE..NT A.....Q... .......AEG ........TK 
+  Sushi-ichi  .RS.....LS P.Q.A...ID G.....RSL. .......GNI .TH....RTI 
+    Amn-ichi  .AR.....V. V.Q.A...ID G.....RPL. .K....TGPV .SQ....WSE 
+     Amn-san  .PS.....IR V.F.A...ID D.....RPL. .S....TDTI .TL....TTG 
+      Amn-ni  .P......LS V.T.A...LD G.....RPL. .A....PGEV .TH....LTS 
+      Dane-1  .P......IH L.E.S...FD G.....RES. .E....EGPI .TH....YVR 
+       Maggy  .P......FD I.E.V...FD G.....RTA. .E....SGKC .TH....YVR 
+       marY1  .P......IP V.Y.N...VD G.....SPN. .E....AGAI ..R....EVA 
+       Cgret  .P......YQ L.N.N...VE G.....EQVQ YE....GGTI .KN....ETA 
+       Cft-1  .G......YE L.I.A...VD G.....SSL. .......PSV .ER....ETI 
+       Pyret  .P......YQ L.Q.T...VE K.....KAVL YG....NGTI .KI....ETV 
+      Skippy  .P......YT V.H.D...GQ G.....ETYL YE....NGNI .TR....E.I 
+        Real  .PV.....RI I.E.G...VN G.....KLS. ........EI ..N....EVA 
+       MGLR3  HP......QK V.G.G...YD G.....KAS. ......QQID .TA....ALA 
+ Grasshopper  .A......RH V...G..TAV G.....RAQ. .......PMI ..R....ELA 
+       Pyggy  .PA.....RL I.E.G...VN G.....KLS. ........EI ..H....KVA 
+        Tse3  .PEQS...VV K.G.A...LN T.....S... .......GLI .QH...YVRL 
+       Ty3-1  .P......PL RFR.GF..VA T.....K... .......SAV .TS....E.A 
+     Skipper  .PL.....LD VKE.EF..VE Q......IN. .......IQV .NN....E.. 
+         TF2  .P......WS KSV.I...YG G......VY. .......PNK .IN...RKTI 
+         TF1  .P......WL QSV.I...YG G......VY. .......PTK .IN...RKTT 
+       Tor4a  .EKTK...IE VMN.YS..G. G.....RIE. .......IFG .......... 
+        Tor2  .IKP....VN M...TF...N G.....CGSM ......KSVG .......... 
+        Tor1  .PA.....RR N.P.VA..AK G.....TEMP ......ISF. .......... 
+        Cer1  .YEELE..YK TAR.T...AN N.....QLF. .......TLL .........R 
+        Cer2  .DN......D NAV.G...FG G.....NEV. ......SMIG .........S 
+        Cer3  .LN......A QAV.G...LG G.....HTV. ......DMVG .........S 
+      Cigr-1  .A......VI G.M.A...TN G.....LSA. ......TTQG .........R 
+       CsRN1  .AS.....YS L.Q.A...AN G.....TRI. ......ATYG .........E 
+      Kabuki  .PN.....YK L.Y.A...AN G.....TEI. ......ATFG .........E 
+    Boudicca  .SV.....FS L.Q.A...AN G.....KPI. ......ATYG .........K 
+     Osvaldo  .ATR....RR I.R.L...AN G.....SCS. .......EVN .........S 
+        Woot  .PVTS...IH L.R.G...AI G.....QRS. ......CQVV .........I 
+     Ulysses  .PYES....M V.RTA..CM. G.....ANR. ......PILG .........R 
+       Circe  .F.KS....V V.RT....AD G.....QTQ. ......NVAG .........T 
+        Gmr1  .P......MQ V.S.C...VH G.....DTR. ........TY .........E 
+       rGmr1  .P........ I.T.C...VH G.....DTR. ........YV .........P 
+   RetroSor1  .PSES...P. L.I.G...FG G.....KQI. ......HALG .......... 
+    Cinful-1  .ATH....P. L.C.G...FG G.....RQI. ......VALG .......... 
+  B1147A04.5  .PSQ....P. I.I.GV..TP G.....HTW. .......PLG .......... 
+        Ogre  .PSD....L. I.VRA...F. D.....RSK. .R....SVCG .......... 
+   Grande1-4  .ESDT...P. F.F.GI..VP M.....EGE. ......YPLG .......... 
+      Tat4-1  .PSVR...P. L.T.G...FD G.....NTL. ......MTNG .......... 
+        Tft2  .GPPS...P. L.V.A...FT S.....ESL. ......MSLG .......... 
+       RIRE2  .PSNA...P. F.H.GV..IP G.....LSA. ......TPLG .......... 
+         HFV  ........TL I.K.T...IH G.....E... ......KQQN .......... 
+       SFV-1  ........ML I.K.T...IH G.....E... ......KQQD .......... 
+         EFV  ........RT I.Q.T...IH G.....I... ......TKEK .......... 
+         BFV  ........KL I.T.T...IH N.....E... ......KEHD .......... 
+         FFV  ........QN V.T.T...IH G.....T... ......QEGD .......... 
+      DrFV-1  ........FN V.K.D...FR G.....N... ......VETH .........K 
+    HERV-K10  ..KQKA.VTG L.V.G...I. G.....T... ASEVY...QS .......... 
+        MPMV  ..ITDT.LTN L.R.G...I. G.....Q... SNNPK...QS .......... 
+        MMTV  ..IHQT.ESS L.Q.G...L. G.....M... ACGVA...RS .......... 
+        SERV  ..TTET.LTH L.R.G...I. G.....Q... SSNPK...QS .......... 
+       SRV-1  ..ITDT.LTN L.R.G...I. G.....Q... SNNPK...QS .......... 
+        JSRV  ..KQMA.IST L.Q.G...I. G.....Q... TTNPE...QS .......... 
+      SMRV-H  ..LTTV.ATH L.R.G...I. G.....Q... ATNPQ...QS .......... 
+      K-HERV  ..KQKA.VTG L.V.G...I. G.....T... ASEVY...QS .......... 
+       PyERV  ..TDPA.PS. V.R.G...VG G.....I... QTA.....QI .......... 
+        LPDV  ..AIPT..VG V.E.G...VG G.....L... .TNA.....S .......... 
+         RSV  ..VVDTANPQ I.H.G...IG G.....G... ..IPMR..KS .......... 
+STcLV2PP1664  ..SDTT.... V.L.G...AG G.....Q..T SSQFKL.LQS .......... 
+      HTLV-2  ..VKLH.DTL I.L.G...AS G.....Q..T NTQFKL.LQT .......... 
+      HTLV-1  ..LKNT...S V.L.G...AG G.....Q..T QDHFKL.TSL .......... 
+         BLV  ..R.IP..AA V.L.G...AG G.....V..S RNRYNW.LQG .......... 
+       HIV-2  ..K......I V.G.G...IG G.....F... .INTK..EYK .......... 
+       HIV-1  ..K......M I.G.G...IG G.....F... .IKVR..QYD .......... 
+        EIAV  ..T......G I.I.G...VG G.....N... ...VE..TFS .......... 
+      SIVMAC  ..K......I V.G.G...IG G.....F... .INTK..EYK .......... 
+      SIVAGM  ..K......V V.G.G...IG G.....G... .ISVK..QYD .......... 
+      SIVMND  ..K......I I.G.G...IG G.....N... .LRVK..QYD .......... 
+         VMV  ..KGR...II L.Q.G...IG G.....I... .IEGE..KWE .......... 
+     SA-OMVV  ..TGR...IK L.Q.G...IG G.....I... .IEGE..KWD .......... 
+        CAEV  ..AGR...IK L.Q.G...IG G.....I... .VEGE..KWN .......... 
+         FIV  ..NGR...QN M.I.G...VG G.....G... KR.GT..NYI .......... 
+         BIV  ..GTP...IK Q.I.G...VN G.....V... NVAK...RKT .......... 
+        KoRV  ..GSK..RTV V.A.G...AT G.....S... .KVY...PWT .......... 
+         REV  ..MSKE.SVA I.I.G...AT G.....N... IRNY...PKS .......... 
+      HERV-E  ..S.K..KTI D.I.G...AM G.....V..S AKQA...FCL .......... 
+     RTVL-Ia  ..SSE..ELI V.S.E...IK G.....E... GFTVRI.LEN .......... 
+        MdEV  ..GSK..RTI V.V.G...AT G.....S... .KLY...PWT .......... 
+    PERV-MSL  ..KDK..KSW V.M.G...AT G.....Q... .QQY...PWT .......... 
+        FeLV  .LSDR...TA L.Q.G...AT G.....S... .KNY...RWT .......... 
+     RCHO-K1  .LS.H..RTA W.Q.G...AT G.....G... .KQY...HWT .......... 
+       BAEVM  .LSSR..TSW V.Q.G...AT G.....R... .K.MH..KWT .......... 
+        MuLV  .LSDK...SA W.Q.G...AT G.....G... .KRY...RWT .......... 
+        GALV  .GSRR...TV V.E.G...AT G.....S... .KVY...PWT .......... 
+        WdSV  .LTNTE..II A.V.G...IS A.....E... .PVPH..VLA .......... 
+        XEN1  .LSNT..SVS V...G...VD G......... .RPRDN.PLT .......... 
+       ZFERV  .LSTQ..SEE ..R.G...FS G.....E... TEKW...PLT .......... 
+      ASSBSV  .LSMD..SIQ V...G...VS G......... .R.....PET .......... 
+     ZFERV-2  .LSGK..YAK V...G...FS G......... .KTQLI.PMT .......... 
+        SnRV  .LQAQR.FEQ V...G...LG G......... .K.....PVR .......... 
+     MuERV-L  .PVK...... V...G...AY G.....G..Q VING...VLT .......... 
+    Retrofit  .N.GGEQ... I.H.T...AS G.....AG.. .......MDI ........S. 
+       Koala  .K.GRDQ... I.H.A...AN G.....AG.. .......MKI ........T. 
+   Hopscotch  .K.GTDQ... I.H.T...AS G.....EG.. .......MDI ........Q. 
+     Melmoth  .LSA...... V.N.L...PT G.....PT.. .......VKI ........S. 
+   Vitico1-2  .K.GRHM... VIT.T...NS K.....LP.. .......I.. ........A. 
+    Oryco1-1  .YHAK..... I.H.M...GN G.....SI.. .......AQS ........E. 
+        Poco  .SVSK..... V.R.I...GN G.....EY.. .......IPV ........K. 
+   Vitico1-1  .HKLK..... V.K.L...GD D.....KQ.. .......VXV ........E. 
+       Araco  .VRGN..... V.A.L...GD E.....SK.. .......MEV ........K. 
+    Oryco1-2  .VSGT..... V.K.F...GD G.....SV.. .......VHI ........E. 
+  Endovir1-1  .KESN..... V.M.F...GG G.....AK.. .......GRI ........K. 
+     SIRE1-4  .STSY..... V.T.F...GD G.....SK.. .......GKI ........I. 
+      Opie-2  ..GGNEQEK. V.T.F...GD N.....SK.. .......GKV ........I. 
+       TSI-9  .ASGKEY... I.T.F...GD N.....SK.. .......GKV ........L. 
+      ToRTL1  .QGGG..... V.S.F...GD G.....KN.. .......GYI ........L. 
+       Fourf  .RSG...... ALL.M...GN GS....RA.. .......HVL .......... 
+      Batata  .TPGDFGE.. LRM.G...ND GQ.....V.. .......KVT .......... 
+       Sto-4  .PKGRRT... IR..V...AN GV.....E.. .......AAV .........E 
+       Tork4  .DGGS..... IS..M...AN SS.....V.. .......CKV .........V 
+        Tto1  .DFGRVK... M...G...AN FS........ .......TVV .......... 
+       RTvr2  .DFGV..... LKM.G...ND GV.....S.. .......KII .......... 
+       Tnt-1  .DFGT..... VKM.G...NT SY.....S.. .......KIA .......... 
+         V12  .SFGW..... VRM.G...NE AK.....C.. .......EIV .......... 
+      Humnum  .NHKIKE... I.V.V...AN QD.....K.. .......IPV .........L 
+      Mtanga  .STG.VS... I.T.L...AD GNE....T.. .......VVK ........GV 
+       Copia  .VPPLK.... I.A.V...AK QGE....F.. .......IYA T......... 
+        Koco  .EPPLK.... I.A.V...AK GE.....Y.. .......IYA T......... 
+    Yokozuna  .ETKTK.... I.Y.V...AN GQ.....Y.. .......LFS S......... 
+    Tricopia  .KQGS..... L.N.L...AN N.....SS.. .......TVT T......... 
+    Hydra1-2  .FQPEKHY.. I.E.L...AD G...TKAS.. .......GVA Q......... 
+    Hydra1-1  .FKPEEHF.. I.E.L...AD G...TRTN.. .......NIA K......... 
+        1731  .E.EHTEK.. I.S.L...GN G......F.. .......LLA K......... 
+    Xanthias  .K.ETS.... I.M.L...AD ......KF.. .......VKS S......... 
+    pCretro6  .TAGGAS... I.S.G...G. G.....VS.. .......RIA .......... 
+    pCretro3  .TP....... GHT.I...GV G......S.. .......TAA L......... 
+     PyRE1G1  .KPNDE.... V.A.L...AS G.....GT.. .......LAT T......... 
+       Osser  ..GGEVH... Y.A.V...GY G....DLL.. .......VEV VKEQTDCYSF 
+        Tse1  .GAGDQ...E L.K.VN..AA G....TL... .......... .........R 
+        Ty1B  .DAQKR...N I.P.IN..AI G....DL... .......... .........Q 
+        Tkm1  .QN......E V.A.VK..GE G....NL... .......... .........E 
+        pCal  .VADGA...T L.E.AD..CI G....DL... .......... .........I 
+         Ty2  .DAQKQ...D I.P.IN..AI G....NL... .......... .........H 
+        Tdh2  ..TVSNV..P I.Y.AK..AK G....DL... .......... .........V 
+         Ty4  ..IGKNS..S V.S.VK..GY G....Y.... .......... .......... 
+       Zeco1  MQTETRSCRP F.R.F...GD G....NLV.. .......YST ........KN 
+      GalEa1  FVEESTS..T F.T.F...AD G....VTV.. .......PSI ........MR 
+       Cico1  KFGSHES..I F.K.F...GD G....NKV.. .......KST ........QQ 
+       Zeco2  MQTETRSCRP F.R.F...GD G....N.I.. .......YST ........KN 
+       Olco1  KKSEMHSCKP F.R.F...GD G....KVV.. .......NST ........KR 
+     CoDi4.4  .YSDKYKPRV V.D.V...AD G...CTA... .......... .........F 
+     CoDi3.1  .FHDDGET.. FER.I...PV V....TAA.. .......TAY ........DY 
+     CoDi2.4  .INDHT.... LSD.L...DI V....TAA.. .......GYT ........ES 
+     CoDi4.1  .FSGEYL..A MTN.I...PI G...TVAT.. .......AYT ........VP 
+     CoDi4.5  .FSYDP...K SK..GK..P. A...KIVD.. .......ALV ........KY 
+     CoDi4.3  .FLSTFGQ.. ARS.V...PI V...SAAL.. .......A.. .........F 
+     CoDi7.1  QLGGALAGM. GKCSL...PL V...NAVA.. .......AY. .......... 
+     CoDi5.2  ...GI....T V.T.L...PD G....STI.. .......VSS ......HVTE 
+     CoDi5.3  ...GI....N V.V.L...PD G....RTI.. .......TSS ......HITE 
+     CoDi5.1  ...SL....A V.R.V...PN G....AVL.. .......RSS ......HVAT 
+     CoDi5.4  ....K....S V.M.Q...PK G....DRL.. .......FTT ......ETLL 
+     CoDi5.5  ...GETSSKQ V.Y.M...PD G....SSA.. .......GAT ........EK 
+     CoDi5.6  ....L....T I.T.L...PD G....QCI.. .......QST ......HTCN 
+     CoDi6.1  ..NTTT...T V...G...GI GSGLSIKG.. .......VGT ..FVF.KIED 
+     CoDi6.7  ...IMR...K V.K.G...IG G..VKVTE.. .......MFE VTIEW.TIAD 
+     CoDi6.6  ..NFGN.... A.Q.G...IS GTS.PLTA.. .......RGI ..ASY.TVFD 
+     CoDi6.4  ...ISEQV.R V...G...KS DTFVHVTM.. .......QGT ..VYL.ETK. 
+     CoDi6.3  ...IHE...S I...G...GI GSDVKATK.. .......KGK ..LRS.LIKQ 
+     CoDi6.2  ...ISE...V V.G.G...IG GQSIRATM.. .......MGR ..LNV.VIKQ 
+     CoDi6.5  ..IIKN.... V.I.V...GN GVNCKIEK.. .......SGS ..ISF.QDSE 
+
+              101                                                150 
+      BsCVBV  A.RGT..... ..FKI..... .....GD... .HM..FQI.. .....PLV.. 
+      ScBIMV  K.DGA..... .KLWA..... .....GS... .SW..FRL.. .....PLT.. 
+      ComYMV  K.AGR..... ..ILI..... .....GE... .QY..FRM.. .....PVT.. 
+         DBV  K.GGI..... ..MKI..... .....GD... .NQ..FRI.. .....PYT.. 
+        CYMV  K.AGK..... ..MFI..... .....NE... .HY..FRI.. .....PYC.. 
+       BSOLV  S.AGK..... ..LWV..... .....GK... .QW..FYL.. .....PQT.. 
+        TaBV  K.RGT..... ..LEI..... .....AS... .NK..YAL.. .....PLC.. 
+        CSSV  K.YGR..... ..MTI..... .....SN... .HQ..FRI.. .....PYC.. 
+       CSVMV  N..IT..... ..IMI..... .....AK... .EK..FII.. .....P.Y.. 
+        KTSV  K.DGR..... ..LWV..... .....GD... .QY..FRL.. .....PRT.. 
+        RTBV  DIKL...... .QFQE..... .....VD.ET FGI.KYKL.. .....GQT.. 
+       BSGFV  K.DGK..... ..LWV..... .....GD... .QY..FRI.. .....PRT.. 
+       BSVAV  E.EGK..... ..IWI..... .....GN... .QW..FRI.. .....PRT.. 
+       BSMyV  K.EGK..... ..IWI..... .....GN... .QY..FRL.. .....PRT.. 
+        CLNV  R.PGL..... ..MKI..... .....QG... .GT..YRI.. .....PKT.. 
+        DrMV  K.EGR..... ..MTI..... .....GD... .HD..FPI.. .....PL... 
+        CaMV  K.DID..... ..LII..... .....AG... .EI..FKI.. .....P.T.. 
+        EVCV  LSQV...... ..ITV..... .....AG... .KE..FLI.. .....P.T.. 
+       LLDAV  E.NLN..... ..MYI..... .....AG... .EC..FHI.. .....P.R.. 
+        CERV  S.KLP..... ..IRL..... .....GG... .ER..FLI.. .....P.T.. 
+         FMV  K.NLK..... ..VKF..... .....AG... .KS..FEI.. .....P.T.. 
+        MiMV  R.GLK..... ..INI..... .....AG... .NE..FFI.. .....P.T.. 
+        SVBV  E.LMQ..... ..VQI..... .....AD... .ET..FII.. .....P.T.. 
+       RuFDV  R.NLK..... ..VSM..... .TDTNGN... KHT..FII.. .....P.T.. 
+       SbCMV  S.NVF..... ..LKI..... .....EN... .KE..FLI.. .....P.I.. 
+        PCSV  V.DLV..... ..LLL..... .....EG... .KR..FPL.. .....P.S.. 
+        BRRV  ..LMI..... .TILI..... .....EK... .RK..FLV.. .....P.T.. 
+      CmYLCV  ..EMV..... .EIWI..... .....RN... .YK..FVA.. .....A.T.. 
+        PVCV  KHPIT..... ..IEFF.... .....PG... .FK..YTT.. .....K.L.. 
+        TVCV  N..VK..... ..IQI..... .....WD... .KI..LTI.. .....E.E.. 
+    ORF7PCSV  S..VE..... ..IIF..... .....TK... .DI..KIN.. .....V.E.. 
+   ORF7SbCMV  KTLIE..... ..IDL..... .....SG... .IQ..NVK.. .....L.E.. 
+CterMOVCSVMV  EVIIE..... ..L.I..... .....DK... .NN..EKY.. .....K.... 
+    ORF7BRRV  STNIN..... ..V.I..... .....LS... .HT..F.N.. .....K.T.. 
+        Cer7  R..SK..... ..IELE.... T...DG...Q KISMIVLH.. S....EYLTG 
+       Mabel  K..TE..... ..IGVK.... ....IG.... ..NKEIIR.. L....DVIT. 
+         Tas  R.TV...... ..ISVQ.... LQ..NG.... ..TRKAVR.. ......V.ST 
+     Cer10-1  ..LLS..... ..VKLR.... ....NF...F NCTRFFIK.. GLE..NMPTT 
+    Spirobel  ...RR..... ..VKFW.... LT...S.... VRDKPHKK.. QMV..EALC. 
+    Hydra3-1  S.ILT..... ..LKNS.... LI...P.... ..ITCFVK.. PICA..P... 
+         Pao  ...RR..... ..VNLT.... LR...G.... ...LNSRK.E IIQ...ART. 
+       Ninja  ...NV..... ..VSLK.... ISGV.G.... KPTRHVLR.N V....YA... 
+        Tamy  ...QQ..... ..VDIK.... VK...G.... .AHRRDKR.. ILK..GVRT. 
+       Cubel  R..CT..... ..VDVS.... GTT..G.... .....KRR.N RLK..KVHT. 
+       Zebel  ...IS..... ..FEVS.... SVTK.P.... .....MVK.F AIC..NAFT. 
+      Sinbad  ...LEV.... ..FSLD.... ER...G.... .....SIR.. INK...VYT. 
+      Saci-6  ...LEV.... ..FSLD.... ER...G.... .....SIR.. INK...VYT. 
+       Kobel  KV.ITG.... ..LRIE.... AIS..G.... .....NGV.. PVQLPPVFT. 
+      Purbel  KK.YK..... ..VPIR.... EVN..K.... ......SKT. .....IMVT. 
+        Suzu  KR.YL..... ..LRIR.... VKTSQG.... .....TLK.. SHQ..MVCY. 
+       Gabel  KR.YL..... ..LKIR.... VGTSRGAL.L RCQHVSARKQ QFFPDVPLS. 
+       Moose  ..EMK..... ..VEIR.... S..RFT.... ...QFALK.. LNF..LVLS. 
+         Max  K..LCH.... ..FGIR.... SPTKPG.... ....LQLD.. TEA..YVLP. 
+      Tribel  K..AK..... ..LTIQ.... SY.VSG.... ....FSAL.. IEC..LIVS. 
+       Nabel  ...LTD.... ..ITFR.... SI.HSE.... ....FKKS.. LTC..FVVK. 
+         Roo  KHKAV..... ..ISIR.... ...NSP.... ....KNLE.. IEA..IILP. 
+         Bel  RGRAH..... ..IKLR.... SR.H...... ....SGQT.. VELVSFILT. 
+  HMS-Beagle  K.RAS..... ..L....... .......... .FD..FE... ..IK.FF... 
+        Yoyo  HHTF...... ..IDL..... ....FGL... .KD..EN... ..LK.FF... 
+    Gypsyvir  KRKCL..... ..MNI..... .......... .FQ..H.... ..TSPFF... 
+     Burdock  KQKC...... ..F.I..... ....KL.... .FN....... .TSVQFF... 
+       Nomad  H.R....... ..LVG..... ....KFFK.P LGN..DSD.. ..IT.FF... 
+       Gypsy  H.KC...... ..L.M..... ....KVF... .KH..I.... ..SP.FF... 
+         297  N.DL...... ..IML..... .....PRN.S IFK..KT... ..EP.F.... 
+        17.6  N.KS...... ..III..... .....PSK.I LFP..TT... ..NE.F.... 
+         Tv1  K.QS...... ..IRL..... ....GASK.. ICP..SK... ..QK.F.... 
+         Ted  H.SIT..... ..LPC..... .....FQE.. .FN.ETQD.. ..IKLF.... 
+         Zam  K.AI...... ..FPM..... .....PPE.. .FK..TE... ..GQ.IT... 
+      Idefix  K.RS...... ..III..... ....KPTS.. .VC..PS... ..AQKF.... 
+         Tom  K.DS...... ..ITL..... .....PSN.N IFR..TP... ..EQ.F.... 
+    Springer  K.KC...... ..F.V..... ......SI.. .FN..LK... ..AT.FF... 
+         412  ..RGQTF... ..IEI..... ...QTGK... ..YV.I.... .....PHDFH 
+        Mdg1  ..LGTLH... ..LEM..... ...CIAN... ..AA.I.... .....PYEFH 
+   Blastopia  ..IGCFRA.. ..L.I..... ....KTD... ...Q.V.... .....EASHN 
+    Micropia  ..TLQI.... ..LSE..... .....VTI.. .NEN.IM... .....EILFH 
+        Mdg3  ..HGQTTCY. ..V.L..... ....KGS... ...I.K.... .....IYFRL 
+         Mag  INTI...... ..VKYQ.... .....G.... VSK..M.L.. .....DLY.. 
+    Gulliver  V.LLN..... ..LTFC.... .....GK... .SE..F.G.. ....KCY... 
+         DRM  F.EAK..... ..VSYD.... .....GQ... .TE..V.LS. .....LIV.. 
+        CFG1  F.EVP..... ..VNY..... .....GK... .FD..G.V.. .....LQA.. 
+    Hydra2-1  V.KLS..... ..VRIN.... .....GQ... .TN....... .....LLA.. 
+         SPM  I.QVR..... ..VQYR.... .....NS... .AY..Y.LP. .....LVV.. 
+        SURL  C.CVQ..... ..VEYK.... .....G.... .NR..R.SV. .....PFL.. 
+        Cer4  T.KVS..... ..FELK.... .....G.... .VE..Y.VD. .....YAY.. 
+        Cer5  C.LVK..... ..FKLK.... .....G.... .IE..Y.TE. .....YVY.. 
+        Cer6  V.RVN..... ..FKLK.... .....E.... .VD..Y.TD. .....YVY.. 
+   Athila4-1  E.NLP..... ..IRI..... .....GA... .VE..IPTD. .....FV... 
+    Diaspora  E.DVL..... ..VRV..... .....GE... .LI..FPVD. .....FY... 
+   Cyclops-2  T.PGW..... ..V.L..... .....DK... .FF..FPVD. .....FI... 
+      Bagy-2  R.DVE..... ..V.LC.... .....GK... .TK..YPTD. .....FL... 
+     Calypso  E.DVL..... ..IQV..... .....KQ... .LV..FPCN. .....FV... 
+       Gloin  ..GVSKDVH. ..FTV..... ....QGH..E ..F...VND. .....FI... 
+        Ifg7  S..G.KCHN. ..IKL..... ....SME..Y ..V...LTS. .....PML.. 
+       Reina  ..PGCQW... ..LCG..... .....GI... .TF...HTD. .....FK... 
+       Gimli  A.RIQN.... ..FKW..... ....EIH..N TTF...VAD. .....FM... 
+      Monkey  K.GVP..... ..IKI..... .....GT... ..W.GGNTN. .....MM... 
+      Tntom1  N.EVP..... ..VKL..... ....WGR... ..Y.EGNFN. .....LR... 
+   Galadriel  Y.SVS..... ..MST..... .....GN... .WV..GKHN. .....LM... 
+         Del  K..GCM.... ..ITI..... .....GN..Q .EL...TVD. .....LI... 
+     Peabody  LNCP...... ..LSI..... ....FGR... .DF...GMD. .....LV... 
+  Retrosat-2  P.SVL..... ..IEI..... .....QR..S .PF...LAN. .....LI... 
+      Bagy-1  N.EIL..... ..V.Y..... ......R..L .VF...LAS. .....LL... 
+         Tma  K.GVD..... ..IQI..... ....AGE... .SM...PAD. .....LI... 
+     Legolas  R.GIS..... ..VVV..... ....NGV... .NM...PAD. .....LI... 
+      Cereba  T..VRVH... ..FSI..... .....A.... .TY.SN.... .....FVDCD 
+         CRM  L..VRIN... ..FAI..... .....G.... .SY.RD.... .....VVDCD 
+     Beetle1  Q.ALIS.... ..FSF..... .....GD... .SY.NDK... .....VL.CD 
+        REM1  V.NVR..... ..FD...... ....CG.... .FR..DDAK. .LL..VL.RD 
+     G-Rhodo  P..IT..... ..MEI..... .....G.... .RH.CKHRS. .....VYT.. 
+  Sushi-ichi  P..LT..... ..LTL..... ....SG.... .NH....IES TP...FL... 
+    Amn-ichi  ...PTR.... ..MWI..... .....R.... .EH....MEE IS...FF... 
+     Amn-san  E..LS..... ..VQI..... ....GA.... .LH....LEK MS...FL... 
+      Amn-ni  H..LS..... ..LSI..... .....Y.... .QH.....EE KLC..FH... 
+      Dane-1  I.NLTI.... ..YDY..... .......... ..Y.....EK KAC..FL... 
+       Maggy  ...GQ..... ..LRI..... .....K.... .DH....IQK NAL..FF... 
+       marY1  D..LV..... ..LRY..... .....K.... .DH....SER AL...FA... 
+       Cgret  P..LE..... ..MSY..... .....L.... .DR....NEQ LQ...LD... 
+       Cft-1  P..LP..... ..LAI..... .....Q.... .RH....HEE IT...LD... 
+       Pyret  ..HLWM.... ..ESY..... .....G.... .RK.....EQ IT...LN... 
+      Skippy  D.HLK..... ..VFV..... .....N.... .GK....NQG ID...FD... 
+        Real  R..FS..... ..FKL..... ....HG.... ..H....EET A....YAY.. 
+       MGLR3  T..F...... ..V.I..... ....QG.... .RR...FRET P....ML... 
+ Grasshopper  K..CE..... ..MDV..... ....DG.... .......WVT P....MLF.. 
+       Pyggy  R..FS..... ..LRM..... ....HG.... ..H....EEI A....YAY.. 
+        Tse3  K..FKHN... ..KDL..... .......... ..Y....EE. I....FL... 
+       Ty3-1  V.TID..... ..LKI..... .......... .ND....LQI TLA..AY... 
+     Skipper  ...I.HN... ..FFI..... .......... .......... .IE..LD... 
+         TF2  K..LN..... ..ISL..... ....NG...I SIK....TE. .....FL... 
+         TF1  K..LI..... ..INL..... ....NG...I SIK....TE. .....FL... 
+       Tor4a  ..KVE..... ..AEIV.... ...IDG.... .TC..W.GKS E....FFV.. 
+        Tor2  ..TIY..... ..GRLS.... ...HAATS.. .HK..F.DHV T....FYV.. 
+        Tor1  ..DII..... ..MTVI.... ...LRGNP.D .IK..F.VKT R....ISI.. 
+        Cer1  A.VM...... ..VEI..... ....KMQ... .TK....SE. .....VIK.. 
+        Cer2  A.IVR..... ..FQI..... .....GS... .QV..V.KQ. ....RVH... 
+        Cer3  A.VVQ..... ..FKI..... .....GT... .HT..I.DH. ....RVH... 
+      Cigr-1  A.SAS..... ..ISL..... ....LG.... .RD..Y.TNV .....PFQ.. 
+       CsRN1  R.SLT..... ..LDL..... .....GL... .RR.AF.K.. ....WISL.. 
+      Kabuki  K.TLV..... ..LDL..... .....KL... .RR.AF.R.. ....WNFV.. 
+    Boudicca  R.YVY..... ..LNV..... .....GL... .RK.PI.H.. ....WIFV.. 
+     Osvaldo  Q..LDLK... ..IRL..... .....GS... .RQ..M.EV. .....PLL.. 
+        Woot  Q.CYLE.... ..IKI..... ....DE.... .HL..Y.PV. .....VAL.. 
+     Ulysses  V.VLP..... ..VKY..... .....G.... .IE..R.LD. .....IVF.. 
+       Circe  I.QIPKT... ..QRR..... ....FY.... .SR.TIVDSQ KSKFQKV... 
+        Gmr1  TCHVV..... ..VRT..... .....P.... .QG.VF.VAR ......AG.. 
+       rGmr1  AQRVT..... ..IAA..... .....G.... .NG.AW.PLE ......VG.. 
+   RetroSor1  K..VA..... ..LPVS.... ....FGTT.. .EN..ARTEY ...VTFD... 
+    Cinful-1  K..IT..... ..MSVT.... ....FGFI.. .NN..TRTEQ ...VVFD... 
+  B1147A04.5  H..ID..... ..LPVT.... ....FGGS.. .AN..FRTER ...VNFD... 
+        Ogre  E..VT..... ..LPVK.... ....IG.P.. .EV..F..DI ....IFY... 
+   Grande1-4  H..IY..... ..MPVT.... ....FGTP.. .EN..YRTEF ...LRFE... 
+      Tat4-1  T..IK..... ..LPIY.... ....LGGA.. .AT..WHK.. .....FV... 
+        Tft2  T..IK..... ..LPVL.... ....AGK... .IS..KIVD. .....FV... 
+       RIRE2  Q..IT..... ..LPVT.... ....FGTR.. .EN..FRTEN ...ISFE... 
+         HFV  VYYVT..... ..FKVK.... .....GRK.. .VEA.EVI.. ..AS.PYE.. 
+       SFV-1  VYYLT..... ..FKVQ.... .....GRK.. .VEA.EVL.. ..AS.PYD.. 
+         EFV  VYYLT..... ..FKIQ.... .....GRK.. .LAA.EVI.. ..GT.QLD.. 
+         BFV  VYYVE..... ..MKIE.... .....KRK.. .VQC.EVI.. ..AT.ALD.. 
+         FFV  VYYVN..... ..LKID.... .....GRR.. .INT.EVI.. ..GT.TLD.. 
+      DrFV-1  VY..D..... ..WKN..... ...LQIIK.. ..GV.NNL.. ..MT.LKD.. 
+    HERV-K10  ...ME..... ..ILHC...L GPDNQE.... .STV.Q.... .....PM... 
+        MPMV  .SKY...... ..LTWR...D KENNSG.... ..LI.K.... .....PF... 
+        MMTV  .SQP...... ..LRW....Q HEDKSG.... ..II.H.... .....PF... 
+        SERV  .SKY...... ..LTWT...D KENNSG.... ..LI.K.... .....PF... 
+       SRV-1  .SKY...... ..LTWR...D KENNSG.... ..LI.K.... .....PF... 
+        JSRV  .SSL...... ..LTWK...D KDGHTG.... ..QF.K.... .....PY... 
+      SMRV-H  .AQM...... ..LKWE...D SEGNNG.... ..HI.T.... .....PY... 
+      K-HERV  .TEI...... ..LHCL...G PDNQES.... ..TV.Q.... .....P.... 
+       PyERV  .SC.NW.... ..ISVT..SA TSPVTA.... ..FI.K.... .....PV... 
+        LPDV  .RS.E..... ..FLLQ..GR IRREKE.... ..EI.RV... ...S.PY... 
+         RSV  .RDM...... ..IEL....G VINRDG.... .SLE.R.... .....PLL.. 
+STcLV2PP1664  ...P...... ..LCVY.... LPFRRA.... .......... .....PV... 
+      HTLV-2  ...P...... ..LHIF.... LPFRRS.... .......... .....PV... 
+      HTLV-1  ...P...... ..VLIR.... LPFRTT.... .......... .....PI... 
+         BLV  ...P...... ..LTLAL... KPEG...... .......... .....PFI.. 
+       HIV-2  ..NVE..... ..IEVL.... NKRV...... ...R.A.... .....TI... 
+       HIV-1  ..RIL..... ..IEI....C GKKAIG.... ...T...... .....VL... 
+        EIAV  ..TP...... ..VTIK..KK GRH.IK.... ...T.R.... .....ML... 
+      SIVMAC  ..NVE..... ..IEVL.... GKRIKG.... ...T...... ......I... 
+      SIVAGM  ..NIL..... ..VNID.... GKETRG.... ...N...... .....VL... 
+      SIVMND  ..NVY..... ..VEIR.... GKGTFG.... ...T...... .....VL... 
+         VMV  ..QVH..... ..LQYK.... DKMIKG.... ...T...... .....IV... 
+     SA-OMVV  ..KV...... .VIQYK.... EKRIEG.... ...T...... .....IV... 
+        CAEV  ..NV...... .ELEYK.... GETRKG.... ...T...... .....IV... 
+         FIV  ..NVHLE... ..I.RDENYK TQCIFG.... ...N.V.... .....CV... 
+         BIV  ..HVE..... ..WRFK.... ..DKTG.... ...I.I.... .....DV... 
+        KoRV  ..TKRL.... ..LKI..... .....GQK.. .QVT.HS... .....FL... 
+         REV  ..EGRL.... ..VDL..... .....GRG.. .LVT.HS... .....FL... 
+      HERV-E  ...PQTC... .TI....... .....GGH.. .KVI.HQ... .....FL... 
+     RTVL-Ia  ..TE...... ..VKY..... .....QDT.. ..TQ.VQ... .....FL... 
+        MdEV  ..TKRA.... ..LQI..... .....DKN.. .MVT.HS... .....FL... 
+    PERV-MSL  ..TRRT.... ..VDL..... .....GVG.. .RVT.HS... .....FL... 
+        FeLV  ..TDRR.... ..VQL..... .....ATG.. .KVT.HS... .....FL... 
+     RCHO-K1  ..TNRQ.... ..LQL..... .....ATG.. .KVM.HS... .....FL... 
+       BAEVM  ..NRRT.... ..VNL..... .....GQG.. .MVT.HS... .....FL... 
+        MuLV  ..TDRK.... ..VHL..... .....ATG.. .KVT.HS... .....FL... 
+        GALV  ..TKRL.... ..LKI..... .....GHK.. .QVT.HS... .....FL... 
+        WdSV  ..KPTK.... ..IQI..... ....ENTN.. ..ID.IS... .....PW... 
+        XEN1  ..CPLQ.... ..VGP..... ....YSGL.. ..LA.R.... .....FV... 
+       ZFERV  ..KPLR.... ..VQV..... ....AGQT.. ..LL.HS... .....FL... 
+      ASSBSV  ..QLKT.... ..QPL..... .LFRWGPS.. .TVR.HQ... .....FL... 
+     ZFERV-2  ..SPVC.... ..IKT..... ....KNQS.. ..VS.LP... .....IL... 
+        SnRV  ..VGIA.... ..DHVDT... ...TVGQV.. .KGK.GC... .....WR... 
+     MuERV-L  ..D....... ..VRLT.... .VGPVG.... .PRT.H.... .....PV... 
+    Retrofit  H.IGH..... .TI.V..... HTPS.RN... ..IH..LNN. .....VLY.. 
+       Koala  H.IGH..... .SV.V..... NTPF.RD... ..LH..LNN. .....VLC.. 
+   Hopscotch  H.IGH..... .SY.V..... PTSS.RP... ..LH..LKN. .....ILH.. 
+     Melmoth  G.VG...... .TLKL..... ...N.DD... ..IL..LKN. .....VLF.. 
+   Vitico1-2  H.IGN..... .TVVS..... SQYNTND... ..VS..LQN. .....VYH.. 
+    Oryco1-1  G.KG...... .TVAV..... QTAD.GP... ..KF..IKD. .....VLL.. 
+        Poco  G.KG...... .TVAI..... EGNS.GI... ..KL..ISD. .....VLF.. 
+   Vitico1-1  G.KG...... .TVAV..... .NNGHGNV.. ..KL..LYN. .....VYF.. 
+       Araco  G.KGN..... .IL.I..... RLKN.GDH.. ..QF..ISN. .....VYY.. 
+    Oryco1-2  G.HG...... .TVLF..... SCRS.REH.. ..RG..ITG. .....IYY.. 
+  Endovir1-1  G.KG...... ...DL..... T.ET..EK.. ..PH..LTN. .....VYF.. 
+     SIRE1-4  G.MG...... ...KL..... .VHD.GL... ..PS..LNK. .....VLL.. 
+      Opie-2  G.LG...... ...KI..... AISN.DL... ...S..IDN. .....VSL.. 
+       TSI-9  A.HG...... ...CI..... .KVT.DK... ..FI..LKD. .....VAK.. 
+      ToRTL1  G.VG...... ...KV..... GRSL.ED... ...S..IDN. .....VYH.. 
+       Fourf  G.VG...... .TVIL..... KFTS.GKT.. ..VP..LKS. .....VQH.. 
+      Batata  G.TG...... .TVCL..... .ETS.NGTK. ..LV..LKN. .....VKH.. 
+       Sto-4  A.IG...... .DIHL..... KLVN.GFV.. ..LL..LRD. .....VLY.. 
+       Tork4  G.TG...... .SIKI..... RTHD.GSF.. ..CT..LNE. .....VRH.. 
+        Tto1  G.KG...... .DVCL..... ETMN.GMK.. ..LL..LRD. .....VRH.. 
+       RTvr2  G.VG...... .DDHL..... QTNM.GMQ.. ..LL..LRG. .....VKH.. 
+       Tnt-1  G.IG...... .DICI..... KTNV.GCT.. ..LV..LKD. .....VRH.. 
+         V12  G..MR..... .DVEL..... ETSI.GCK.. ..LV..LKD. .....VRH.. 
+      Humnum  C.TGD...VQ ITTKT..... RA.C.EYD.. ..IT..VEG. .....VLC.. 
+      Mtanga  G.SGH....L YYYEE..... NG.D.RRK.. ..IT..LND. .....VYY.. 
+       Copia  K.RG...... .IVRL..... R..N.DHE.. ..IT..LED. .....VLF.. 
+        Koco  K.RG...... .IVRL..... H..N.GFQ.. ..II..LED. .....VLY.. 
+    Yokozuna  K.KG...... .ILNV..... KY.N.NLP.. ..IK..IE.. .....ALL.. 
+    Tricopia  G.EG...... .TVQF..... FANV.YGEK. THVT..LNN. .....TLQ.. 
+    Hydra1-2  R.RGD..... AEVHL..... IDS..AGHKV KTI...LKN. .....ALY.. 
+    Hydra1-1  K.RG...... .TVKT..... LLRT.KNDEL VTVT..LEN. .....TLY.. 
+        1731  G.IG...... .TVKL..... KTD..LC... .TLV..LNN. .....VLF.. 
+    Xanthias  G.IG...... .TVML..... KSQN.V.N.. ..IE..LRD. .....VIY.. 
+    pCretro6  G.RG...... .SVKL..... KCK..VGNRI RKIW..LHN. .....VVH.. 
+    pCretro3  G.QGDVDVVF TTPKG..... K....I.... .TAT..LRN. .....CLW.. 
+     PyRE1G1  G.RGE..... .AILV..... AGD..GDNK. STIT..LKD. .....TYR.. 
+       Osser  H.IGNN.... ..Y.YHKQ.. KGP..VVIK. ......IRN. .....VYY.. 
+        Tse1  L.NFG..... ..KTVI.... .....K.... ......IK.. .....ALV.. 
+        Ty1B  F.HFQD.... ..NT..KT.. .....S.... ......IK.. .....VLH.. 
+        Tkm1  L.KFKG.... ..KRI..... .....S.... ......LP.. .....AIY.. 
+        pCal  I.RVGI.... ..VSIT.... .....L.... ......EN.. .....TLY.. 
+         Ty2  F.NFQN.... ..GTKT.... .....S.... ......IK.. .....ALH.. 
+        Tdh2  I.KIKN.... ..CKFT.... .....I.... ......NN.. .....AYY.. 
+         Ty4  I.KIKN.... ..GHN..... .....N.... ....TDNKCL L....TYY.. 
+       Zeco1  V.KLP..... ..AKI..... .....G.... .LTKCLIHTE V....VKV.D 
+      GalEa1  V.TLP..... .CV.IN.... .....G.... .MSAK.IVTD V....VKY.N 
+       Cico1  A.IIP..... ..VQI..... .....G.... .QTLYYIQTS I....IRG.N 
+       Zeco2  V.KLP..... ..AKI..... .....G.... .LTKCLIDTE V....VKV.D 
+       Olco1  L.KIP..... ..AKI..... .....G.... .QTKCHIETE V....VPA.K 
+     CoDi4.4  D.DPVT...G ETF.I..... .....L.... ..D...VFQ. .....ALD.M 
+     CoDi3.1  D.DG.T.... .TV.I..... .....L.... ..I...FHE. .....ALN.. 
+     CoDi2.4  Q.NG...... ..PII..... .....L.... ..I...MNQ. .....YAH.. 
+     CoDi4.1  D.DGR..... ..VVI..... .....L.... ..I...INQ. .....ALY.. 
+     CoDi4.5  V.DPFT.... GAESL..... .....I.... ..M...INQ. .....AIH.. 
+     CoDi4.3  D.HPYT.... YETFI..... .....L.... ..V...IHQ. .....ALH.. 
+     CoDi7.1  D.HPKE.... GTILI..... .....G.... .......... .....AGN.. 
+     CoDi5.2  L.DIP..... ..DLP..... .....L.... ..E...ARI. .....AHI.. 
+     CoDi5.3  L.NIP..... ..SLP..... .....P.... ..A...ART. .....AHI.. 
+     CoDi5.1  L.ALP..... .GFSP..... .....A.... ......ACQ. .....AHI.. 
+     CoDi5.4  L.LLN..... ..KVP..... .....L.... ..E...ARE. .....AHR.. 
+     CoDi5.5  A.RLP..... MTALR..... .....A.... ..E...ARL. .....GDV.. 
+     CoDi5.6  L.DIP..... ..WLP..... .....P.... ..A...ATK. .....AHI.. 
+     CoDi6.1  D.DGG....V HCIKI..... .......... ......PNS. .....LYV.. 
+     CoDi6.7  D.HGK....P HKIRL..... .......... ......PKS. .....FLI.. 
+     CoDi6.6  P.HG...... TTYTI..... .......... ..TC..PA.. .....FLM.. 
+     CoDi6.4  ..DGA..... .KLKL..... .......... ......LK.. .....VKY.. 
+     CoDi6.3  A.DGT..... STVKV..... .......... ......LQ.. .....VKY.. 
+     CoDi6.2  A.DGT..... QVKRV..... .......... ......LYP. .....VKY.. 
+     CoDi6.5  T.K.T..... .IIEA..... .......... ......TEIH H....V.... 
+
+              151                                                200 
+      BsCVBV  YAFQMN.P.R .D........ .......... .......... .......DV. 
+      ScBIMV  YVGNMH.M.G .E........ .......... .......... .......KT. 
+      ComYMV  YVMNMG.L.S .P........ .......... .......... .......GI. 
+         DBV  FAFPLK.L.G .G........ .......... .......... .......GE. 
+        CYMV  YSFEMQ.I.G .D........ .......... .......... .......GI. 
+       BSOLV  FIMP.S.L.A .D........ .......... .......... .......GV. 
+        TaBV  YIIELN.D.K .D........ .......... .......... .......DF. 
+        CSSV  YAFPLS.L.G .D........ .......... .......... .......GI. 
+       CSVMV  IYAM.D.E.M .......... .......... .......... .......SP. 
+        KTSV  FVMP.K.L.S .D........ .......... .......... .......GL. 
+        RTBV  YVA..P.K.P .......... .......... .......... .......TK. 
+       BSGFV  YIMP.T.M.H .K........ .......... .......... .......GL. 
+       BSVAV  YIMP.Q.L.S .E........ .......... .......... .......GL. 
+       BSMyV  YALEIE.L.S .G........ .......... .......... .......GI. 
+        CLNV  YVIDIQ.L.S .E........ .......... .......... .......GI. 
+        DrMV  VYCFPLDS.S .R........ .......... .......... ......DGV. 
+        CaMV  VY...Q.Q.E .S........ .......... .......... .......GI. 
+        EVCV  IY...Q.L.N .T........ .......... .......... .......GI. 
+       LLDAV  VFM..Q.E.. .S........ .......... .......... .......GI. 
+        CERV  LF...Q.Q.E .S........ .......... .......... .......GI. 
+         FMV  VY...Q.Q.E .T........ .......... .......... .......GI. 
+        MiMV  IY...Q.Q.E .T........ .......... .......... .......GI. 
+        SVBV  LY...Q.A.T .T........ .......... .......... .......KG. 
+       RuFDV  VY...Q.Q.N .T........ .......... .......... .......GM. 
+       SbCMV  IY...L.H.D .S........ .......... .......... .......GL. 
+        PCSV  VY...Q.Q.D .A........ .......... .......... .......GL. 
+        BRRV  IY...Q.F.D .S........ .......... .......... .......GV. 
+      CmYLCV  VC...Q.K.S .S........ .......... .......... .......GM. 
+        PVCV  LGS..D.I.P .......... .......... .......... .......GK. 
+        TVCV  IYNF.E.F.. .T........ .......... .......... .......TK. 
+    ORF7PCSV  IPVD.N.RRN PE........ .......... .......... .......KK. 
+   ORF7SbCMV  LYVD.E.... .E........ .......... .......... .......PN. 
+CterMOVCSVMV  INFIGL.VD. QLRLLEG.G. .......... .......... .......KA. 
+    ORF7BRRV  LLLKTT.PT. ...KADV.L. .......... .......... .......GA. 
+        Cer7  KIKAQ..M.. TN..ED..L. KFALTK.QLK ..INQEC... FE.TRVE..P 
+       Mabel  VNHLTN.E.. LQV.VN..LN KK.ELL.MID .KRN.QFS.N FK.NKWKQ.P 
+         Tas  IKRIT..... SNLEVI..GD NI.EAH.FGD LKPS.ELP.. RK.IRS...P 
+     Cer10-1  SFTAPKFS.. ANAQA...F. LL.ENG.CNP YETQAQER.. LN.GPP...M 
+    Spirobel  LKKITD.R.. PNVRLD..IK QY.SHF.TS. LQLA.ED... FN.DLSST.F 
+    Hydra3-1  LS.....G.. QYIEEA..VD SF.EHL.KG. INLA.DSN.. VD.CKSLE.V 
+         Pao  VNDLQ..V.. TAQKI.P.KE QIDE..YS.. .HLQ.DIS.D IITYE.NAKP 
+       Ninja  VSSLS..L.. PMQTL.S.RR DV.Q..GV.. .HR..DAR.L PMKPYSNVVP 
+        Tamy  IGNLK..L.. APQHV.S.LE VI.E.KCE.. .HLK.RM..S ELVYS.KERP 
+       Cubel  VESLQ..L.. PEQTM.N.ID DLSE.HYG.. .HLA.NL..P VESYA.NVRP 
+       Zebel  ATGLC..L.. AEHNY.P.VT ALQN..AH.. RHLK.DL..P LPPVD.RVKP 
+      Sinbad  .TKK...L.. PIDHAAP.LT EP.Q..LKRW KHLK.DI..T LPRLQSN.FV 
+      Saci-6  .TKK...L.. PIDHAAP.LT EL.Q..LKRW KHLK.DI..T LPRLQSN.FV 
+       Kobel  .KSS...L.. PVEKWHI.PT QK.D..VSTW EHLG.DI..E LPRLQISSNI 
+      Purbel  ALGIDC.I.. SDD.VA..AV NLPE..LAQ. .KFQ.LREED LQRGSGP..V 
+        Suzu  GLDRIA.E.. VHQSVT..AG QL.Q..RFFP .RIA.QA..E LERPK.E..V 
+       Gabel  DL..TR.... PKE.I..... QL.L..VSH. .KEG.QL..A PQRIRTV..G 
+       Moose  KV..TANT.. PATSF..STS CW.KLP.AG. LALA.DPE.. FH.QSGR..V 
+         Max  EL..SGKL.. P.SYPIPRNS LK.DLP..A. LRWA.DPT.. FF.ESSQ..I 
+      Tribel  KI..TNSL.. PEVSF..STS QL.NIP.KN. VILA.DPE.. FN.ISSP..I 
+       Nabel  EI..TDLV.. P.NEPVP.RN RL.NIP.KQ. LKLA.DPH.. FE.KPAS..V 
+         Roo  KL..MKAL.. PVNTINVDQK KW.....KN. FKLA.DPD.. FN.KPGR..I 
+         Bel  SL..TSSL.. PAQVIDTSSS TW.RQI.CE. LPLA.DPT.. FC.TPGA..I 
+  HMS-Beagle  LLPT.LKT.. .......... .......... .......... .........F 
+        Yoyo  VLPT.LKS.. .......... .......... .......... .........F 
+    Gypsyvir  LLDT.LSS.. .......... .......... .......... .........F 
+     Burdock  ILPS.LSS.. .......... .......... .......... .........F 
+       Nomad  VLPN.LHS.. .......... .......... .......... .........F 
+       Gypsy  LLDS.LNA.. .......... .......... .......... .........F 
+         297  YVHR.FSN.. .......... .......... .......... ........NY 
+        17.6  LLHP.FSE.. .......... .......... .......... ........NY 
+         Tv1  YIHD.FSE.. .......... .......... .......... ........HY 
+         Ted  IYH..FHD.. .......... .......... .......... ........YF 
+         Zam  LLKFKFHS.. .......... .......... .......... ........YF 
+      Idefix  YIHK.FSD.. .......... .......... .......... ........NY 
+         Tom  YLHD.FSD.. .......... .......... .......... ........DY 
+    Springer  LL...PDL.. ..T....... .......... .......... ........SF 
+         412  LVDKNFPI.. .......... .......... .......... ........PC 
+        Mdg1  IVPNNFPI.. .......... .......... .......... ........PG 
+   Blastopia  VLVVHDSK.. ..F....... .......... .......... ........SC 
+    Micropia  VVPNEEM... .......... .......... .......... ........RN 
+        Mdg3  IIVCDQSM.. .......... .......... .......... ........RY 
+         Mag  VIDK.G.... .......... .......... .......... ........TT 
+    Gulliver  VS.K...... .......... .......... .......... ........NC 
+         DRM  V..K.G.... .......... .......... .......... .........E 
+        CFG1  EVVK.G.... .......... .......... .......... ........D. 
+    Hydra2-1  LIITPG.... .......... .......... .......... ........K. 
+         SPM  V...SG.... .......... .......... .......... ........D. 
+        SURL  VI..PG.... .......... .......... .......... ........NR 
+        Cer4  VSNR...... .......... .......... .......... ........EN 
+        Cer5  VCDR...... .......... .......... .......... ........QT 
+        Cer6  VCDR...... .......... .......... .......... ........DT 
+   Athila4-1  VLEMDEEP.. .......... .......... .......... ........K. 
+    Diaspora  ILNMEDGF.. ..SQG..... .......... .......... ........SV 
+   Cyclops-2  VIDMEEDD.. .......... .......... .......... ........DA 
+      Bagy-2  VLATAQDS.. .......... .......... .......... ........FC 
+     Calypso  VMDIEEDP.. .......... .......... .......... ........DI 
+       Gloin  TLELG..... .......... .......... .......... ........NV 
+        Ifg7  SIPMG..... .......... .......... .......... ........GA 
+       Reina  FLPLS..... .......... .......... .......... ........GY 
+       Gimli  VIPLK..... .......... .......... .......... ........GI 
+      Monkey  AVPLD..... .......... .......... .......... ........DF 
+      Tntom1  VVIID..... .......... .......... .......... ........DF 
+   Galadriel  VMPLG..... .......... .......... .......... ........DF 
+         Del  ILDLE..... .......... .......... .......... ........DP 
+     Peabody  CLPLV..... .......... .......... .......... ........QI 
+  Retrosat-2  LLESK..... .......... .......... .......... ........DL 
+      Bagy-1  ALKSL..... .......... .......... .......... ........DI 
+         Tma  ISPVE..... .......... .......... .......... ........LY 
+     Legolas  IVPLK..... .......... .......... .......... ........KH 
+      Cereba  EVPMQ..... .......... .......... .......... ........AC 
+         CRM  VVPMD..... .......... .......... .......... ........AC 
+     Beetle1  VVPMN..... .......... .......... .......... ........AC 
+        REM1  NIPGT..... .......... .......... .......... .......... 
+     G-Rhodo  VLDLG..... .......... .......... .......... ........DY 
+  Sushi-ichi  VLHAP..... .......... .......... .......... ........TA 
+    Amn-ichi  VTEVP..... .......... .......... .......... ........HF 
+     Amn-san  IIPCP..... .......... .......... .......... ........SS 
+      Amn-ni  LIQSP..... .......... .......... .......... ........EF 
+      Dane-1  AIQLA..... .......... .......... .......... ........HY 
+       Maggy  VTQLA..... .......... .......... .......... ........HY 
+       marY1  VTQLG..... .......... .......... .......... ........KQ 
+       Cgret  ITNIG..... .......... .......... .......... ........EY 
+       Cft-1  VTDMA..... .......... .......... .......... ........SH 
+       Pyret  ITEIG..... .......... .......... .......... ........DK 
+      Skippy  IIPVW..... .......... .......... .......... ........RY 
+        Real  VMDLSF.... .......... .......... .......... ........GE 
+       MGLR3  VLDMP..... .......... .......... .......... .........Q 
+ Grasshopper  YIVPGL.... .......... .......... .......... ........AR 
+       Pyggy  VMDLSS.... .......... .......... .......... ........EE 
+        Tse3  IIDSPL.... .......... .......... .......... ........P. 
+       Ty3-1  ILDNMD.... .......... .......... .......... ........Y. 
+     Skipper  IIDVL..... .......... .......... .......... ........FG 
+         TF2  VVKKF..... .......... .......... .......... ........SH 
+         TF1  VVKKF..... .......... .......... .......... ........SH 
+       Tor4a  VSD....... .......... .......... .......... ........EL 
+        Tor2  VKS....... .......... .......... .......... ........SF 
+        Tor1  IK........ .....GL... .......... .......... ........QA 
+        Cer1  FHIGD..... ....MDR... .......... .......... ........E. 
+        Cer2  FTNGHCMPD. ....IDG... .......... .......... ........SY 
+        Cer3  FTTGRCMPE. ....ING... .......... .......... ........EY 
+      Cigr-1  VLDG...... .....LC... .......... .......... ........A. 
+       CsRN1  LAD....... .......... .......... .......... ........FK 
+      Kabuki  LAD....... .......... .......... .......... ........VK 
+    Boudicca  VAD....... .......... .......... .......... ........IA 
+     Osvaldo  VLPGV..... .......... .......... .......... ........ID 
+        Woot  VVKNL..... .......... .......... .......... ........IK 
+     Ulysses  YMCPDLR... .......... .......... .......... ........Q. 
+       Circe  IIDFFPS... .......... .......... .......... ........FG 
+        Gmr1  IVPTLP.... .......... .......... .......... ........VP 
+       rGmr1  IVADLP.... .......... .......... .......... ........VP 
+   RetroSor1  VVDLHY.... .......... .......... .......... ........PY 
+    Cinful-1  IVDMEY.... .......... .......... .......... ........PY 
+  B1147A04.5  VADLSL.... .......... .......... .......... ........PY 
+        Ogre  VMDIQP.... .......... .......... .......... ........AY 
+   Grande1-4  VANFDC.... .......... .......... .......... ........GY 
+      Tat4-1  VVDKPV.... .......... .......... .......... ........IY 
+        Tft2  VFDKPA.... .......... .......... .......... ........AY 
+       RIRE2  VADFET.... .......... .......... .......... ........AY 
+         HFV  YILLS..... .......... .......... .......... ........PT 
+       SFV-1  YILLN..... .......... .......... .......... ........PS 
+         EFV  YVIIA..... .......... .......... .......... ........PS 
+         BFV  YVLVA..... .......... .......... .......... ........PV 
+         FFV  YAIIT..... .......... .......... .......... ........PG 
+      DrFV-1  ASTILQ.... .......... .......... .......... ........SK 
+    HERV-K10  ITS.I..... .......... .......... .......... ........PL 
+        MPMV  VIPNL..... .......... .......... .......... ........PV 
+        MMTV  VIPTL..... .......... .......... .......... ........PF 
+        SERV  IIPHL..... .......... .......... .......... ........PV 
+       SRV-1  VIPNL..... .......... .......... .......... ........PV 
+        JSRV  ILPYL..... .......... .......... .......... ........PV 
+      SMRV-H  VLPNL..... .......... .......... .......... ........PV 
+      K-HERV  MITSI..... .......... .......... .......... ........PL 
+       PyERV  VLP.L..... .......... .......... .......... ........HT 
+        LPDV  IAA.I..... .......... .......... .......... ........GF 
+         RSV  LFPA...V.. ....AMV... .......... .......... ........RG 
+STcLV2PP1664  TLPSCLVD.. ....TNS... .......... .......... ........KW 
+      HTLV-2  ILSSCLLD.. ....THN... .......... .......... ........KW 
+      HTLV-1  VLTSCLVD.. ....TKN... .......... .......... ........NW 
+         BLV  TIPKILVD.. ....TFD... .......... .......... ........KW 
+       HIV-2  MTGDT..... .......... .......... .......... ........PI 
+       HIV-1  VGP.T..... .......... .......... .......... ........PV 
+        EIAV  VAD.I..... .......... .......... .......... ........PV 
+      SIVMAC  MTGDT..... .......... .......... .......... ........PI 
+      SIVAGM  IGP.T..... .......... .......... .......... ........PI 
+      SIVMND  IGP.T..... .......... .......... .......... ........PI 
+         VMV  VLATS..... .......... .......... .......... ........PV 
+     SA-OMVV  VLPSS..... .......... .......... .......... ........PV 
+        CAEV  VLPQS..... .......... .......... .......... ........PV 
+         FIV  LEDNS..... .......... .......... .......... ........LI 
+         BIV  LFSDT..... .......... .......... .......... ........PV 
+        KoRV  VIPEC..... .......... .......... .......... ........PA 
+         REV  VIPEC..... .......... .......... .......... ........PD 
+      HERV-E  YMPDC..... .......... .......... .......... ........PL 
+     RTVL-Ia  LIPEA..... .......... .......... .......... ........AT 
+        MdEV  VIPEC..... .......... .......... .......... ........PA 
+    PERV-MSL  VIPEC..... .......... .......... .......... ........PA 
+        FeLV  YVPEC..... .......... .......... .......... ........PY 
+     RCHO-K1  HVPDC..... .......... .......... .......... ........PY 
+       BAEVM  VVPEC..... .......... .......... .......... ........PY 
+        MuLV  HVPDC..... .......... .......... .......... ........PY 
+        GALV  VIPEC..... .......... .......... .......... ........PA 
+        WdSV  YNPDQ..... .......... .......... .......... ........TF 
+        XEN1  VSPTC..... .......... .......... .......... ........PL 
+       ZFERV  CSANV..... .......... .......... .......... ........PS 
+      ASSBSV  YCPNC..... .......... .......... .......... ........PI 
+     ZFERV-2  VSTQT..... .......... .......... .......... ........PV 
+        SnRV  ISQEL..... .......... .......... .......... ........AE 
+     MuERV-L  VISPV..... .......... .......... .......... ........P. 
+    Retrofit  VPQA...... .......... .......... .......... .......KK. 
+       Koala  VPNA...... .......... .......... .......... .......KK. 
+   Hopscotch  VPKA...... .......... .......... .......... .......SK. 
+     Melmoth  IPEF...... .......... .......... .......... .......RL. 
+   Vitico1-2  VPGM...... .......... .......... .......... .......KK. 
+    Oryco1-1  VPDL...... .......... .......... .......... .......KQ. 
+        Poco  VPEI...... .......... .......... .......... .......DQ. 
+   Vitico1-1  IPSL...... .......... .......... .......... .......TQ. 
+       Araco  IPSM...... .......... .......... .......... .......KT. 
+    Oryco1-2  IPWL...... .......... .......... .......... .......TV. 
+  Endovir1-1  VEGL...... .......... .......... .......... .......TA. 
+     SIRE1-4  VKGL...... .......... .......... .......... .......TA. 
+      Opie-2  VKSL...... .......... .......... .......... .......NF. 
+       TSI-9  VQNL...... .......... .......... .......... .......HY. 
+      ToRTL1  VDGL...... .......... .......... .......... .......KY. 
+       Fourf  VPSI...... .......... .......... .......... .......KK. 
+      Batata  APDI...... .......... .......... .......... .......RL. 
+       Sto-4  VPSL...... .......... .......... .......... .......RR. 
+       Tork4  VPLM...... .......... .......... .......... .......TK. 
+        Tto1  VPDM...... .......... .......... .......... .......RL. 
+       RTvr2  APDV...... .......... .......... .......... .......RF. 
+       Tnt-1  VPDL...... .......... .......... .......... .......RM. 
+         V12  VPEM...... .......... .......... .......... .......RF. 
+      Humnum  VPKL...... .......... .......... .......... .......TT. 
+      Mtanga  VPEL...... .......... .......... .......... .......ES. 
+       Copia  CKEA...... .......... .......... .......... .......AG. 
+        Koco  CREA...... .......... .......... .......... .......AG. 
+    Yokozuna  VKGL...... .......... .......... .......... .......SH. 
+    Tricopia  VPDL...... .......... .......... .......... .......RS. 
+    Hydra1-2  IPSY...... .......... .......... .......... .......PQ. 
+    Hydra1-1  IPTY...... .......... .......... .......... .......PQ. 
+        1731  VPDL...... .......... .......... .......... .......NG. 
+    Xanthias  VPSL...... .......... .......... .......... .......HM. 
+    pCretro6  VPGA...... .......... .......... .......... .......PH. 
+    pCretro3  SPNL...... .......... .......... .......... .......PH. 
+     PyRE1G1  VPGL...... .......... .......... .......... .......RE. 
+       Osser  VPGF...... .......... .......... .......... .......KF. 
+        Tse1  SPDS...... .......... .......... .......... .......TC. 
+        Ty1B  TPNI...... .......... .......... .......... .......AY. 
+        Tkm1  APST...... .......... .......... .......... .......HT. 
+        pCal  LPES...... .......... .......... .......... .......SF. 
+         Ty2  TPNI...... .......... .......... .......... .......AY. 
+        Tdh2  IPGI...... .......... .......... .......... .......QS. 
+         Ty4  VPEE...... .......... .......... .......... .......ES. 
+       Zeco1  IP.L...... .......... .......... .......... .......... 
+      GalEa1  IP.L...... .......... .......... .......... .......... 
+       Cico1  VP.L...... .......... .......... .......... .......... 
+       Zeco2  IP.L...... .......... .......... .......... .......... 
+       Olco1  IP.L...... .......... .......... .......... .......... 
+     CoDi4.4  TG.D...... .......... .......... .......... .......LQ. 
+     CoDi3.1  LGP....... .......... .......... .......... .......TQT 
+     CoDi2.4  LGQG...... .......... .......... .......... .......KTI 
+     CoDi4.1  FGDR...... .......... .......... .......... .......LK. 
+     CoDi4.5  .VDY...... .......... .......... .......... .......LDH 
+     CoDi4.3  FPTM...... .......... .......... .......... .......E.. 
+     CoDi7.1  VGYDERS... .......... .......... .......... .......TQT 
+     CoDi5.2  FPKL...... .......... .......... .......... .......SS. 
+     CoDi5.3  FPGL...... .......... .......... .......... .......S.. 
+     CoDi5.1  FPGL...... .......... .......... .......... .......AS. 
+     CoDi5.4  APGI...... .......... .......... .......... .......TN. 
+     CoDi5.5  LPAL...... .......... .......... .......... .......KH. 
+     CoDi5.6  VPGL...... .......... .......... .......... .......AH. 
+     CoDi6.1  .PGL...... .......... .......... .......... .......KT. 
+     CoDi6.7  .PSS...... .......... .......... .......... .......PT. 
+     CoDi6.6  .PAS...... .......... .......... .......... .......NQ. 
+     CoDi6.4  SPDF...... .......... .......... .......... .......EK. 
+     CoDi6.3  CARA...... .......... .......... .......... .......NE. 
+     CoDi6.2  CLGA...... .......... .......... .......... .......TE. 
+     CoDi6.5  .PNM...... .......... .......... .......... .......TK. 
+
+              201                       227 
+      BsCVBV  KF.II.GCN. FI.RSMKGG. ....IKI   
+      ScBIMV  QM.LI.GCN. FL.QSLAGG. ....VRL   
+      ComYMV  QM.II.GCS. FI.RSLEGG. ....LRI   
+         DBV  QL.II.GCN. FI.RAMNGG. ....VRI   
+        CYMV  QL.IL.GCN. FI.RSM..F. ....VHF   
+       BSOLV  HM.II.GMN. FI.RTV..G. ....LRI   
+        TaBV  SM.IL.GCN. FF.KHMGGG. ....MRF   
+        CSSV  EM.IL.GCN. FI.RGMYGG. ....LRI   
+       CSVMV  DI.II.GAT. FY.N.KYSP. ....IEL   
+        KTSV  HI.IL.GMN. FI.SSMEGG. ....IRI   
+        RTBV  TF.II.GHR. FL.TNEN.G. ....S.V   
+       BSGFV  EF.II.GMN. FI.KAMEGG. ....LRI   
+       BSVAV  HF.II.GMN. FI.RAMEGG. ....IRI   
+       BSMyV  DM.II.GTN. FL.RAMSGG. ....VRI   
+        CLNV  DM.IL.GCN. FI.RAMEGG. ....LRI   
+        DrMV  QM.LI.GCN. FI.RSKQGG. ....VRF   
+        CaMV  DF.II.GNN. FC.Q.LYEP. ....F.I   
+        EVCV  DM.VL.GNN. FL.N.LYGP. ....F.I   
+       LLDAV  DF.IL.GNN. FC.Q.NYEP. ....L.K   
+        CERV  DL.LL.GNN. FC.Q.LYSP. ....F.I   
+         FMV  DF.LI.GNN. FC.R.LYNP. ....F.I   
+        MiMV  DI.LL.GNN. FC.Q.TYQP. ....F.I   
+        SVBV  DI.TL.GNN. FC.R.LYEP. ....F.V   
+       RuFDV  DF.IF.GQN. FL.K.LYRP. ....F.T   
+       SbCMV  DL.II.GNN. FL.K.LYQP. ....F.I   
+        PCSV  .PLIL.GNN. FL.K.LYNP. ....F.I   
+        BRRV  .PMII.GNN. FL.R.LYYP. ....F.C   
+      CmYLCV  DF.VI.GNN. FL.R.LYQP. ....F.I   
+        PVCV  DL.LI.GFD. IY.RQLNNK. ....LRI   
+        TVCV  DM.LL.GM.P FL.EKLY.PH ....I.I   
+    ORF7PCSV  KV.LL.GID. FL.ENFD... ....YKI   
+   ORF7SbCMV  KI.LL.GTD. FL.ENF..Y. ....FKI   
+CterMOVCSVMV  EI.LL.GMN. IL.QNLK.P. ....YCI   
+    ORF7BRRV  EV.LF.GMD. FL.DSFES.. ....YSI   
+        Cer7  DI.II.GCDH IA...EIW.R ....GDF   
+       Mabel  DI.LI.GADH FF...KFI.Q ....FDQ   
+         Tas  DI.LI.GHDY FS...DFI.P LT..GIK   
+     Cer10-1  EA.VL.GSDV IA....WL.E ....SDA   
+    Spirobel  DV.LI.GLDY YY...DFI.N Q...AII   
+    Hydra3-1  DV.LI.GADY YW...SFF.N ....GKV   
+         Pao  GI.LI.GQDN WH...MLL.A ....SKV   
+       Ninja  KL.LI.GLDH GH...LGL.P ....LRT   
+        Tamy  TL.LI.GQDN WE...LI..V ....SRR   
+       Cubel  RI.LL.GMDN AY...LDQ.P ....LEA   
+       Zebel  LL.LI.GSDN PH...LLT.P ....IQP   
+      Sinbad  GV.LI.GCD. AP...DAH.W V...LEQ   
+      Saci-6  GI.LI.GCD. AP...DAH.W V...LEQ   
+       Kobel  DL.LI.GNN. VP...AAY.A P...IDV   
+      Purbel  DL.LV.GIDH A....RLH.A ....GEV   
+        Suzu  DL.LISHRE. G....RL..A ....PQR   
+       Gabel  DL.VL.W.D. G.....P..M ....GK.   
+       Moose  DM.LI.GASH FY...TFL.R E...GRL   
+         Max  DV.LI.GADI LP...SIM.M D...GTR   
+      Tribel  DM.LI.GAEL FY...ELL.S I...GQI   
+       Nabel  DM.LI.GSGP TL...SIL.C P...GQL   
+         Roo  DL.II.GADV YT...HIL.Q N...GVI   
+         Bel  DV.IV.GSDQ LW...SLY.T ....GDR   
+  HMS-Beagle  DA.IL.GKD. TM..KGM.GA Q...IDL   
+        Yoyo  HG.IL.GND. SL..KQL.EA ....IIF   
+    Gypsyvir  DA.II.GFD. LL..TQA.GV K...LNL   
+     Burdock  DA.II.GLD. LL..KQG.NA T...LDF   
+       Nomad  DG.II.GDD. TL..KDL.KA I...VDR   
+       Gypsy  DA.II.GLD. LL..TQA.GV K...LNL   
+         297  DM.LI.GRK. LL..KNA.QS V...INY   
+        17.6  DL.LL.GRK. LL..AEA.KA T...ISY   
+         Tv1  DV.LI.GRE. YL..EAC.QA K...IDY   
+         Ted  DG.LI.GLD. LL..SKW.EA K...IDL   
+         Zam  NG.LI.GMD. LL..SHL.EA K...VDL   
+      Idefix  DF.LL.GRK. YL..EDT.KA K...IDY   
+         Tom  DV.LI.GRK. LL..NKA.QG I...INY   
+    Springer  DA.IV.GLD. LL..KQA.GA S...LCL   
+         412  DG.II.GID. FI..KKY.NC .Q..IDL   
+        Mdg1  DG.II.GLD. FI..KKY.NC .I..LEF   
+   Blastopia  DG.IV.GHD. FI..SKF.RL .I..CSA   
+    Micropia  DI.LI.GRE. IL...KQ.GF .Y..VIL   
+        Mdg3  NV.IL.GRD. FL.T.AC.NL .N..LDP   
+         Mag  N..LL.GRQ. WL..AELNIN ....IKI   
+    Gulliver  KSDLL.GID. WI...WK.VG F...RDV   
+         DRM  GPSLC.GRN. WL...QK.LS ....LNW   
+        CFG1  NPCLL.GRD. WL...WH.IQ ....LDW   
+    Hydra2-1  GPSLI.GRN. WL...RK.LK ....INW   
+         SPM  NVALM.GRN. WL...RR.IR ....IDW   
+        SURL  QP.LL.G... LRTSEELYLV ....KRV   
+        Cer4  N..LL.GMS. WV...SHSPE ....MRD   
+        Cer5  N..LL.GTS. WL...NLCPQ ....MRS   
+        Cer6  N..LI.GTS. WL...NHSPE ....MRA   
+   Athila4-1  DPLIL.GRH. FL..ATAGAM ....IDV   
+    Diaspora  .PIIL.GR.P FM..KTARTK ....IDV   
+   Cyclops-2  .PLIL.GR.P FM..KTARMM ....IDV   
+      Bagy-2  .PIIF.GR.P FL..NTVNAH ....IDC   
+     Calypso  .PIIL.GR.P FM..STTSCV ....VDM   
+       Gloin  DL.IL.GI.A WH.....KTM GDS.NAN   
+        Ifg7  DV.VL.GVQ. WL......SL GTTTFNF   
+       Reina  DI.IL.GMD. WL..E.AHS. P...MKV   
+       Gimli  DA.VL.GVH. WL.....KPL GP..ITW   
+      Monkey  QV.IL.GME. FM.....HAA KL..VPM   
+      Tntom1  EL.IV.VLE. FL.....RQT NT..MPI   
+   Galadriel  EI.IL.GID. FL....RKYQ F...VPF   
+         Del  DI.LL.GMD. WL....AAYH VV..LDC   
+     Peabody  DV.IL.GMN. WL....VFNR VS..INC   
+  Retrosat-2  DV.IL.GMD. WL..T..KFK GV..IDC   
+      Bagy-1  NI.IL.GMD. WM..S.AHY. AK..IDT   
+         Tma  DV.IL.GMD. WL....DHYR VH..LDC   
+     Legolas  DV.IL.GMD. WL....GKYK AH..IDC   
+      Cereba  SV.LL.GR.P CQ..F.DKNY VHP.GRT   
+         CRM  NI.LL.GR.P WQ..F.DSDC MHH.GRS   
+     Beetle1  HI.LL.GR.P WQ..S.DKET LHN.GRT   
+        REM1  DVVLA.LE.. WMHKRNAHMD VQ..RAA   
+     G-Rhodo  DV.IL.GR.P FQ....NYSG AR..IDP   
+  Sushi-ichi  .PLVL.GR.P WL..E.RHDP H...ISW   
+    Amn-ichi  .PVIL.GI.P WL..T.LHDP S...ISW   
+     Amn-san  .PVVL.GL.P WL..R.LHNP S...IDW   
+      Amn-ni  .PVIL.GH.P WL..L.QHNP H...IDW   
+      Dane-1  .PIIL.GM.P WL..E.TH.. ....ARW   
+       Maggy  .PIVL.GM.P WL..K.QHDP T...IGF   
+       marY1  KA.IL.GY.P WL..R.DHNP E...VDW   
+       Cgret  DL.VL.GM.P WL..E.KNNP R...IDW   
+       Cft-1  DI.VL.GM.P WL..R.KHNP V...IDW   
+       Pyret  NV.IL.GI.P WL..K.KSNP R...IDW   
+      Skippy  DL.VL.GY.P WL..L.RYNP Q...FNW   
+        Real  DI.YL.GR.G WM..N.HNNV S...V.A   
+       MGLR3  EM.IV.GR.L FL..A.EHGI L...TDC   
+ Grasshopper  DV.IL.GL.P WM..T.HRRI S...LDA   
+       Pyggy  DI.YL.GR.G WM..D.HQDV T...VAP   
+        Tse3  QPVVF.GI.G FF..K.QH.. ....PEI   
+       Ty3-1  QL.LI.GN.P IL..R..RYP K...I.L   
+     Skipper  N.DIL.K.DS II..N.QKDK I...IKL   
+         TF2  .PAAISF.TT LY....DNN. ....IEI   
+         TF1  .PAAISF.TT LY....DNN. ....IEI   
+       Tor4a  SP.IL.GV.P AL..VDNEIL ....INL   
+        Tor2  .PPII.GRE. FL..TSHPDL ....ARN   
+        Tor1  EL.IL.GVD. SL..QGRTLQ ....MRR   
+        Cer1  NV.II.GA.G HF...EQMGI Q...MN.   
+        Cer2  QF.IF.GND. LL...SRLPI FM..FDY   
+        Cer3  QF.II.GND. ML...SKLPM FV..FNY   
+      Cigr-1  DI.IL.GHN. FM..CRHSEV I...FKM   
+       CsRN1  TP.II.GAD. FL..THYNLS ....VDV   
+      Kabuki  QA.IL.GAD. FL..TSNNLL ....VDM   
+    Boudicca  MP.II.GID. LL..QYHNLL ....IDT   
+     Osvaldo  DL.VL.GCD. FL...AGMGT P...WNV   
+        Woot  .PTIL.GAD. WL...NE.QR AV..IDF   
+     Ulysses  EL.YL.GID. FW...RA.FE IA..PEL   
+       Circe  N.EGL.GID. KL...MR.NS N...NDF   
+        Gmr1  .F.LI.GRDC PIFT.RF.WS SMR.GTA   
+       rGmr1  .L.LL.GRDW PGFE.EL.LS LPA.ATP   
+   RetroSor1  NA.IF.GR.G FL....NKF. ....NAA   
+    Cinful-1  NA.II.GR.G TL....NAF. ....EAI   
+  B1147A04.5  NA.VL.GR.P AL....VKF. ....MAA   
+        Ogre  SC.LL.GR.P WI....HAA. ....GAV   
+   Grande1-4  NA.II.GR.P GL....AKF. ....MAI   
+      Tat4-1  NI.IL.GT.P WI....HDM. ....QAI   
+        Tft2  NI.IL.GT.L WI....YQM. ....KAV   
+       RIRE2  HA.IL.GR.P AL....AKF. ....MAV   
+         HFV  DV.PW.LTQQ PL...QL.TI L...VPL   
+       SFV-1  DV.PW.LMKK PL...QL.TT L...VPL   
+         EFV  DI.PW.YKKY EL...EL.TI K...IDI   
+         BFV  DI.PW.YKPG PL...EL.TI K...IDV   
+         FFV  DV.PW.ILKK PL...EL.TI K...LDL   
+      DrFV-1  QI.GW.LKQI NL...EQ.EI K...RMA   
+    HERV-K10  N..LW.GRD. LL.Q.QW.G. AEITMPA   
+        MPMV  N..LW.GRD. LL.S.QM.KI MMCSPND   
+        MMTV  T..LW.GRD. IM.K.DI.KV RLMQPVW   
+        SERV  N..LW.GRD. LL.S.QM.K. ....IIM   
+       SRV-1  N..LW.GRD. LL.S.QM.KI MMCSPSD   
+        JSRV  N..LW.GRD. IL.S.KM.GV YL.....   
+      SMRV-H  N..LW.GRD. IL.S.QM.KL VM.....   
+      K-HERV  N..LW.GQD. LL.Q.QW.GV EITMPAP   
+       PyERV  N..LW.GRD. LM.S.QF.QT KLILQLM   
+        LPDV  N..IL.GREA LA...QL.HC VVS.NLV   
+         RSV  S..IL.GRD. CL...QGLG. ....LRL   
+STcLV2PP1664  .A.II.GRD. IL.Q.KCQSV .LYLPED   
+      HTLV-2  ..TII.GRD. AL.Q.QCQGL .LYLPDD   
+      HTLV-1  .A.II.GRD. AL.Q.QCQGV .LYLPEA   
+         BLV  Q..IL.GRD. VL.S.RLQAS .ISIPEE   
+       HIV-2  N..IF.GRN. IL.T.AL.GM S...LNF   
+       HIV-1  N..II.GRN. ML.T.QI.GC T...LNF   
+        EIAV  T..IL.GRD. IL.Q.DL.GA KLVLAQL   
+      SIVMAC  N..IF.GRN. LL.T.AL.GM S...LNL   
+      SIVAGM  N..IV.GRN. IL.A.PL.GA RLIMGQL   
+      SIVMND  D..II.GRN. IM.E.KL.GG KLILAQL   
+         VMV  E..VL.GRDN MR...EL.GI GLIMANL   
+     SA-OMVV  E..VL.GRDN MA...KL.DI GIIMANL   
+        CAEV  E..VL.GRDN MA...RF.GI KIIMANL   
+         FIV  QP.LL.GRDN MI...KF.NI RLVMAQI   
+         BIV  N..LF.GRS. LL...RS.IV TCFT...   
+        KoRV  .P.LL.GRD. LL.T.KL.K. ....AQI   
+         REV  .P.LL.GRD. LL.Q.KL.R. ....ATI   
+      HERV-E  .P.LL.GRD. LL.S.KL.R. ....ATI   
+     RTVL-Ia  ..SLL.GRD. LM.L.KL.GI G...LQV   
+        MdEV  .P.LL.GRD. LL.T.KL.K. ....AQV   
+    PERV-MSL  .P.LL.GRD. LL.T.KM.G. ....AQI   
+        FeLV  .P.LL.GRD. LL.T.KL.K. ....AQI   
+     RCHO-K1  .P.LL.GRD. LL.T.KL.R. ....AQI   
+       BAEVM  .P.LL.GRD. LL.T.KL.G. ....AQI   
+        MuLV  .P.LL.GRD. LL.T.KL.K. ....AQI   
+        GALV  .P.LL.GRD. LL.T.KL.K. ....AQI   
+        WdSV  H..IL.GRD. TL.S.KM.R. ....AIV   
+        XEN1  N..LL.GTD. LL.Y.RL.Q. ....AKL   
+       ZFERV  .A.LL.GRD. LL.V.KL.G. ....VKI   
+      ASSBSV  N..LL.GRD. LL.C.RL.G. ....CFI   
+     ZFERV-2  N..LL.GRD. AL.C.KL.G. ....LHI   
+        SnRV  N..IL.GND. LL.R.SL.G. ....LIV   
+     MuERV-L  EC.II.GID. IL.R.NW.QN SHI.GSL   
+    Retrofit  N..LISASQ. L.AA..DNS. ....AFL   
+       Koala  N..LVSAQR. L.VS..DNH. ....AYL   
+   Hopscotch  N..LISVHR. L.VA..DNY. ....AFL   
+     Melmoth  N..LISISS. L.TD..DIGS ....RVI   
+   Vitico1-2  N..LLSVAQ. L.TS...SGH F...VLE   
+    Oryco1-1  N..LLSIGQ. L.LEH.GYA. ....VYF   
+        Poco  N..LLSVGQ. L.LEK.GYS. ....LVF   
+   Vitico1-1  N..LLSVGQ. L.MVS.GYS. ....ILF   
+       Araco  N..ILSLGQ. L.LEK.GYD. ....IRL   
+    Oryco1-2  N..IVSLGQ. L.DHS.GSN. ....LDI   
+  Endovir1-1  N..LISVSQ. L.CDE.GLT. ....VSF   
+     SIRE1-4  N..LISISQ. L.CDE.GFN. ....VNF   
+      Opie-2  N..LLSVAQ. I.CDL.VLS. ....CAF   
+       TSI-9  N..LLSVSQ. L.LED.DFE. ....VSF   
+      ToRTL1  S..WLSVSQ. I.CDK.GNE. ....VKF   
+       Fourf  N..LVSASM. L.CRD.GYK. ....VVL   
+      Batata  N..LISTGK. L.DD..DGFC ....CFF   
+       Sto-4  N..LISVSR. L.DDQ.HIH. ....CHF   
+       Tork4  N..LISLSL. L.DSK.GFS. ....WSG   
+        Tto1  N..LISVDK. L.DEE.GYC. ....NTF   
+       RTvr2  N..LISVQV. L.DG..GGF. ....YNH   
+       Tnt-1  N..LISGIA. L.DR..DGY. ....ESY   
+         V12  S..LISVGK. L.DD..EGY. ....HSH   
+      Humnum  N..LLSVSQ. L.ISK.GNT. ....VSF   
+      Mtanga  N..LISVGK. L.VNK.GAK. ....VTF   
+       Copia  N..LMSVKR. L.QEA.GMS. ....IEF   
+        Koco  N..LMSVKR. L.QEA.EMS. ....VMF   
+    Yokozuna  N..ILSVKK. L.LEK.GNS. ....VRF   
+    Tricopia  N..LMSVSK. I.TDR.GFE. ....VCF   
+    Hydra1-2  N..IFSVKA. A.TTN.GAS. ....ISF   
+    Hydra1-1  C..IFSVQA. A.TAK.GAR. ....INF   
+        1731  N..FMSVSR. A.AQY.KCF. ....VNF   
+    Xanthias  N..FLSVSKS A..EY.ENI. ....TTF   
+    pCretro6  N..LLSLTR. A.DDA.HCR. ....YVG   
+    pCretro3  N..LLALGR. L.TSA.GMS. ....FHG   
+     PyRE1G1  N..LMSVG.. L.VDK.AGGA ....VLF   
+       Osser  R..LLSLKQ. L.TNN.GA.. .....QF   
+        Tse1  N..LISLHD. L.EKA..GLI ....IDL   
+        Ty1B  D..LLSLNE. L.A.A.VDIT ....ACF   
+        Tkm1  N..IISVED. L.TKS.QAYL ....D.L   
+        pCal  N..LVSLKQ. I.EE..RGFN ....VLI   
+         Ty2  D..LLSLSE. L.A.N.QNIT ....ACF   
+        Tdh2  N..LISFND. L.LNK.GFLI ....L.F   
+         Ty4  T..IISCYD. L.AKT.TKMV ....L..   
+       Zeco1  ...LLSKTS. L.KT..AGTI ....LDM   
+      GalEa1  ...LLSKTS. M.KR..AEMI ....VNF   
+       Cico1  ...LLSKTT. L.QK..AKTK ....LNM   
+       Zeco2  ...LLSKTS. L.KT..AGTI ....LDM   
+       Olco1  ...LLSKES. M.KR..AGTV ....LDM   
+     CoDi4.4  DPSLLCPNQ. L.RA..NGL. ....IVD   
+     CoDi3.1  T.SLINLNQ. I.RH..AGH. ....QTD   
+     CoDi2.4  H.S..SA.Q. L.EH..YRN. ....HVE   
+     CoDi4.1  N.TLLTPNQ. M.RD..YGI. ....EVD   
+     CoDi4.5  N..LICPMQ. C.RL..NGV. ....TVN   
+     CoDi4.3  HA.LLNPNQ. I.RL..NDV. ....EVN   
+     CoDi7.1  E.SLFNTHE. L.RK..HGV. ....IVS   
+     CoDi5.2  .GSLISIGQ. L.CD..HGCT ....ATF   
+     CoDi5.3  NGSLISIGQ. L.CD..HGCT ....ATF   
+     CoDi5.1  HP.LLSIGQ. L.CD..DGCT ....ATF   
+     CoDi5.4  N..LLSASA. L.AD..AGCE ....LFF   
+     CoDi5.5  N.SLVSV.N. V.LDE.NGYC ....TVF   
+     CoDi5.6  T.SLVSIKQ. L.CD..NGCR ....VIY   
+     CoDi6.1  .V.LLSPQH. W.AQ..EARD ....HHP   
+     CoDi6.7  R..LLSPQH. W.SQ..SARD ....IRP   
+     CoDi6.6  R..LVSPQQ. Y.AQ...FHN ....LSD   
+     CoDi6.4  R..IISVGC. L.LDQ.GCSV ....TKM   
+     CoDi6.3  N..LFSITQE L..SK.GAKL ....GSD   
+     CoDi6.2  R..IWSLNQE V..N..DARL ....STD   
+     CoDi6.5  N..LLSLSR. L.IDD.GWNP ....QFT   
+
+

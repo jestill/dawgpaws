@@ -1,0 +1,12 @@
+>P1;MuERV-L
+VLGGV
+*
+>P1;LPDV
+WQGGW
+*
+>P1;RSV
+WEKGW
+*
+>P1;Tor1
+WKGGY
+*
