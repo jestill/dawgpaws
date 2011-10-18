@@ -1,0 +1,16 @@
+The Terms and Coniditions for use of the GyDB are defined in detail at:
+http://gydb.org/index.php/Terms_and_conditions
+
+Use and distriubtion of thise database is under the terms of the creative
+commons license (http://creativecommons.org/licenses/by/2.0/).
+
+Usage of the 2.0 release of the GyDB database should cite the following 
+publication:
+
+Llorens, C., Futami, R., Covelli, L., Dominguez-Escriba, L., Viu, J.M., 
+Tamarit, D., Aguilar-Rodriguez, J. Vicente-Ripolles, M., Fuster, G., Bernet, 
+G.P., Maumus, F., Munoz-Pomer, A., Sempere, J.M., LaTorre, A., Moya, A. (2011) 
+The Gypsy Database (GyDB) of Mobile Genetic Elements: Release 2.0 
+Nucleic Acids Research (NARESE) 39 (suppl 1): D70-D74 
+doi: 10.1093/nar/gkq1061
+
