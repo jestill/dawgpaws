@@ -66,6 +66,7 @@ my $do_test = 0;                  # Run the program in test mode
 my $program = "SNAP";
 my $param;
 my $seqname;
+my $delim = ":";
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -80,6 +81,7 @@ my $ok = GetOptions(# REQUIRED VARIABLES
 		    "gff-ver=s"   => \$gff_ver,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
+		    "delim=s"     => \$delim,
 		    # ADDITIONAL INFORMATION
 		    "usage"       => \$show_usage,
 		    "test"        => \$do_test,
@@ -119,7 +121,7 @@ if ($show_version) {
 
 
 # DO CONVERSION
-snap2gff ($program, $infile, $outfile, $seqname, $param, 0);
+snap2gff ($program, $infile, $outfile, $seqname, $param, 0, $delim);
 
 exit 0;
 
@@ -129,7 +131,7 @@ exit 0;
 
 sub snap2gff {
     
-    my ($source, $snap_in, $gffout, $seq_id, $src_suffix, $do_append ) = @_;
+    my ($source, $snap_in, $gffout, $seq_id, $src_suffix, $do_append, $d ) = @_;
     # Array to hold all snap results for a single contig
     my @snap_results;
     # Rows are the individual genes
@@ -140,8 +142,9 @@ sub snap2gff {
     my $j = -1;
     my $model_num = 0;
 
+    # $d is the delim character, made a variable
     if ($src_suffix) {
-	$source = $source.":".$src_suffix;
+	$source = $source.$d.$src_suffix;
     }
     
     my $attribute;
