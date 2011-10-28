@@ -288,7 +288,7 @@ sub exonerate2gff {
 		
 		$feat_score = $feat_gene_score;
 
-		$feat_attributes = "Id=".$feat_seqid."_".
+		$feat_attributes = "ID=".$feat_seqid."_".
 		    "ex_".$feat_match_id."_".$gene_num.
 		    ";Name=".$feat_match_id.
 		    ";Target=".$feat_match_id;
@@ -563,8 +563,6 @@ To produce results like:
  scaffold00015	exonerate	match_part	2840379	2840552	342	-	.	Id=scaffold00015_ex_AT1G09500.2|PACid:19651388_38; Name=AT1G09500.2|PACid:19651388
  scaffold00015	exonerate	match_part	2838517	2838705	342	-	.	Id=scaffold00015_ex_AT1G09500.2|PACid:19651388_38; Name=AT1G09500.2|PACid:19651388
  scaffold00015	exonerate	match_part	2836318	2836488	342	-	.	Id=scaffold00015_ex_AT1G09500.2|PACid:19651388_38; Name=AT1G09500.2|PACid:19651388
-
-
 
 =head1 DIAGNOSTICS
 
