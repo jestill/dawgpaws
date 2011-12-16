@@ -304,7 +304,7 @@ while (<CONFIGFILE>) {
 	my @in_line = split(/\t/, $_);
 	my $num_in_line = @in_line;
 
-	print "\tConfig line $config_line_num\t".
+	print STDERR "\tConfig line $config_line_num\t".
 	    "$num_in_line sections\n" if $verbose;
 
 	# Only try to parse the inline if it has the 
@@ -374,8 +374,8 @@ if ($num_libs == 0) {
 # WERE FOUND IN THE INPUT DIR |
 #-----------------------------+
 if ($num_files == 0) {
-    print "\a";
-    print "\nERROR: No fasta files were found in the input directory\n".
+    print STDERR "\a";
+    print STDERR "\nERROR: No fasta files were found in the input directory\n".
 	"$indir\n".
 	"Fasta files must have the fasta or fa extension.\n\n";
     exit;
@@ -610,15 +610,18 @@ for my $ind_file (@fasta_files)
 	my $append;
 	$append = 0;
 	$param = $rep_db_name;
-	print STDERR "Out to $gff_el_out" if $test;
+	print STDERR "Writing output to to $gff_el_out" 
+	    if $verbose;
 	rmout2gff ($prog, $repmask_outfile, $gff_el_out, 
 		   $name_root, $param, $append, $pos_strand );
-	
-        # append to existing file
-	$append = 1;
-	$param = $rep_db_name;
-	rmout2gff ($prog, $repmask_outfile, $gff_el_out, 
-		   $name_root, $param, $append, $pos_strand );
+
+#	# The following is duplicating the parse and making
+#       # Duplicate features in GFF file
+#	$append = 1;
+#	$param = $rep_db_name;
+#	rmout2gff ($prog, $repmask_outfile, $gff_el_out, 
+#		   $name_root, $param, $append, $pos_strand );
+#
 
 	#-----------------------------+
 	# CONVERT THE FILES FROM GFF  | 
