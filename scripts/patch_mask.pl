@@ -176,7 +176,7 @@ for my $ind_file (@fasta_files) {
     
     my $mask_path = $outdir.$name_root.".masked.fasta";
     my $infile_path = $indir.$name_root.".fasta";
-    my $move_path = $outdir.$name_root.".fasta";
+    my $move_path = $outdir.$name_root.".masked.fasta";
 
     # check if the masked file exists in the output directory
     # if it does not, move the source file to the destination
