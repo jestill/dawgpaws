@@ -382,9 +382,9 @@ for my $ind_file (@fasta_files) {
 	    # PRINT THE GFF OUTPUT
 	    my $attribute = "TRF$trf_count_pad";
 	    if ($gff_ver =~ "GFF3") {
-		$attribute = "ID=TRF$trf_count_pad".
-		    "; Alias=".$len_alias.
-		    "; Name=$repeat_word";
+		$attribute = "ID=".$name_root."_TRF".$trf_count_pad.
+		    ";Alias=".$len_alias.
+		    ";Name=$repeat_word";
 	    }    
 
 	    # The gff string
