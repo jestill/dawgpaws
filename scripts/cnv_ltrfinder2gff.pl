@@ -744,13 +744,13 @@ sub ltrfinder2gff {
 	if ($gff_ver =~ "GFF3") {
 	    $href->{lf_seq_id} = seqid_encode( $href->{lf_seq_id} );
 	    if ($param) {
-		$parent_id = $href->{lf_seq_id}.
+		$parent_id = $href->{lf_seq_id}."_".
 		    "ltr_finder".
 		    "_par".$param.
 		    "_model".$model_num;
 	    }
 	    else {
-		$parent_id = $href->{lf_seq_id}.
+		$parent_id = $href->{lf_seq_id}."_".
 		    "ltr_finder".
 		    "_model".$model_num;
 	    }
