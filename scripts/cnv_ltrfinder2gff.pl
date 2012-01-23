@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 09/14/2007                                       |
-# UPDATED: 01/29/2010                                       |
+# UPDATED: 01/23/2012                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Converts the LTR_FINDER results to gff format.           |
@@ -744,14 +744,19 @@ sub ltrfinder2gff {
 	if ($gff_ver =~ "GFF3") {
 	    $href->{lf_seq_id} = seqid_encode( $href->{lf_seq_id} );
 	    if ($param) {
-		$parent_id = "ltr_finder".
+		$parent_id = $href->{lf_seq_id}.
+		    "ltr_finder".
 		    "_par".$param.
 		    "_model".$model_num;
 	    }
 	    else {
-		$parent_id = "ltr_finder".
+		$parent_id = $href->{lf_seq_id}.
+		    "ltr_finder".
 		    "_model".$model_num;
 	    }
+	    # Reset attribute to include the seq id to maintain
+	    # unique IDs for large datasets
+
 	}
 
 	#-----------------------------+
