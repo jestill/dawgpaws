@@ -62,6 +62,7 @@ my $append = 0;                # Append gff output to existing file
 my $param;                    # Suffix appended to the end of the gff 
 my $seqname;          #
 my $program = "ltr_finder";   # The source program
+my $delim = "_";              # Delimit character between program and paramter name
 
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
@@ -71,6 +72,7 @@ my $ok = GetOptions(# REQUIRED OPTIONS
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
 		    "gff-ver=s"   => \$gff_ver,
+		    "delim=s"     => \$delim,
 		    "p|param=s"   => \$param,
 		    "program=s"   => \$program,
 		    "s|seqname=s" => \$seqname,
@@ -131,7 +133,7 @@ unless ($gff_ver =~ "GFF3" ||
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 
-ltrfinder2gff ($program, $seqname, $infile, $outfile, $append, $param);
+ltrfinder2gff ($program, $seqname, $infile, $outfile, $append, $param, $delim);
 
 exit 0;
 
@@ -208,8 +210,8 @@ sub ltrfinder2gff {
     # where the id assigned by ltr_struc differs from the way
     # the user is referring to the assembly
     # MAY WANT TO ALLOW FOR USING THE $ls_seq_id
-    my ($gff_src, $seq_id, $lf_infile, $gffout, $do_append, $gff_suffix) = @_;
-
+    # $d is the delim character
+    my ($gff_src, $seq_id, $lf_infile, $gffout, $do_append, $gff_suffix, $d) = @_;
 
     #////////////////////////////////////////
     #////////////////////////////////////////
@@ -227,7 +229,9 @@ sub ltrfinder2gff {
     # The gff src id
     #my $gff_src = "ltr_finder";
     if ($gff_suffix) {
-	$gff_src = $gff_src.":".$gff_suffix;
+	# d is the delim character and is a varaible to allow for
+	# using : as apollo likes or _ as GBrowse likes
+	$gff_src = $gff_src.$d.$gff_suffix;
     }
 
     my $print_gff_out = 0;  # Boolean to print out gff data
@@ -797,7 +801,6 @@ sub ltrfinder2gff {
 	    "\n";
 	print GFFOUT $gff_str_out;
 
-
 	#-----------------------------+
 	# 3 Prime LTR                 |
 	#-----------------------------+
@@ -826,17 +829,20 @@ sub ltrfinder2gff {
 		";Name=PBS".
 		";Parent=".$parent_id;
 	}
-	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
-	    "$gff_src\t".                          # Source
-	    "primer_binding_site\t".                   # Data type
-	    $href->{lf_pbs_start}."\t".           # Start
-	    $href->{lf_pbs_end}."\t".             # End
-	    $href->{lf_score}."\t".                # Score
-	    $href->{lf_strand}."\t".               # Strand
-	    ".\t".                                 # Frame
-	    $attribute.
-	    "\n";
-	print GFFOUT $gff_str_out;
+	# print only if a PBS has been annotated
+	if ( $href->{lf_pbs_start} ) {
+	    $gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+		"$gff_src\t".                          # Source
+		"primer_binding_site\t".                   # Data type
+		$href->{lf_pbs_start}."\t".           # Start
+		$href->{lf_pbs_end}."\t".             # End
+		$href->{lf_score}."\t".                # Score
+		$href->{lf_strand}."\t".               # Strand
+		".\t".                                 # Frame
+		$attribute.
+		"\n";
+	    print GFFOUT $gff_str_out;
+	}
 
 	#-----------------------------+
 	# RR_tract                    |
@@ -846,17 +852,20 @@ sub ltrfinder2gff {
 		";Name=PPT".
 		";Parent=".$parent_id;
 	}
-	$gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
-	    "$gff_src\t".                          # Source
-	    "RR_tract\t".                         # Data type
-	    $href->{lf_ppt_start}."\t".           # Start
-	    $href->{lf_ppt_end}."\t".             # End
-	    $href->{lf_score}."\t".                # Score
-	    $href->{lf_strand}."\t".               # Strand
-	    ".\t".                                 # Frame
-	    $attribute.
-	    "\n";
-	print GFFOUT $gff_str_out;
+	# print only if RR_tract has been annotated
+	if ($href->{lf_ppt_start}) {
+	    $gff_str_out = $href->{lf_seq_id}."\t".    # Seq ID
+		"$gff_src\t".                          # Source
+		"RR_tract\t".                         # Data type
+		$href->{lf_ppt_start}."\t".           # Start
+		$href->{lf_ppt_end}."\t".             # End
+		$href->{lf_score}."\t".                # Score
+		$href->{lf_strand}."\t".               # Strand
+		".\t".                                 # Frame
+		$attribute.
+		"\n";
+	    print GFFOUT $gff_str_out;
+	}
 
 	#-----------------------------+
 	# 5' TSD                      |
