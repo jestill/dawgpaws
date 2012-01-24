@@ -248,7 +248,7 @@ for my $ind_seq_file (@fasta_files) {
 	# Get the start point from the split array
 	# this should be the last item in the array
 	my $feat_start = $header_parts[$num_parts - 1];
-	my $feat_end = $feat_start + $seq_length;
+	my $feat_end = $feat_start + $seq_length - 1;
 
 	#-----------------------------+
 	# GET SCAFFOLD ID             |
