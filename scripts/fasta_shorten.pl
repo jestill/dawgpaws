@@ -254,7 +254,7 @@ for my $ind_file (@fasta_files) {
 		    @hp = split ( /s+/ , $_ );
 		}
 		elsif ( $delim_char =~ "tab" ) {
-		    @hp = splilt ( /\t/ , $_ );
+		    @hp = split ( /\t/ , $_ );
 		} 
 		else {
 		    my $die_msg = "An appropriate delimit character".
