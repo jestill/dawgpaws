@@ -251,7 +251,7 @@ for my $ind_file (@fasta_files) {
 		    @hp = split ( /\,/ , $_ );
 		}
 		elsif ( $delim_char =~ "space" ) {
-		    @hp = split ( /s+/ , $_ );
+		    @hp = split ( /\s/ , $_ );
 		}
 		elsif ( $delim_char =~ "tab" ) {
 		    @hp = split ( /\t/ , $_ );
