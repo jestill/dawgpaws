@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 06/01/2011                                       |
-# UPDATED: 07/20/2011                                       |
+# UPDATED: 04/16/2012                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Run Augustus gene prediction program in batch mode for   |
@@ -67,7 +67,7 @@ my $aug_path = $ENV{AUGUSTUS_BIN_PATH} ||
     "augustus";                  
 my $program = "AUGUSTUS";
 my $param;
-
+my $aug_config_path;           # Var to hold aug config path
 # BOOLEANS
 my $quiet = 0;
 my $verbose = 0;
@@ -84,23 +84,24 @@ my $delim = ":";                  # Character delimiter for source/suffix
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
-		    "i|indir=s"      => \$indir,
-                    "o|outdir=s"     => \$outdir,
-                    "c|config=s"     => \$config_file,
+		    "i|indir=s"         => \$indir,
+                    "o|outdir=s"        => \$outdir,
+                    "c|config=s"        => \$config_file,
 		    # ADDITIONAL OPTIONS
-		    "p|program=s"    => \$program,
-		    "augustus-bin=s" => \$aug_path,
-		    "gff-ver=s"      => \$gff_ver,
-		    "d|delim=s"      => \$delim,
-		    "apollo"         => \$apollo_format,
-		    "q|quiet"        => \$quiet,
-		    "verbose"        => \$verbose,
+		    "p|program=s"       => \$program,
+		    "augustus-bin=s"    => \$aug_path,
+		    "augustus-config=s" => \$aug_config_path,
+		    "gff-ver=s"         => \$gff_ver,
+		    "d|delim=s"         => \$delim,
+		    "apollo"            => \$apollo_format,
+		    "q|quiet"           => \$quiet,
+		    "verbose"           => \$verbose,
 		    # ADDITIONAL INFORMATION
-		    "usage"          => \$show_usage,
-		    "test"           => \$do_test,
-		    "version"        => \$show_version,
-		    "man"            => \$show_man,
-		    "h|help"         => \$show_help,);
+		    "usage"             => \$show_usage,
+		    "test"              => \$do_test,
+		    "version"           => \$show_version,
+		    "man"               => \$show_man,
+		    "h|help"            => \$show_help,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -158,6 +159,14 @@ if ( (!$indir) || (!$outdir) ) {
 	" command line\n" if (!$outdir);
     print_help ("usage", $0 );
 }
+
+
+# SET ENV VAR FOR AUGUSTUS_CONFIG_PATH
+# If it was passed at command line
+if ($aug_config_path) {
+    $ENV{AUGUSTUS_CONFIG_PATH} = $aug_config_path;
+}
+
 
 #-----------------------------+
 # CHECK FOR SLASH IN DIR      |
