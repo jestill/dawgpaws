@@ -173,13 +173,52 @@ while (<INFILE>) {
 }
 
 
+# Overview count
+print OUTFILE "OVERVIEW\n";
+
+my $all_srcs = ();
+
 for my $k1 ( sort keys %$evm_summary ) {
     print OUTFILE "$k1\n";
     for my $k2 ( sort keys %{$evm_summary->{ $k1 }} ) {
+	
+	# Load names to all srcs hash to generate unique list
+	if ( $all_srcs->{ $k2} ) {
+	    $all_srcs->{ $k2  } = $all_srcs->{ $k2 } + 1;
+	}
+	else {
+	    $all_srcs->{ $k2 } = 1;
+	}
+
 	print OUTFILE "\t$k2\ : ";
 	print OUTFILE $evm_summary->{ $k1 }->{ $k2 }."\n";
     }
 
+}
+
+# Wiki table
+
+# PRINT TABLE HEADER
+print OUTFILE "|| FEATURE || ";
+for my $col ( sort keys %$all_srcs  ) {
+    print OUTFILE $col." || ";
+}
+print OUTFILE "\n";
+
+# PRINT TABLE DATA
+for my $row ( sort keys %$evm_summary ) {
+    print OUTFILE "||".$row." || ";
+    for my $col ( sort keys %$all_srcs  ) {
+	if ($evm_summary->{ $row }->{ $col }) {
+	    # If value, print value
+	    print OUTFILE $evm_summary->{ $row }->{ $col }." || ";
+	}
+	else {
+	    # If no value print zero
+	    print OUTFILE " 0 ||";
+	}
+    }
+    print OUTFILE "\n";
 }
 
 close (INFILE);
