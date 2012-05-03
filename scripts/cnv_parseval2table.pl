@@ -686,7 +686,7 @@ print OUTFILE $ref_ann."\t".
     $utr_match_coef."\t".
     $overall_match_coef."\t".
     $cds_nuc_specificity."\t".
-    $cds_nuc_specificity."\t".
+    $cds_nuc_sensitivity."\t".
     $cds_nuc_f1."\t".
     $cds_nuc_aed.
     "\n";
