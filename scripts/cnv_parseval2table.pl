@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 05/02/2012                                       |
-# UPDATED: 05/02/2012                                       |
+# UPDATED: 05/03/2012                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert a directory of parseeval outputs to a summary    |
@@ -189,6 +189,39 @@ else {
 	die "Can not STDOUT";
 }
 
+# Print header for output file
+print OUTFILE "Reference\t".
+    "Prediction\t".
+    "Shared Genes\t".
+    "Unique to Reference\t".
+    "Unique to Prediction\t".
+    "Number Perfect Matches\t".
+    "Percent Perfect Matches\t".
+    "Number Non-Matches\t".
+    "Percent Non-Matches\t".
+    "Perfect Match Length\t".
+    "Non-match Length\t".
+    "Perfect Avgnumrefexons\t".
+    "Perfect AvgNumRefExons\t".
+    "Non-match Avgnumrefexons\t".
+    "Non-match AvgNumRefExons\t".
+    "CDS Sensitivity\t".
+    "CDS Specificity\t".
+    "CDS F1 Score\t".
+    "CDS AED\t".
+    "Exon Sensitivity\t".
+    "Exon Specificity\t".
+    "Exon F1 Score\t".
+    "Exon AED\t".
+    "Nuc CDS Match Coefficient\t".
+    "Nuc UTR Match Coefficient\t".
+    "Nuc Overall Match Coefficient\t".
+    "Nuc CDS Specificity\t".
+    "Nuc CDS Sensitivity\t".
+    "Nuc CDS F1\t".
+    "Nuc CDS AED\t".
+    "\n";
+
 # May want to print outfile header here
 
 #-----------------------------------------------------------+
@@ -196,71 +229,88 @@ else {
 #-----------------------------------------------------------+
 foreach my $infile (@input_files) {
 
-    my $ref_ann;
-    my $pred_ann;
+    my $ref_ann = "--";
+    my $pred_ann = "--";
 
-    my $num_genes_shared;
-    my $num_genes_u_ref;
-    my $num_genes_u_pred;
+    my $num_genes_shared = "--";
+    my $num_genes_u_ref = "--";
+    my $num_genes_u_pred = "--";
     
-    my $num_total_comparisons;
-    my $num_perfect_matches;
-    my $percent_perfect_matches;
+    my $num_total_comparisons = "--";
 
-    my $num_non_matches;
-    my $percent_non_matches ;
+    # Gene perfect matches
+    my $percent_perfect_matches = "--";
+    my $num_perfect_matches = "--";
+    my $perfect_match_len = "--";
+    my $perfect_match_ref_num_exons = "--";
+    my $perfect_match_num_pred_exons = "--";
+    my $perfect_match_ref_cds_len = "--";
+    my $perfect_match_pred_cds_len = "--";
 
-    my $in_gene = 0;              # Boolean for in gene information
-    my $in_perfect_matches = 0;   # Boolean for in perfect match data
-    my $in_non_matches = 0;       # Boolean for in non-match data
+    # Gene non-match
+    my $num_non_matches = "--";
+    my $percent_non_matches = "--";
+    my $non_match_len = "--";
+    my $non_match_ref_num_exons = "--";
+    my $non_match_num_pred_exons = "--";
+    my $non_match_ref_cds_len = "--";
+    my $non_match_pred_cds_len = "--";
 
+    # File location booleans
+    my $in_gene = 0;                      # Boolean for in gene information
+    my $in_perfect_matches = 0;           # Boolean for in perfect match data
+    my $in_perfect_matches_mis_utr = 0;   # Perfect match with mislabeled UTR
+    my $in_cds_structure_match = 0;       # Perfect match with mislabeled UTR
+    my $in_exon_structure_match = 0;      # Exon structure matches
+    my $in_utr_structure_match = 0;       # UTR structure matches
+    my $in_non_matches = 0;               # Boolean for in non-match data
     my $in_cds = 0;
     my $in_exon = 0;
     my $in_utr = 0;
     my $in_nuc = 0; # In nucleotide level comparison
 
     # CDS INFO
-    my $cds_f1_score;
-    my $cds_aed;
-    my $cds_sensitivity;
-    my $cds_specificity;
+    my $cds_f1_score = "--";
+    my $cds_aed = "--";
+    my $cds_sensitivity = "--";
+    my $cds_specificity = "--";
     
     # EXON INFO
-    my $exon_f1_score;
-    my $exon_aed;
-    my $exon_sensitivity;
-    my $exon_specificity;
+    my $exon_f1_score = "--";
+    my $exon_aed = "--";
+    my $exon_sensitivity = "--";
+    my $exon_specificity = "--";
 
     # UTR INFO
-    my $utr_f1_score;
-    my $utr_aed;
-    my $utr_sensitivity;
-    my $utr_specificity;
+    my $utr_f1_score = "--";
+    my $utr_aed = "--";
+    my $utr_sensitivity = "--";
+    my $utr_specificity = "--";
 
     # Nucleotide level info
-    my $cds_match_coef;
-    my $utr_match_coef;
-    my $overall_match_coef;
+    my $cds_match_coef = "--";
+    my $utr_match_coef = "--";
+    my $overall_match_coef = "--";
 
-    my $cds_cor_coef;
-    my $utr_cor_coef;
-    my $overall_cor_coef;
+    my $cds_cor_coef = "--";
+    my $utr_cor_coef = "--";
+    my $overall_cor_coef = "--";
     
-    my $cds_nuc_specificity;
-    my $utr_nuc_specificity;
-    my $overall_nuc_specificity;
+    my $cds_nuc_specificity = "--";
+    my $utr_nuc_specificity = "--";
+    my $overall_nuc_specificity = "--";
 
-    my $cds_nuc_sensitivity;
-    my $utr_nuc_sensitivity;
-    my $overall_nuc_sensitivity;
+    my $cds_nuc_sensitivity = "--";
+    my $utr_nuc_sensitivity = "--";
+    my $overall_nuc_sensitivity = "--";
 
-    my $cds_nuc_f1;
-    my $utr_nuc_f1;
-    my $overall_nuc_f1;
+    my $cds_nuc_f1 = "--";
+    my $utr_nuc_f1 = "--";
+    my $overall_nuc_f1 = "--";
 
-    my $cds_nuc_aed;
-    my $utr_nuc_aed;
-    my $overall_aed;
+    my $cds_nuc_aed = "--";
+    my $utr_nuc_aed = "--";
+    my $overall_aed = "--";
 
     print STDERR "\n============================================\n"
 	if $verbose;
@@ -291,7 +341,8 @@ foreach my $infile (@input_files) {
 	    $pred_ann=$1;
 	}
 	elsif ( m/  Gene loci/ ) {
-	    print STDERR "\tin genes\n";
+	    print STDERR "\tin genes\n" 
+		if $verbose;
 	}
 	elsif ( m /    shared\.+(.*)/ ) {
 	    print STDERR "\t\tshared genes: ".$1."\n"
@@ -317,38 +368,122 @@ foreach my $infile (@input_files) {
 	     $num_total_comparisons = $1;
 	}
 	elsif ( m/    perfect matches\.+(.*) \((.*)\%\)/ ) {
-	    print STDERR "\tNum perfect matches: ".$1."\n"
+	    print STDERR "\n\tNum perfect matches: ".$1."\n"
 		if $verbose;
 	    print STDERR "\tPercent perfect matches: ".$2."\n"
 		if $verbose;
-	     $num_perfect_matches = $1;
-	     $percent_perfect_matches = $2;
+	    $num_perfect_matches = $1;
+	    $percent_perfect_matches = $2;
+	    $in_perfect_matches = 1;
+	}
+	elsif ( m/perfect matches with mislabeled UTRs\.+(.*) \((.*)\%\)/ ) {
+	    $in_perfect_matches = 0;
+	    $in_perfect_matches_mis_utr = 1;
 	}
 	elsif ( m/    non-matches\.+(.*) \((.*)\%\)/ ) {
-	    print STDERR "\tNum non-matches: ".$1."\n"
+	    print STDERR "\n\tNum non-matches: ".$1."\n"
 		if $verbose;
 	    print STDERR "\tPercent non-matches: ".$2."\n"
 		if $verbose;
-	     $num_non_matches = $1;
-	     $percent_non_matches = $2;
+	    $num_non_matches = $1;
+	    $percent_non_matches = $2;
+	    $in_perfect_matches = 0;
+	    $in_non_matches = 1;
+	}
+	elsif ( m/      avg. length\.+(.*)/ ) {
+	    my $avg_len = $1;
+	    if ($in_perfect_matches) {
+		$perfect_match_len = $avg_len;
+		print STDERR "\t\tPerfect match len: ".$perfect_match_len."\n"
+		    if $verbose;
+	    }
+	    elsif ($in_non_matches) {
+		$non_match_len = $avg_len;
+		print STDERR "\t\tNon-match len: ".$non_match_len."\n"
+		    if $verbose;
+	    }
+	}
+	elsif ( m/      avg. # refr exons\.+(.*)/ ) {
+	    my $num_exons = $1;
+	    if ($in_perfect_matches) {
+		$perfect_match_ref_num_exons = $num_exons;
+		print STDERR "\t\tPerfect match ref exon: ".
+		    $perfect_match_ref_num_exons."\n"
+		    if $verbose;
+	    }
+	    elsif ($in_non_matches) {
+		$non_match_ref_num_exons = $num_exons;
+		print STDERR "\t\tNon-match ref exon: ".
+		    $non_match_ref_num_exons."\n"
+		    if $verbose;
+	    }
+	}
+	elsif ( m/      avg. # pred exons\.+(.*)/ ) {
+	    my $num_exon = $1;
+	    if ($in_perfect_matches) {
+		$perfect_match_num_pred_exons = $num_exon;
+		print STDERR "\t\tPerfect match pred exon: ".
+		    $perfect_match_num_pred_exons."\n"
+		    if $verbose;
+	    }
+	    elsif ($in_non_matches) {
+		$non_match_num_pred_exons = $num_exon;
+		print STDERR "\t\tNon-match pred exon: ".
+		    $non_match_num_pred_exons."\n"
+		    if $verbose;
+	    }
+	}
+	elsif ( m/      avg. refr CDS length\.+(.*)/ ) {
+	    my $cds_len = $1;
+	    if ($in_perfect_matches) {
+		$perfect_match_ref_cds_len = $cds_len;
+		print STDERR "\t\tPerfect match ref CDS len: ".
+		    $perfect_match_ref_cds_len."\n"
+		    if $verbose;
+	    }
+	    elsif ($in_non_matches) {
+		$non_match_ref_cds_len = $cds_len;
+		print STDERR "\t\tNon-match ref CDS len: ".
+		    $non_match_ref_cds_len."\n"
+		    if $verbose;
+	    }
+	}
+	elsif ( m/avg. pred CDS length\.+(.*)/ ) {
+	    my $cds_len = $1;
+	    if ($in_perfect_matches) {
+		$perfect_match_pred_cds_len = $cds_len;
+		print STDERR "\t\tPerfect match pred CDS len: ".
+		    $perfect_match_pred_cds_len."\n"
+		    if $verbose;
+	    }
+	    elsif ($in_non_matches) {
+		$non_match_pred_cds_len = $cds_len;
+		print STDERR "\t\tNon-match pred CDS len: ".
+		    $non_match_pred_cds_len."\n"
+		    if $verbose;
+	    }
 	}
 	elsif ( m/  CDS structure comparison/ ) {
 	    $in_cds = 1;
+	    $in_non_matches = 0;
 	    print STDERR "\n\tIn CDS\n" 
 		if $verbose;
 	}
 	elsif ( m/  Exon structure comparison/ ) {
-	    print STDERR "\n\tIn Exon\n";
+	    print STDERR "\n\tIn Exon\n"
+		if $verbose;
 	    $in_exon = 1;
 	    $in_cds = 0;
 	}
 	elsif ( m/  UTR structure comparison/ ) {
-	    print STDERR "\n\tIn UTR\n";
+	    print STDERR "\n\tIn UTR\n"
+		if $verbose;
 	    $in_utr = 1;
 	    $in_exon = 0;
 	}
 	elsif ( m/  Nucleotide-level comparison / ) {
-	    print STDERR "\n\tIn Nucleotide Level Comparisions\n";
+	    print STDERR "\n\tIn Nucleotide Level Comparisions\n"
+		if $verbose;
 	    $in_utr = 0;
 	    $in_nuc = 1;
 	}
@@ -524,7 +659,37 @@ foreach my $infile (@input_files) {
 
 
     # Write to outfile
-
+print OUTFILE $ref_ann."\t".
+    $pred_ann."\t".
+    $num_genes_shared."\t".
+    $num_genes_u_ref."\t".
+    $num_genes_u_pred."\t".
+    $num_perfect_matches."\t".
+    $percent_perfect_matches."\t".
+    $num_non_matches."\t".
+    $percent_non_matches."\t".
+    $perfect_match_len."\t".
+    $non_match_len."\t".
+    $perfect_match_num_pred_exons."\t".
+    $perfect_match_ref_num_exons."\t".
+    $non_match_num_pred_exons."\t".
+    $non_match_ref_num_exons."\t".
+    $cds_sensitivity."\t".
+    $cds_specificity."\t".
+    $cds_f1_score."\t".
+    $cds_aed."\t".
+    $exon_sensitivity."\t".
+    $exon_specificity."\t".
+    $exon_f1_score."\t".
+    $exon_aed."\t".
+    $cds_match_coef."\t".
+    $utr_match_coef."\t".
+    $overall_match_coef."\t".
+    $cds_nuc_specificity."\t".
+    $cds_nuc_specificity."\t".
+    $cds_nuc_f1."\t".
+    $cds_nuc_aed.
+    "\n";
 }
 
 close (OUTFILE);
