@@ -248,7 +248,6 @@ foreach my $row (@gff) {
 		else {
 		    print OUTFILE "\t.";
 		}
-		$j++;
 	    }
 
 	}
