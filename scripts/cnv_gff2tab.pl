@@ -240,8 +240,6 @@ foreach my $row (@gff) {
     foreach my $col (@$row) {
 
 	if ($col_num == 9) {
-	    print OUTFILE "\t".$col->{'ID'};
-	    my $j;
 	    foreach my $uniq_key (@uniq_attributes) {
 		# If a key value exists 
 		if ( exists $col->{ $uniq_key } ) {
