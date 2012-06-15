@@ -161,15 +161,14 @@ while (<INFILE>) {
     my ($transcript_id, $go_id, $go_term, $short_term) = split (/\t/, $_);
 
     if ($transcript_id =~ $prev_transcript_id) {
-	$attribute = $attribute.";Ontology_term=\"".$go_id."\"";
+	$attribute = $attribute.",".$go_id;
     }
     else {
 	print OUTFILE $attribute."\n";
-	$attribute = $transcript_id."\tOntology_term=\"".$go_id."\"";
+	$attribute = $transcript_id."\tOntology_term=".$go_id;
     }
 
-    
-    $prev_transcript_id = $transcript_id;
+l    $prev_transcript_id = $transcript_id;
 
 }
 # print the last one
