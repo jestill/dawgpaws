@@ -176,21 +176,31 @@ my $in_comparison;
 my $end_comparison;
 my $in_novel_transcript;
 
+# Locus vars
+my $seq_id;
+my $start;
+my $end;
+my $locus;
+
+# Transcript booleans
 my $perfect_cds_match;
 my $perfect_exon_match;
 my $perfect_utr_match;
 my $perfect_gene_match;
 
+# Transcript cds vars
 my $cds_sensitivity;
 my $cds_specificity;
 my $cds_f1_score;
 my $cds_aed;
 
+# Transcript exon vars
 my $exon_sensitivity;
 my $exon_specificity;
 my $exon_f1_score;
 my $exon_aed;
 
+# Transcript UTR vars
 my $utr_sensitivity;
 my $utr_specificity;
 my $utr_f1_score;
@@ -231,9 +241,17 @@ while (<INFILE>) {
     print STDERR $_."\n" if $verbose;
 
     # Determine where in the file we are
-    if ( $_ =~ m/Locus/ ) {
+    if ( $_ =~ m/Locus: sequence \'(.*)\' from (.*) to (.*)/ ) {
 	print STDERR "In Locus\n"
 	    if $verbose;
+	$seq_id = trim($1);
+	$start = trim($2);
+	$end = trim($3);
+	$locus = $seq_id."_".$start."_".$end;
+	print STDERR "Locus: $locus\n";
+	print STDERR "\t1: $seq_id\n";
+	print STDERR "\t2: $start\n";
+	print STDERR "\t3: $end\n";
 	if ($in_novel_transcript) {
 	    print STDERR "...Out of novel transcript\n"
 		if $verbose;
@@ -594,6 +612,8 @@ while (<INFILE>) {
 		    $transcript."\n";
 	    }
 	}	
+
+	
 	
 	foreach my $transcript ( @pred_transcripts ) {
 	    if ( $outfile ) {
@@ -607,9 +627,14 @@ while (<INFILE>) {
 	}
 
 	# Write the values determined
-	print TABOUT $comp_count."\t".
-	    $num_ref_transcripts."\t".
+	print TABOUT $comp_count."\t";
+	print TABOUT $locus."\t".
+	    $seq_id."\t".
+	    $start."\t".
+	    $end."\t";
+	print TABOUT $num_ref_transcripts."\t".
 	    $num_pred_transcripts."\t";
+
 
 	# Booleans as Y/N
 
