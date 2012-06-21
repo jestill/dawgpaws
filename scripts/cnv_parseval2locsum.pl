@@ -248,10 +248,10 @@ while (<INFILE>) {
 	$start = trim($2);
 	$end = trim($3);
 	$locus = $seq_id."_".$start."_".$end;
-	print STDERR "Locus: $locus\n";
-	print STDERR "\t1: $seq_id\n";
-	print STDERR "\t2: $start\n";
-	print STDERR "\t3: $end\n";
+	print STDERR "Locus: $locus\n" if $verbose;
+	print STDERR "\t1: $seq_id\n" if $verbose;
+	print STDERR "\t2: $start\n" if $verbose;
+	print STDERR "\t3: $end\n" if $verbose;
 	if ($in_novel_transcript) {
 	    print STDERR "...Out of novel transcript\n"
 		if $verbose;
