@@ -8,30 +8,27 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 06/18/2012                                       |
-# UPDATED: 06/20/2012                                       |
+# UPDATED: 06/21/2012                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #  Convert the parseval result to a locus summary in a      |
 #  format that can be parsed and loaded to a database.      |
 #  Initially this will be a tab delimited text file or      |
-#  set of tab delimited text files.                         |
+#  set of tab delimited text files. Providing the -o option |
+#  will create multiple outfiles named with root, otherwise |
+#  all output will be written to STDOUT.                    |
 #                                                           |
 # USAGE:                                                    |
 #  cnv_parseval2locus.pl -i parsetout.txt -o out_root       |
 #                                                           |
 # VERSION: $Rev$                                            |
 #                                                           |
-#                                                           |
 # LICENSE:                                                  |
 #  GNU General Public License, Version 3                    |
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-#
-# Currently assuming a single outfile, but mulitple outfile
-# tables may be necessary for import to a database.
-#
-# 
+
 package DAWGPAWS;
 
 #-----------------------------+
@@ -140,6 +137,7 @@ if ($infile) {
 	die "Can not open infile $infile";
 }
 else {
+    print STDERR "Expecting input from STDIN\n";
     open (INFILE, "<&STDIN") ||
 	die "Can not open STDIN for input";
 }
@@ -159,7 +157,6 @@ else {
     open (TABOUT, ">&STDOUT") ||
 	die "Can not STDOUT";
 }
-
 
 # Print header to tabout here
 
@@ -408,6 +405,7 @@ while (<INFILE>) {
 
 		print TABOUT $comp_count."0\t1\n";
 		# May want to add columns of null values here
+		# for AED values etc ...
 
 	    }
 	}
@@ -761,7 +759,7 @@ __END__
 
 =head1 NAME
 
-cnv_parseval2locsum.pl - 
+cnv_parseval2locsum.pl -  Convert parseval to locus summary
 
 =head1 VERSION
 
@@ -771,16 +769,21 @@ This documentation refers to program version 0.1
 
 =head2 Usage
 
-    Name.pl -i InFile -o OutFile
+    cnv_parseval2locus.pl -i parsetout.txt -o out_root
 
 =head2 Required Arguments
 
-    --infile        # Path to the input file
-    --outfie        # Path to the output file
+    --infile        # Path to the parseval result file
+    --outfile       # Root name for outfiles
 
 =head1 DESCRIPTION
 
-This is what the program does
+Convert the parseval result to a locus summary in a
+format that can be parsed and loaded to a database.
+Initially this will be a tab delimited text file or
+set of tab delimited text files. Providing the -o option
+will create multiple outfiles named with root, otherwise
+all output will be written to STDOUT.  
 
 =head1 REQUIRED ARGUMENTS
 
@@ -788,11 +791,12 @@ This is what the program does
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file. This is the result file parseval.
 
 =item -o,--outfile
 
-Path of the output file.
+Root name for the outfiles produced. If no outfile root name is given,
+all output is written to STDOUT.
 
 =back
 
@@ -825,11 +829,65 @@ Run the program with minimal output.
 
 =head1 EXAMPLES
 
-The following are examples of how to use this script
+=head2 Write output to output files
 
-=head2 Typical Use
+The --outfile or -o option is used as a root identiftier to build names for 
+output files:
 
-This is a typcial use case.
+ cnv_parseval2locsum.pl -i athal_test.txt -o athal_out
+
+This will produce two files. One file named root_name_vals.txt with
+similarity values between prediction and reference transcripts, and
+root_name_loc.txt with the list of the loci invovled. The first column
+in each file is an unique integer ID that allows for matching between
+the transcript pairings and the similarity values file.
+
+=head3 Transcript Output File
+
+The file with reference and predicted transcript pairings 
+(ie athal_out_loc.txt):
+
+ 1	ref_transcript_id	AT1G01010.1
+ 1	pred_transcript_id	AT1G01010.1
+ 2	ref_transcript_id	AT1G01020.1
+ 2	pred_transcript_id	AT1G01020.1
+ 3	ref_transcript_id	AT1G01020.2
+ 3	pred_transcript_id	AT1G01020.2
+ 4	ref_transcript_id	AT1G01030.1
+ 4	pred_transcript_id	AT1G01030.1
+ 5	ref_transcript_id	AT1G01040.1
+ 5	pred_transcript_id	AT1G01040.1
+
+=head3 Values Output File
+
+The file with the (athal_out_vals.txt):
+
+ 1	1	1	Y	Y	Y	1.000	1.000	1.000
+ 2	1	1	Y	Y	Y	1.000	1.000	1.000
+ 3	1	1	Y	Y	Y	1.000	1.000	1.000
+ 4	1	1	Y	Y	Y	1.000	1.000	1.000
+ 5	1	1	Y	Y	Y	1.000	1.000	1.000
+
+=head2 Write output to STDOUT
+
+To write all output to the standard output stream:
+
+ cnv_parseval2locsum.pl -i athal_test.txt
+
+The values that would have been written to the locus pairings output file
+are written to the values output file preceded by #. 
+
+An example of produce results:
+
+  # 1	ref_transcript_id	AT1G01010.1
+  # 1	pred_transcrirpt_id	AT1G01010.1
+  1	1	1	Y	Y	Y	1.000	1.000	1.000	0.000
+  # 2	ref_transcript_id	AT1G01020.1
+  # 2	pred_transcrirpt_id	AT1G01020.1
+  2	1	1	Y	Y	Y	1.000	1.000	1.000	0.000
+  # 3	ref_transcript_id	AT1G01020.2
+  # 3	pred_transcrirpt_id	AT1G01020.2
+  3	1	1	Y	Y	Y	1.000	1.000	1.000	0.000
 
 =head1 DIAGNOSTICS
 
@@ -844,13 +902,30 @@ the input sequence with -i or --infile flag.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use of variables defined in the user environment.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+=head2 Required Software
+
+This program is dependent on the following program
+
+=over
+
+=item ParsEval
+
+ParsEval is a program for comparing two sets of gene structure 
+annotations (provided as GFF3 files) for the same genomic region. 
+
+Source: http://parseval.sourceforge.net/
+
+=item GenomeTools
+
+The ParsEval program is dependend on the GenomeTools program.
+
+Source: http://genometools.org/
+
+=back
 
 =head1 BUGS AND LIMITATIONS
 
@@ -858,14 +933,11 @@ Any known bugs and limitations will be listed here.
 
 =head1 REFERENCE
 
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
+Your use of the DAWGPAWS programs should reference the following manuscript:
 
 JC Estill and JL Bennetzen. 2009. 
-The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
-Elements in Plant Genomes.
-http://dawgpaws.sourceforge.net/
+"The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
+Elements in Plant Genomes." Plant Methods. 5:8.
 
 =head1 LICENSE
 
@@ -879,9 +951,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 06/18/2012
 
-UPDATED:
+UPDATED: 06/21/2012
 
 VERSION: $Rev$
 
