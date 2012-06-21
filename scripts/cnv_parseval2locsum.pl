@@ -158,9 +158,10 @@ if ($outfile) {
 else {
     open (TABOUT, ">&STDOUT") ||
 	die "Can not STDOUT";
-    open (LOCOUT, ">&STDOUT") ||
-	die "Can not STDOUT";
 }
+
+
+# Print header to tabout here
 
 # BOOLEANS
 my $in_locus;
@@ -176,6 +177,7 @@ my $in_utr;
 my $in_nuc;
 my $in_comparison;
 my $end_comparison;
+my $in_novel_transcript;
 
 my $perfect_cds_match;
 my $perfect_exon_match;
@@ -235,7 +237,12 @@ while (<INFILE>) {
     if ( $_ =~ m/Locus/ ) {
 	print STDERR "In Locus\n"
 	    if $verbose;
+	if ($in_novel_transcript) {
+	    print STDERR "...Out of novel transcript\n"
+		if $verbose;
+	}
 	$in_locus = 1;
+	$in_novel_transcript = 0;
     }
     elsif ( $_ =~ m/reference genes/ ) {
 	print STDERR "\tIn reference genes\n"
@@ -255,6 +262,9 @@ while (<INFILE>) {
 	$in_reference_transcript = 0;
 	if ( $_ =~ m/novel prediction transcripts/ ) {
 	    $in_prediction_transcript = 0;
+	    $in_novel_transcript = 1;
+	    print STDERR "Novel transcript\n"
+		if $verbose;
 	}
     }
     elsif ( $_ =~ m/novel prediction transcripts/ ) {
@@ -299,7 +309,6 @@ while (<INFILE>) {
 	$in_nuc = 0;
     }
 
-
     #-----------------------------+
     # PERFECT MATCHES             |
     #-----------------------------+
@@ -337,6 +346,7 @@ while (<INFILE>) {
 
     }
 
+    # Perfect UTR structure match
     if ($_ =~ m/UTR structures match perfectly/ ) {
 	print STDERR "\tPerfect UTR match\n"
 	    if $verbose;
@@ -357,8 +367,7 @@ while (<INFILE>) {
 	
     }
 
-
-
+    # Perfect gene structure match
     if ($_ =~ m/Gene structures match perfectly/ ) {
 	print STDERR "\tPerfect gene structure match\n"
 	    if $verbose;
@@ -378,6 +387,32 @@ while (<INFILE>) {
     #-----------------------------+
     # Work with components        |
     #-----------------------------+
+
+    # Novel transcripts ...
+    if ( $in_novel_transcript ) {
+	if ($_ =~ m/\s\|\s(.*)/ ) {
+	    my $novel_transcript = trim($1);
+	    unless ( $_ =~ m/novel prediction transcripts/ ) {
+		$comp_count++;
+		print STDERR "Novel pred transcript -- $novel_transcript \n"
+		    if $verbose;
+		
+		if ( $outfile ) {
+		    print LOCOUT $comp_count."\tpred_novel\t".
+			$novel_transcript."\n";
+		}
+		else {
+		    print TABOUT "# ".$comp_count."\tpred_novel\t".
+			$novel_transcript."\n";
+		}
+
+		print TABOUT $comp_count."0\t1\n";
+		# May want to add columns of null values here
+
+	    }
+	}
+    }
+
     # Predicted transcript IDs
     if ( $in_prediction_transcript ) {
 	if ($_ =~ m/\s\|\s(.*)/ ) {
@@ -410,7 +445,6 @@ while (<INFILE>) {
 	my $sensitivity = trim($1);
 	$perfect_gene_match = 0;
 
-	#print STDERR "\tSensitivity:--".$1."\n";
 	print STDERR "\n"
 	    if $verbose;
 	print STDERR "\tSensitivity:--".$sensitivity."\n"
@@ -428,21 +462,15 @@ while (<INFILE>) {
 	    $perfect_utr_match = 0;
 	}
 	elsif ($in_nuc) {
-	    #cds/utr/overall
 	    ($nuc_cds_sensitivity,
 	     $nuc_utr_sensitivity,
 	     $nuc_all_sensitivity) = split (/\s+/,  $sensitivity);
-#	    print STDERR  $sensitivity."\n";
-#	    print STDERR  "\t".$nuc_cds_sensitivity."\n";
-#	    print STDERR  "\t".$nuc_utr_sensitivity."\n";
-#	    print STDERR  "\t".$nuc_all_sensitivity."\n";
 	}
     }
 
     # Load specificity values
     if ($_ =~ m/Specificity:\s(.*)$/ ) {
 	my $specificity = trim($1);
-	#print STDERR "\tSpecificity:--".$1."\n";
 	print STDERR "\tSpecificity:--".$specificity."\n"
 	    if $verbose;
 
@@ -465,7 +493,6 @@ while (<INFILE>) {
     # Load F1 Score
     if ($_ =~ m/F1 Score:\s(.*)$/ ) {
 	my $f1_score = trim($1);
-	#print STDERR "\tF1 Score:--".$1."\n";
 	print STDERR "\tF1 Score:--".$f1_score."\n"
 	    if $verbose;
 
@@ -559,22 +586,60 @@ while (<INFILE>) {
 	my $pred_transcripts;
 	my $ref_transcripts;
 
-#	print OUTFILE "\nNum Ref: ".$num_ref_transcripts."\n";
 	foreach my $transcript ( @ref_transcripts ) {
-	    print LOCOUT $comp_count."\tref_id\t".$transcript."\n";
+	    if ( $outfile ) {
+		print LOCOUT $comp_count."\tref_transcript_id\t".
+		    $transcript."\n";
+	    }
+	    else {
+		print TABOUT "# ".$comp_count."\tref_transcript_id\t".
+		    $transcript."\n";
+	    }
 	}	
 	
-#	print OUTFILE "Num Pred: ".$num_pred_transcripts."\n";
 	foreach my $transcript ( @pred_transcripts ) {
-	    print LOCOUT $comp_count."\tpred_id\t".$transcript."\n";
+	    if ( $outfile ) {
+		print LOCOUT $comp_count."\tpred_transcript_id\t".
+		    $transcript."\n";
+	    }
+	    else {
+		print TABOUT "# ".$comp_count."\tpred_transcrirpt_id\t".
+		    $transcript."\n";
+	    }
 	}
 
 	# Write the values determined
 	print TABOUT $comp_count."\t".
 	    $num_ref_transcripts."\t".
-	    $num_pred_transcripts."\t".
-	    # CDS values
-	    $cds_sensitivity."\t".
+	    $num_pred_transcripts."\t";
+
+	# Booleans as Y/N
+
+	# Perfect CDS match
+	if ( $perfect_cds_match ) {
+	    print TABOUT "Y\t";
+	}
+	else {
+	    print TABOUT "N\t";
+	}
+
+	# Perfect exon match
+	if ( $perfect_exon_match ) {
+	    print TABOUT "Y\t";
+	}
+	else {
+	    print TABOUT "N\t";
+	}
+
+	# Perfect UTR match
+	if ( $perfect_utr_match ) {
+	    print TABOUT "Y\t";
+	}
+	else {
+	    print TABOUT "N\t";
+	}
+
+	print TABOUT $cds_sensitivity."\t".
 	    $cds_specificity."\t".
 	    $cds_f1_score."\t".
 	    $cds_aed."\t".
@@ -696,7 +761,7 @@ __END__
 
 =head1 NAME
 
-Name.pl - Short program description. 
+cnv_parseval2locsum.pl - 
 
 =head1 VERSION
 
@@ -899,3 +964,17 @@ VERSION: $Rev$
 #     |--------------------------
 #     |
 #     |---------
+#
+# Novel prediction transcripts
+#     |--------------------------
+#     |----- End Comparison -----
+#     |--------------------------
+#     |
+#     |  novel prediction transcripts (or transcript sets)
+#     |    AT5G67580.2
+#
+#|-------------------------------------------------
+#|---- Locus: sequence 'Chr5' from 26958001 to 26959557
+#|-------------------------------------------------
+#|
+
