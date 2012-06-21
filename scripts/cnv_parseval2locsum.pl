@@ -17,7 +17,7 @@
 #  set of tab delimited text files.                         |
 #                                                           |
 # USAGE:                                                    |
-#  cnv_parseval2locus.pl -i parsetout.txt -o parseout.tab   |
+#  cnv_parseval2locus.pl -i parsetout.txt -o out_root       |
 #                                                           |
 # VERSION: $Rev$                                            |
 #                                                           |
@@ -27,7 +27,11 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-
+#
+# Currently assuming a single outfile, but mulitple outfile
+# tables may be necessary for import to a database.
+#
+# 
 package DAWGPAWS;
 
 #-----------------------------+
@@ -81,8 +85,6 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "man"         => \$show_man,
 		    "h|help"      => \$show_help,);
 
-
-
  
 #-----------------------------+
 # STANDARDIZE GFF VERSION     |
@@ -124,7 +126,7 @@ if ($show_man) {
 }
 
 if ($show_version) {
-    print "\nbatch_mask.pl:\n".
+    print "\ncnv_parseval2locsum.pl:\n".
 	"Version: $VERSION\n\n";
     exit;
 }
@@ -142,12 +144,21 @@ else {
 	die "Can not open STDIN for input";
 }
 
+
+# If outfile root name given write outfiles
+# otherwise sending evertyhing to STDOUT
 if ($outfile) {
-    open (OUTFILE, ">$outfile") ||
-	die "Can not open outfile $outfile"
+    my $tab_out = $outfile."_vals.txt";
+    my $loc_out = $outfile."_loc.txt";
+    open (TABOUT, ">$tab_out") ||
+	die "Can not open outfile $loc_out";
+    open (LOCOUT, ">$loc_out") ||
+	die "Can not open outfile $tab_out";
 }
 else {
-    open (OUTFILE, ">&STDOUT") ||
+    open (TABOUT, ">&STDOUT") ||
+	die "Can not STDOUT";
+    open (LOCOUT, ">&STDOUT") ||
 	die "Can not STDOUT";
 }
 
@@ -165,6 +176,11 @@ my $in_utr;
 my $in_nuc;
 my $in_comparison;
 my $end_comparison;
+
+my $perfect_cds_match;
+my $perfect_exon_match;
+my $perfect_utr_match;
+my $perfect_gene_match;
 
 my $cds_sensitivity;
 my $cds_specificity;
@@ -206,6 +222,8 @@ my @ref_transcripts;
 my @pred_transcripts;
 my @ref_genes; 
 my @pred_genes; 
+
+my $comp_count = 0;
 
 while (<INFILE>) {
 
@@ -282,20 +300,78 @@ while (<INFILE>) {
     }
 
 
+    #-----------------------------+
+    # PERFECT MATCHES             |
+    #-----------------------------+
+    # FOR PERFECT MATCHES SET VALUES TO MAX
     if ($_ =~ m/CDS structures match perfectly/ ) {
-	print STDERR "\n\tPerfect CDS match\n";
+
+	print STDERR "\n\tPerfect CDS match\n"
+	    if $verbose;
+
+	$perfect_cds_match = 1;
+
+	$cds_sensitivity = "1.000";
+	$cds_specificity = "1.000";
+	$cds_f1_score = "1.000";
+	$cds_aed = "0.000";
+
+	$nuc_cds_match_coefficient = "1.000";
+	$nuc_cds_cor_coefficient = "1.000";
+	$nuc_cds_sensitivity = "1.000";
+	$nuc_cds_specificity = "1.000";
+	$nuc_cds_f1_score = "1.000";
+	$nuc_cds_aed = "0.000";
     }
 
     if ($_ =~ m/Exon structures match perfectly/ ) {
-	print STDERR "\tPerfect exon match\n";
+	print STDERR "\tPerfect exon match\n"
+	    if $verbose;
+
+	$perfect_exon_match = 1;
+	
+	$exon_sensitivity = "1.000";
+	$exon_specificity = "1.000";
+	$exon_f1_score = "1.000";
+	$exon_aed = "0.000";
+
     }
 
     if ($_ =~ m/UTR structures match perfectly/ ) {
-	print STDERR "\tPerfect UTR match\n";
+	print STDERR "\tPerfect UTR match\n"
+	    if $verbose;
+	
+	$perfect_utr_match = 1;
+
+	$utr_sensitivity = "1.000";
+	$utr_specificity = "1.000";
+	$utr_f1_score = "1.000";
+	$utr_aed = "0.000";
+
+	$nuc_utr_match_coefficient = "1.000";
+	$nuc_utr_cor_coefficient = "1.000";
+	$nuc_utr_sensitivity = "1.000";
+	$nuc_utr_specificity = "1.000";
+	$nuc_utr_f1_score = "1.000";
+	$nuc_utr_aed = "0.000";
+	
     }
 
+
+
     if ($_ =~ m/Gene structures match perfectly/ ) {
-	print STDERR "\tPerfect gene structure match\n";
+	print STDERR "\tPerfect gene structure match\n"
+	    if $verbose;
+
+	$perfect_gene_match = 1;
+
+	$nuc_all_match_coefficient = "1.000";
+	$nuc_all_cor_coefficient = "1.000";
+	$nuc_all_sensitivity = "1.000";
+	$nuc_all_specificity = "1.000";
+	$nuc_all_f1_score = "1.000";
+	$nuc_all_aed = "0.000";
+	
     }
 
 
@@ -306,8 +382,9 @@ while (<INFILE>) {
     if ( $in_prediction_transcript ) {
 	if ($_ =~ m/\s\|\s(.*)/ ) {
 	    unless ( $_ =~ m/prediction transcripts/ ) {
-		push ( @pred_transcripts, $1);
-		print STDERR "\tPred match:".$1."\n"
+		my $pred_transcript = trim($1);
+		push ( @pred_transcripts, $pred_transcript);
+		print STDERR "\tPred match:".$pred_transcript."\n"
 		    if $verbose;	    
 	    }
 	}
@@ -317,8 +394,9 @@ while (<INFILE>) {
     if ( $in_reference_transcript ) {
 	if ($_ =~ m/\s\|\s(.*)/ ) {
 	    unless ($_ =~ m/reference transcripts/ ) {
-		push (@ref_transcripts, $1);
-		print STDERR "\tRef match:".$1."\n"
+		my $ref_transcript = trim($1);
+		push (@ref_transcripts, $ref_transcript);
+		print STDERR "\tRef match:".$ref_transcript."\n"
 		    if $verbose;
 	    }
 	}
@@ -326,25 +404,38 @@ while (<INFILE>) {
 
 
     # Load sensitivy values
+    # Use presence absence of sensitivity value
+    # to set perfect match booleans
     if ($_ =~ m/Sensitivity:\s(.*)$/ ) {
 	my $sensitivity = trim($1);
+	$perfect_gene_match = 0;
+
 	#print STDERR "\tSensitivity:--".$1."\n";
-	print STDERR "\n";
-	print STDERR "\tSensitivity:--".$sensitivity."\n";
+	print STDERR "\n"
+	    if $verbose;
+	print STDERR "\tSensitivity:--".$sensitivity."\n"
+	    if $verbose;
 	if ($in_cds) {
 	    $cds_sensitivity = $sensitivity;
+	    $perfect_cds_match = 0;
 	}
 	elsif ($in_exon) {
 	    $exon_sensitivity =  $sensitivity;
+	    $perfect_exon_match = 0;
 	}
 	elsif ($in_utr) {
-	    $exon_sensitivity = $sensitivity;
+	    $utr_sensitivity = $sensitivity;
+	    $perfect_utr_match = 0;
 	}
 	elsif ($in_nuc) {
 	    #cds/utr/overall
 	    ($nuc_cds_sensitivity,
 	     $nuc_utr_sensitivity,
-	     $nuc_all_sensitivity) = split (/\s/,  $sensitivity);
+	     $nuc_all_sensitivity) = split (/\s+/,  $sensitivity);
+#	    print STDERR  $sensitivity."\n";
+#	    print STDERR  "\t".$nuc_cds_sensitivity."\n";
+#	    print STDERR  "\t".$nuc_utr_sensitivity."\n";
+#	    print STDERR  "\t".$nuc_all_sensitivity."\n";
 	}
     }
 
@@ -352,7 +443,8 @@ while (<INFILE>) {
     if ($_ =~ m/Specificity:\s(.*)$/ ) {
 	my $specificity = trim($1);
 	#print STDERR "\tSpecificity:--".$1."\n";
-	print STDERR "\tSpecificity:--".$specificity."\n";
+	print STDERR "\tSpecificity:--".$specificity."\n"
+	    if $verbose;
 
 	if ($in_cds) {
 	    $cds_specificity = $specificity;
@@ -366,7 +458,7 @@ while (<INFILE>) {
 	elsif ($in_nuc) {
 	    ($nuc_cds_specificity,
 	     $nuc_utr_specificity,
-	     $nuc_all_specificity) = split (/\s/, $specificity);
+	     $nuc_all_specificity) = split (/\s+/, $specificity);
 	}
     }
 
@@ -374,7 +466,8 @@ while (<INFILE>) {
     if ($_ =~ m/F1 Score:\s(.*)$/ ) {
 	my $f1_score = trim($1);
 	#print STDERR "\tF1 Score:--".$1."\n";
-	print STDERR "\tF1 Score:--".$f1_score."\n";
+	print STDERR "\tF1 Score:--".$f1_score."\n"
+	    if $verbose;
 
 	if ($in_cds) {
 	    $cds_f1_score = $f1_score;
@@ -388,7 +481,7 @@ while (<INFILE>) {
 	elsif ($in_nuc) {
 	    ($nuc_cds_f1_score,
 	     $nuc_utr_f1_score,
-	     $nuc_all_f1_score) = split (/\s/, $f1_score);
+	     $nuc_all_f1_score) = split (/\s+/, $f1_score);
 	}
     }
 
@@ -396,7 +489,8 @@ while (<INFILE>) {
     if ($_ =~ m/Annotation edit distance:\s(.*)$/ ) {
 	my $aed = trim($1);
 
-	print STDERR "\tAED:--".$aed."\n";
+	print STDERR "\tAED:--".$aed."\n"
+	    if $verbose;
 
 	if ($in_cds) {
 	    $cds_aed = $aed;
@@ -410,7 +504,7 @@ while (<INFILE>) {
 	elsif ($in_nuc) {
 	    ($nuc_cds_aed,
 	     $nuc_utr_aed,
-	     $nuc_all_aed) = split (/\s/, $aed);
+	     $nuc_all_aed) = split (/\s+/, $aed);
 	}
     }
 
@@ -419,7 +513,7 @@ while (<INFILE>) {
 	my $match_coefficient = trim($1);
 	($nuc_cds_match_coefficient,
 	 $nuc_utr_match_coefficient,
-	 $nuc_all_match_coefficient) = split (/\s/, $match_coefficient);
+	 $nuc_all_match_coefficient) = split (/\s+/, $match_coefficient);
     }
 
     #  Correlation coefficient
@@ -427,48 +521,86 @@ while (<INFILE>) {
 	my $cor_coefficient = trim($1);
 	($nuc_cds_cor_coefficient,
 	 $nuc_utr_cor_coefficient,
-	 $nuc_all_cor_coefficient) = split (/\s/, $cor_coefficient);
+	 $nuc_all_cor_coefficient) = split (/\s+/, $cor_coefficient);
     }
 
+    # Get Reference Gene
+    if ( $in_reference_gene ) {
+	if ($_ =~ m/\s\|\s(.*)/ ) {
+	    unless ($_ =~ m/reference genes/ ) {
+		push (@ref_genes, $1);
+		print STDERR "\tRef gene match:".$1."\n"
+		    if $verbose;
+	    }
+	}
 
-#    if ( $in_reference_gene ) {
-#	if ($_ =~ m/\s\|\s(.*)/ ) {
-#	    unless ($_ =~ m/reference genes/ ) {
-#		push (@ref_genes, $1);
-#		print STDERR "\tRef gene match:".$1."\n"
-#		    if $verbose;
-#	    }
-#	}
-#
-#    }
-#
-#    if ( $in_prediction_gene ) {
-#	if ($_ =~ m/\s\|\s(.*)/ ) {
-#	    unless ($_ =~ m/prediction genes/ ) {
-#		push (@ref_genes, $1);
-#		print STDERR "\tPred gene match:".$1."\n"
-#		    if $verbose;
-#	    }
-#	}
-#    }
+    }
+
+    if ( $in_prediction_gene ) {
+	if ($_ =~ m/\s\|\s(.*)/ ) {
+	    unless ($_ =~ m/prediction genes/ ) {
+		push (@ref_genes, $1);
+		print STDERR "\tPred gene match:".$1."\n"
+		    if $verbose;
+	    }
+	}
+    }
     
     #-----------------------------+
     # Write to outfile            |
     #-----------------------------+
     if ( $end_comparison ) {
 
+	$comp_count++;
+
 	my $num_pred_transcripts =  @pred_transcripts;
 	my $num_ref_transcripts = @ref_transcripts;
 
-	print OUTFILE "\nNum Ref: ".$num_ref_transcripts."\n";
+	my $pred_transcripts;
+	my $ref_transcripts;
+
+#	print OUTFILE "\nNum Ref: ".$num_ref_transcripts."\n";
 	foreach my $transcript ( @ref_transcripts ) {
-	    print OUTFILE "\t".$transcript."\n";
+	    print LOCOUT $comp_count."\tref_id\t".$transcript."\n";
 	}	
 	
-	print OUTFILE "Num Pred: ".$num_pred_transcripts."\n";
+#	print OUTFILE "Num Pred: ".$num_pred_transcripts."\n";
 	foreach my $transcript ( @pred_transcripts ) {
-	    print OUTFILE "\t".$transcript."\n";
+	    print LOCOUT $comp_count."\tpred_id\t".$transcript."\n";
 	}
+
+	# Write the values determined
+	print TABOUT $comp_count."\t".
+	    $num_ref_transcripts."\t".
+	    $num_pred_transcripts."\t".
+	    # CDS values
+	    $cds_sensitivity."\t".
+	    $cds_specificity."\t".
+	    $cds_f1_score."\t".
+	    $cds_aed."\t".
+	    $nuc_cds_match_coefficient."\t".
+	    $nuc_cds_cor_coefficient."\t".
+	    $nuc_cds_sensitivity."\t".
+	    $nuc_cds_specificity."\t".
+	    $nuc_cds_f1_score."\t".
+	    $nuc_cds_aed."\t".
+	    # exon values
+	    $exon_sensitivity."\t".
+	    $exon_specificity."\t".
+	    $exon_f1_score."\t".
+	    $exon_aed."\t".
+	    # UTR VALUES
+	    $utr_sensitivity."\t".
+	    $utr_specificity."\t".
+	    $utr_f1_score."\t".
+	    $utr_aed."\t".
+	    $nuc_utr_match_coefficient."\t".
+	    $nuc_utr_cor_coefficient."\t".
+	    $nuc_utr_sensitivity."\t".
+	    $nuc_utr_specificity."\t".
+	    $nuc_utr_f1_score."\t".
+	    $nuc_utr_aed."\t".
+	    "\n";
 
 	# Reset values
 	@pred_transcripts = ();
@@ -480,7 +612,8 @@ while (<INFILE>) {
 }
 
 close (INFILE);
-close (OUTFILE);
+close (LOCOUT);
+close (TABOUT);
 
 exit 0;
 
@@ -488,7 +621,7 @@ exit 0;
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
 
-sub trim($) {
+sub trim {
     my $string = shift;
     $string =~ s/^\s+//;
     $string =~ s/\s+$//;
