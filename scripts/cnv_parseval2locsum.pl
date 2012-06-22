@@ -28,6 +28,13 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
+#
+# TODO: Need exception for NoUTRs annotated for this locus
+#
+#   |
+#     |  UTR structure comparison
+#     |    No UTRs annotated for this locus.
+#     |
 
 package DAWGPAWS;
 
@@ -406,6 +413,27 @@ while (<INFILE>) {
 	
     }
 
+    # UTRs not predicteid
+    if ($_ =~ m/No UTRs annotated for this locus/ ) {
+	print STDERR "NO UTRS Present\n"
+	    if $verbose;
+
+	$perfect_utr_match = 0;
+
+	$utr_sensitivity = "--";
+	$utr_specificity = "--";
+	$utr_f1_score = "--";
+	$utr_aed = "--";
+	
+	$nuc_utr_match_coefficient = "--";
+	$nuc_utr_cor_coefficient = "--";
+	$nuc_utr_sensitivity = "--";
+	$nuc_utr_specificity = "--";
+	$nuc_utr_f1_score = "--";
+	$nuc_utr_aed = "--";
+	
+    }
+
     # Perfect gene structure match
     if ($_ =~ m/Gene structures match perfectly/ ) {
 	print STDERR "\tPerfect gene structure match\n"
@@ -690,7 +718,8 @@ while (<INFILE>) {
 		    if $verbose;
 		
 		if ($ref_gene =~ "None") {
-		    print STDERR "NO REF GENE MATCH\n";
+		    print STDERR "NO REF GENE MATCH\n"
+			if $verbose;
 
 		    # May want to load some dummy values here
 		    # for the tab out table
@@ -712,7 +741,8 @@ while (<INFILE>) {
 
 		# /////////////
 		if ($_ =~ m/None/) {
-		    print STDERR "NO PRED GENE MATCH\n";
+		    print STDERR "NO PRED GENE MATCH\n"
+			if $verbose;
 		}
 
 	    }
