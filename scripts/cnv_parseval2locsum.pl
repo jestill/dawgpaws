@@ -467,7 +467,7 @@ while (<INFILE>) {
 		}
 
 		if ( $ref_gene =~ "None" ) {
-		    $num_ref_genes = ".";
+		    $num_ref_genes = int(0);
 		}
 	    }
 
@@ -484,7 +484,7 @@ while (<INFILE>) {
 			$pred_gene."\n";
 		}
 		if ( $pred_gene =~ "None" ) {
-		    $num_pred_genes = ".";
+		    $num_pred_genes = int(0);
 		}
 
 
