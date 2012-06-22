@@ -465,6 +465,10 @@ while (<INFILE>) {
 			"ref_gene_id\t".
 			$ref_gene."\n";
 		}
+
+		if ( $ref_gene =~ "None" ) {
+		    $num_ref_genes = ".";
+		}
 	    }
 
 	    foreach my $pred_gene (@pred_genes) {
@@ -479,6 +483,10 @@ while (<INFILE>) {
 			"pred_gene_id\t".
 			$pred_gene."\n";
 		}
+		if ( $pred_gene =~ "None" ) {
+		    $num_pred_genes = ".";
+		}
+
 
 	    }
 	    
