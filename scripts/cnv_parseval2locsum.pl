@@ -147,15 +147,23 @@ else {
 # otherwise sending evertyhing to STDOUT
 if ($outfile) {
     my $tab_out = $outfile."_vals.txt";
-    my $loc_out = $outfile."_loc.txt";
+    my $trans_out = $outfile."_trascripts.txt";
+    my $loc_out = $outfile."_loci_list.txt";
+    my $loc_val = $outfile."_loci_vals.txt";
+
     open (TABOUT, ">$tab_out") ||
-	die "Can not open outfile $loc_out";
-    open (LOCOUT, ">$loc_out") ||
 	die "Can not open outfile $tab_out";
+    open (TRANSOUT, ">$trans_out") ||
+	die "Can not open outfile $trans_out";
+    open (LOCOUT, ">$loc_out") ||
+	die "Can not open outfile $loc_out";
+    open (LOCVAL, ">$loc_val") ||
+	die "Can not open outfile $loc_val";
+
 }
 else {
     open (TABOUT, ">&STDOUT") ||
-	die "Can not STDOUT";
+	die "Can not open STDOUT for output\n";
 }
 
 # Print header to tabout here
@@ -175,12 +183,19 @@ my $in_nuc;
 my $in_comparison;
 my $end_comparison;
 my $in_novel_transcript;
+my $in_loc_splice_complexity;
+
+# A novel locus is a predicted gene
+# without a reference gene
+my $in_novel_locus;
 
 # Locus vars
 my $seq_id;
 my $start;
 my $end;
 my $locus;
+my $ref_splice_complexity;
+my $pred_splice_complexity;
 
 # Transcript booleans
 my $perfect_cds_match;
@@ -267,7 +282,12 @@ while (<INFILE>) {
     elsif ( $_ =~ m/prediction genes/ ) {
 	print STDERR "\tIn predictions genes\n"
 	    if $verbose;
+	$in_reference_gene = 0;
 	$in_prediction_gene = 1;
+    }
+    elsif ( $_ =~ m/locus splice complexity/ ) {
+	$in_prediction_gene = 0;
+	$in_loc_splice_complexity = 1;
     }
     elsif ( $_ =~ m/reference transcripts/ ) {
 	$in_reference_transcript = 1;
@@ -313,7 +333,11 @@ while (<INFILE>) {
 	$in_nuc = 1;
 	$in_utr = 0;
     }
+    elsif ( $_ =~ m/No comparisons were performed for this locus/ ) {
+	#$in_loc_splice_complexity = 0;
+    }
     elsif ( $_ =~ m/Begin Comparison/ ) {
+	#$in_loc_splice_complexity = 0;
 	print STDERR "\n>>> In Comparison >>>\n\n"
 	    if $verbose;
     }
@@ -403,6 +427,87 @@ while (<INFILE>) {
     # Work with components        |
     #-----------------------------+
 
+    # Splice complexity
+    # This also used to determine
+    # when finished processing locus information
+    if ( $in_loc_splice_complexity ) {
+	if ($_ =~ m/^.*reference\:(.*)/ ) {
+	    $ref_splice_complexity = trim($1);
+	    print STDERR "\nRef--$ref_splice_complexity\n"
+		if $verbose;
+
+	}
+	elsif ($_ =~ m/^.*prediction\:(.*)/ ) {
+	    $pred_splice_complexity = trim($1);
+	    print STDERR "Pred--$pred_splice_complexity\n"
+		if $verbose;
+	}
+	elsif ( $_ =~ m/locus splice complexity/ ) {
+	    # Do nothing this is the header
+	}
+	elsif ( $_ =~ m/\s|.*/) {
+
+	    $in_loc_splice_complexity = 0;
+
+	    my $num_pred_genes = @pred_genes;
+	    my $num_ref_genes = @ref_genes;
+
+
+
+	    foreach my $ref_gene (@ref_genes) {
+		if ($outfile) {
+		    print LOCOUT $locus."\t".
+			"ref_gene_id\t".
+			$ref_gene."\n";
+		}
+		else {
+		    print TABOUT "## ".$locus."\t".
+			"ref_gene_id\t".
+			$ref_gene."\n";
+		}
+	    }
+
+	    foreach my $pred_gene (@pred_genes) {
+
+		if ($outfile) {
+		    print LOCOUT $locus."\t".
+			"pred_gene_id\t".
+			$pred_gene."\n";
+		}
+		else {
+		    print TABOUT "## ".$locus."\t".
+			"pred_gene_id\t".
+			$pred_gene."\n";
+		}
+
+	    }
+	    
+
+	    # Print locus summary values information
+	    if ($outfile) {
+		print LOCVAL $locus."\t".
+		    $num_ref_genes."\t".
+		    $num_pred_genes."\t".
+		    $ref_splice_complexity."\t".
+		    $pred_splice_complexity."\n";
+	    }
+	    else {
+		print TABOUT "## ".$locus."\t".
+		    $num_ref_genes."\t".
+		    $num_pred_genes."\t".
+		    $ref_splice_complexity."\t".
+		    $pred_splice_complexity."\n";
+	    }
+
+	    # Reset gene arrays to zero
+	    @pred_genes = ();
+	    @ref_genes = ();
+	    
+
+	}
+	
+    } # End of in_loc_splice_complexity
+
     # Novel transcripts ...
     if ( $in_novel_transcript ) {
 	if ($_ =~ m/\s\|\s(.*)/ ) {
@@ -413,7 +518,7 @@ while (<INFILE>) {
 		    if $verbose;
 		
 		if ( $outfile ) {
-		    print LOCOUT $comp_count."\tpred_novel\t".
+		    print TRANSOUT $comp_count."\tpred_novel\t".
 			$novel_transcript."\n";
 		}
 		else {
@@ -569,22 +674,39 @@ while (<INFILE>) {
 
     # Get Reference Gene
     if ( $in_reference_gene ) {
-	if ($_ =~ m/\s\|\s(.*)/ ) {
+	if ($_ =~ m/^\|\s(.*)/ ) {
 	    unless ($_ =~ m/reference genes/ ) {
-		push (@ref_genes, $1);
-		print STDERR "\tRef gene match:".$1."\n"
+		my $ref_gene = trim($1);
+		push (@ref_genes, $ref_gene);
+		print STDERR "\tRef gene".$ref_gene."\n"
 		    if $verbose;
+		
+		if ($ref_gene =~ "None") {
+		    print STDERR "NO REF GENE MATCH\n";
+
+		    # May want to load some dummy values here
+		    # for the tab out table
+		}
+
+
 	    }
 	}
 
     }
 
     if ( $in_prediction_gene ) {
-	if ($_ =~ m/\s\|\s(.*)/ ) {
+	if ($_ =~ m/\|\s(.*)/ ) {
 	    unless ($_ =~ m/prediction genes/ ) {
-		push (@ref_genes, $1);
+		my $pred_gene = trim($1);
+		push (@pred_genes, $pred_gene);
 		print STDERR "\tPred gene match:".$1."\n"
 		    if $verbose;
+
+		# /////////////
+		if ($_ =~ m/None/) {
+		    print STDERR "NO PRED GENE MATCH\n";
+		}
+
 	    }
 	}
     }
@@ -592,6 +714,7 @@ while (<INFILE>) {
     #-----------------------------+
     # Write to outfile            |
     #-----------------------------+
+    # When comparisons ended .. write transcript output
     if ( $end_comparison ) {
 
 	$comp_count++;
@@ -604,7 +727,7 @@ while (<INFILE>) {
 
 	foreach my $transcript ( @ref_transcripts ) {
 	    if ( $outfile ) {
-		print LOCOUT $comp_count."\tref_transcript_id\t".
+		print TRANSOUT $comp_count."\tref_transcript_id\t".
 		    $transcript."\n";
 	    }
 	    else {
@@ -617,7 +740,7 @@ while (<INFILE>) {
 	
 	foreach my $transcript ( @pred_transcripts ) {
 	    if ( $outfile ) {
-		print LOCOUT $comp_count."\tpred_transcript_id\t".
+		print TRANSOUT $comp_count."\tpred_transcript_id\t".
 		    $transcript."\n";
 	    }
 	    else {
@@ -701,7 +824,9 @@ while (<INFILE>) {
 
 close (INFILE);
 close (LOCOUT);
+close (LOCVAL);
 close (TABOUT);
+close (TRANSOUT);
 
 exit 0;
 
@@ -1074,4 +1199,47 @@ VERSION: $Rev$
 #|---- Locus: sequence 'Chr5' from 26958001 to 26959557
 #|-------------------------------------------------
 #|
+#
+# It is also possible for there to be no predicted genes
+# for ra locs
 
+#|-------------------------------------------------
+#|---- Locus: sequence 'AmTr_v1.0_scaffold00001' from 185581 to 198384
+#|-------------------------------------------------
+#|
+#|  reference genes:
+#|    evm_15.TU.AmTr_v1.0_scaffold00001.13
+#|
+#|  prediction genes:
+#|    None!
+#|
+#|  locus splice complexity:
+#|    reference:   0.000
+#|    prediction:  0.000
+#|
+#|
+#|----------
+#     |
+#     |  No comparisons were performed for this locus
+#     |
+#
+#|-------------------------------------------------
+#|---- Locus: sequence 'AmTr_v1.0_scaffold00001' from 201972 to 206735
+#|-------------------------------------------------
+#|
+#|  reference genes:
+#|    evm_15.TU.AmTr_v1.0_scaffold00001.14
+#|
+#|  prediction genes:
+#|    None!
+#|
+#|  locus splice complexity:
+#|    reference:   0.000
+#|    prediction:  0.000
+#|
+#|
+#|----------
+#     |
+#     |  No comparisons were performed for this locus
+#     |
+#
