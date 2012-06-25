@@ -28,13 +28,6 @@
 #  http://www.gnu.org/licenses/gpl.html                     |  
 #                                                           |
 #-----------------------------------------------------------+
-#
-# TODO: Need exception for NoUTRs annotated for this locus
-#
-#   |
-#     |  UTR structure comparison
-#     |    No UTRs annotated for this locus.
-#     |
 
 package DAWGPAWS;
 
@@ -153,10 +146,10 @@ else {
 # If outfile root name given write outfiles
 # otherwise sending evertyhing to STDOUT
 if ($outfile) {
-    my $tab_out = $outfile."_vals.txt";
-    my $trans_out = $outfile."_trascripts.txt";
-    my $loc_out = $outfile."_loci_list.txt";
-    my $loc_val = $outfile."_loci_vals.txt";
+    my $tab_out = $outfile."_transcript_vals.txt";
+    my $trans_out = $outfile."_transcript_list.txt";
+    my $loc_out = $outfile."_locus_list.txt";
+    my $loc_val = $outfile."_locus_vals.txt";
 
     open (TABOUT, ">$tab_out") ||
 	die "Can not open outfile $tab_out";
@@ -522,6 +515,9 @@ while (<INFILE>) {
 	    # Print locus summary values information
 	    if ($outfile) {
 		print LOCVAL $locus."\t".
+		    $seq_id."\t".
+		    $start."\t".
+		    $end."\t".
 		    $num_ref_genes."\t".
 		    $num_pred_genes."\t".
 		    $ref_splice_complexity."\t".
@@ -529,6 +525,9 @@ while (<INFILE>) {
 	    }
 	    else {
 		print TABOUT "## ".$locus."\t".
+		    $seq_id."\t".
+		    $start."\t".
+		    $end."\t".
 		    $num_ref_genes."\t".
 		    $num_pred_genes."\t".
 		    $ref_splice_complexity."\t".
@@ -1141,7 +1140,7 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 STARTED: 06/18/2012
 
-UPDATED: 06/21/2012
+UPDATED: 06/22/2012
 
 VERSION: $Rev$
 
