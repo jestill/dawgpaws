@@ -49,6 +49,10 @@ my $show_help = 0;
 my $show_usage = 0;
 my $show_man = 0;
 my $show_version = 0;
+# write fasta output with no extensions
+# ie. do not end in fasta
+# some programs (ie helsearch) require this
+my $no_extension = 0;
 
 # VARS With Default Values
 my $infileformat = "fasta";
@@ -61,19 +65,20 @@ my $num_pad;               # The number of digits to pad the outfile names
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED OPTIONS
-		    "i|infile=s"   => \$infile,
-		    "f|format=s"   => \$infileformat,
-                    "o|outdir=s"   => \$outdir,
+		    "i|infile=s"      => \$infile,
+		    "f|format=s"      => \$infileformat,
+                    "o|outdir=s"      => \$outdir,
+                    "x|no-extension"  => \$no_extension,
 		    # ADDITIONAL OPTIONS
-		    "p|pad=i"      => \$num_pad,
-		    "r|rootname=s" => \$root_name,
-		    "q|quiet"      => \$quiet,
-		    "verbose"      => \$verbose,
+		    "p|pad=i"         => \$num_pad,
+		    "r|rootname=s"    => \$root_name,
+		    "q|quiet"         => \$quiet,
+		    "verbose"         => \$verbose,
 		    # ADDITIONAL INFORMATION
-		    "usage"        => \$show_usage,
-		    "version"      => \$show_version,
-		    "man"          => \$show_man,
-		    "h|help"       => \$show_help,);
+		    "usage"           => \$show_usage,
+		    "version"         => \$show_version,
+		    "man"             => \$show_man,
+		    "h|help"          => \$show_help,);
 
 
 #-----------------------------+
@@ -164,8 +169,12 @@ while (my $inseq = $seq_in->next_seq) {
 	$out_file_path = $outdir.$root_name."_".$num.".fasta";
     }
     else {
-#	$out_file_path = $outdir.$seq_id.".fasta";
-	$out_file_path = $outdir.$seq_file_name.".fasta";
+	if ($no_extension) {
+	    $out_file_path = $outdir.$seq_file_name;
+	}
+	else {
+	    $out_file_path = $outdir.$seq_file_name.".fasta";
+	}
     }
 
     my $seq_out = Bio::SeqIO->new('-file' => ">$out_file_path",
