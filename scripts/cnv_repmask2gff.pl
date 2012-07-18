@@ -344,8 +344,8 @@ sub rmout2gff {
 	    elsif ($feature =~ "match") {
 		$m_count++;
 		$attribute = "ID=match_".$m_count."_".$hitname.
-		    "; ".
-		    "Name=".$hitname."; ".
+		    ";".
+		    "Name=".$hitname.";".
 		    "Target=".$hitname." ".
 		    $hit_start." ".$hit_end;
 		
