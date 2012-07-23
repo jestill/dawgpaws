@@ -442,6 +442,7 @@ for my $ind_file (@fasta_files) {
 	
 	print STDERR $gff_out
 	    if $verbose;
+	print GFFOUT $gff_out;
 #	print $_."\n" if $verbose;
 	
     }
