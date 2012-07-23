@@ -36,6 +36,10 @@
 #                                                           |
 #-----------------------------------------------------------+
 #
+# Usage as: 
+#  batch_ltrharvest.pl -i test_in/ -o test_out/ --hmm hmm/ --verbose
+#  batch_ltrharvest.pl -i test_in/ -o test_out/ --hmm hmm/ -t tRNA_aragorn_default.fasta --verbose
+#
 # Run index on fasta file as
 #  gt suffixerator -Db AmTr_v1.0_scaffold00001.fasta -indexname test2.idx -suf -lcp -des -ssp -sds -dna
 # Run LTRHarvest on fasta file as:
@@ -87,8 +91,6 @@ my $gt_path = $ENV{GENOME_TOOLS} ||
 #-----------------------------+
 my $indir;
 my $outdir;
-my $hmm_dir;                      # Dir with hmm models for ltrdigest
-my $trna_file;                    # fasta file with tRNA sequences
 
 # Vars needing 
 my $name_root;
@@ -97,13 +99,22 @@ my $ls_out;
 my $fl_gff_outpath;
 my $do_gff_convert = 1;
 
-# LTR params
+# LTRHarvest varss
 my $min_tsd = 3;
+
+# LTRDigest vars
+my $hmm_dir;                      # Dir with hmm models for ltrdigest
+my $trna_file;                    # fasta file with tRNA sequences
 
 # Counters/Index Vals
 my $i = 0;                     # Array index val
 my $file_num = 0;              # File number
 my $proc_num = 0;              # Process number
+
+# GFF3 output options
+my $program = "ltrharvest"; 
+my $param = "default";
+my $delim = "_";
 
 # BOOLEANS
 my $quiet = 0;
@@ -122,9 +133,12 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|indir=s"   => \$indir,
                     "o|outdir=s"  => \$outdir,
 		    # ADDITIONAL OPTIONS
-		    "gt-path=s"     => \$gt_path,
-		    "m|hmm"       => \$hmm_dir,
-		    "t|trna"      => \$trna_file,
+		    "param=s"     => \$param,
+		    "program=s"   => \$program,
+		    "delim=s"     => \$delim,
+		    "gt-path=s"   => \$gt_path,
+		    "m|hmm=s"     => \$hmm_dir,
+		    "t|trna=s"    => \$trna_file,
 		    "force"       => \$do_force,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -185,6 +199,12 @@ unless ($indir =~ /\/$/ ) {
 
 unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
+}
+
+if ($hmm_dir) {
+    unless ($hmm_dir =~ /\/$/ ) {
+	$hmm_dir= $hmm_dir."/";
+    }
 }
 
 #-----------------------------+
@@ -337,28 +357,97 @@ for my $ind_file (@fasta_files) {
     #-----------------------------+
     # RUN LTRDIGEST               |
     #-----------------------------+
+    # Can use wildcards as *hmm for hmms
     my $gt_digest_cmd = $gt_path." ltrdigest";
     my $gt_digest_gff = $ltrharvest_dir.$ind_file.".ltrdigest.gff3";
     if ($trna_file) {
 	$gt_digest_cmd = $gt_digest_cmd.
 	    " -trnas ".$trna_file;
     }
+    if ($hmm_dir) {
+	$gt_digest_cmd = $gt_digest_cmd.
+	    " -hmms ".$hmm_dir."*.hmm --"
+	}
     $gt_digest_cmd = $gt_digest_cmd.
 	" ".$gt_harvest_gff.
 	" ".$gt_sfx_idx.
 	" > ".$gt_digest_gff;
 
-    print STDERR "\tDGST CMT: ".$gt_digest_cmd."\n";
+    print STDERR "\tDGST CMT: ".$gt_digest_cmd."\n"
+	if $verbose;
     system ($gt_digest_cmd);
 
     #-----------------------------+
     # CONVERT LTRDIGEST RESULT    |
     # TO SO COMPLIENT GFF FILE    |
     #-----------------------------+
+    # Adds appropriate sequence name
     open (DIGESTIN, "<".$gt_digest_gff) ||
 	next;
-#    open (GFFOUT, ">".$gt) 
+
+
+    my $so_gff_out = $gff_dir.$name_root.".".$param.".gff3";
+    print STDERR "\tGFF3 OUT:".$so_gff_out."\n"
+	if $verbose;
+    open (GFFOUT, ">".$so_gff_out) ||
+	next;
+    
+    while (<DIGESTIN>) {
+
+	chomp;
+	if ( m/^\#/ ) {
+	    # We are in comment and pragma section
+	    # skip as print out as is
+	    print GFFOUT $_."\n";
+	    next;
+	}
 	
+	my @gff_parts = split (/\t/, $_);
+	
+	my $num_gff_parts = @gff_parts;
+	if ( $num_gff_parts != 9) {
+	    print STDERR "ERROR: GFF Num parts = ".
+		$num_gff_parts."\n";
+	    print STDERR "ERROR GFF: ".$_."\n";
+	}
+
+	my $type = $gff_parts[2];
+	my $start =$gff_parts[3];
+	my $end = $gff_parts[4];
+	my $score = $gff_parts[5];
+	my $strand = $gff_parts[6];
+	my $phase = $gff_parts[7];
+	my $attribute = $gff_parts[8];
+	my $id_prefix = $name_root."_".$param."_";
+	
+	$attribute =~ s/Parent\=/Parent\=$id_prefix/g;
+	$attribute =~ s/ID\=/ID\=$id_prefix/g;
+
+	# Append ID to attributes without an ID
+	unless ($attribute =~ m/^ID/) {
+	    $attribute = "ID=".$id_prefix.$type."_".$start."_".$end.";".
+		$attribute;
+	}
+
+	my $gff_out = $name_root."\t".
+	    $program.$delim.$param."\t".
+	    $type."\t".
+	    $start."\t".
+	    $end."\t".
+	    $score."\t".
+	    $strand."\t".
+	    $phase."\t".
+	    $attribute."\t".
+	    "\n";
+	
+	print STDERR $gff_out
+	    if $verbose;
+#	print $_."\n" if $verbose;
+	
+    }
+    
+    close (DIGESTIN);
+    close (GFFOUT);
 	
 }
 
