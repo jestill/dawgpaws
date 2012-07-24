@@ -113,7 +113,9 @@ my $proc_num = 0;              # Process number
 
 # GFF3 output options
 my $program = "ltrharvest"; 
-my $param = "default";
+#my $param = "default";
+#my $param = "old_long";
+my $param = "65_5000";
 my $delim = "_";
 
 # BOOLEANS
@@ -346,6 +348,8 @@ for my $ind_file (@fasta_files) {
     my $gt_harvest_cmd = $gt_path." ltrharvest".
 #	" -mintsd ".$min_tsd.
 #	" -longoutput".
+	" -similar 65".
+	" -maxlenltr 5000".
 	" -index ".$gt_sfx_idx.
 	" -gff3 ".$gt_harvest_gff.
 	" > ".$gt_harvest_out;
@@ -437,7 +441,7 @@ for my $ind_file (@fasta_files) {
 	    $score."\t".
 	    $strand."\t".
 	    $phase."\t".
-	    $attribute."\t".
+	    $attribute.
 	    "\n";
 	
 	print STDERR $gff_out
