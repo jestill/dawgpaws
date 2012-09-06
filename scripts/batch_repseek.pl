@@ -52,6 +52,8 @@ my $indir;
 my $outdir;
 my $config_file;
 
+my $gff_ver = "GFF3";
+
 my @repseek_params = ();         # Repminer config options
 
 # BOOLEANS
@@ -286,6 +288,7 @@ for my $ind_file (@fasta_files) {
 	my $rs_param_name = $repseek_params[$i][0];
 	my $rs_options = $repseek_params[$i][1];
 	my $rs_outfile = $repseek_dir.$name_root.".".$rs_param_name.".txt";
+	my $rs_gff_outfile = $gff_dir.$name_root.".".$rs_param_name.".gff";
 	
 	my $rs_cmd = "repseek".
 	    " ".$rs_options.
@@ -296,6 +299,14 @@ for my $ind_file (@fasta_files) {
 	
 	print STDERR $rs_cmd."\n";
 	
+	# Process repseek output to GFF format
+	my $rs_program = "repseek";
+	repseek2gff ($name_root, 
+		     $rs_param_name, 
+		     $rs_outfile, 
+		     $rs_gff_outfile, 
+		     $rs_program);
+
     }
     
 
@@ -306,6 +317,220 @@ exit 0;
 #-----------------------------------------------------------+ 
 # SUBFUNCTIONS                                              |
 #-----------------------------------------------------------+
+
+sub repseek2gff {
+
+    # Need to convert this to using hashes and use STDIN,STOUT
+    # when file path arguments are not passed
+    
+    # $seq_id is the id of the query sequence
+    # $repin is the path to the file to convert to gff
+    # $repout is the path to the gff output file
+
+    my ($seqname, $param_set, $repin, $repout, $source) = @_;
+
+    #-----------------------------+
+    # OPEN FILE HANDLES           |
+    #-----------------------------+
+    # DEFAULT TO STDIN
+    if ($repin) {
+	open (REPIN, "<$repin") ||
+	    die "Can not open input file:\n$repin\n";
+    } 
+    else {
+	print STDERR "Expecting input from STDIN\n";
+	open (REPIN, "<&STDIN") ||
+	    die "Can not accept input from standard input.\n";
+    }
+
+    # DEFAULT TO STDOUT
+    if ($repout) {
+	open (GFFOUT, ">$repout") ||
+	    die "Can not open output file:\n$repout\n";
+    }
+    else {
+	open (GFFOUT, ">&STDOUT") ||
+	    die "Can not print to STDOUT\n";
+    }
+
+    my $palindrome_id = 0; # Running palindrome id number
+    my $tandem_id = 0;
+    my $close_id = 0;
+    my $overlap_id = 0;
+    my $interseq_id = 0;
+    my $repseek_id = 0;
+
+    my $inv_id = 0;        # Counter/id for inverted repeats
+    my $dir_id = 0;        # Counter/id for direct repeats
+
+#    my $source;            # The data for the source column
+#    my $source = "repseek";
+
+    if ($param_set) {
+	$source = $source."_".$param_set;
+    }
+
+
+    # MAY CONSIDER JUST RETURNING THE TANDEM REPEATS ?
+    while (<REPIN>) {
+	chomp;
+
+	$repseek_id = $repseek_id + 1;
+	my @rep_parts = split;
+	my @type_parts = split(/\./, $rep_parts[0] );
+
+	my $repeat_type = $type_parts[0];
+	my $repeat_direction = $type_parts[1];
+
+	my $copy1_start = $rep_parts[1];
+	my $copy2_start = $rep_parts[2];
+	my $copy1_len = $rep_parts[3];
+	my $copy2_len = $rep_parts[4];
+	my $copy1_end = $copy1_start + $rep_parts[3];
+	my $copy2_end = $copy2_start + $rep_parts[4];
+	my $copy_distance = $rep_parts[5];            # distance between the repeats
+	my $percent_identity = $rep_parts[7];   #  (matches / alignment_length)\n
+	my $alignment_score = $rep_parts[8];
+
+	# Will split the repseek source into inverted repeats 
+	# vs direct repeats .. putative TEs
+
+	# Source sets
+	# - Overlap
+        # - Palindromes
+	my $feature;
+
+	# Translate repeat direction
+	if ($repeat_direction =~ "inv") {
+	    $repeat_direction = "inverted";
+	}
+	elsif ($repeat_direction =~ "dir") {
+	    $repeat_direction = "direct";
+	}
+
+	if ($repeat_type =~ "Overlap") {
+	    #$feature = "overlapping_"."$repeat_direction"."_repeat";
+	    # overlapping repeats not recognized in SO
+	    $feature = $repeat_direction."_repeat";
+	}
+	else {
+	    $feature = "$repeat_direction"."_repeat";
+	}
+
+	if ($repeat_type =~ "Palindrome") {
+	    # palindromic repeats are currently not recognized
+	    # in the sequence ontology, will have to tag this
+	    # feature with additional information in the
+	    # attribute field.
+	    #$feature = "palindromic_repeat";
+	    $feature = "inverted_repeat";
+	}
+
+	my $attribute = $seqname."_repseek".$repseek_id."_".$repeat_direction;
+
+	#-----------------------------+
+	# PRINT OUTPUT TO GFF         |
+	#-----------------------------+
+	my $parent_id;
+	if ($gff_ver =~ "GFF3") {
+
+	    #-----------------------------+
+	    # PRINT PARENT                |
+	    #-----------------------------+
+	    $parent_id = $attribute;
+	    my $parent_attribute = "ID=".$parent_id."_repeat";
+	    
+	    if ($repeat_type =~ "Palindrome") {
+		$parent_attribute = $parent_attribute.
+		    ";Alias=palindrome";
+	    }
+	    elsif ($repeat_type =~ "Overlap") {
+		$parent_attribute = $parent_attribute.
+		    ";Alias=overlapping_direct_repeat";
+	    }
+	    elsif ($repeat_type =~ "Tandem") {
+		$parent_attribute = $parent_attribute.
+		    ";Alias=tandem_direct_repeat";
+	    }
+	    # Add note about other attribute
+	    # ///////
+	    # CAN Add tag value names below
+	    # This may break some parsers,
+	    # but it should work with GBROWSE
+	    $parent_attribute = $parent_attribute.
+		";pair_similarity=".$percent_identity.
+		";copy1_length=".$copy1_len.
+		";copy2_length=".$copy2_len.
+		";distance=".$copy_distance ;
+	    #\\\\\\\\\
+
+	    # GET SPAN LOCATIONS          |
+	    my @locations = ( int($copy1_start), 
+			      int($copy1_end), 
+			      int($copy2_start), 
+			      int($copy2_end) );
+	    @locations = sort @locations;
+	    my $span_start = $locations[0];
+	    my $span_end = $locations[3];
+
+	    # PRINT 
+	    print GFFOUT "$seqname\t".       # Seqname
+		"$source\t".                 # Source
+		"$feature\t".                # Feature
+		"$span_start\t".             # Start
+		"$span_end\t".               # End
+		"$alignment_score\t".        # Score
+		"+\t".                       # Strand
+		".\t".                       # Frame
+		"$parent_attribute".         # Attribute
+		"\n";
+
+	}
+	else {
+	    $attribute = $attribute
+	}
+
+
+	if ($gff_ver =~ "GFF3") {
+	    $attribute = "ID=".$parent_id."_copy1".
+		";Parent=".$parent_id."_repeat";
+	    $feature = "repeat_unit";
+	}
+	print GFFOUT "$seqname\t".       # Seqname
+	    "$source\t".                 # Source
+	    "$feature\t".                # Feature
+	    "$copy1_start\t".            # Start
+	    "$copy1_end\t".              # End
+	    "$alignment_score\t".        # Score
+	    "+\t".                       # Strand
+	    ".\t".                       # Frame
+	    "$attribute".                # Attribute
+	    "\n";
+
+	if ($gff_ver =~ "GFF3") {
+	    $attribute = "ID=".$parent_id."_copy2".
+		";Parent=".$parent_id."_repeat";
+	    $feature = "repeat_unit";
+	}
+	print GFFOUT "$seqname\t".       # Seqname
+	    "$source\t".                 # Source
+	    "$feature\t".                # Feature
+	    "$copy2_start\t".            # Start
+	    "$copy2_end\t".              # End
+	    "$alignment_score\t".        # Score
+	    "+\t".                       # Strand
+	    ".\t".                       # Frame
+	    "$attribute".                # Attribute
+	    "\n";
+
+    }
+
+    close (REPIN);
+    close (GFFOUT);
+
+
+    
+}
 
 sub print_help {
     my ($help_msg, $podfile) =  @_;
