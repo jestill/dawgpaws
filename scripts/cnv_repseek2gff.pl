@@ -193,7 +193,7 @@ sub repseek2gff {
 #    my $source = "repseek";
 
     if ($param_set) {
-	$source = $source.":".$param_set;
+	$source = $source."_".$param_set;
     }
 
 
@@ -252,7 +252,7 @@ sub repseek2gff {
 	    $feature = "inverted_repeat";
 	}
 
-	my $attribute = "repseek".$repseek_id."_".$repeat_direction;
+	my $attribute = $seqname."_repseek".$repseek_id."_".$repeat_direction;
 
 	#-----------------------------+
 	# PRINT OUTPUT TO GFF         |
@@ -268,23 +268,27 @@ sub repseek2gff {
 	    
 	    if ($repeat_type =~ "Palindrome") {
 		$parent_attribute = $parent_attribute.
-		    " ; Alias=palindrome";
+		    ";Alias=palindrome";
 	    }
 	    elsif ($repeat_type =~ "Overlap") {
 		$parent_attribute = $parent_attribute.
-		    "; Alias=overlapping_direct_repeat";
+		    ";Alias=overlapping_direct_repeat";
 	    }
 	    elsif ($repeat_type =~ "Tandem") {
 		$parent_attribute = $parent_attribute.
-		    "; Alias=tandem_direct_repeat";
+		    ";Alias=tandem_direct_repeat";
 	    }
-	    # Add not about other attribute
+	    # Add note about other attribute
+	    # ///////
+	    # CAN Add tag value names below
+	    # This may break some parsers,
+	    # but it should work with GBROWSE
 	    $parent_attribute = $parent_attribute.
-		"; Note= ".$percent_identity.
-		" ".$copy1_len.
-		" ".$copy2_len.
-		" ".$copy_distance ;
-
+		";pair_similarity=".$percent_identity.
+		";copy1_length=".$copy1_len.
+		";copy2_length=".$copy2_len.
+		";distance=".$copy_distance ;
+	    #\\\\\\\\\
 
 	    # GET SPAN LOCATIONS          |
 	    my @locations = ( int($copy1_start), 
@@ -315,7 +319,7 @@ sub repseek2gff {
 
 	if ($gff_ver =~ "GFF3") {
 	    $attribute = "ID=".$parent_id."_copy1".
-		"; Parent=".$parent_id."_repeat";
+		";Parent=".$parent_id."_repeat";
 	    $feature = "repeat_unit";
 	}
 	print GFFOUT "$seqname\t".       # Seqname
@@ -331,7 +335,7 @@ sub repseek2gff {
 
 	if ($gff_ver =~ "GFF3") {
 	    $attribute = "ID=".$parent_id."_copy2".
-		"; Parent=".$parent_id."_repeat";
+		";Parent=".$parent_id."_repeat";
 	    $feature = "repeat_unit";
 	}
 	print GFFOUT "$seqname\t".       # Seqname
