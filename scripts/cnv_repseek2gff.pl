@@ -55,6 +55,11 @@ my $outfile;
 my $seq_id = "seq";        # Default seqname is seq
 my $parameter_set = 0;     # The parameter set used, set to default
 
+# Filtering options
+my $max_distance;          # Set a maximum distance for returning results
+my $min_distance;          # Set a minimum distance
+my $no_overlap;            # skip overlap features
+
 my $program = "repseek";
 
 # BOOLEANS
@@ -71,21 +76,24 @@ my $do_test = 0;                  # Run the program in test mode
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
 my $ok = GetOptions(# REQUIRED ARGUMENT
-		    "i|infile=s"  => \$infile,
-                    "o|outfile=s" => \$outfile,
+		    "i|infile=s"      => \$infile,
+                    "o|outfile=s"     => \$outfile,
 		    # OPTIONS
-		    "gff-ver=s"     => \$gff_ver,
-		    "s|seqname=s" => \$seq_id,
-		    "program=s"   => \$program,
-		    "p|param=s"   => \$parameter_set,
-		    "q|quiet"     => \$quiet,
-		    "verbose"     => \$verbose,
+		    "gff-ver=s"       => \$gff_ver,
+		    "s|seqname=s"     => \$seq_id,
+		    "program=s"       => \$program,
+		    "p|param=s"       => \$parameter_set,
+		    "q|quiet"         => \$quiet,
+		    "verbose"         => \$verbose,
+		    "max-distance=s"  => \$max_distance,
+		    "min-distance=s"  => \$min_distance,
+		    "no-overlap"      => \$no_overlap,
 		    # ADDITIONAL INFORMATION
-		    "usage"       => \$show_usage,
-		    "test"        => \$test,
-		    "version"     => \$show_version,
-		    "man"         => \$show_man,
-		    "h|help"      => \$show_help,);
+		    "usage"           => \$show_usage,
+		    "test"            => \$test,
+		    "version"         => \$show_version,
+		    "man"             => \$show_man,
+		    "h|help"          => \$show_help,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -215,6 +223,16 @@ sub repseek2gff {
 	my $copy1_end = $copy1_start + $rep_parts[3];
 	my $copy2_end = $copy2_start + $rep_parts[4];
 	my $copy_distance = $rep_parts[5];            # distance between the repeats
+	if ($max_distance) {
+	    if ($copy_distance > $max_distance) {
+		next;
+	    }
+	}
+	if ($min_distance) {
+	    if ($copy_distance < $min_distance) {
+		next;
+	    }
+	}
 	my $percent_identity = $rep_parts[7];   #  (matches / alignment_length)\n
 	my $alignment_score = $rep_parts[8];
 
@@ -237,6 +255,7 @@ sub repseek2gff {
 	if ($repeat_type =~ "Overlap") {
 	    #$feature = "overlapping_"."$repeat_direction"."_repeat";
 	    # overlapping repeats not recognized in SO
+
 	    $feature = $repeat_direction."_repeat";
 	}
 	else {
