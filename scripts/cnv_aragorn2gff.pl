@@ -149,6 +149,8 @@ else {
 	die "Can not open STDOUT for output. Specify outfile with -o option\n"
 }
 
+print GFFOUT "##gff-version 3\n";
+
 #-----------------------------+
 # MAIN PROGRAM BODY           |
 #-----------------------------+
