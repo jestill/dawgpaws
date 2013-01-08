@@ -62,6 +62,11 @@ my $show_man = 0;
 my $show_version = 0;
 my $do_test = 0;                  # Run the program in test mode
 
+# Vars that can be changed to modify GFF output
+my $source = "Aragorn";
+my $type = "tRNA";
+
+
 #-----------------------------+
 # COMMAND LINE OPTIONS        |
 #-----------------------------+
@@ -69,6 +74,8 @@ my $ok = GetOptions(# REQUIRED OPTIONS
 		    "i|infile=s"  => \$infile,
                     "o|outfile=s" => \$outfile,
 		    # ADDITIONAL OPTIONS
+		    "source=s"    => \$source,
+		    "type=s"      => \$type,
 		    "gff-ver=s"   => \$gff_ver,
 		    "q|quiet"     => \$quiet,
 		    "verbose"     => \$verbose,
@@ -147,8 +154,6 @@ else {
 #-----------------------------+
 
 my $seq_id;
-my $source = "Aragorn";
-my $type = "tRNA";
 my $start;
 my $end;
 my $score = ".";
@@ -157,6 +162,7 @@ my $phase = ".";
 my $attribute;
 my $gff_str;
 my $num_result = 0;
+my $aa;
 
 while (<INFILE>) {
 
@@ -172,15 +178,17 @@ while (<INFILE>) {
     elsif (m/^(.*)\t(.*)\t(.*)/) {
 	$num_result++;
 
-	my ($num,$type,$loc) = split(/\s+/ , $1);
+	my ($num,$trna_type,$loc) = split(/\s+/ , $1);
 	my $len = $2;
 	my $triplet = $3;
-#	my 
+	# Make triplet code uppercase
+	$triplet = uc($triplet);
+
 
 	if ($verbose) {
 	    print STDERR "\t\tSeq: ".$seq_id."\n";
 	    print STDERR "\t\tNum: ".$num."\n";
-	    print STDERR "\t\tType: ".$type."\n";
+	    print STDERR "\t\tType: ".$trna_type."\n";
 	    print STDERR "\t\tLoc: ".$loc."\n";
 	    print STDERR "\t\t$len\n";
 	    print STDERR "\t\t$triplet\n";
@@ -206,8 +214,16 @@ while (<INFILE>) {
 	    $end = "ERR";
 	}
 
+
+	if ($trna_type =~ m/(.*)\-(.*)/) {
+	    $type = $1;
+	    $aa = $2;
+	}
+
+
 	my $attribute = "ID=".$seq_id."_".$source."_".$start."_".$end.";".
-	    "Name=".$type;
+#	    "Name=".$trna_type;
+	    "Name=".$type."-".$aa.$triplet;
 
 	# TEST GFF 3 STRING
 	print GFFOUT $seq_id."\t".
@@ -327,6 +343,8 @@ result. This currently does not support GFF2 output. This has been tested
 with aragorn result that was run as:
 
  ./aragorn -rp -w -seq -l -t ambo.fasta -o ara_test_out.txt
+
+Currently will tag all results as tRNA.
 
 using Aragorn v.1.2.34
 
