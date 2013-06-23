@@ -42,3 +42,8 @@ If you use DAWGPAWS in your annotation efforts, you should cite the DAWGPAWS man
 >JC Estill and JL Bennetzen. 2009. "The DAWGPAWS pipeline for the annotation of genes and transposable elements in plant genomes." Plant Methods. 5:8.
 
 You can download the open access pdf of at [http://www.plantmethods.com/content/5/1/8](link.address.here).
+
+Limiations and Warnings
+-----------------------
+
+Many of the scripts in the github repository may undocumented errors and limitations. The documentation on many of the programs is also under current revision and is not complete.
