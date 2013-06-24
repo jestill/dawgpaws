@@ -46,4 +46,4 @@ You can download the open access pdf of at [http://www.plantmethods.com/content/
 Limiations and Warnings
 -----------------------
 
-Many of the scripts in the github repository may undocumented errors and limitations. The documentation on many of the programs is also under current revision and is not complete.
+Many of the scripts in the github repository may contain undocumented errors and limitations. The documentation on many of the programs is also under current revision and is not complete.
