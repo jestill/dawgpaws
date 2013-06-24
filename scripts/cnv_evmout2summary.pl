@@ -115,7 +115,7 @@ if ($infile) {
 }
 else {
     open (INFILE, "<&STDIN") ||
-	die "Can not open STDINT for input\b";
+	die "Can not open STDIN for input\b";
 }
 
 if ($outfile) {
@@ -247,7 +247,7 @@ This documentation refers to program version 0.1
 
 =head2 Usage
 
-    Name.pl -i InFile -o OutFile
+    cnv_evmout2summary.pl 
 
 =head2 Required Arguments
 
@@ -256,7 +256,9 @@ This documentation refers to program version 0.1
 
 =head1 DESCRIPTION
 
-This is what the program does
+Summarize the evidences used by EVM to generate gene
+models. The purpose is to generate a tab delimited file
+that can be loaded to a database for further processing.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -264,7 +266,7 @@ This is what the program does
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file, which is an EVM *.out file.
 
 =item -o,--outfile
 
@@ -305,7 +307,9 @@ The following are examples of how to use this script
 
 =head2 Typical Use
 
-This is a typcial use case.
+In a typical use case you will be processing and EVM output file.
+
+    cnv_evmout2summary.pl -i evm_result.out -o evm_result.txt
 
 =head1 DIAGNOSTICS
 
@@ -320,13 +324,13 @@ the input sequence with -i or --infile flag.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not make use a configuration file or variables set
+in the user environment.
 
 =head1 DEPENDENCIES
 
-Other modules or software that the program is dependent on.
+This program makes use of output from EvidenceModeller (EVM) and thus requires
+the EVM program available from http://evidencemodeler.sourceforge.net/.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -355,9 +359,9 @@ James C. Estill E<lt>JamesEstill at gmail.comE<gt>
 
 =head1 HISTORY
 
-STARTED:
+STARTED: 01/27/2012
 
-UPDATED:
+UPDATED: 01/27/2012 
 
 VERSION: $Rev$
 
