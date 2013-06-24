@@ -11,7 +11,8 @@
 # UPDATED: 05/08/2013                                       |
 #                                                           |
 # DESCRIPTION:                                              |
-#  Short Program Description                                |
+#  Converts a feature dump of non-overlapping TEs from the  |
+#  GenCART schema to a GFF3 format file.                    |
 #                                                           |
 # USAGE:                                                    |
 #  ShortFasta Infile.fasta Outfile.fasta                    |
@@ -159,10 +160,6 @@ while ( <INFILE> ) {
     print STDERR $_."\n"
 	if $verbose;
 
-#    if ($line_num == 10) { 
-#	exit;
-#    }
-
     my @inparts = split ( /\t/, $_);
     my $scaffold_num = sprintf( "%05d", $inparts[1] );
     my $scaffold = "AmTr_v1.0_scaffold".$scaffold_num;
@@ -171,7 +168,6 @@ while ( <INFILE> ) {
     my $type = $exemplar_parts[0];
     my $start = $inparts[4];
     my $end = $inparts[6];
-    # Using length as score
     my $score = $inparts[7];
     my $strand = $inparts[9];
     my $phase = ".";
@@ -189,8 +185,6 @@ while ( <INFILE> ) {
 	$phase."\t".
 	$attribute.
 	"\n";
-
-	
 	
 }
 
@@ -281,16 +275,18 @@ This documentation refers to program version 0.1
 
 =head2 Usage
 
-    Name.pl -i InFile -o OutFile
+    cnv_gencartdump2gff.pl -i in_sql_dump.txt -o outfile.gff3
 
 =head2 Required Arguments
 
-    --infile        # Path to the input file
+    --infile        # Path to the input file from SQL dump
     --outfie        # Path to the output file
 
 =head1 DESCRIPTION
 
-This is what the program does
+Converts a feature dump of non-overlapping TEs from the
+GenCart schema to a GFF3 format file suitable for upload
+to another genome feature database.
 
 =head1 REQUIRED ARGUMENTS
 
@@ -298,11 +294,12 @@ This is what the program does
 
 =item -i,--infile
 
-Path of the input file.
+Path of the input file which is a text file resulting from a mysqldump
+from the Gencart database.
 
 =item -o,--outfile
 
-Path of the output file.
+Path of the output file, which will be a GFF3 format file.
 
 =back
 
@@ -339,7 +336,10 @@ The following are examples of how to use this script
 
 =head2 Typical Use
 
-This is a typcial use case.
+A typical use for this program will be to convert a gencart output
+to gff3 format as:
+
+  cnv_gencartdump2gff.pl -i gencart_dump.txt -o result.gff3
 
 =head1 DIAGNOSTICS
 
@@ -354,23 +354,27 @@ the input sequence with -i or --infile flag.
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Names and locations of config files
-environmental variables
-or properties that can be set.
+This program does not require a configuration file or rely on
+options set in the user environment.
 
 =head1 DEPENDENCIES
 
 Other modules or software that the program is dependent on.
 
+=over
+
+=item GenCart
+
+The gencart package is available at:
+
+
+=back
+
 =head1 BUGS AND LIMITATIONS
 
-Any known bugs and limitations will be listed here.
+Known bugs and limitations will be listed here.
 
 =head1 REFERENCE
-
-A manuscript is being submitted describing the DAWGPAWS program. 
-Until this manuscript is published, please refer to the DAWGPAWS 
-SourceForge website when describing your use of this program:
 
 JC Estill and JL Bennetzen. 2009. 
 The DAWGPAWS Pipeline for the Annotation of Genes and Transposable 
