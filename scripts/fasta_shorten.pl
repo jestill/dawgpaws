@@ -8,7 +8,7 @@
 #  AUTHOR: James C. Estill                                  |
 # CONTACT: JamesEstill_@_gmail.com                          |
 # STARTED: 07/17/2007                                       |
-# UPDATED: 04/26/2008                                       |
+# UPDATED: 11/20/2013                                       |
 #                                                           |
 # DESCRIPTION:                                              |
 #   Change headers in a fasta file to give shorter names    |
@@ -44,11 +44,8 @@ use IO::Scalar;                # For print_help subfunction
 use IO::Pipe;                  # Pipe for STDIN, STDOUT for POD docs
 use File::Spec;                # Convert a relative path to an abosolute path
 
-#-----------------------------+
-# PROGRAM VARIABLES           |
-#-----------------------------+
-# Extract program version form the SVN Revision number
-my ($VERSION) = q$Rev$ =~ /(\d+)/;
+#@my ($VERSION) = q$Rev$ =~ /(\d+)/;
+my ($VERSION) = "2.0";
 
 #-----------------------------+
 # VARIABLE SCOPE              |
@@ -80,22 +77,22 @@ my $uppercase = 0;             # Convert sequence strings to uppercase
 #-----------------------------+
 my $ok = GetOptions(
 		    # Required options
-		    "i|indir=s"      => \$indir,
-                    "o|outdir=s"     => \$outdir,
+		    "i|indir|infile=s" => \$indir,
+                    "o|outdir=s"       => \$outdir,
 		    # Additional options
-		    "l|length=s"     => \$new_len,
-		    "d|delim-char=s" => \$delim_char,
-		    "p|delim-pos=s"  => \$delim_pos,
+		    "l|length=s"       => \$new_len,
+		    "d|delim-char=s"   => \$delim_char,
+		    "p|delim-pos=s"    => \$delim_pos,
 		    # Booleans
-		    "rename"         => \$rename,
-		    "uppercase"      => \$uppercase,
-		    "verbose"        => \$verbose,
-		    "usage"          => \$show_usage,
-		    "version"        => \$show_version,
-		    "man"            => \$show_man,
-		    "h|help"         => \$show_help,
-		    "test"           => \$test,
-		    "q|quiet"        => \$quiet,);
+		    "rename"           => \$rename,
+		    "uppercase"        => \$uppercase,
+		    "verbose"          => \$verbose,
+		    "usage"            => \$show_usage,
+		    "version"          => \$show_version,
+		    "man"              => \$show_man,
+		    "h|help"           => \$show_help,
+		    "test"             => \$test,
+		    "q|quiet"          => \$quiet,);
 
 #-----------------------------+
 # SHOW REQUESTED HELP         |
@@ -138,6 +135,9 @@ if ( (!$indir) || (!$outdir) ) {
 # MAIN PROGRAM BODY                                         |
 #-----------------------------------------------------------+
 
+print STDERR "Processing $indir\n"
+    if $verbose;
+
 # Convert position as passed at command line to array position
 $delim_pos = $delim_pos - 1;
 
@@ -151,9 +151,6 @@ $test_len = int($new_len + 1);
 #-----------------------------+
 # If the indir does not end in a slash then append one
 # TO DO: Allow for backslash
-unless ($indir =~ /\/$/ ) {
-    $indir = $indir."/";
-}
 
 unless ($outdir =~ /\/$/ ) {
     $outdir = $outdir."/";
@@ -165,26 +162,49 @@ unless ($outdir =~ /\/$/ ) {
 # var $indir                  |
 #-----------------------------+
 my @fasta_files;
-opendir( DIR, $indir ) || 
-    die "Can't open directory:\n$indir"; 
-# Old fasta file aray
-# my @fasta_files = grep /\.fasta$|\.fa$/, readdir DIR ;
-@fasta_files = grep /\.fasta$|\.fa$|\.tfa$|\.fsa$|\.fna$|\.faa$|\.frn$|\.ffn$/, readdir DIR ;
 
-# If none of exptected fasta file extensions found in the input dir, load all 
-# files in the input directory and assume that they are fasta files
-my $num_fasta_files;
-$num_fasta_files = @fasta_files;
-if ($num_fasta_files == 0) {
-    @fasta_files = grep !/^\.\.?$/, readdir DIR ;
-}
+# If we have a directory load the fasta files to the input directory
+# otherwise if we are handed a file then treat it like a fasta file.
 
-closedir( DIR );
+if (-d $indir) {
+    # For simplicity make sure indir ends with /
+    unless ($indir =~ /\/$/ ) {
+	$indir = $indir."/";
+    }
+    
 
-# Throw error if no files are found in the directory
-$num_fasta_files = @fasta_files;
-if ($num_fasta_files == 0) {
-    die "ERROR: No fasta files were found in the input directory.\n";
+    print STDERR "Processing indir $indir" 
+	if $verbose;
+    opendir( DIR, $indir ) || 
+	die "Can't open directory:\n$indir"; 
+    @fasta_files = grep /\.fasta$|\.fa$|\.tfa$|\.fsa$|\.fna$|\.faa$|\.frn$|\.ffn$/, readdir DIR ;
+
+    # If none of exptected fasta file extensions found in the input 
+    # dir, load all files in the input directory and assume that 
+    # they are all fasta files
+    my $num_fasta_files;
+    $num_fasta_files = @fasta_files;
+    if ($num_fasta_files == 0) {
+	@fasta_files = grep !/^\.\.?$/, readdir DIR ;
+    }
+    
+    closedir( DIR );
+    
+    # Throw error if no files are found in the directory
+    $num_fasta_files = @fasta_files;
+    if ($num_fasta_files == 0) {
+	die "ERROR: No fasta files were found in the input directory.\n";
+    }
+    
+} # End of if input path is a directory
+elsif (-f $indir) {
+    print STDERR "Processing file $indir\n"
+	if $verbose;
+    push (@fasta_files, $indir);
+} # End of if input path is a file
+else {
+    print STDERR "Input path is not a valid directory or file: $indir \n";
+    exit;
 }
 
 #-----------------------------+
@@ -205,7 +225,13 @@ for my $ind_file (@fasta_files) {
 
     # The fasta file name is not changed, it is just moved to a 
     # new directory
-    my $infile = $indir.$ind_file;
+    my $infile;
+    if (-d $indir) {
+	$infile = $indir.$ind_file;
+    } 
+    else {
+	$infile = $ind_file;
+    }
 
     open (IN, $infile) ||
 	die "Can not open infile:\n$infile\n";
@@ -244,6 +270,14 @@ for my $ind_file (@fasta_files) {
 		#-----------------------------+
 		# SPLIT HEADER BY DELIMITER   |
 		#-----------------------------+
+
+		# It may be possible to split by any character here
+		# using the eval option
+		# as an alternative to split or could just use 
+		# a m regexp that includes ^ to allow for any 
+		# value to be used then $head_new would be switched
+		# 
+
 		if ( $delim_char =~ "pipe") {
 		    @hp = split ( /\|/ , $_ );
 		}
